@@ -3,3 +3,7 @@ language:
   ui:
     chapter_name: ""
 # content order
+ 
+output_dir: "."
+
+

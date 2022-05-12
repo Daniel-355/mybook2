@@ -14,4 +14,6 @@ The **bookdown** package reference site: https://pkgs.rstudio.com/bookdown
 
 how to git exist r project on github:  https://www.youtube.com/watch?v=bUoN85QvC10 
 
-https://www.youtube.com/watch?v=m5D-yoH416Y
+https://www.youtube.com/watch?v=m5D-yoH416Y  
+
+output_dir: "."  
