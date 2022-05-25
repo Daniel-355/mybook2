@@ -1,21 +1,424 @@
 # Data Wrangling   
-<!-- two space and enter key -->
-<!-- each charpter is a different rmd file -->
-<!-- only index file 's title is rmd format -->
-<!-- serve_book() -->
-<!-- preview_book() -->
 
-<!-- just start the charpter name like markdown -->
-<!-- All chapters start with a first-level heading followed by your chapter title, like the line above. There should be only one first-level heading (`#`) per .Rmd file. -->
-Heading 1  
+<!-- ============================= -->
+## The essentials of R
+### Manipulation of vector 
 
-## A section  
-Heading 2  
+```{r,warning=FALSE}
+vec <- c(3,5,2,1,5,"O",NA)
+length(unique(vec))
 
-<!-- All chapter sections start with a second-level (`##`) or higher heading followed by your section title, like the sections above and below here. You can have as many as you want within a chapter. -->
-## Another section  
-Also heading 2  
+num_vec <- as.numeric(vec)
+log(num_vec)
 
-### An unnumbered section {-}  
-No heading 
-<!-- Chapters and sections are numbered by default. To un-number a heading, add a `{.unnumbered}` or the shorter `{-}` at the end of the heading, like in this section. -->
+sum(c(num_vec, NA), na.rm=T)
+sort(num_vec, decreasing = T)
+
+is.na(num_vec)
+num_vec[!is.na(num_vec)]
+
+c(5,6) %in% vec
+grepl("5", vec)
+```
+### Generate sequence or repeted sequece  
+
+```{r}
+seq(from = 0, to = 10, by = 0.5)
+rep(x = 1:3, times = 4)
+rep(x = 1:3, each = 4)
+```
+### Get directory and write data out and in
+
+```{r}
+getwd()
+setwd(getwd())
+write.csv(cars, "cars.csv", row.names=F)
+dataframe  <- read.csv("cars.csv")
+
+```
+### Function
+
+```{r}
+my_func <- function(x){
+  x_mod <- (x + 7) * 4
+  return(x_mod)
+}
+
+my_func(num_vec)
+```
+### Plot 
+
+```{r}
+plot(dist ~ speed, data=cars)
+hist(cars$dist )
+
+```
+### Build model and plot
+
+```{r}
+model <- lm(dist ~ speed, data=cars)
+plot(dist ~ speed, data=cars)
+abline(model)
+abline(v = 25)
+abline(h = 15)
+```
+### Rename names of columns 
+
+```{r}
+names(cars)
+names(cars) <- c("speed per hour", "total dist")
+```
+### Class of dataframe 
+
+```{r}
+matrix <- as.matrix(cars)
+df <- as.data.frame(matrix)
+class(matrix)
+class(df)
+
+# tranform
+t(matrix)
+```
+### Generate new variable for dataframe (character)
+
+```{r}
+paste0("raster_", 1:10)
+paste0("raster_", rep(x = 1:5, times = 10))
+df$group <- paste0("raster_", rep(x = 1:5, times = 10))
+df$id <-  paste0("raster_",  1:50)
+```
+### Create a new dataframe using 'rnorm' - random  number from distribution
+
+```{r}
+sample <-  round((rnorm(50,0, 1)),2)
+group <- paste0("raster_", rep(x = 1:5, times = 10))
+
+df_join <- data.frame(sample, group)
+df_join$id <-  paste0("raster_",  1:50)
+```
+
+### Left join two dataframes  
+```{r}
+library(dplyr)
+data_all <- left_join(df, df_join, by="id")
+head(data_all)
+```
+### Select variables
+```{r}
+select(data_all, group.x, id  )
+```
+### Filter observations
+```{r}
+raster_1 <- filter(data_all, group.x == "raster_1")
+raster_1
+speed_dist <- filter(data_all, data_all$`speed per hour` < 11 & data_all$`total dist` >= 10)
+speed_dist
+ 
+```
+### Append rows
+```{r}
+rbind(raster_1,speed_dist)
+```
+ 
+### Create new variables instead of old variables
+```{r}
+mutate(data_all, 
+       sample = round(sample,1))
+```
+### Summarize statistics
+```{r}
+summarize(data_all, 
+          mean_speed = mean(sample),
+          max_dist = max( "total dist" ))
+```
+### Group dataframe then summarize statistics
+```{r}
+data_all_group <- group_by(data_all, group.x)
+summarize(data_all_group, 
+          mean_speed = mean(sample),
+          max_dist = max( "total dist" ))
+```
+### Ungroup then summarize statistics 
+```{r}
+ungroup_data <- ungroup( data_all_group)
+summarize(  ungroup_data , 
+          mean_speed = mean(sample),
+          max_dist = max( "total dist" ))
+
+```
+### Summary linear regression model
+```{r}
+mod1 <- lm(cars$`total dist` ~ cars$`speed per hour` )
+summary(mod1) 
+```
+### Create frequency table
+```{r}
+table(data_all_group$`speed per hour`,data_all_group$group.x  )
+```
+### Value and variable label
+```{r}
+table(iris$Species)
+```
+```{r}
+iris$Species <- factor(iris$Species,labels = c( "setosanew","versicolornew","virginianew"))
+table(iris$Species)
+```
+```{r message=FALSE}
+library(Hmisc)
+```
+
+```{r}
+label(iris$Species) <- "Species types"
+table(iris$Species)
+```
+### Recode a variable 
+```{r}
+irisifelse <-  iris%>% 
+mutate(Sepal.Length2 = ifelse(Sepal.Length < 6 , "level1", ifelse(Sepal.Length < 7 , "level2", Sepal.Length)))
+
+table(irisifelse$Sepal.Length2)
+```
+
+
+<!-- ========================= -->
+## How to do data wrangling  
+We will use `tidyverse` package to work with data.  
+
+### Load data and package
+```{r}
+head (iris)
+```
+```{r}
+library(tidyverse)
+```
+### Select certain rows
+```{r}
+setosa <- filter(iris, Species == 'setosa')
+setosa
+```
+### Select certain columns
+```{r}
+select(iris, Sepal.Length, Species)
+```
+
+```{r}
+select(iris, -Sepal.Length, -Species)
+```
+### Rename variables
+```{r}
+rename(iris,  Sepal_Width= Sepal.Width,  Sepal_Length= Sepal.Length )
+```
+### Sorting in ascending or descending order  
+- put a minus in front of a variable for descending order
+```{r}
+arrange(iris, Petal.Length, -Petal.Width)
+ 
+```
+### Transform variables
+```{r}
+mutate(iris,  newvar= Sepal.Width*10, Petal.Length=Petal.Length/100  )
+```
+### Working with pipes %>% 
+```{r}
+iris %>% 
+  filter(Species=="setosa") %>% 
+  mutate (newvar=Sepal.Width*10) %>% 
+  select (-Sepal.Width, -Petal.Width) %>% 
+  arrange(-Sepal.Length, newvar)
+```
+### Pivot wider (long to wide)  
+- If no unique identifier row in each group **doesn't work**   
+
+```{r}
+iris %>%
+pivot_wider(  names_from=Species, values_from= c(Sepal.Length))
+```
+- Create a unique identifier row for each name and then use pivot_wider 
+
+```{r}
+widedata <- iris %>%
+  # create groups then assign unique identifier row number in each group
+  group_by(Species) %>%
+  mutate(row = row_number()) %>%
+pivot_wider(names_from=Species, values_from= c(Petal.Length,Sepal.Length,Petal.Width,Sepal.Width))
+widedata
+```
+
+```{r}
+iris %>%
+  group_by(Species) %>%
+  mutate(row = row_number()) %>%
+pivot_wider( names_from=Species, values_from= c(Petal.Length, Petal.Width))
+```
+### Pivot longer (wide to long)   
+
+```{r}
+longdata = pivot_longer(widedata, -
+                          c(  "row"   ,                  "Petal.Length_setosa" ,    "Petal.Length_versicolor",
+  "Petal.Length_virginica",  "Sepal.Length_setosa"  ,   "Sepal.Length_versicolor",
+  "Sepal.Length_virginica" , "Petal.Width_setosa"    ,  "Petal.Width_versicolor" ,
+  "Petal.Width_virginica"    )        , names_to="Sepal.Width", values_to="Sepal.Width.value")
+longdata
+```
+- Pivot wider again (long to wide)
+
+```{r}
+pivot_wider(longdata, names_from=Sepal.Width, values_from= c(Sepal.Width.value))
+
+```
+### Separate columns       
+```{r}
+separate(iris, Species, into = c("integer","decimal","third"), sep="o")
+
+```
+### Recode/relabel data    
+```{r}
+mutate(iris, Species2 = recode(Species, "setosa"="seto", "versicolor"="versi"))
+```
+### Combine data sets  
+- prepare data sets 
+```{r}
+data1 <- data.frame(ID = 1:4,                       
+                    X1 = c("a1", "a2","a3", "a4"),
+                    stringsAsFactors = FALSE)
+data2 <- data.frame(ID = 2:5,                       
+                    X2 = c("b1", "b2","b3", "b4"),
+                    stringsAsFactors = FALSE)
+```
+- inner join   
+```{r}
+inner_join(data1, data2, by = "ID")    
+```
+- left join   
+```{r}
+left_join(data1, data2, by = "ID")   
+```
+- right join   
+```{r}
+right_join(data1, data2, by = "ID")  
+```
+- full join   
+```{r}
+full_join(data1, data2, by = "ID") 
+```
+- keep cases of left data table without in right data table 
+```{r}
+anti_join(data1, data2, by = "ID")  
+```
+- keep cases of left data table in right data table 
+```{r}
+semi_join(data1, data2, by = "ID")  
+```
+- multiple full join  
+```{r}
+full_join(data1, data2, by = "ID") %>%              
+  full_join(., data2, by = "ID") 
+```
+- rbind **doesn't work** 
+```{r}
+# df1 <- data.frame(col1 = LETTERS[1:6],
+#                   col2a = c(5:10),
+#                   col3a = TRUE)
+#   
+# df2 <- data.frame(col1 = LETTERS[4:8],
+#                   col2b= c(4:8),
+#                   col3b = FALSE)
+# rbind(df1,df2)
+```
+- append two data tables by using join and merge       
+```{r}
+data_frame1 <- data.frame(col1 = c(6:8),
+                         col2 = letters[1:3],
+                         col3 = c(1,4,NA))
+ 
+data_frame2 <- data.frame(col1 = c(5:6),
+                          col5 = letters[7:8])
+ 
+data_frame_merge <- merge(data_frame1, data_frame2,
+                          by = 'col1', all = TRUE)
+ 
+print (data_frame_merge)
+```
+```{r}
+full_join(data_frame1,data_frame2, by=c("col1"),)
+```
+
+
+
+<!-- ======================= -->
+
+## How to do aggregation/ summarization
+### Summarization after grouping
+```{r echo=TRUE,  message=FALSE}
+library(tidyverse)
+```
+
+```{r echo=TRUE,  include=FALSE}
+library(tidyverse)
+```
+
+```{r}
+iris %>% 
+  group_by(Species) %>% 
+  summarize(Support = mean(Sepal.Length)) %>%    # average
+  arrange(-Support)                         # sort
+```
+
+```{r}
+iris %>% 
+  group_by(Species) %>% 
+summarize(mean_s = mean(Sepal.Width), 
+            meas_p = mean(Petal.Length), 
+            diff = mean(Sepal.Width-Petal.Length)) %>% 
+  arrange(-diff) 
+```
+
+```{r}
+iris %>% 
+  group_by(Species) %>% 
+summarize(n = n(), 
+            meas_p = mean(Petal.Length), 
+            sd = sd(Petal.Length))  
+```
+### Summarization with upgroup
+```{r}
+iris %>% 
+  ungroup( ) %>% 
+summarize(n = n(), 
+            meas_p = mean(Petal.Length), 
+            sd = sd(Petal.Length))  
+```
+### Mutate new variables after grouping
+```{r}
+iris %>% 
+  group_by(Species) %>% 
+mutate(n = n(), 
+            meas_p = mean(Petal.Length), 
+            sd = sd(Petal.Length))  
+```
+
+
+```{r}
+iris %>% 
+  group_by(Species) %>% 
+mutate(n = n(), 
+            meas_p = mean(Petal.Length, na.rm = T), 
+            sd = sd(Petal.Length))  %>% 
+  summarize (n_mean = paste ("sample size:",mean(n)), 
+            meas_p = mean(Petal.Length), 
+            sd = sd(Petal.Length))
+```
+
+### Recode and generate new variables, then value label
+```{r}
+irisifelse <- iris %>% 
+mutate(Species2 = ifelse(Species == "setosa", NA, Species))
+# relabel values
+irisifelse$Species2 <- factor(irisifelse$Species2,labels = c( "versi","virg"))
+irisifelse
+```
+```{r}
+str(irisifelse)
+```
+ 
+ 
