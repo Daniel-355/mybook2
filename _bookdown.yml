@@ -1,9 +1,4 @@
 delete_merged_file: true
 language:
   ui:
-    chapter_name: ""
-# content order
- 
-output_dir: "."
-
-
+    chapter_name: "Chapter "

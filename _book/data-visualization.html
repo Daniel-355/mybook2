@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 4 Data visualization | My Little Handbook</title>
+  <meta name="description" content="<p>This is a minimal example of using the bookdown package to write a book.
+The HTML output format for this example is bookdown::gitbook,
+set in the _output.yml file.</p>" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 4 Data visualization | My Little Handbook" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="<p>This is a minimal example of using the bookdown package to write a book.
+The HTML output format for this example is bookdown::gitbook,
+set in the _output.yml file.</p>" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 4 Data visualization | My Little Handbook" />
+  
+  <meta name="twitter:description" content="<p>This is a minimal example of using the bookdown package to write a book.
+The HTML output format for this example is bookdown::gitbook,
+set in the _output.yml file.</p>" />
+  
+
+<meta name="author" content="Daniel He" />
+
+
+<meta name="date" content="2022-05-26" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="deep-learning.html"/>
+<link rel="next" href="basic-statistics.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">My Little Handbook</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>About</a></li>
+<li class="chapter" data-level="1" data-path="data-wrangling.html"><a href="data-wrangling.html"><i class="fa fa-check"></i><b>1</b> Data Wrangling</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="data-wrangling.html"><a href="data-wrangling.html#how-to-do-data-wrangling"><i class="fa fa-check"></i><b>1.1</b> How to do data wrangling</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="data-wrangling.html"><a href="data-wrangling.html#load-data-and-package"><i class="fa fa-check"></i><b>1.1.1</b> Load data and package</a></li>
+<li class="chapter" data-level="1.1.2" data-path="data-wrangling.html"><a href="data-wrangling.html#select-certain-rows"><i class="fa fa-check"></i><b>1.1.2</b> Select certain rows</a></li>
+<li class="chapter" data-level="1.1.3" data-path="data-wrangling.html"><a href="data-wrangling.html#select-certain-columns"><i class="fa fa-check"></i><b>1.1.3</b> Select certain columns</a></li>
+<li class="chapter" data-level="1.1.4" data-path="data-wrangling.html"><a href="data-wrangling.html#rename-variables"><i class="fa fa-check"></i><b>1.1.4</b> Rename variables</a></li>
+<li class="chapter" data-level="1.1.5" data-path="data-wrangling.html"><a href="data-wrangling.html#sorting-in-ascending-or-descending-order"><i class="fa fa-check"></i><b>1.1.5</b> Sorting in ascending or descending order</a></li>
+<li class="chapter" data-level="1.1.6" data-path="data-wrangling.html"><a href="data-wrangling.html#transform-variables"><i class="fa fa-check"></i><b>1.1.6</b> Transform variables</a></li>
+<li class="chapter" data-level="1.1.7" data-path="data-wrangling.html"><a href="data-wrangling.html#working-with-pipes"><i class="fa fa-check"></i><b>1.1.7</b> Working with pipes %&gt;%</a></li>
+<li class="chapter" data-level="1.1.8" data-path="data-wrangling.html"><a href="data-wrangling.html#pivot-wider-long-to-wide"><i class="fa fa-check"></i><b>1.1.8</b> Pivot wider (long to wide)</a></li>
+<li class="chapter" data-level="1.1.9" data-path="data-wrangling.html"><a href="data-wrangling.html#pivot-longer-wide-to-long"><i class="fa fa-check"></i><b>1.1.9</b> Pivot longer (wide to long)</a></li>
+<li class="chapter" data-level="1.1.10" data-path="data-wrangling.html"><a href="data-wrangling.html#separate-columns"><i class="fa fa-check"></i><b>1.1.10</b> Separate columns</a></li>
+<li class="chapter" data-level="1.1.11" data-path="data-wrangling.html"><a href="data-wrangling.html#recoderelabel-data"><i class="fa fa-check"></i><b>1.1.11</b> Recode/relabel data</a></li>
+<li class="chapter" data-level="1.1.12" data-path="data-wrangling.html"><a href="data-wrangling.html#combine-data-sets"><i class="fa fa-check"></i><b>1.1.12</b> Combine data sets</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="data-wrangling.html"><a href="data-wrangling.html#how-to-do-aggregation-summarization"><i class="fa fa-check"></i><b>1.2</b> How to do aggregation/ summarization</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="data-wrangling.html"><a href="data-wrangling.html#summarization-after-grouping"><i class="fa fa-check"></i><b>1.2.1</b> Summarization after grouping</a></li>
+<li class="chapter" data-level="1.2.2" data-path="data-wrangling.html"><a href="data-wrangling.html#summarization-with-upgroup"><i class="fa fa-check"></i><b>1.2.2</b> Summarization with upgroup</a></li>
+<li class="chapter" data-level="1.2.3" data-path="data-wrangling.html"><a href="data-wrangling.html#mutate-new-variables-after-grouping"><i class="fa fa-check"></i><b>1.2.3</b> Mutate new variables after grouping</a></li>
+<li class="chapter" data-level="1.2.4" data-path="data-wrangling.html"><a href="data-wrangling.html#recode-and-generate-new-variables-then-value-label"><i class="fa fa-check"></i><b>1.2.4</b> Recode and generate new variables, then value label</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="machine-learning.html"><a href="machine-learning.html"><i class="fa fa-check"></i><b>2</b> Machine learning</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="machine-learning.html"><a href="machine-learning.html#machine-learning-workflow"><i class="fa fa-check"></i><b>2.1</b> Machine learning workflow</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="machine-learning.html"><a href="machine-learning.html#loading-packages-and-datasets"><i class="fa fa-check"></i><b>2.1.1</b> Loading packages and datasets</a></li>
+<li class="chapter" data-level="2.1.2" data-path="machine-learning.html"><a href="machine-learning.html#spliting-the-dataset-into-training-and-test-data-sets"><i class="fa fa-check"></i><b>2.1.2</b> Spliting the dataset into training and test data sets</a></li>
+<li class="chapter" data-level="2.1.3" data-path="machine-learning.html"><a href="machine-learning.html#implement-data-imputation"><i class="fa fa-check"></i><b>2.1.3</b> Implement data imputation</a></li>
+<li class="chapter" data-level="2.1.4" data-path="machine-learning.html"><a href="machine-learning.html#one-hot-endcoding"><i class="fa fa-check"></i><b>2.1.4</b> One-hot-endcoding</a></li>
+<li class="chapter" data-level="2.1.5" data-path="machine-learning.html"><a href="machine-learning.html#normalizing-features"><i class="fa fa-check"></i><b>2.1.5</b> Normalizing features</a></li>
+<li class="chapter" data-level="2.1.6" data-path="machine-learning.html"><a href="machine-learning.html#plot-features"><i class="fa fa-check"></i><b>2.1.6</b> Plot features</a></li>
+<li class="chapter" data-level="2.1.7" data-path="machine-learning.html"><a href="machine-learning.html#recursive-feature-elimination-rfe"><i class="fa fa-check"></i><b>2.1.7</b> <strong>Recursive feature elimination (rfe)</strong></a></li>
+<li class="chapter" data-level="2.1.8" data-path="machine-learning.html"><a href="machine-learning.html#training-a-model-multivariate-adaptive-regression-splines-mars"><i class="fa fa-check"></i><b>2.1.8</b> Training a model <code>Multivariate Adaptive Regression Splines (MARS)</code></a></li>
+<li class="chapter" data-level="2.1.9" data-path="machine-learning.html"><a href="machine-learning.html#prepare-the-test-data-set"><i class="fa fa-check"></i><b>2.1.9</b> Prepare the test data set</a></li>
+<li class="chapter" data-level="2.1.10" data-path="machine-learning.html"><a href="machine-learning.html#prediction-uisng-testdata"><i class="fa fa-check"></i><b>2.1.10</b> Prediction uisng testdata</a></li>
+<li class="chapter" data-level="2.1.11" data-path="machine-learning.html"><a href="machine-learning.html#compute-confusion-matrix"><i class="fa fa-check"></i><b>2.1.11</b> Compute confusion matrix</a></li>
+<li class="chapter" data-level="2.1.12" data-path="machine-learning.html"><a href="machine-learning.html#tuning-hyperparameter-to-optimize-the-model"><i class="fa fa-check"></i><b>2.1.12</b> Tuning hyperparameter to optimize the model</a></li>
+<li class="chapter" data-level="2.1.13" data-path="machine-learning.html"><a href="machine-learning.html#other-marchine-learning-algorithms"><i class="fa fa-check"></i><b>2.1.13</b> Other marchine learning algorithms</a></li>
+<li class="chapter" data-level="2.1.14" data-path="machine-learning.html"><a href="machine-learning.html#comparisons-of-different-models"><i class="fa fa-check"></i><b>2.1.14</b> Comparisons of different models</a></li>
+<li class="chapter" data-level="2.1.15" data-path="machine-learning.html"><a href="machine-learning.html#plot-comparisons-of-models"><i class="fa fa-check"></i><b>2.1.15</b> Plot comparisons of models</a></li>
+<li class="chapter" data-level="2.1.16" data-path="machine-learning.html"><a href="machine-learning.html#ensemble-predictions-from-multiple-models"><i class="fa fa-check"></i><b>2.1.16</b> Ensemble predictions from multiple models</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="machine-learning.html"><a href="machine-learning.html#knn-classifier"><i class="fa fa-check"></i><b>2.2</b> KNN Classifier</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="machine-learning.html"><a href="machine-learning.html#splitting-data"><i class="fa fa-check"></i><b>2.2.1</b> Splitting data</a></li>
+<li class="chapter" data-level="2.2.2" data-path="machine-learning.html"><a href="machine-learning.html#creating-knn-model"><i class="fa fa-check"></i><b>2.2.2</b> Creating KNN model</a></li>
+<li class="chapter" data-level="2.2.3" data-path="machine-learning.html"><a href="machine-learning.html#model-evaluation"><i class="fa fa-check"></i><b>2.2.3</b> Model Evaluation</a></li>
+<li class="chapter" data-level="2.2.4" data-path="machine-learning.html"><a href="machine-learning.html#calculate-accuracy-with-different-k"><i class="fa fa-check"></i><b>2.2.4</b> Calculate accuracy with different K</a></li>
+<li class="chapter" data-level="2.2.5" data-path="machine-learning.html"><a href="machine-learning.html#optimization"><i class="fa fa-check"></i><b>2.2.5</b> Optimization</a></li>
+<li class="chapter" data-level="2.2.6" data-path="machine-learning.html"><a href="machine-learning.html#visualization"><i class="fa fa-check"></i><b>2.2.6</b> Visualization</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="machine-learning.html"><a href="machine-learning.html#knn-regression"><i class="fa fa-check"></i><b>2.3</b> KNN regression</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="machine-learning.html"><a href="machine-learning.html#data-exploring"><i class="fa fa-check"></i><b>2.3.1</b> Data exploring</a></li>
+<li class="chapter" data-level="2.3.2" data-path="machine-learning.html"><a href="machine-learning.html#prepareing-data"><i class="fa fa-check"></i><b>2.3.2</b> Prepareing data</a></li>
+<li class="chapter" data-level="2.3.3" data-path="machine-learning.html"><a href="machine-learning.html#creating-model"><i class="fa fa-check"></i><b>2.3.3</b> Creating model</a></li>
+<li class="chapter" data-level="2.3.4" data-path="machine-learning.html"><a href="machine-learning.html#evaluation"><i class="fa fa-check"></i><b>2.3.4</b> Evaluation</a></li>
+<li class="chapter" data-level="2.3.5" data-path="machine-learning.html"><a href="machine-learning.html#optimization-1"><i class="fa fa-check"></i><b>2.3.5</b> Optimization</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="deep-learning.html"><a href="deep-learning.html"><i class="fa fa-check"></i><b>3</b> Deep learning</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="deep-learning.html"><a href="deep-learning.html#deep-neural-network"><i class="fa fa-check"></i><b>3.1</b> Deep neural network</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="deep-learning.html"><a href="deep-learning.html#load-data"><i class="fa fa-check"></i><b>3.1.1</b> Load data</a></li>
+<li class="chapter" data-level="3.1.2" data-path="deep-learning.html"><a href="deep-learning.html#process-data-and-variable"><i class="fa fa-check"></i><b>3.1.2</b> Process data and variable</a></li>
+<li class="chapter" data-level="3.1.3" data-path="deep-learning.html"><a href="deep-learning.html#split-data-into-training-and-test-datasets"><i class="fa fa-check"></i><b>3.1.3</b> Split data into training and test datasets</a></li>
+<li class="chapter" data-level="3.1.4" data-path="deep-learning.html"><a href="deep-learning.html#creating-neural-network-model"><i class="fa fa-check"></i><b>3.1.4</b> Creating neural network model</a></li>
+<li class="chapter" data-level="3.1.5" data-path="deep-learning.html"><a href="deep-learning.html#evaluation-1"><i class="fa fa-check"></i><b>3.1.5</b> Evaluation</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="deep-learning.html"><a href="deep-learning.html#deep-neural-networks-for-regression"><i class="fa fa-check"></i><b>3.2</b> Deep neural networks for regression</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="deep-learning.html"><a href="deep-learning.html#loading-packages-and-data-sets"><i class="fa fa-check"></i><b>3.2.1</b> Loading packages and data sets</a></li>
+<li class="chapter" data-level="3.2.2" data-path="deep-learning.html"><a href="deep-learning.html#convert-dataframe-to-matrix-without-dimnames"><i class="fa fa-check"></i><b>3.2.2</b> Convert dataframe to matrix without dimnames</a></li>
+<li class="chapter" data-level="3.2.3" data-path="deep-learning.html"><a href="deep-learning.html#spiting-training-and-test-data"><i class="fa fa-check"></i><b>3.2.3</b> Spiting training and test data</a></li>
+<li class="chapter" data-level="3.2.4" data-path="deep-learning.html"><a href="deep-learning.html#normalizing-xtrain-and-xtest-data"><i class="fa fa-check"></i><b>3.2.4</b> Normalizing <code>xtrain</code> and <code>xtest</code> data</a></li>
+<li class="chapter" data-level="3.2.5" data-path="deep-learning.html"><a href="deep-learning.html#creating-the-model"><i class="fa fa-check"></i><b>3.2.5</b> Creating the model</a></li>
+<li class="chapter" data-level="3.2.6" data-path="deep-learning.html"><a href="deep-learning.html#compiling-the-model-1"><i class="fa fa-check"></i><b>3.2.6</b> Compiling the model</a></li>
+<li class="chapter" data-level="3.2.7" data-path="deep-learning.html"><a href="deep-learning.html#fitting-the-model"><i class="fa fa-check"></i><b>3.2.7</b> Fitting the model</a></li>
+<li class="chapter" data-level="3.2.8" data-path="deep-learning.html"><a href="deep-learning.html#plot-the-training-process"><i class="fa fa-check"></i><b>3.2.8</b> Plot the training process</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="deep-learning.html"><a href="deep-learning.html#convolutional-neural-netwrok"><i class="fa fa-check"></i><b>3.3</b> Convolutional neural netwrok</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="deep-learning.html"><a href="deep-learning.html#import-library"><i class="fa fa-check"></i><b>3.3.1</b> Import library</a></li>
+<li class="chapter" data-level="3.3.2" data-path="deep-learning.html"><a href="deep-learning.html#importing-the-data"><i class="fa fa-check"></i><b>3.3.2</b> Importing the data</a></li>
+<li class="chapter" data-level="3.3.3" data-path="deep-learning.html"><a href="deep-learning.html#preparing-the-data"><i class="fa fa-check"></i><b>3.3.3</b> preparing the data</a></li>
+<li class="chapter" data-level="3.3.4" data-path="deep-learning.html"><a href="deep-learning.html#creating-the-model-1"><i class="fa fa-check"></i><b>3.3.4</b> Creating the model</a></li>
+<li class="chapter" data-level="3.3.5" data-path="deep-learning.html"><a href="deep-learning.html#training"><i class="fa fa-check"></i><b>3.3.5</b> Training</a></li>
+<li class="chapter" data-level="3.3.6" data-path="deep-learning.html"><a href="deep-learning.html#evaluating-the-accuracy"><i class="fa fa-check"></i><b>3.3.6</b> Evaluating the accuracy</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="data-visualization.html"><a href="data-visualization.html"><i class="fa fa-check"></i><b>4</b> Data visualization</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="data-visualization.html"><a href="data-visualization.html#data-visualization-introduction"><i class="fa fa-check"></i><b>4.1</b> Data visualization introduction</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="data-visualization.html"><a href="data-visualization.html#summarization"><i class="fa fa-check"></i><b>4.1.1</b> Summarization</a></li>
+<li class="chapter" data-level="4.1.2" data-path="data-visualization.html"><a href="data-visualization.html#explore-missing-values"><i class="fa fa-check"></i><b>4.1.2</b> Explore missing values</a></li>
+<li class="chapter" data-level="4.1.3" data-path="data-visualization.html"><a href="data-visualization.html#add-statistical-test"><i class="fa fa-check"></i><b>4.1.3</b> Add statistical test</a></li>
+<li class="chapter" data-level="4.1.4" data-path="data-visualization.html"><a href="data-visualization.html#add-texts-to-dots"><i class="fa fa-check"></i><b>4.1.4</b> Add texts to dots</a></li>
+<li class="chapter" data-level="4.1.5" data-path="data-visualization.html"><a href="data-visualization.html#set-the-legend"><i class="fa fa-check"></i><b>4.1.5</b> Set the legend</a></li>
+<li class="chapter" data-level="4.1.6" data-path="data-visualization.html"><a href="data-visualization.html#create-a-panel-of-plots"><i class="fa fa-check"></i><b>4.1.6</b> Create a panel of plots</a></li>
+<li class="chapter" data-level="4.1.7" data-path="data-visualization.html"><a href="data-visualization.html#plots-in-regression"><i class="fa fa-check"></i><b>4.1.7</b> Plots in regression</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="data-visualization.html"><a href="data-visualization.html#scatter-plot"><i class="fa fa-check"></i><b>4.2</b> Scatter plot</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="data-visualization.html"><a href="data-visualization.html#create-a-empty-canvas"><i class="fa fa-check"></i><b>4.2.1</b> Create a empty canvas</a></li>
+<li class="chapter" data-level="4.2.2" data-path="data-visualization.html"><a href="data-visualization.html#add-a-layergeom-of-points-to-the-canvas"><i class="fa fa-check"></i><b>4.2.2</b> Add a layer/geom of <code>points</code> to the canvas</a></li>
+<li class="chapter" data-level="4.2.3" data-path="data-visualization.html"><a href="data-visualization.html#add-another-aesthetic"><i class="fa fa-check"></i><b>4.2.3</b> Add another aesthetic</a></li>
+<li class="chapter" data-level="4.2.4" data-path="data-visualization.html"><a href="data-visualization.html#add-other-aesthetic"><i class="fa fa-check"></i><b>4.2.4</b> Add other aesthetic</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="data-visualization.html"><a href="data-visualization.html#bar-chart"><i class="fa fa-check"></i><b>4.3</b> Bar chart</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="data-visualization.html"><a href="data-visualization.html#grouped-bar-chart"><i class="fa fa-check"></i><b>4.3.1</b> Grouped bar chart</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="data-visualization.html"><a href="data-visualization.html#line-charts"><i class="fa fa-check"></i><b>4.4</b> Line charts</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="data-visualization.html"><a href="data-visualization.html#grouped-by-colour-variable"><i class="fa fa-check"></i><b>4.4.1</b> Grouped by <code>colour variable</code></a></li>
+<li class="chapter" data-level="4.4.2" data-path="data-visualization.html"><a href="data-visualization.html#multiple-aesthetics"><i class="fa fa-check"></i><b>4.4.2</b> Multiple aesthetics</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="basic-statistics.html"><a href="basic-statistics.html"><i class="fa fa-check"></i><b>5</b> Basic statistics</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="basic-statistics.html"><a href="basic-statistics.html#the-essentials-of-r"><i class="fa fa-check"></i><b>5.1</b> The essentials of R</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="basic-statistics.html"><a href="basic-statistics.html#manipulation-of-vector"><i class="fa fa-check"></i><b>5.1.1</b> Manipulation of vector</a></li>
+<li class="chapter" data-level="5.1.2" data-path="basic-statistics.html"><a href="basic-statistics.html#generate-sequence-or-repeted-sequece"><i class="fa fa-check"></i><b>5.1.2</b> Generate sequence or repeted sequece</a></li>
+<li class="chapter" data-level="5.1.3" data-path="basic-statistics.html"><a href="basic-statistics.html#get-directory-and-write-data-out-and-in"><i class="fa fa-check"></i><b>5.1.3</b> Get directory and write data out and in</a></li>
+<li class="chapter" data-level="5.1.4" data-path="basic-statistics.html"><a href="basic-statistics.html#function"><i class="fa fa-check"></i><b>5.1.4</b> Function</a></li>
+<li class="chapter" data-level="5.1.5" data-path="basic-statistics.html"><a href="basic-statistics.html#plot"><i class="fa fa-check"></i><b>5.1.5</b> Plot</a></li>
+<li class="chapter" data-level="5.1.6" data-path="basic-statistics.html"><a href="basic-statistics.html#class-of-dataframe"><i class="fa fa-check"></i><b>5.1.6</b> Class of dataframe</a></li>
+<li class="chapter" data-level="5.1.7" data-path="basic-statistics.html"><a href="basic-statistics.html#generate-new-variable-for-dataframe-character"><i class="fa fa-check"></i><b>5.1.7</b> Generate new variable for dataframe (character)</a></li>
+<li class="chapter" data-level="5.1.8" data-path="basic-statistics.html"><a href="basic-statistics.html#create-a-new-dataframe-using-rnorm---random-number-from-distribution"><i class="fa fa-check"></i><b>5.1.8</b> Create a new dataframe using ‘rnorm’ - random number from distribution</a></li>
+<li class="chapter" data-level="5.1.9" data-path="basic-statistics.html"><a href="basic-statistics.html#left-join-two-dataframes"><i class="fa fa-check"></i><b>5.1.9</b> Left join two dataframes</a></li>
+<li class="chapter" data-level="5.1.10" data-path="basic-statistics.html"><a href="basic-statistics.html#select-variables"><i class="fa fa-check"></i><b>5.1.10</b> Select variables</a></li>
+<li class="chapter" data-level="5.1.11" data-path="basic-statistics.html"><a href="basic-statistics.html#filter-observations"><i class="fa fa-check"></i><b>5.1.11</b> Filter observations</a></li>
+<li class="chapter" data-level="5.1.12" data-path="basic-statistics.html"><a href="basic-statistics.html#append-rows"><i class="fa fa-check"></i><b>5.1.12</b> Append rows</a></li>
+<li class="chapter" data-level="5.1.13" data-path="basic-statistics.html"><a href="basic-statistics.html#create-new-variables-instead-of-old-variables"><i class="fa fa-check"></i><b>5.1.13</b> Create new variables instead of old variables</a></li>
+<li class="chapter" data-level="5.1.14" data-path="basic-statistics.html"><a href="basic-statistics.html#summarise-statistics"><i class="fa fa-check"></i><b>5.1.14</b> summarise statistics</a></li>
+<li class="chapter" data-level="5.1.15" data-path="basic-statistics.html"><a href="basic-statistics.html#group-dataframe-then-summarise-statistics"><i class="fa fa-check"></i><b>5.1.15</b> Group dataframe then summarise statistics</a></li>
+<li class="chapter" data-level="5.1.16" data-path="basic-statistics.html"><a href="basic-statistics.html#ungroup-then-summarise-statistics"><i class="fa fa-check"></i><b>5.1.16</b> Ungroup then summarise statistics</a></li>
+<li class="chapter" data-level="5.1.17" data-path="basic-statistics.html"><a href="basic-statistics.html#summary-linear-regression-model"><i class="fa fa-check"></i><b>5.1.17</b> Summary linear regression model</a></li>
+<li class="chapter" data-level="5.1.18" data-path="basic-statistics.html"><a href="basic-statistics.html#create-frequency-table"><i class="fa fa-check"></i><b>5.1.18</b> Create frequency table</a></li>
+<li class="chapter" data-level="5.1.19" data-path="basic-statistics.html"><a href="basic-statistics.html#value-and-variable-label"><i class="fa fa-check"></i><b>5.1.19</b> Value and variable label</a></li>
+<li class="chapter" data-level="5.1.20" data-path="basic-statistics.html"><a href="basic-statistics.html#recode-a-variable"><i class="fa fa-check"></i><b>5.1.20</b> Recode a variable</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="statistical-models.html"><a href="statistical-models.html"><i class="fa fa-check"></i><b>6</b> Statistical models</a></li>
+<li class="chapter" data-level="7" data-path="probability.html"><a href="probability.html"><i class="fa fa-check"></i><b>7</b> Probability</a></li>
+<li class="chapter" data-level="8" data-path="algorithms.html"><a href="algorithms.html"><i class="fa fa-check"></i><b>8</b> Algorithms</a></li>
+<li class="chapter" data-level="9" data-path="sasmarkdown.html"><a href="sasmarkdown.html"><i class="fa fa-check"></i><b>9</b> SASmarkdown</a></li>
+<li class="chapter" data-level="10" data-path="miscellaneous.html"><a href="miscellaneous.html"><i class="fa fa-check"></i><b>10</b> Miscellaneous</a></li>
+<li class="chapter" data-level="11" data-path="english.html"><a href="english.html"><i class="fa fa-check"></i><b>11</b> English</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">My Little Handbook</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="data-visualization" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">Chapter 4</span> Data visualization<a href="data-visualization.html#data-visualization" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<!-- ================ -->
+<div id="data-visualization-introduction" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Data visualization introduction<a href="data-visualization.html#data-visualization-introduction" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="summarization" class="section level3 hasAnchor" number="4.1.1">
+<h3><span class="header-section-number">4.1.1</span> Summarization<a href="data-visualization.html#summarization" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb290"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb290-1"><a href="data-visualization.html#cb290-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb290-2"><a href="data-visualization.html#cb290-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb290-3"><a href="data-visualization.html#cb290-3" aria-hidden="true" tabindex="-1"></a>mtcars <span class="sc">%&gt;%</span></span>
+<span id="cb290-4"><a href="data-visualization.html#cb290-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>( <span class="at">kml =</span> mpg <span class="sc">*</span> <span class="fl">0.42</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb290-5"><a href="data-visualization.html#cb290-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(cyl) <span class="sc">%&gt;%</span></span>
+<span id="cb290-6"><a href="data-visualization.html#cb290-6" aria-hidden="true" tabindex="-1"></a>   <span class="fu">summarise</span>(<span class="at">avg_US =</span> <span class="fu">mean</span>(mpg), <span class="at">avg_metric =</span> <span class="fu">mean</span>(kml))</span></code></pre></div>
+<pre><code>## # A tibble: 3 × 3
+##     cyl avg_US avg_metric
+##   &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;
+## 1     4   26.7      11.2 
+## 2     6   19.7       8.29
+## 3     8   15.1       6.34</code></pre>
+<div class="sourceCode" id="cb292"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb292-1"><a href="data-visualization.html#cb292-1" aria-hidden="true" tabindex="-1"></a>mpg <span class="sc">%&gt;%</span> </span>
+<span id="cb292-2"><a href="data-visualization.html#cb292-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(manufacturer, year) <span class="sc">%&gt;%</span> </span>
+<span id="cb292-3"><a href="data-visualization.html#cb292-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise_at</span>(<span class="fu">vars</span>(cty, hwy), mean)</span></code></pre></div>
+<pre><code>## # A tibble: 30 × 4
+## # Groups:   manufacturer [15]
+##    manufacturer  year   cty   hwy
+##    &lt;chr&gt;        &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 audi          1999  17.1  26.1
+##  2 audi          2008  18.1  26.8
+##  3 chevrolet     1999  15.1  21.6
+##  4 chevrolet     2008  14.9  22.1
+##  5 dodge         1999  13.4  18.4
+##  6 dodge         2008  13.0  17.6
+##  7 ford          1999  13.9  18.6
+##  8 ford          2008  14.1  20.5
+##  9 honda         1999  24.8  31.6
+## 10 honda         2008  24    33.8
+## # … with 20 more rows</code></pre>
+<ul>
+<li>change layout</li>
+</ul>
+<div class="sourceCode" id="cb294"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb294-1"><a href="data-visualization.html#cb294-1" aria-hidden="true" tabindex="-1"></a>mpg <span class="sc">%&gt;%</span> <span class="fu">count</span>(class, year)<span class="sc">%&gt;%</span> </span>
+<span id="cb294-2"><a href="data-visualization.html#cb294-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread</span>(class, n) </span></code></pre></div>
+<pre><code>## # A tibble: 2 × 8
+##    year `2seater` compact midsize minivan pickup subcompact   suv
+##   &lt;int&gt;     &lt;int&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;  &lt;int&gt;      &lt;int&gt; &lt;int&gt;
+## 1  1999         2      25      20       6     16         19    29
+## 2  2008         3      22      21       5     17         16    33</code></pre>
+<ul>
+<li>change all characters into factors</li>
+</ul>
+<div class="sourceCode" id="cb296"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb296-1"><a href="data-visualization.html#cb296-1" aria-hidden="true" tabindex="-1"></a>mpg <span class="ot">&lt;-</span> mpg <span class="sc">%&gt;%</span> </span>
+<span id="cb296-2"><a href="data-visualization.html#cb296-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_if</span>(is.character, as.factor) <span class="co">#if a column is a character, change to a factor</span></span></code></pre></div>
+<ul>
+<li>wide to long data</li>
+</ul>
+<div class="sourceCode" id="cb297"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb297-1"><a href="data-visualization.html#cb297-1" aria-hidden="true" tabindex="-1"></a>mpg1 <span class="ot">&lt;-</span> mpg <span class="sc">%&gt;%</span> </span>
+<span id="cb297-2"><a href="data-visualization.html#cb297-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(<span class="st">&quot;key&quot;</span>, <span class="st">&quot;value&quot;</span>, cty, hwy)</span></code></pre></div>
+<ul>
+<li>convert wide data to long data using <code>pivot_longer</code></li>
+</ul>
+<div class="sourceCode" id="cb298"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb298-1"><a href="data-visualization.html#cb298-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Your code here. Naming choices for 1 and 2 are yours</span></span>
+<span id="cb298-2"><a href="data-visualization.html#cb298-2" aria-hidden="true" tabindex="-1"></a>dta <span class="ot">&lt;-</span> mpg <span class="sc">%&gt;%</span> </span>
+<span id="cb298-3"><a href="data-visualization.html#cb298-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(cty<span class="sc">:</span>hwy, <span class="at">names_to =</span> <span class="st">&quot;var&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;value&quot;</span>) <span class="sc">%&gt;%</span>  <span class="co"># Both of those are </span></span>
+<span id="cb298-4"><a href="data-visualization.html#cb298-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># value label</span></span>
+<span id="cb298-5"><a href="data-visualization.html#cb298-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">var =</span> <span class="fu">ifelse</span>( var <span class="sc">==</span> <span class="st">&#39;cty&#39;</span>, <span class="st">&#39;city&#39;</span>,<span class="st">&#39;highway&#39;</span>))</span>
+<span id="cb298-6"><a href="data-visualization.html#cb298-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb298-7"><a href="data-visualization.html#cb298-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dta, <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> value)) <span class="sc">+</span> </span>
+<span id="cb298-8"><a href="data-visualization.html#cb298-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> var))  <span class="sc">+</span></span>
+<span id="cb298-9"><a href="data-visualization.html#cb298-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">color =</span> var), <span class="at">se =</span> F)</span></code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="_main_files/figure-html/unnamed-chunk-140-1.png" width="672" /></p>
+<ul>
+<li>explore distribution</li>
+</ul>
+<div class="sourceCode" id="cb300"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb300-1"><a href="data-visualization.html#cb300-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DataExplorer)</span>
+<span id="cb300-2"><a href="data-visualization.html#cb300-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span></code></pre></div>
+<pre><code>## 
+## Attaching package: &#39;psych&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:Hmisc&#39;:
+## 
+##     describe</code></pre>
+<pre><code>## The following object is masked from &#39;package:plotrix&#39;:
+## 
+##     rescale</code></pre>
+<pre><code>## The following objects are masked from &#39;package:ggplot2&#39;:
+## 
+##     %+%, alpha</code></pre>
+<div class="sourceCode" id="cb305"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb305-1"><a href="data-visualization.html#cb305-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(naniar)</span></code></pre></div>
+<pre><code>## 
+## Attaching package: &#39;naniar&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:skimr&#39;:
+## 
+##     n_complete</code></pre>
+<div class="sourceCode" id="cb308"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb308-1"><a href="data-visualization.html#cb308-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_histogram</span>(riskfactors)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-141-1.png" width="672" /></p>
+<ul>
+<li>explore relationship/correlation</li>
+</ul>
+<div class="sourceCode" id="cb309"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb309-1"><a href="data-visualization.html#cb309-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span>
+<span id="cb309-2"><a href="data-visualization.html#cb309-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs.panels</span>(riskfactors[,<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>])</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-142-1.png" width="672" /></p>
+<ul>
+<li>create a individual theme</li>
+</ul>
+<div class="sourceCode" id="cb310"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb310-1"><a href="data-visualization.html#cb310-1" aria-hidden="true" tabindex="-1"></a>my_theme <span class="ot">&lt;-</span> <span class="cf">function</span>(){</span>
+<span id="cb310-2"><a href="data-visualization.html#cb310-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb310-3"><a href="data-visualization.html#cb310-3" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb310-4"><a href="data-visualization.html#cb310-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">16</span>),</span>
+<span id="cb310-5"><a href="data-visualization.html#cb310-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">14</span>),</span>
+<span id="cb310-6"><a href="data-visualization.html#cb310-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>))</span>
+<span id="cb310-7"><a href="data-visualization.html#cb310-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="explore-missing-values" class="section level3 hasAnchor" number="4.1.2">
+<h3><span class="header-section-number">4.1.2</span> Explore missing values<a href="data-visualization.html#explore-missing-values" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb311"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb311-1"><a href="data-visualization.html#cb311-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(&quot;naniar&quot;)</span></span>
+<span id="cb311-2"><a href="data-visualization.html#cb311-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(naniar)</span>
+<span id="cb311-3"><a href="data-visualization.html#cb311-3" aria-hidden="true" tabindex="-1"></a><span class="co"># head(riskfactors)</span></span>
+<span id="cb311-4"><a href="data-visualization.html#cb311-4" aria-hidden="true" tabindex="-1"></a>riskfactors <span class="ot">&lt;-</span> riskfactors</span></code></pre></div>
+<div class="sourceCode" id="cb312"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb312-1"><a href="data-visualization.html#cb312-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gg_miss_upset</span>(riskfactors,<span class="at">nsets=</span><span class="dv">10</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-145-1.png" width="672" /></p>
+<div class="sourceCode" id="cb313"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb313-1"><a href="data-visualization.html#cb313-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(&quot;DataExplorer&quot;)</span></span>
+<span id="cb313-2"><a href="data-visualization.html#cb313-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb313-3"><a href="data-visualization.html#cb313-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_missing</span>(riskfactors)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-146-1.png" width="672" /></p>
+<div class="sourceCode" id="cb314"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb314-1"><a href="data-visualization.html#cb314-1" aria-hidden="true" tabindex="-1"></a><span class="co"># take a quick look at the data types of each column</span></span>
+<span id="cb314-2"><a href="data-visualization.html#cb314-2" aria-hidden="true" tabindex="-1"></a>visdat<span class="sc">::</span><span class="fu">vis_dat</span>(riskfactors)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-147-1.png" width="672" /></p>
+</div>
+<div id="add-statistical-test" class="section level3 hasAnchor" number="4.1.3">
+<h3><span class="header-section-number">4.1.3</span> Add statistical test<a href="data-visualization.html#add-statistical-test" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb315"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb315-1"><a href="data-visualization.html#cb315-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggpubr)</span>
+<span id="cb315-2"><a href="data-visualization.html#cb315-2" aria-hidden="true" tabindex="-1"></a>plt <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(  <span class="at">data=</span>mpg,</span>
+<span id="cb315-3"><a href="data-visualization.html#cb315-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">mapping=</span> <span class="fu">aes</span>(<span class="at">x =</span>  <span class="fu">as.factor</span>(year),</span>
+<span id="cb315-4"><a href="data-visualization.html#cb315-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">y =</span> cty,</span>
+<span id="cb315-5"><a href="data-visualization.html#cb315-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">color =</span> <span class="fu">as.factor</span>(year) ) )<span class="sc">+</span></span>
+<span id="cb315-6"><a href="data-visualization.html#cb315-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb315-7"><a href="data-visualization.html#cb315-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.1</span>)<span class="sc">+</span></span>
+<span id="cb315-8"><a href="data-visualization.html#cb315-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&#39;Year&#39;</span>,</span>
+<span id="cb315-9"><a href="data-visualization.html#cb315-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;City mpg&quot;</span>) <span class="sc">+</span></span>
+<span id="cb315-10"><a href="data-visualization.html#cb315-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">my_theme</span>()<span class="sc">+</span> <span class="fu">facet_wrap</span>( <span class="sc">~</span> manufacturer,<span class="at">nrow =</span> <span class="dv">2</span>)  </span>
+<span id="cb315-11"><a href="data-visualization.html#cb315-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb315-12"><a href="data-visualization.html#cb315-12" aria-hidden="true" tabindex="-1"></a><span class="co"># add statistical test</span></span>
+<span id="cb315-13"><a href="data-visualization.html#cb315-13" aria-hidden="true" tabindex="-1"></a>  my_comparisons <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="st">&#39;1999&#39;</span>,<span class="st">&#39;2008&#39;</span>))</span>
+<span id="cb315-14"><a href="data-visualization.html#cb315-14" aria-hidden="true" tabindex="-1"></a>plt <span class="sc">+</span> <span class="fu">stat_compare_means</span>() <span class="sc">+</span></span>
+<span id="cb315-15"><a href="data-visualization.html#cb315-15" aria-hidden="true" tabindex="-1"></a><span class="fu">stat_compare_means</span>(<span class="at">comparisons =</span> my_comparisons)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-148-1.png" width="672" /></p>
+</div>
+<div id="add-texts-to-dots" class="section level3 hasAnchor" number="4.1.4">
+<h3><span class="header-section-number">4.1.4</span> Add texts to dots<a href="data-visualization.html#add-texts-to-dots" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb316"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb316-1"><a href="data-visualization.html#cb316-1" aria-hidden="true" tabindex="-1"></a>USArrests <span class="ot">&lt;-</span> USArrests <span class="sc">%&gt;%</span> <span class="fu">rownames_to_column</span>(<span class="st">&#39;State&#39;</span>)</span>
+<span id="cb316-2"><a href="data-visualization.html#cb316-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb316-3"><a href="data-visualization.html#cb316-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(USArrests, <span class="fu">aes</span>(</span>
+<span id="cb316-4"><a href="data-visualization.html#cb316-4" aria-hidden="true" tabindex="-1"></a><span class="at">x=</span>UrbanPop,<span class="at">y=</span>Murder))<span class="sc">+</span></span>
+<span id="cb316-5"><a href="data-visualization.html#cb316-5" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb316-6"><a href="data-visualization.html#cb316-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Percent of population that is urban&quot;</span>, </span>
+<span id="cb316-7"><a href="data-visualization.html#cb316-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Murder arrests (per 100,000)&quot;</span>,</span>
+<span id="cb316-8"><a href="data-visualization.html#cb316-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span>  <span class="st">&quot;McNeil (1997). Interactive Data Analysis&quot;</span>)<span class="sc">+</span></span>
+<span id="cb316-9"><a href="data-visualization.html#cb316-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span>State),<span class="at">size=</span><span class="dv">3</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-149-1.png" width="672" /></p>
+</div>
+<div id="set-the-legend" class="section level3 hasAnchor" number="4.1.5">
+<h3><span class="header-section-number">4.1.5</span> Set the legend<a href="data-visualization.html#set-the-legend" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb317"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb317-1"><a href="data-visualization.html#cb317-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(<span class="at">x=</span>  Sepal.Length , <span class="at">fill=</span> <span class="fu">as.factor</span>( Species)) ) <span class="sc">+</span>  <span class="co">#whole plot&#39;s option</span></span>
+<span id="cb317-2"><a href="data-visualization.html#cb317-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb317-3"><a href="data-visualization.html#cb317-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y=</span>..density..),<span class="at">alpha=</span><span class="fl">0.5</span>, <span class="at">position=</span><span class="st">&quot;identity&quot;</span> , <span class="at">bins =</span> <span class="dv">50</span>)<span class="sc">+</span></span>
+<span id="cb317-4"><a href="data-visualization.html#cb317-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">linetype=</span><span class="fu">as.factor</span>(Species)),<span class="at">alpha=</span>.<span class="dv">1</span> )<span class="sc">+</span>    <span class="co">#aesthetic&#39;s option</span></span>
+<span id="cb317-5"><a href="data-visualization.html#cb317-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb317-6"><a href="data-visualization.html#cb317-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>( <span class="at">name =</span> <span class="st">&quot;Groups&quot;</span>,<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;grey&quot;</span>, <span class="st">&quot;black&quot;</span>, <span class="st">&quot;skyblue&quot;</span>),<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;setosa&quot;</span>, <span class="st">&quot;versicolor&quot;</span> , <span class="st">&quot;virginica&quot;</span> ))<span class="sc">+</span>  </span>
+<span id="cb317-7"><a href="data-visualization.html#cb317-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_linetype_manual</span>( <span class="at">name =</span> <span class="st">&quot;Groups&quot;</span> ,<span class="at">values =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">5</span>),<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;setosa&quot;</span>, <span class="st">&quot;versicolor&quot;</span> , <span class="st">&quot;virginica&quot;</span>) )<span class="sc">+</span>       <span class="co"># common legend </span></span>
+<span id="cb317-8"><a href="data-visualization.html#cb317-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb317-9"><a href="data-visualization.html#cb317-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Sepal.Length&quot;</span>, </span>
+<span id="cb317-10"><a href="data-visualization.html#cb317-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Density&quot;</span>, </span>
+<span id="cb317-11"><a href="data-visualization.html#cb317-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">&quot;&quot;</span>) </span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-150-1.png" width="672" /></p>
+</div>
+<div id="create-a-panel-of-plots" class="section level3 hasAnchor" number="4.1.6">
+<h3><span class="header-section-number">4.1.6</span> Create a panel of plots<a href="data-visualization.html#create-a-panel-of-plots" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>combine multiple plots into one</li>
+</ul>
+<div class="sourceCode" id="cb318"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb318-1"><a href="data-visualization.html#cb318-1" aria-hidden="true" tabindex="-1"></a>p1<span class="ot">=</span><span class="fu">ggplot</span>(<span class="at">data=</span>riskfactors,<span class="fu">aes</span>(<span class="at">x=</span>age))<span class="sc">+</span></span>
+<span id="cb318-2"><a href="data-visualization.html#cb318-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">30</span> )</span>
+<span id="cb318-3"><a href="data-visualization.html#cb318-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb318-4"><a href="data-visualization.html#cb318-4" aria-hidden="true" tabindex="-1"></a>p2<span class="ot">=</span><span class="fu">ggplot</span>(<span class="at">data=</span>riskfactors,<span class="fu">aes</span>(<span class="at">x=</span>sex))<span class="sc">+</span></span>
+<span id="cb318-5"><a href="data-visualization.html#cb318-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span> (<span class="fu">aes</span>(<span class="at">x=</span>sex) )</span>
+<span id="cb318-6"><a href="data-visualization.html#cb318-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb318-7"><a href="data-visualization.html#cb318-7" aria-hidden="true" tabindex="-1"></a>p3<span class="ot">=</span><span class="fu">ggplot</span>(riskfactors,<span class="fu">aes</span>(<span class="at">x =</span> education, <span class="at">y =</span> bmi))<span class="sc">+</span></span>
+<span id="cb318-8"><a href="data-visualization.html#cb318-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span> (  )</span>
+<span id="cb318-9"><a href="data-visualization.html#cb318-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb318-10"><a href="data-visualization.html#cb318-10" aria-hidden="true" tabindex="-1"></a>p4<span class="ot">=</span><span class="fu">ggplot</span>(riskfactors, <span class="fu">aes</span>(<span class="at">x =</span> marital )) <span class="sc">+</span> </span>
+<span id="cb318-11"><a href="data-visualization.html#cb318-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">group =</span> education, <span class="at">y =</span> (..count..)<span class="sc">/</span><span class="fu">sum</span>(..count..),<span class="at">fill =</span> education)) <span class="sc">+</span> </span>
+<span id="cb318-12"><a href="data-visualization.html#cb318-12" aria-hidden="true" tabindex="-1"></a>          <span class="fu">scale_y_continuous</span>(<span class="at">labels=</span>scales<span class="sc">::</span>percent) </span>
+<span id="cb318-13"><a href="data-visualization.html#cb318-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb318-14"><a href="data-visualization.html#cb318-14" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(&quot;ggpubr&quot;)</span></span>
+<span id="cb318-15"><a href="data-visualization.html#cb318-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggpubr)</span>
+<span id="cb318-16"><a href="data-visualization.html#cb318-16" aria-hidden="true" tabindex="-1"></a><span class="fu">ggarrange</span>(p1, p2, p3, p4, <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">nrow=</span><span class="dv">2</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-151-1.png" width="672" /></p>
+</div>
+<div id="plots-in-regression" class="section level3 hasAnchor" number="4.1.7">
+<h3><span class="header-section-number">4.1.7</span> Plots in regression<a href="data-visualization.html#plots-in-regression" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>create linear regression model</li>
+</ul>
+<div class="sourceCode" id="cb319"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb319-1"><a href="data-visualization.html#cb319-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;Boston&quot;</span>, <span class="at">package =</span> <span class="st">&quot;MASS&quot;</span>)</span>
+<span id="cb319-2"><a href="data-visualization.html#cb319-2" aria-hidden="true" tabindex="-1"></a>linear_reg <span class="ot">&lt;-</span> <span class="fu">glm</span>(medv <span class="sc">~</span> ., <span class="at">data=</span>Boston , <span class="at">family =</span> <span class="fu">gaussian</span>())</span>
+<span id="cb319-3"><a href="data-visualization.html#cb319-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(linear_reg)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## glm(formula = medv ~ ., family = gaussian(), data = Boston)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -15.595   -2.730   -0.518    1.777   26.199  
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  3.646e+01  5.103e+00   7.144 3.28e-12 ***
+## crim        -1.080e-01  3.286e-02  -3.287 0.001087 ** 
+## zn           4.642e-02  1.373e-02   3.382 0.000778 ***
+## indus        2.056e-02  6.150e-02   0.334 0.738288    
+## chas         2.687e+00  8.616e-01   3.118 0.001925 ** 
+## nox         -1.777e+01  3.820e+00  -4.651 4.25e-06 ***
+## rm           3.810e+00  4.179e-01   9.116  &lt; 2e-16 ***
+## age          6.922e-04  1.321e-02   0.052 0.958229    
+## dis         -1.476e+00  1.995e-01  -7.398 6.01e-13 ***
+## rad          3.060e-01  6.635e-02   4.613 5.07e-06 ***
+## tax         -1.233e-02  3.760e-03  -3.280 0.001112 ** 
+## ptratio     -9.527e-01  1.308e-01  -7.283 1.31e-12 ***
+## black        9.312e-03  2.686e-03   3.467 0.000573 ***
+## lstat       -5.248e-01  5.072e-02 -10.347  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for gaussian family taken to be 22.51785)
+## 
+##     Null deviance: 42716  on 505  degrees of freedom
+## Residual deviance: 11079  on 492  degrees of freedom
+## AIC: 3027.6
+## 
+## Number of Fisher Scoring iterations: 2</code></pre>
+<ul>
+<li>summary</li>
+</ul>
+<div class="sourceCode" id="cb321"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb321-1"><a href="data-visualization.html#cb321-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(broom<span class="sc">::</span><span class="fu">tidy</span>(linear_reg))</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">36.4594884</td>
+<td align="right">5.1034588</td>
+<td align="right">7.1440742</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">crim</td>
+<td align="right">-0.1080114</td>
+<td align="right">0.0328650</td>
+<td align="right">-3.2865169</td>
+<td align="right">0.0010868</td>
+</tr>
+<tr class="odd">
+<td align="left">zn</td>
+<td align="right">0.0464205</td>
+<td align="right">0.0137275</td>
+<td align="right">3.3815763</td>
+<td align="right">0.0007781</td>
+</tr>
+<tr class="even">
+<td align="left">indus</td>
+<td align="right">0.0205586</td>
+<td align="right">0.0614957</td>
+<td align="right">0.3343100</td>
+<td align="right">0.7382881</td>
+</tr>
+<tr class="odd">
+<td align="left">chas</td>
+<td align="right">2.6867338</td>
+<td align="right">0.8615798</td>
+<td align="right">3.1183809</td>
+<td align="right">0.0019250</td>
+</tr>
+<tr class="even">
+<td align="left">nox</td>
+<td align="right">-17.7666112</td>
+<td align="right">3.8197437</td>
+<td align="right">-4.6512574</td>
+<td align="right">0.0000042</td>
+</tr>
+<tr class="odd">
+<td align="left">rm</td>
+<td align="right">3.8098652</td>
+<td align="right">0.4179253</td>
+<td align="right">9.1161402</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">age</td>
+<td align="right">0.0006922</td>
+<td align="right">0.0132098</td>
+<td align="right">0.0524024</td>
+<td align="right">0.9582293</td>
+</tr>
+<tr class="odd">
+<td align="left">dis</td>
+<td align="right">-1.4755668</td>
+<td align="right">0.1994547</td>
+<td align="right">-7.3980036</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">rad</td>
+<td align="right">0.3060495</td>
+<td align="right">0.0663464</td>
+<td align="right">4.6128998</td>
+<td align="right">0.0000051</td>
+</tr>
+<tr class="odd">
+<td align="left">tax</td>
+<td align="right">-0.0123346</td>
+<td align="right">0.0037605</td>
+<td align="right">-3.2800091</td>
+<td align="right">0.0011116</td>
+</tr>
+<tr class="even">
+<td align="left">ptratio</td>
+<td align="right">-0.9527472</td>
+<td align="right">0.1308268</td>
+<td align="right">-7.2825106</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="odd">
+<td align="left">black</td>
+<td align="right">0.0093117</td>
+<td align="right">0.0026860</td>
+<td align="right">3.4667926</td>
+<td align="right">0.0005729</td>
+</tr>
+<tr class="even">
+<td align="left">lstat</td>
+<td align="right">-0.5247584</td>
+<td align="right">0.0507153</td>
+<td align="right">-10.3471458</td>
+<td align="right">0.0000000</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>create logistical regression</li>
+</ul>
+<div class="sourceCode" id="cb322"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb322-1"><a href="data-visualization.html#cb322-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the Pima Indians dataset from the mlbench dataset</span></span>
+<span id="cb322-2"><a href="data-visualization.html#cb322-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mlbench)</span>
+<span id="cb322-3"><a href="data-visualization.html#cb322-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(PimaIndiansDiabetes) </span>
+<span id="cb322-4"><a href="data-visualization.html#cb322-4" aria-hidden="true" tabindex="-1"></a><span class="co"># rename dataset to have shorter name because lazy</span></span>
+<span id="cb322-5"><a href="data-visualization.html#cb322-5" aria-hidden="true" tabindex="-1"></a>diabetes <span class="ot">&lt;-</span> PimaIndiansDiabetes</span>
+<span id="cb322-6"><a href="data-visualization.html#cb322-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb322-7"><a href="data-visualization.html#cb322-7" aria-hidden="true" tabindex="-1"></a>logistic_reg <span class="ot">&lt;-</span> <span class="fu">glm</span>(diabetes <span class="sc">~</span> ., <span class="at">data=</span>diabetes, <span class="at">family =</span> binomial)</span>
+<span id="cb322-8"><a href="data-visualization.html#cb322-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb322-9"><a href="data-visualization.html#cb322-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(logistic_reg)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## glm(formula = diabetes ~ ., family = binomial, data = diabetes)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.5566  -0.7274  -0.4159   0.7267   2.9297  
+## 
+## Coefficients:
+##               Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept) -8.4046964  0.7166359 -11.728  &lt; 2e-16 ***
+## pregnant     0.1231823  0.0320776   3.840 0.000123 ***
+## glucose      0.0351637  0.0037087   9.481  &lt; 2e-16 ***
+## pressure    -0.0132955  0.0052336  -2.540 0.011072 *  
+## triceps      0.0006190  0.0068994   0.090 0.928515    
+## insulin     -0.0011917  0.0009012  -1.322 0.186065    
+## mass         0.0897010  0.0150876   5.945 2.76e-09 ***
+## pedigree     0.9451797  0.2991475   3.160 0.001580 ** 
+## age          0.0148690  0.0093348   1.593 0.111192    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 993.48  on 767  degrees of freedom
+## Residual deviance: 723.45  on 759  degrees of freedom
+## AIC: 741.45
+## 
+## Number of Fisher Scoring iterations: 5</code></pre>
+<ul>
+<li>summary</li>
+</ul>
+<div class="sourceCode" id="cb324"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb324-1"><a href="data-visualization.html#cb324-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(broom<span class="sc">::</span><span class="fu">tidy</span>(logistic_reg))</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">-8.4046964</td>
+<td align="right">0.7166359</td>
+<td align="right">-11.7279870</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">pregnant</td>
+<td align="right">0.1231823</td>
+<td align="right">0.0320776</td>
+<td align="right">3.8401403</td>
+<td align="right">0.0001230</td>
+</tr>
+<tr class="odd">
+<td align="left">glucose</td>
+<td align="right">0.0351637</td>
+<td align="right">0.0037087</td>
+<td align="right">9.4813935</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">pressure</td>
+<td align="right">-0.0132955</td>
+<td align="right">0.0052336</td>
+<td align="right">-2.5404160</td>
+<td align="right">0.0110721</td>
+</tr>
+<tr class="odd">
+<td align="left">triceps</td>
+<td align="right">0.0006190</td>
+<td align="right">0.0068994</td>
+<td align="right">0.0897131</td>
+<td align="right">0.9285152</td>
+</tr>
+<tr class="even">
+<td align="left">insulin</td>
+<td align="right">-0.0011917</td>
+<td align="right">0.0009012</td>
+<td align="right">-1.3223094</td>
+<td align="right">0.1860652</td>
+</tr>
+<tr class="odd">
+<td align="left">mass</td>
+<td align="right">0.0897010</td>
+<td align="right">0.0150876</td>
+<td align="right">5.9453340</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">pedigree</td>
+<td align="right">0.9451797</td>
+<td align="right">0.2991475</td>
+<td align="right">3.1595780</td>
+<td align="right">0.0015800</td>
+</tr>
+<tr class="odd">
+<td align="left">age</td>
+<td align="right">0.0148690</td>
+<td align="right">0.0093348</td>
+<td align="right">1.5928584</td>
+<td align="right">0.1111920</td>
+</tr>
+</tbody>
+</table>
+<div id="create-forest-plots-for-coefficients-or-or" class="section level4 hasAnchor" number="4.1.7.1">
+<h4><span class="header-section-number">4.1.7.1</span> Create forest plots for <code>coefficients</code> or <code>OR</code><a href="data-visualization.html#create-forest-plots-for-coefficients-or-or" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div class="sourceCode" id="cb325"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb325-1"><a href="data-visualization.html#cb325-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sjPlot)</span></code></pre></div>
+<pre><code>## Registered S3 methods overwritten by &#39;effectsize&#39;:
+##   method              from      
+##   standardize.Surv    datawizard
+##   standardize.bcplm   datawizard
+##   standardize.clm2    datawizard
+##   standardize.default datawizard
+##   standardize.mediate datawizard
+##   standardize.wbgee   datawizard
+##   standardize.wbm     datawizard</code></pre>
+<pre><code>## #refugeeswelcome</code></pre>
+<div class="sourceCode" id="cb328"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb328-1"><a href="data-visualization.html#cb328-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_model</span>(linear_reg, <span class="at">show.values =</span> <span class="cn">TRUE</span>, <span class="at">value.offset =</span> <span class="fl">0.5</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-156-1.png" width="672" /></p>
+<div class="sourceCode" id="cb329"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb329-1"><a href="data-visualization.html#cb329-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_model</span>(logistic_reg, <span class="at">show.values =</span> <span class="cn">TRUE</span>, <span class="at">value.offset =</span> .<span class="dv">5</span>, <span class="at">vline.color =</span> <span class="st">&quot;black&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-157-1.png" width="672" />
+<strong>another way</strong></p>
+<div class="sourceCode" id="cb330"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb330-1"><a href="data-visualization.html#cb330-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(finalfit) </span>
+<span id="cb330-2"><a href="data-visualization.html#cb330-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb330-3"><a href="data-visualization.html#cb330-3" aria-hidden="true" tabindex="-1"></a>explanatory <span class="ot">=</span> <span class="fu">c</span>(  <span class="st">&quot;crim&quot;</span>  ,  <span class="st">&quot;zn&quot;</span>   ,   <span class="st">&quot;indus&quot;</span>  ,   <span class="st">&quot;nox&quot;</span>   ,  <span class="st">&quot;rm&quot;</span>   ,   <span class="st">&quot;age&quot;</span> ,    <span class="st">&quot;dis&quot;</span>  ,   <span class="st">&quot;rad&quot;</span>   ,  <span class="st">&quot;tax&quot;</span>   ,<span class="st">&quot;ptratio&quot;</span> ,<span class="st">&quot;black&quot;</span>  , <span class="st">&quot;lstat&quot;</span> )</span>
+<span id="cb330-4"><a href="data-visualization.html#cb330-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb330-5"><a href="data-visualization.html#cb330-5" aria-hidden="true" tabindex="-1"></a>dependent <span class="ot">=</span> <span class="st">&quot;medv&quot;</span></span>
+<span id="cb330-6"><a href="data-visualization.html#cb330-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb330-7"><a href="data-visualization.html#cb330-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb330-8"><a href="data-visualization.html#cb330-8" aria-hidden="true" tabindex="-1"></a>Boston <span class="sc">%&gt;%</span></span>
+<span id="cb330-9"><a href="data-visualization.html#cb330-9" aria-hidden="true" tabindex="-1"></a> <span class="fu">coefficient_plot</span>(dependent, explanatory, <span class="at">table_text_size=</span><span class="dv">3</span>, </span>
+<span id="cb330-10"><a href="data-visualization.html#cb330-10" aria-hidden="true" tabindex="-1"></a>                  <span class="at">title_text_size=</span><span class="dv">12</span>,</span>
+<span id="cb330-11"><a href="data-visualization.html#cb330-11" aria-hidden="true" tabindex="-1"></a>                   <span class="at">plot_opts=</span><span class="fu">list</span>(<span class="fu">xlab</span>(<span class="st">&quot;Beta, 95% CI&quot;</span>), </span>
+<span id="cb330-12"><a href="data-visualization.html#cb330-12" aria-hidden="true" tabindex="-1"></a>                                  <span class="fu">theme</span>(<span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>))))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-158-1.png" width="672" /></p>
+<div class="sourceCode" id="cb331"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb331-1"><a href="data-visualization.html#cb331-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(finalfit) </span>
+<span id="cb331-2"><a href="data-visualization.html#cb331-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb331-3"><a href="data-visualization.html#cb331-3" aria-hidden="true" tabindex="-1"></a>explanatory <span class="ot">=</span> <span class="fu">c</span>(  <span class="st">&quot;pregnant&quot;</span>, <span class="st">&quot;glucose&quot;</span> , <span class="st">&quot;pressure&quot;</span>, <span class="st">&quot;triceps&quot;</span>  ,<span class="st">&quot;insulin&quot;</span> , <span class="st">&quot;mass&quot;</span>   ,  <span class="st">&quot;pedigree&quot;</span>, <span class="st">&quot;age&quot;</span>  )</span>
+<span id="cb331-4"><a href="data-visualization.html#cb331-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb331-5"><a href="data-visualization.html#cb331-5" aria-hidden="true" tabindex="-1"></a>dependent <span class="ot">=</span> <span class="st">&quot;diabetes&quot;</span></span>
+<span id="cb331-6"><a href="data-visualization.html#cb331-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb331-7"><a href="data-visualization.html#cb331-7" aria-hidden="true" tabindex="-1"></a>diabetes <span class="sc">%&gt;%</span></span>
+<span id="cb331-8"><a href="data-visualization.html#cb331-8" aria-hidden="true" tabindex="-1"></a> <span class="fu">or_plot</span>(dependent, explanatory, <span class="at">table_text_size=</span><span class="dv">3</span>, </span>
+<span id="cb331-9"><a href="data-visualization.html#cb331-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">title_text_size=</span><span class="dv">12</span>,</span>
+<span id="cb331-10"><a href="data-visualization.html#cb331-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">plot_opts=</span><span class="fu">list</span>(<span class="fu">xlab</span>(<span class="st">&quot;OR, 95% CI&quot;</span>), </span>
+<span id="cb331-11"><a href="data-visualization.html#cb331-11" aria-hidden="true" tabindex="-1"></a>                                  <span class="fu">theme</span>(<span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>))))</span></code></pre></div>
+<pre><code>## Waiting for profiling to be done...
+## Waiting for profiling to be done...
+## Waiting for profiling to be done...</code></pre>
+<p><img src="_main_files/figure-html/unnamed-chunk-159-1.png" width="672" /></p>
+<ul>
+<li>qq plot</li>
+</ul>
+<div class="sourceCode" id="cb333"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb333-1"><a href="data-visualization.html#cb333-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggqqplot</span>( (Boston<span class="sc">$</span>medv))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-160-1.png" width="672" /></p>
+<!-- ======================== -->
+<ul>
+<li>Loading data set</li>
+</ul>
+<div class="sourceCode" id="cb334"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb334-1"><a href="data-visualization.html#cb334-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(printr)</span></code></pre></div>
+<pre><code>## Registered S3 method overwritten by &#39;printr&#39;:
+##   method                from     
+##   knit_print.data.frame rmarkdown</code></pre>
+<div class="sourceCode" id="cb336"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb336-1"><a href="data-visualization.html#cb336-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb336-2"><a href="data-visualization.html#cb336-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(iris)</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Sepal.Length</th>
+<th align="right">Sepal.Width</th>
+<th align="right">Petal.Length</th>
+<th align="right">Petal.Width</th>
+<th align="left">Species</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">5.1</td>
+<td align="right">3.5</td>
+<td align="right">1.4</td>
+<td align="right">0.2</td>
+<td align="left">setosa</td>
+</tr>
+<tr class="even">
+<td align="right">4.9</td>
+<td align="right">3.0</td>
+<td align="right">1.4</td>
+<td align="right">0.2</td>
+<td align="left">setosa</td>
+</tr>
+<tr class="odd">
+<td align="right">4.7</td>
+<td align="right">3.2</td>
+<td align="right">1.3</td>
+<td align="right">0.2</td>
+<td align="left">setosa</td>
+</tr>
+<tr class="even">
+<td align="right">4.6</td>
+<td align="right">3.1</td>
+<td align="right">1.5</td>
+<td align="right">0.2</td>
+<td align="left">setosa</td>
+</tr>
+<tr class="odd">
+<td align="right">5.0</td>
+<td align="right">3.6</td>
+<td align="right">1.4</td>
+<td align="right">0.2</td>
+<td align="left">setosa</td>
+</tr>
+<tr class="even">
+<td align="right">5.4</td>
+<td align="right">3.9</td>
+<td align="right">1.7</td>
+<td align="right">0.4</td>
+<td align="left">setosa</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="scatter-plot" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Scatter plot<a href="data-visualization.html#scatter-plot" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="create-a-empty-canvas" class="section level3 hasAnchor" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Create a empty canvas<a href="data-visualization.html#create-a-empty-canvas" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>then create <code>aesthetic mapping</code><br />
+</li>
+<li>tell the function which dataset and variables to use</li>
+</ul>
+<div class="sourceCode" id="cb337"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb337-1"><a href="data-visualization.html#cb337-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> iris,        <span class="co"># which data set? canvas? </span></span>
+<span id="cb337-2"><a href="data-visualization.html#cb337-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x=</span>Sepal.Length , <span class="at">y=</span>Petal.Length   ))  <span class="co"># which variables as aesthetics? x and y are mapped to columns of the data; different geoms can have different aesthetics (different variables). </span></span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-162-1.png" width="672" /></p>
+</div>
+<div id="add-a-layergeom-of-points-to-the-canvas" class="section level3 hasAnchor" number="4.2.2">
+<h3><span class="header-section-number">4.2.2</span> Add a layer/geom of <code>points</code> to the canvas<a href="data-visualization.html#add-a-layergeom-of-points-to-the-canvas" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb338"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb338-1"><a href="data-visualization.html#cb338-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> iris,</span>
+<span id="cb338-2"><a href="data-visualization.html#cb338-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x=</span>Sepal.Length , <span class="at">y=</span>Petal.Length  )) <span class="sc">+</span> </span>
+<span id="cb338-3"><a href="data-visualization.html#cb338-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()   <span class="co"># adding the geometrical representation </span></span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-163-1.png" width="672" /></p>
+<div class="sourceCode" id="cb339"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb339-1"><a href="data-visualization.html#cb339-1" aria-hidden="true" tabindex="-1"></a><span class="co"># same plot as above</span></span>
+<span id="cb339-2"><a href="data-visualization.html#cb339-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> iris) <span class="sc">+</span> </span>
+<span id="cb339-3"><a href="data-visualization.html#cb339-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(  <span class="fu">aes</span>(<span class="at">x=</span>Sepal.Length , <span class="at">y=</span>Petal.Length  )) </span></code></pre></div>
+</div>
+<div id="add-another-aesthetic" class="section level3 hasAnchor" number="4.2.3">
+<h3><span class="header-section-number">4.2.3</span> Add another aesthetic<a href="data-visualization.html#add-another-aesthetic" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>add a curve/straight line to fit these points</li>
+<li>geom provides the aesthetic to ggplot</li>
+</ul>
+<div class="sourceCode" id="cb340"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb340-1"><a href="data-visualization.html#cb340-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Loess curve</span></span>
+<span id="cb340-2"><a href="data-visualization.html#cb340-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> iris, </span>
+<span id="cb340-3"><a href="data-visualization.html#cb340-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x=</span>Sepal.Length , <span class="at">y=</span>Petal.Length  )) <span class="sc">+</span> </span>
+<span id="cb340-4"><a href="data-visualization.html#cb340-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb340-5"><a href="data-visualization.html#cb340-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() </span></code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="_main_files/figure-html/unnamed-chunk-165-1.png" width="672" /></p>
+<div class="sourceCode" id="cb342"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb342-1"><a href="data-visualization.html#cb342-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Linear regression line</span></span>
+<span id="cb342-2"><a href="data-visualization.html#cb342-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> iris, </span>
+<span id="cb342-3"><a href="data-visualization.html#cb342-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x=</span>Sepal.Length , <span class="at">y=</span>Petal.Length)) <span class="sc">+</span> </span>
+<span id="cb342-4"><a href="data-visualization.html#cb342-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb342-5"><a href="data-visualization.html#cb342-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>)</span></code></pre></div>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="_main_files/figure-html/unnamed-chunk-166-1.png" width="672" /></p>
+</div>
+<div id="add-other-aesthetic" class="section level3 hasAnchor" number="4.2.4">
+<h3><span class="header-section-number">4.2.4</span> Add other aesthetic<a href="data-visualization.html#add-other-aesthetic" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>set other aesthetics <code>colour, alpha (transparency), and size of points</code></li>
+</ul>
+<div class="sourceCode" id="cb344"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb344-1"><a href="data-visualization.html#cb344-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> iris) <span class="sc">+</span> </span>
+<span id="cb344-2"><a href="data-visualization.html#cb344-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>Sepal.Length , <span class="at">y=</span>Petal.Length, <span class="at">size =</span> Sepal.Width     ), </span>
+<span id="cb344-3"><a href="data-visualization.html#cb344-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha =</span> .<span class="dv">5</span>, </span>
+<span id="cb344-4"><a href="data-visualization.html#cb344-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">colour =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-167-1.png" width="672" /></p>
+<div class="sourceCode" id="cb345"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb345-1"><a href="data-visualization.html#cb345-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> iris) <span class="sc">+</span> </span>
+<span id="cb345-2"><a href="data-visualization.html#cb345-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>Sepal.Length , <span class="at">y=</span>Petal.Length, <span class="at">size =</span> Sepal.Width , <span class="at">colour=</span>Species), <span class="co">#white is a variable here </span></span>
+<span id="cb345-3"><a href="data-visualization.html#cb345-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha=</span>.<span class="dv">9</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-168-1.png" width="672" /></p>
+<ul>
+<li>categorize <code>Petal.Width</code> then map colour to this new variable</li>
+</ul>
+<div class="sourceCode" id="cb346"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb346-1"><a href="data-visualization.html#cb346-1" aria-hidden="true" tabindex="-1"></a>iris <span class="ot">&lt;-</span> iris <span class="sc">%&gt;%</span> </span>
+<span id="cb346-2"><a href="data-visualization.html#cb346-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">growth =</span> <span class="fu">ifelse</span>(Petal.Width   <span class="sc">&gt;</span> <span class="fl">1.5</span>, <span class="st">&quot;Wide&quot;</span>, <span class="st">&quot;Normal&quot;</span>))</span>
+<span id="cb346-3"><a href="data-visualization.html#cb346-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb346-4"><a href="data-visualization.html#cb346-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>iris) <span class="sc">+</span> </span>
+<span id="cb346-5"><a href="data-visualization.html#cb346-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>Sepal.Length , <span class="at">y=</span>Petal.Length, <span class="at">size =</span> Sepal.Width , <span class="at">colour=</span>growth), </span>
+<span id="cb346-6"><a href="data-visualization.html#cb346-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha=</span>.<span class="dv">9</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-169-1.png" width="672" /></p>
+</div>
+</div>
+<div id="bar-chart" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> Bar chart<a href="data-visualization.html#bar-chart" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb347"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb347-1"><a href="data-visualization.html#cb347-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> iris) <span class="sc">+</span> </span>
+<span id="cb347-2"><a href="data-visualization.html#cb347-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">x =</span> growth))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-170-1.png" width="672" /></p>
+<ul>
+<li>bar chart after <code>group_by</code></li>
+<li>then use <code>stat='identity'</code></li>
+</ul>
+<div class="sourceCode" id="cb348"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb348-1"><a href="data-visualization.html#cb348-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb348-2"><a href="data-visualization.html#cb348-2" aria-hidden="true" tabindex="-1"></a>results  <span class="ot">&lt;-</span> iris <span class="sc">%&gt;%</span> </span>
+<span id="cb348-3"><a href="data-visualization.html#cb348-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Species, growth) <span class="sc">%&gt;%</span> </span>
+<span id="cb348-4"><a href="data-visualization.html#cb348-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">summarise</span>(<span class="at">Sepal.Length.mean=</span><span class="fu">mean</span> (Sepal.Length ))</span></code></pre></div>
+<pre><code>## `summarise()` has grouped output by &#39;Species&#39;. You can override using the
+## `.groups` argument.</code></pre>
+<div class="sourceCode" id="cb350"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb350-1"><a href="data-visualization.html#cb350-1" aria-hidden="true" tabindex="-1"></a> gop <span class="ot">&lt;-</span> results  <span class="sc">%&gt;%</span> </span>
+<span id="cb350-2"><a href="data-visualization.html#cb350-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Species <span class="sc">!=</span> <span class="st">&quot;setosa_null&quot;</span>  )</span>
+<span id="cb350-3"><a href="data-visualization.html#cb350-3" aria-hidden="true" tabindex="-1"></a> gop</span></code></pre></div>
+<pre><code>## # A tibble: 5 × 3
+## # Groups:   Species [3]
+##   Species    growth Sepal.Length.mean
+##   &lt;fct&gt;      &lt;chr&gt;              &lt;dbl&gt;
+## 1 setosa     Normal              5.01
+## 2 versicolor Normal              5.91
+## 3 versicolor Wide                6.18
+## 4 virginica  Normal              6.13
+## 5 virginica  Wide                6.62</code></pre>
+<ul>
+<li>though meaningless below until line chart (just use the mean as the sum for demonstration)</li>
+</ul>
+<div class="sourceCode" id="cb352"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb352-1"><a href="data-visualization.html#cb352-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We can also store parts of a plot in an object</span></span>
+<span id="cb352-2"><a href="data-visualization.html#cb352-2" aria-hidden="true" tabindex="-1"></a>plot1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(gop) <span class="sc">+</span> </span>
+<span id="cb352-3"><a href="data-visualization.html#cb352-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">x=</span>growth , <span class="at">y=</span>Sepal.Length.mean), </span>
+<span id="cb352-4"><a href="data-visualization.html#cb352-4" aria-hidden="true" tabindex="-1"></a>           </span>
+<span id="cb352-5"><a href="data-visualization.html#cb352-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">stat=</span><span class="st">&#39;identity&#39;</span>)</span>
+<span id="cb352-6"><a href="data-visualization.html#cb352-6" aria-hidden="true" tabindex="-1"></a>plot1</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-172-1.png" width="672" />
+### Add some options for the whole ggplot rather than layers
+- <code>switch</code> the x and y axes</p>
+<div class="sourceCode" id="cb353"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb353-1"><a href="data-visualization.html#cb353-1" aria-hidden="true" tabindex="-1"></a>plot1 <span class="sc">+</span> </span>
+<span id="cb353-2"><a href="data-visualization.html#cb353-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-173-1.png" width="672" /></p>
+<ul>
+<li><code>reorder</code> x categories (<code>-</code>means descending)</li>
+</ul>
+<div class="sourceCode" id="cb354"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb354-1"><a href="data-visualization.html#cb354-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>( gop) <span class="sc">+</span> </span>
+<span id="cb354-2"><a href="data-visualization.html#cb354-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="fu">reorder</span>(growth, <span class="sc">-</span>Sepal.Length.mean), <span class="at">y=</span>Sepal.Length.mean, <span class="at">fill=</span>growth), </span>
+<span id="cb354-3"><a href="data-visualization.html#cb354-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">stat=</span><span class="st">&#39;identity&#39;</span>) <span class="sc">+</span> </span>
+<span id="cb354-4"><a href="data-visualization.html#cb354-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-174-1.png" width="672" /></p>
+<ul>
+<li>add x axis <code>label</code> and a <code>theme</code></li>
+</ul>
+<div class="sourceCode" id="cb355"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb355-1"><a href="data-visualization.html#cb355-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gop) <span class="sc">+</span> </span>
+<span id="cb355-2"><a href="data-visualization.html#cb355-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="fu">reorder</span>(growth, <span class="sc">-</span>Sepal.Length.mean), <span class="at">y=</span>Sepal.Length.mean, <span class="at">fill=</span>growth), </span>
+<span id="cb355-3"><a href="data-visualization.html#cb355-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">stat=</span><span class="st">&#39;identity&#39;</span>) <span class="sc">+</span> </span>
+<span id="cb355-4"><a href="data-visualization.html#cb355-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> </span>
+<span id="cb355-5"><a href="data-visualization.html#cb355-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Growth categories&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb355-6"><a href="data-visualization.html#cb355-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">fill=</span>F) <span class="sc">+</span></span>
+<span id="cb355-7"><a href="data-visualization.html#cb355-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-175-1.png" width="672" /></p>
+<ul>
+<li>set theme</li>
+</ul>
+<div class="sourceCode" id="cb356"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb356-1"><a href="data-visualization.html#cb356-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggthemes)</span>
+<span id="cb356-2"><a href="data-visualization.html#cb356-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> iris) <span class="sc">+</span> </span>
+<span id="cb356-3"><a href="data-visualization.html#cb356-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">x =</span> growth)) <span class="sc">+</span> </span>
+<span id="cb356-4"><a href="data-visualization.html#cb356-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_economist</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-176-1.png" width="672" /></p>
+<div id="grouped-bar-chart" class="section level3 hasAnchor" number="4.3.1">
+<h3><span class="header-section-number">4.3.1</span> Grouped bar chart<a href="data-visualization.html#grouped-bar-chart" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>-bar chart with different panels</p>
+<div class="sourceCode" id="cb357"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb357-1"><a href="data-visualization.html#cb357-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mpg, <span class="fu">aes</span>(<span class="at">x =</span> class)) <span class="sc">+</span> </span>
+<span id="cb357-2"><a href="data-visualization.html#cb357-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span> </span>
+<span id="cb357-3"><a href="data-visualization.html#cb357-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>( <span class="sc">~</span> year)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-177-1.png" width="672" /></p>
+<ul>
+<li>actual number (groups are stacked by default)</li>
+</ul>
+<div class="sourceCode" id="cb358"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb358-1"><a href="data-visualization.html#cb358-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gop) <span class="sc">+</span> </span>
+<span id="cb358-2"><a href="data-visualization.html#cb358-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">x=</span>growth, <span class="at">y=</span>Sepal.Length.mean, <span class="at">fill=</span>Species)</span>
+<span id="cb358-3"><a href="data-visualization.html#cb358-3" aria-hidden="true" tabindex="-1"></a>           , <span class="at">stat=</span><span class="st">&#39;identity&#39;</span></span>
+<span id="cb358-4"><a href="data-visualization.html#cb358-4" aria-hidden="true" tabindex="-1"></a>           )</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-178-1.png" width="672" /></p>
+<div class="sourceCode" id="cb359"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb359-1"><a href="data-visualization.html#cb359-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mpg, <span class="fu">aes</span>(<span class="at">x =</span> class )) <span class="sc">+</span> </span>
+<span id="cb359-2"><a href="data-visualization.html#cb359-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">group =</span> year, <span class="at">fill =</span> year), <span class="at">position =</span> <span class="st">&quot;stack&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-179-1.png" width="672" /></p>
+<ul>
+<li>percentage</li>
+</ul>
+<div class="sourceCode" id="cb360"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb360-1"><a href="data-visualization.html#cb360-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gop) <span class="sc">+</span> </span>
+<span id="cb360-2"><a href="data-visualization.html#cb360-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">x=</span>growth, <span class="at">y=</span>Sepal.Length.mean, <span class="at">fill=</span>Species), </span>
+<span id="cb360-3"><a href="data-visualization.html#cb360-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">stat=</span><span class="st">&#39;identity&#39;</span>, </span>
+<span id="cb360-4"><a href="data-visualization.html#cb360-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">position=</span><span class="st">&#39;fill&#39;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-180-1.png" width="672" /></p>
+<ul>
+<li>groups are dodge with <code>actual number</code></li>
+</ul>
+<div class="sourceCode" id="cb361"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb361-1"><a href="data-visualization.html#cb361-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gop) <span class="sc">+</span> </span>
+<span id="cb361-2"><a href="data-visualization.html#cb361-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">x=</span>growth, <span class="at">y=</span>Sepal.Length.mean, <span class="at">fill=</span>Species), </span>
+<span id="cb361-3"><a href="data-visualization.html#cb361-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">stat=</span><span class="st">&#39;identity&#39;</span>, </span>
+<span id="cb361-4"><a href="data-visualization.html#cb361-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">position=</span><span class="st">&#39;dodge&#39;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-181-1.png" width="672" />
+- groups are dodge with <code>percentage</code></p>
+<div class="sourceCode" id="cb362"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb362-1"><a href="data-visualization.html#cb362-1" aria-hidden="true" tabindex="-1"></a>gop2 <span class="ot">&lt;-</span> gop <span class="sc">%&gt;%</span> </span>
+<span id="cb362-2"><a href="data-visualization.html#cb362-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(growth ) <span class="sc">%&gt;%</span> </span>
+<span id="cb362-3"><a href="data-visualization.html#cb362-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Sepal.Length.prop=</span>Sepal.Length.mean<span class="sc">/</span><span class="fu">sum</span>(Sepal.Length.mean))</span>
+<span id="cb362-4"><a href="data-visualization.html#cb362-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb362-5"><a href="data-visualization.html#cb362-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gop2) <span class="sc">+</span> </span>
+<span id="cb362-6"><a href="data-visualization.html#cb362-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">x=</span>growth, <span class="at">y=</span>Sepal.Length.prop, <span class="at">fill=</span>Species), </span>
+<span id="cb362-7"><a href="data-visualization.html#cb362-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">stat=</span><span class="st">&#39;identity&#39;</span>, </span>
+<span id="cb362-8"><a href="data-visualization.html#cb362-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">position=</span><span class="st">&#39;dodge&#39;</span>) <span class="sc">+</span> </span>
+<span id="cb362-9"><a href="data-visualization.html#cb362-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Votes (%)&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-182-1.png" width="672" /></p>
+</div>
+</div>
+<div id="line-charts" class="section level2 hasAnchor" number="4.4">
+<h2><span class="header-section-number">4.4</span> Line charts<a href="data-visualization.html#line-charts" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb363"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb363-1"><a href="data-visualization.html#cb363-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris) <span class="sc">+</span> </span>
+<span id="cb363-2"><a href="data-visualization.html#cb363-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>Sepal.Length , <span class="at">y=</span>Petal.Length))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-183-1.png" width="672" /></p>
+<div id="grouped-by-colour-variable" class="section level3 hasAnchor" number="4.4.1">
+<h3><span class="header-section-number">4.4.1</span> Grouped by <code>colour variable</code><a href="data-visualization.html#grouped-by-colour-variable" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb364"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb364-1"><a href="data-visualization.html#cb364-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris) <span class="sc">+</span> </span>
+<span id="cb364-2"><a href="data-visualization.html#cb364-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>Sepal.Length , <span class="at">y=</span>Petal.Length, <span class="at">colour =</span> Species))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-184-1.png" width="672" /></p>
+<ul>
+<li>grouped by state then set how many rows or columns</li>
+</ul>
+<div class="sourceCode" id="cb365"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb365-1"><a href="data-visualization.html#cb365-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris) <span class="sc">+</span> </span>
+<span id="cb365-2"><a href="data-visualization.html#cb365-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>Sepal.Length , <span class="at">y=</span>Petal.Length) ) <span class="sc">+</span> </span>
+<span id="cb365-3"><a href="data-visualization.html#cb365-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb365-4"><a href="data-visualization.html#cb365-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Species, <span class="at">nrow =</span> <span class="dv">1</span>) <span class="sc">+</span>      <span class="co">#set how many rows</span></span>
+<span id="cb365-5"><a href="data-visualization.html#cb365-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()  </span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-185-1.png" width="672" /></p>
+</div>
+<div id="multiple-aesthetics" class="section level3 hasAnchor" number="4.4.2">
+<h3><span class="header-section-number">4.4.2</span> Multiple aesthetics<a href="data-visualization.html#multiple-aesthetics" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb366"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb366-1"><a href="data-visualization.html#cb366-1" aria-hidden="true" tabindex="-1"></a>iris <span class="ot">&lt;-</span> iris <span class="sc">%&gt;%</span> </span>
+<span id="cb366-2"><a href="data-visualization.html#cb366-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">growth =</span> <span class="fu">ifelse</span>(Petal.Width   <span class="sc">&gt;</span> <span class="fl">1.5</span>, <span class="st">&quot;Wide&quot;</span>, <span class="st">&quot;Normal&quot;</span>))</span>
+<span id="cb366-3"><a href="data-visualization.html#cb366-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb366-4"><a href="data-visualization.html#cb366-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> Petal.Length)) <span class="sc">+</span> </span>
+<span id="cb366-5"><a href="data-visualization.html#cb366-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">size=</span><span class="dv">2</span>,<span class="at">color=</span><span class="st">&quot;purple&quot;</span>)<span class="sc">+</span>  </span>
+<span id="cb366-6"><a href="data-visualization.html#cb366-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># number format</span></span>
+<span id="cb366-7"><a href="data-visualization.html#cb366-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_number</span>())<span class="sc">+</span></span>
+<span id="cb366-8"><a href="data-visualization.html#cb366-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>( <span class="fu">aes</span>(<span class="at">size =</span>  Sepal.Length,<span class="at">colour =</span> <span class="fu">as.factor</span>(growth)),<span class="at">show.legend =</span> F)<span class="sc">+</span></span>
+<span id="cb366-9"><a href="data-visualization.html#cb366-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Species) </span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-186-1.png" width="672" /></p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="deep-learning.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="basic-statistics.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/04-datavisu.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

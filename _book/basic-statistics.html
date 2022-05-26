@@ -1,0 +1,2072 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 5 Basic statistics | My Little Handbook</title>
+  <meta name="description" content="<p>This is a minimal example of using the bookdown package to write a book.
+The HTML output format for this example is bookdown::gitbook,
+set in the _output.yml file.</p>" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 5 Basic statistics | My Little Handbook" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="<p>This is a minimal example of using the bookdown package to write a book.
+The HTML output format for this example is bookdown::gitbook,
+set in the _output.yml file.</p>" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 5 Basic statistics | My Little Handbook" />
+  
+  <meta name="twitter:description" content="<p>This is a minimal example of using the bookdown package to write a book.
+The HTML output format for this example is bookdown::gitbook,
+set in the _output.yml file.</p>" />
+  
+
+<meta name="author" content="Daniel He" />
+
+
+<meta name="date" content="2022-05-26" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="data-visualization.html"/>
+<link rel="next" href="statistical-models.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">My Little Handbook</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>About</a></li>
+<li class="chapter" data-level="1" data-path="data-wrangling.html"><a href="data-wrangling.html"><i class="fa fa-check"></i><b>1</b> Data Wrangling</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="data-wrangling.html"><a href="data-wrangling.html#how-to-do-data-wrangling"><i class="fa fa-check"></i><b>1.1</b> How to do data wrangling</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="data-wrangling.html"><a href="data-wrangling.html#load-data-and-package"><i class="fa fa-check"></i><b>1.1.1</b> Load data and package</a></li>
+<li class="chapter" data-level="1.1.2" data-path="data-wrangling.html"><a href="data-wrangling.html#select-certain-rows"><i class="fa fa-check"></i><b>1.1.2</b> Select certain rows</a></li>
+<li class="chapter" data-level="1.1.3" data-path="data-wrangling.html"><a href="data-wrangling.html#select-certain-columns"><i class="fa fa-check"></i><b>1.1.3</b> Select certain columns</a></li>
+<li class="chapter" data-level="1.1.4" data-path="data-wrangling.html"><a href="data-wrangling.html#rename-variables"><i class="fa fa-check"></i><b>1.1.4</b> Rename variables</a></li>
+<li class="chapter" data-level="1.1.5" data-path="data-wrangling.html"><a href="data-wrangling.html#sorting-in-ascending-or-descending-order"><i class="fa fa-check"></i><b>1.1.5</b> Sorting in ascending or descending order</a></li>
+<li class="chapter" data-level="1.1.6" data-path="data-wrangling.html"><a href="data-wrangling.html#transform-variables"><i class="fa fa-check"></i><b>1.1.6</b> Transform variables</a></li>
+<li class="chapter" data-level="1.1.7" data-path="data-wrangling.html"><a href="data-wrangling.html#working-with-pipes"><i class="fa fa-check"></i><b>1.1.7</b> Working with pipes %&gt;%</a></li>
+<li class="chapter" data-level="1.1.8" data-path="data-wrangling.html"><a href="data-wrangling.html#pivot-wider-long-to-wide"><i class="fa fa-check"></i><b>1.1.8</b> Pivot wider (long to wide)</a></li>
+<li class="chapter" data-level="1.1.9" data-path="data-wrangling.html"><a href="data-wrangling.html#pivot-longer-wide-to-long"><i class="fa fa-check"></i><b>1.1.9</b> Pivot longer (wide to long)</a></li>
+<li class="chapter" data-level="1.1.10" data-path="data-wrangling.html"><a href="data-wrangling.html#separate-columns"><i class="fa fa-check"></i><b>1.1.10</b> Separate columns</a></li>
+<li class="chapter" data-level="1.1.11" data-path="data-wrangling.html"><a href="data-wrangling.html#recoderelabel-data"><i class="fa fa-check"></i><b>1.1.11</b> Recode/relabel data</a></li>
+<li class="chapter" data-level="1.1.12" data-path="data-wrangling.html"><a href="data-wrangling.html#combine-data-sets"><i class="fa fa-check"></i><b>1.1.12</b> Combine data sets</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="data-wrangling.html"><a href="data-wrangling.html#how-to-do-aggregation-summarization"><i class="fa fa-check"></i><b>1.2</b> How to do aggregation/ summarization</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="data-wrangling.html"><a href="data-wrangling.html#summarization-after-grouping"><i class="fa fa-check"></i><b>1.2.1</b> Summarization after grouping</a></li>
+<li class="chapter" data-level="1.2.2" data-path="data-wrangling.html"><a href="data-wrangling.html#summarization-with-upgroup"><i class="fa fa-check"></i><b>1.2.2</b> Summarization with upgroup</a></li>
+<li class="chapter" data-level="1.2.3" data-path="data-wrangling.html"><a href="data-wrangling.html#mutate-new-variables-after-grouping"><i class="fa fa-check"></i><b>1.2.3</b> Mutate new variables after grouping</a></li>
+<li class="chapter" data-level="1.2.4" data-path="data-wrangling.html"><a href="data-wrangling.html#recode-and-generate-new-variables-then-value-label"><i class="fa fa-check"></i><b>1.2.4</b> Recode and generate new variables, then value label</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="machine-learning.html"><a href="machine-learning.html"><i class="fa fa-check"></i><b>2</b> Machine learning</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="machine-learning.html"><a href="machine-learning.html#machine-learning-workflow"><i class="fa fa-check"></i><b>2.1</b> Machine learning workflow</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="machine-learning.html"><a href="machine-learning.html#loading-packages-and-datasets"><i class="fa fa-check"></i><b>2.1.1</b> Loading packages and datasets</a></li>
+<li class="chapter" data-level="2.1.2" data-path="machine-learning.html"><a href="machine-learning.html#spliting-the-dataset-into-training-and-test-data-sets"><i class="fa fa-check"></i><b>2.1.2</b> Spliting the dataset into training and test data sets</a></li>
+<li class="chapter" data-level="2.1.3" data-path="machine-learning.html"><a href="machine-learning.html#implement-data-imputation"><i class="fa fa-check"></i><b>2.1.3</b> Implement data imputation</a></li>
+<li class="chapter" data-level="2.1.4" data-path="machine-learning.html"><a href="machine-learning.html#one-hot-endcoding"><i class="fa fa-check"></i><b>2.1.4</b> One-hot-endcoding</a></li>
+<li class="chapter" data-level="2.1.5" data-path="machine-learning.html"><a href="machine-learning.html#normalizing-features"><i class="fa fa-check"></i><b>2.1.5</b> Normalizing features</a></li>
+<li class="chapter" data-level="2.1.6" data-path="machine-learning.html"><a href="machine-learning.html#plot-features"><i class="fa fa-check"></i><b>2.1.6</b> Plot features</a></li>
+<li class="chapter" data-level="2.1.7" data-path="machine-learning.html"><a href="machine-learning.html#recursive-feature-elimination-rfe"><i class="fa fa-check"></i><b>2.1.7</b> <strong>Recursive feature elimination (rfe)</strong></a></li>
+<li class="chapter" data-level="2.1.8" data-path="machine-learning.html"><a href="machine-learning.html#training-a-model-multivariate-adaptive-regression-splines-mars"><i class="fa fa-check"></i><b>2.1.8</b> Training a model <code>Multivariate Adaptive Regression Splines (MARS)</code></a></li>
+<li class="chapter" data-level="2.1.9" data-path="machine-learning.html"><a href="machine-learning.html#prepare-the-test-data-set"><i class="fa fa-check"></i><b>2.1.9</b> Prepare the test data set</a></li>
+<li class="chapter" data-level="2.1.10" data-path="machine-learning.html"><a href="machine-learning.html#prediction-uisng-testdata"><i class="fa fa-check"></i><b>2.1.10</b> Prediction uisng testdata</a></li>
+<li class="chapter" data-level="2.1.11" data-path="machine-learning.html"><a href="machine-learning.html#compute-confusion-matrix"><i class="fa fa-check"></i><b>2.1.11</b> Compute confusion matrix</a></li>
+<li class="chapter" data-level="2.1.12" data-path="machine-learning.html"><a href="machine-learning.html#tuning-hyperparameter-to-optimize-the-model"><i class="fa fa-check"></i><b>2.1.12</b> Tuning hyperparameter to optimize the model</a></li>
+<li class="chapter" data-level="2.1.13" data-path="machine-learning.html"><a href="machine-learning.html#other-marchine-learning-algorithms"><i class="fa fa-check"></i><b>2.1.13</b> Other marchine learning algorithms</a></li>
+<li class="chapter" data-level="2.1.14" data-path="machine-learning.html"><a href="machine-learning.html#comparisons-of-different-models"><i class="fa fa-check"></i><b>2.1.14</b> Comparisons of different models</a></li>
+<li class="chapter" data-level="2.1.15" data-path="machine-learning.html"><a href="machine-learning.html#plot-comparisons-of-models"><i class="fa fa-check"></i><b>2.1.15</b> Plot comparisons of models</a></li>
+<li class="chapter" data-level="2.1.16" data-path="machine-learning.html"><a href="machine-learning.html#ensemble-predictions-from-multiple-models"><i class="fa fa-check"></i><b>2.1.16</b> Ensemble predictions from multiple models</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="machine-learning.html"><a href="machine-learning.html#knn-classifier"><i class="fa fa-check"></i><b>2.2</b> KNN Classifier</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="machine-learning.html"><a href="machine-learning.html#splitting-data"><i class="fa fa-check"></i><b>2.2.1</b> Splitting data</a></li>
+<li class="chapter" data-level="2.2.2" data-path="machine-learning.html"><a href="machine-learning.html#creating-knn-model"><i class="fa fa-check"></i><b>2.2.2</b> Creating KNN model</a></li>
+<li class="chapter" data-level="2.2.3" data-path="machine-learning.html"><a href="machine-learning.html#model-evaluation"><i class="fa fa-check"></i><b>2.2.3</b> Model Evaluation</a></li>
+<li class="chapter" data-level="2.2.4" data-path="machine-learning.html"><a href="machine-learning.html#calculate-accuracy-with-different-k"><i class="fa fa-check"></i><b>2.2.4</b> Calculate accuracy with different K</a></li>
+<li class="chapter" data-level="2.2.5" data-path="machine-learning.html"><a href="machine-learning.html#optimization"><i class="fa fa-check"></i><b>2.2.5</b> Optimization</a></li>
+<li class="chapter" data-level="2.2.6" data-path="machine-learning.html"><a href="machine-learning.html#visualization"><i class="fa fa-check"></i><b>2.2.6</b> Visualization</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="machine-learning.html"><a href="machine-learning.html#knn-regression"><i class="fa fa-check"></i><b>2.3</b> KNN regression</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="machine-learning.html"><a href="machine-learning.html#data-exploring"><i class="fa fa-check"></i><b>2.3.1</b> Data exploring</a></li>
+<li class="chapter" data-level="2.3.2" data-path="machine-learning.html"><a href="machine-learning.html#prepareing-data"><i class="fa fa-check"></i><b>2.3.2</b> Prepareing data</a></li>
+<li class="chapter" data-level="2.3.3" data-path="machine-learning.html"><a href="machine-learning.html#creating-model"><i class="fa fa-check"></i><b>2.3.3</b> Creating model</a></li>
+<li class="chapter" data-level="2.3.4" data-path="machine-learning.html"><a href="machine-learning.html#evaluation"><i class="fa fa-check"></i><b>2.3.4</b> Evaluation</a></li>
+<li class="chapter" data-level="2.3.5" data-path="machine-learning.html"><a href="machine-learning.html#optimization-1"><i class="fa fa-check"></i><b>2.3.5</b> Optimization</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="deep-learning.html"><a href="deep-learning.html"><i class="fa fa-check"></i><b>3</b> Deep learning</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="deep-learning.html"><a href="deep-learning.html#deep-neural-network"><i class="fa fa-check"></i><b>3.1</b> Deep neural network</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="deep-learning.html"><a href="deep-learning.html#load-data"><i class="fa fa-check"></i><b>3.1.1</b> Load data</a></li>
+<li class="chapter" data-level="3.1.2" data-path="deep-learning.html"><a href="deep-learning.html#process-data-and-variable"><i class="fa fa-check"></i><b>3.1.2</b> Process data and variable</a></li>
+<li class="chapter" data-level="3.1.3" data-path="deep-learning.html"><a href="deep-learning.html#split-data-into-training-and-test-datasets"><i class="fa fa-check"></i><b>3.1.3</b> Split data into training and test datasets</a></li>
+<li class="chapter" data-level="3.1.4" data-path="deep-learning.html"><a href="deep-learning.html#creating-neural-network-model"><i class="fa fa-check"></i><b>3.1.4</b> Creating neural network model</a></li>
+<li class="chapter" data-level="3.1.5" data-path="deep-learning.html"><a href="deep-learning.html#evaluation-1"><i class="fa fa-check"></i><b>3.1.5</b> Evaluation</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="deep-learning.html"><a href="deep-learning.html#deep-neural-networks-for-regression"><i class="fa fa-check"></i><b>3.2</b> Deep neural networks for regression</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="deep-learning.html"><a href="deep-learning.html#loading-packages-and-data-sets"><i class="fa fa-check"></i><b>3.2.1</b> Loading packages and data sets</a></li>
+<li class="chapter" data-level="3.2.2" data-path="deep-learning.html"><a href="deep-learning.html#convert-dataframe-to-matrix-without-dimnames"><i class="fa fa-check"></i><b>3.2.2</b> Convert dataframe to matrix without dimnames</a></li>
+<li class="chapter" data-level="3.2.3" data-path="deep-learning.html"><a href="deep-learning.html#spiting-training-and-test-data"><i class="fa fa-check"></i><b>3.2.3</b> Spiting training and test data</a></li>
+<li class="chapter" data-level="3.2.4" data-path="deep-learning.html"><a href="deep-learning.html#normalizing-xtrain-and-xtest-data"><i class="fa fa-check"></i><b>3.2.4</b> Normalizing <code>xtrain</code> and <code>xtest</code> data</a></li>
+<li class="chapter" data-level="3.2.5" data-path="deep-learning.html"><a href="deep-learning.html#creating-the-model"><i class="fa fa-check"></i><b>3.2.5</b> Creating the model</a></li>
+<li class="chapter" data-level="3.2.6" data-path="deep-learning.html"><a href="deep-learning.html#compiling-the-model-1"><i class="fa fa-check"></i><b>3.2.6</b> Compiling the model</a></li>
+<li class="chapter" data-level="3.2.7" data-path="deep-learning.html"><a href="deep-learning.html#fitting-the-model"><i class="fa fa-check"></i><b>3.2.7</b> Fitting the model</a></li>
+<li class="chapter" data-level="3.2.8" data-path="deep-learning.html"><a href="deep-learning.html#plot-the-training-process"><i class="fa fa-check"></i><b>3.2.8</b> Plot the training process</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="deep-learning.html"><a href="deep-learning.html#convolutional-neural-netwrok"><i class="fa fa-check"></i><b>3.3</b> Convolutional neural netwrok</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="deep-learning.html"><a href="deep-learning.html#import-library"><i class="fa fa-check"></i><b>3.3.1</b> Import library</a></li>
+<li class="chapter" data-level="3.3.2" data-path="deep-learning.html"><a href="deep-learning.html#importing-the-data"><i class="fa fa-check"></i><b>3.3.2</b> Importing the data</a></li>
+<li class="chapter" data-level="3.3.3" data-path="deep-learning.html"><a href="deep-learning.html#preparing-the-data"><i class="fa fa-check"></i><b>3.3.3</b> preparing the data</a></li>
+<li class="chapter" data-level="3.3.4" data-path="deep-learning.html"><a href="deep-learning.html#creating-the-model-1"><i class="fa fa-check"></i><b>3.3.4</b> Creating the model</a></li>
+<li class="chapter" data-level="3.3.5" data-path="deep-learning.html"><a href="deep-learning.html#training"><i class="fa fa-check"></i><b>3.3.5</b> Training</a></li>
+<li class="chapter" data-level="3.3.6" data-path="deep-learning.html"><a href="deep-learning.html#evaluating-the-accuracy"><i class="fa fa-check"></i><b>3.3.6</b> Evaluating the accuracy</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="data-visualization.html"><a href="data-visualization.html"><i class="fa fa-check"></i><b>4</b> Data visualization</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="data-visualization.html"><a href="data-visualization.html#data-visualization-introduction"><i class="fa fa-check"></i><b>4.1</b> Data visualization introduction</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="data-visualization.html"><a href="data-visualization.html#summarization"><i class="fa fa-check"></i><b>4.1.1</b> Summarization</a></li>
+<li class="chapter" data-level="4.1.2" data-path="data-visualization.html"><a href="data-visualization.html#explore-missing-values"><i class="fa fa-check"></i><b>4.1.2</b> Explore missing values</a></li>
+<li class="chapter" data-level="4.1.3" data-path="data-visualization.html"><a href="data-visualization.html#add-statistical-test"><i class="fa fa-check"></i><b>4.1.3</b> Add statistical test</a></li>
+<li class="chapter" data-level="4.1.4" data-path="data-visualization.html"><a href="data-visualization.html#add-texts-to-dots"><i class="fa fa-check"></i><b>4.1.4</b> Add texts to dots</a></li>
+<li class="chapter" data-level="4.1.5" data-path="data-visualization.html"><a href="data-visualization.html#set-the-legend"><i class="fa fa-check"></i><b>4.1.5</b> Set the legend</a></li>
+<li class="chapter" data-level="4.1.6" data-path="data-visualization.html"><a href="data-visualization.html#create-a-panel-of-plots"><i class="fa fa-check"></i><b>4.1.6</b> Create a panel of plots</a></li>
+<li class="chapter" data-level="4.1.7" data-path="data-visualization.html"><a href="data-visualization.html#plots-in-regression"><i class="fa fa-check"></i><b>4.1.7</b> Plots in regression</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="data-visualization.html"><a href="data-visualization.html#scatter-plot"><i class="fa fa-check"></i><b>4.2</b> Scatter plot</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="data-visualization.html"><a href="data-visualization.html#create-a-empty-canvas"><i class="fa fa-check"></i><b>4.2.1</b> Create a empty canvas</a></li>
+<li class="chapter" data-level="4.2.2" data-path="data-visualization.html"><a href="data-visualization.html#add-a-layergeom-of-points-to-the-canvas"><i class="fa fa-check"></i><b>4.2.2</b> Add a layer/geom of <code>points</code> to the canvas</a></li>
+<li class="chapter" data-level="4.2.3" data-path="data-visualization.html"><a href="data-visualization.html#add-another-aesthetic"><i class="fa fa-check"></i><b>4.2.3</b> Add another aesthetic</a></li>
+<li class="chapter" data-level="4.2.4" data-path="data-visualization.html"><a href="data-visualization.html#add-other-aesthetic"><i class="fa fa-check"></i><b>4.2.4</b> Add other aesthetic</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="data-visualization.html"><a href="data-visualization.html#bar-chart"><i class="fa fa-check"></i><b>4.3</b> Bar chart</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="data-visualization.html"><a href="data-visualization.html#grouped-bar-chart"><i class="fa fa-check"></i><b>4.3.1</b> Grouped bar chart</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="data-visualization.html"><a href="data-visualization.html#line-charts"><i class="fa fa-check"></i><b>4.4</b> Line charts</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="data-visualization.html"><a href="data-visualization.html#grouped-by-colour-variable"><i class="fa fa-check"></i><b>4.4.1</b> Grouped by <code>colour variable</code></a></li>
+<li class="chapter" data-level="4.4.2" data-path="data-visualization.html"><a href="data-visualization.html#multiple-aesthetics"><i class="fa fa-check"></i><b>4.4.2</b> Multiple aesthetics</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="basic-statistics.html"><a href="basic-statistics.html"><i class="fa fa-check"></i><b>5</b> Basic statistics</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="basic-statistics.html"><a href="basic-statistics.html#the-essentials-of-r"><i class="fa fa-check"></i><b>5.1</b> The essentials of R</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="basic-statistics.html"><a href="basic-statistics.html#manipulation-of-vector"><i class="fa fa-check"></i><b>5.1.1</b> Manipulation of vector</a></li>
+<li class="chapter" data-level="5.1.2" data-path="basic-statistics.html"><a href="basic-statistics.html#generate-sequence-or-repeted-sequece"><i class="fa fa-check"></i><b>5.1.2</b> Generate sequence or repeted sequece</a></li>
+<li class="chapter" data-level="5.1.3" data-path="basic-statistics.html"><a href="basic-statistics.html#get-directory-and-write-data-out-and-in"><i class="fa fa-check"></i><b>5.1.3</b> Get directory and write data out and in</a></li>
+<li class="chapter" data-level="5.1.4" data-path="basic-statistics.html"><a href="basic-statistics.html#function"><i class="fa fa-check"></i><b>5.1.4</b> Function</a></li>
+<li class="chapter" data-level="5.1.5" data-path="basic-statistics.html"><a href="basic-statistics.html#plot"><i class="fa fa-check"></i><b>5.1.5</b> Plot</a></li>
+<li class="chapter" data-level="5.1.6" data-path="basic-statistics.html"><a href="basic-statistics.html#class-of-dataframe"><i class="fa fa-check"></i><b>5.1.6</b> Class of dataframe</a></li>
+<li class="chapter" data-level="5.1.7" data-path="basic-statistics.html"><a href="basic-statistics.html#generate-new-variable-for-dataframe-character"><i class="fa fa-check"></i><b>5.1.7</b> Generate new variable for dataframe (character)</a></li>
+<li class="chapter" data-level="5.1.8" data-path="basic-statistics.html"><a href="basic-statistics.html#create-a-new-dataframe-using-rnorm---random-number-from-distribution"><i class="fa fa-check"></i><b>5.1.8</b> Create a new dataframe using ‘rnorm’ - random number from distribution</a></li>
+<li class="chapter" data-level="5.1.9" data-path="basic-statistics.html"><a href="basic-statistics.html#left-join-two-dataframes"><i class="fa fa-check"></i><b>5.1.9</b> Left join two dataframes</a></li>
+<li class="chapter" data-level="5.1.10" data-path="basic-statistics.html"><a href="basic-statistics.html#select-variables"><i class="fa fa-check"></i><b>5.1.10</b> Select variables</a></li>
+<li class="chapter" data-level="5.1.11" data-path="basic-statistics.html"><a href="basic-statistics.html#filter-observations"><i class="fa fa-check"></i><b>5.1.11</b> Filter observations</a></li>
+<li class="chapter" data-level="5.1.12" data-path="basic-statistics.html"><a href="basic-statistics.html#append-rows"><i class="fa fa-check"></i><b>5.1.12</b> Append rows</a></li>
+<li class="chapter" data-level="5.1.13" data-path="basic-statistics.html"><a href="basic-statistics.html#create-new-variables-instead-of-old-variables"><i class="fa fa-check"></i><b>5.1.13</b> Create new variables instead of old variables</a></li>
+<li class="chapter" data-level="5.1.14" data-path="basic-statistics.html"><a href="basic-statistics.html#summarise-statistics"><i class="fa fa-check"></i><b>5.1.14</b> summarise statistics</a></li>
+<li class="chapter" data-level="5.1.15" data-path="basic-statistics.html"><a href="basic-statistics.html#group-dataframe-then-summarise-statistics"><i class="fa fa-check"></i><b>5.1.15</b> Group dataframe then summarise statistics</a></li>
+<li class="chapter" data-level="5.1.16" data-path="basic-statistics.html"><a href="basic-statistics.html#ungroup-then-summarise-statistics"><i class="fa fa-check"></i><b>5.1.16</b> Ungroup then summarise statistics</a></li>
+<li class="chapter" data-level="5.1.17" data-path="basic-statistics.html"><a href="basic-statistics.html#summary-linear-regression-model"><i class="fa fa-check"></i><b>5.1.17</b> Summary linear regression model</a></li>
+<li class="chapter" data-level="5.1.18" data-path="basic-statistics.html"><a href="basic-statistics.html#create-frequency-table"><i class="fa fa-check"></i><b>5.1.18</b> Create frequency table</a></li>
+<li class="chapter" data-level="5.1.19" data-path="basic-statistics.html"><a href="basic-statistics.html#value-and-variable-label"><i class="fa fa-check"></i><b>5.1.19</b> Value and variable label</a></li>
+<li class="chapter" data-level="5.1.20" data-path="basic-statistics.html"><a href="basic-statistics.html#recode-a-variable"><i class="fa fa-check"></i><b>5.1.20</b> Recode a variable</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="statistical-models.html"><a href="statistical-models.html"><i class="fa fa-check"></i><b>6</b> Statistical models</a></li>
+<li class="chapter" data-level="7" data-path="probability.html"><a href="probability.html"><i class="fa fa-check"></i><b>7</b> Probability</a></li>
+<li class="chapter" data-level="8" data-path="algorithms.html"><a href="algorithms.html"><i class="fa fa-check"></i><b>8</b> Algorithms</a></li>
+<li class="chapter" data-level="9" data-path="sasmarkdown.html"><a href="sasmarkdown.html"><i class="fa fa-check"></i><b>9</b> SASmarkdown</a></li>
+<li class="chapter" data-level="10" data-path="miscellaneous.html"><a href="miscellaneous.html"><i class="fa fa-check"></i><b>10</b> Miscellaneous</a></li>
+<li class="chapter" data-level="11" data-path="english.html"><a href="english.html"><i class="fa fa-check"></i><b>11</b> English</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">My Little Handbook</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="basic-statistics" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">Chapter 5</span> Basic statistics<a href="basic-statistics.html#basic-statistics" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<!-- ============================= -->
+<div id="the-essentials-of-r" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> The essentials of R<a href="basic-statistics.html#the-essentials-of-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="manipulation-of-vector" class="section level3 hasAnchor" number="5.1.1">
+<h3><span class="header-section-number">5.1.1</span> Manipulation of vector<a href="basic-statistics.html#manipulation-of-vector" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb367"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb367-1"><a href="basic-statistics.html#cb367-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb367-2"><a href="basic-statistics.html#cb367-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb367-3"><a href="basic-statistics.html#cb367-3" aria-hidden="true" tabindex="-1"></a>vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">5</span>,<span class="st">&quot;O&quot;</span>,<span class="cn">NA</span>)</span>
+<span id="cb367-4"><a href="basic-statistics.html#cb367-4" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">unique</span>(vec))</span></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+<div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb369-1"><a href="basic-statistics.html#cb369-1" aria-hidden="true" tabindex="-1"></a>num_vec <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(vec)</span>
+<span id="cb369-2"><a href="basic-statistics.html#cb369-2" aria-hidden="true" tabindex="-1"></a><span class="fu">log</span>(num_vec)</span></code></pre></div>
+<pre><code>## [1] 1.0986123 1.6094379 0.6931472 0.0000000 1.6094379        NA        NA</code></pre>
+<div class="sourceCode" id="cb371"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb371-1"><a href="basic-statistics.html#cb371-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">c</span>(num_vec, <span class="cn">NA</span>), <span class="at">na.rm=</span>T)</span></code></pre></div>
+<pre><code>## [1] 16</code></pre>
+<div class="sourceCode" id="cb373"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb373-1"><a href="basic-statistics.html#cb373-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(num_vec, <span class="at">decreasing =</span> T)</span></code></pre></div>
+<pre><code>## [1] 5 5 3 2 1</code></pre>
+<div class="sourceCode" id="cb375"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb375-1"><a href="basic-statistics.html#cb375-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.na</span>(num_vec)</span></code></pre></div>
+<pre><code>## [1] FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE</code></pre>
+<div class="sourceCode" id="cb377"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb377-1"><a href="basic-statistics.html#cb377-1" aria-hidden="true" tabindex="-1"></a>num_vec[<span class="sc">!</span><span class="fu">is.na</span>(num_vec)]</span></code></pre></div>
+<pre><code>## [1] 3 5 2 1 5</code></pre>
+<div class="sourceCode" id="cb379"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb379-1"><a href="basic-statistics.html#cb379-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">6</span>) <span class="sc">%in%</span> vec</span></code></pre></div>
+<pre><code>## [1]  TRUE FALSE</code></pre>
+<div class="sourceCode" id="cb381"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb381-1"><a href="basic-statistics.html#cb381-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grepl</span>(<span class="st">&quot;5&quot;</span>, vec)</span></code></pre></div>
+<pre><code>## [1] FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE</code></pre>
+</div>
+<div id="generate-sequence-or-repeted-sequece" class="section level3 hasAnchor" number="5.1.2">
+<h3><span class="header-section-number">5.1.2</span> Generate sequence or repeted sequece<a href="basic-statistics.html#generate-sequence-or-repeted-sequece" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb383"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb383-1"><a href="basic-statistics.html#cb383-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">10</span>, <span class="at">by =</span> <span class="fl">0.5</span>)</span></code></pre></div>
+<pre><code>##  [1]  0.0  0.5  1.0  1.5  2.0  2.5  3.0  3.5  4.0  4.5  5.0  5.5  6.0  6.5  7.0
+## [16]  7.5  8.0  8.5  9.0  9.5 10.0</code></pre>
+<div class="sourceCode" id="cb385"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb385-1"><a href="basic-statistics.html#cb385-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rep</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">times =</span> <span class="dv">4</span>)</span></code></pre></div>
+<pre><code>##  [1] 1 2 3 1 2 3 1 2 3 1 2 3</code></pre>
+<div class="sourceCode" id="cb387"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb387-1"><a href="basic-statistics.html#cb387-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rep</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">each =</span> <span class="dv">4</span>)</span></code></pre></div>
+<pre><code>##  [1] 1 1 1 1 2 2 2 2 3 3 3 3</code></pre>
+</div>
+<div id="get-directory-and-write-data-out-and-in" class="section level3 hasAnchor" number="5.1.3">
+<h3><span class="header-section-number">5.1.3</span> Get directory and write data out and in<a href="basic-statistics.html#get-directory-and-write-data-out-and-in" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb389"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb389-1"><a href="basic-statistics.html#cb389-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getwd</span>()</span></code></pre></div>
+<pre><code>## [1] &quot;C:/Users/hed2/Downloads/testbook&quot;</code></pre>
+<div class="sourceCode" id="cb391"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb391-1"><a href="basic-statistics.html#cb391-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="fu">getwd</span>())</span>
+<span id="cb391-2"><a href="basic-statistics.html#cb391-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(cars, <span class="st">&quot;cars.csv&quot;</span>, <span class="at">row.names=</span>F)</span>
+<span id="cb391-3"><a href="basic-statistics.html#cb391-3" aria-hidden="true" tabindex="-1"></a>dataframe  <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;cars.csv&quot;</span>)</span></code></pre></div>
+</div>
+<div id="function" class="section level3 hasAnchor" number="5.1.4">
+<h3><span class="header-section-number">5.1.4</span> Function<a href="basic-statistics.html#function" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb392"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb392-1"><a href="basic-statistics.html#cb392-1" aria-hidden="true" tabindex="-1"></a>my_func <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb392-2"><a href="basic-statistics.html#cb392-2" aria-hidden="true" tabindex="-1"></a>  x_mod <span class="ot">&lt;-</span> (x <span class="sc">+</span> <span class="dv">7</span>) <span class="sc">*</span> <span class="dv">4</span></span>
+<span id="cb392-3"><a href="basic-statistics.html#cb392-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x_mod)</span>
+<span id="cb392-4"><a href="basic-statistics.html#cb392-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb392-5"><a href="basic-statistics.html#cb392-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb392-6"><a href="basic-statistics.html#cb392-6" aria-hidden="true" tabindex="-1"></a><span class="fu">my_func</span>(num_vec)</span></code></pre></div>
+<pre><code>## [1] 40 48 36 32 48 NA NA</code></pre>
+</div>
+<div id="plot" class="section level3 hasAnchor" number="5.1.5">
+<h3><span class="header-section-number">5.1.5</span> Plot<a href="basic-statistics.html#plot" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb394"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb394-1"><a href="basic-statistics.html#cb394-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dist <span class="sc">~</span> speed, <span class="at">data=</span>cars)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-191-1.png" width="672" /></p>
+<div class="sourceCode" id="cb395"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb395-1"><a href="basic-statistics.html#cb395-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(cars<span class="sc">$</span>dist )</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-191-2.png" width="672" />
+### Build model and plot</p>
+<div class="sourceCode" id="cb396"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb396-1"><a href="basic-statistics.html#cb396-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(dist <span class="sc">~</span> speed, <span class="at">data=</span>cars)</span>
+<span id="cb396-2"><a href="basic-statistics.html#cb396-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dist <span class="sc">~</span> speed, <span class="at">data=</span>cars)</span>
+<span id="cb396-3"><a href="basic-statistics.html#cb396-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(model)</span>
+<span id="cb396-4"><a href="basic-statistics.html#cb396-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="dv">25</span>)</span>
+<span id="cb396-5"><a href="basic-statistics.html#cb396-5" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">15</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-192-1.png" width="672" />
+### Rename names of columns</p>
+<div class="sourceCode" id="cb397"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb397-1"><a href="basic-statistics.html#cb397-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(cars)</span></code></pre></div>
+<pre><code>## [1] &quot;speed&quot; &quot;dist&quot;</code></pre>
+<div class="sourceCode" id="cb399"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb399-1"><a href="basic-statistics.html#cb399-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(cars) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;speed per hour&quot;</span>, <span class="st">&quot;total dist&quot;</span>)</span></code></pre></div>
+</div>
+<div id="class-of-dataframe" class="section level3 hasAnchor" number="5.1.6">
+<h3><span class="header-section-number">5.1.6</span> Class of dataframe<a href="basic-statistics.html#class-of-dataframe" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb400"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb400-1"><a href="basic-statistics.html#cb400-1" aria-hidden="true" tabindex="-1"></a>matrix <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(cars)</span>
+<span id="cb400-2"><a href="basic-statistics.html#cb400-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(matrix)</span>
+<span id="cb400-3"><a href="basic-statistics.html#cb400-3" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(matrix)</span></code></pre></div>
+<pre><code>## [1] &quot;matrix&quot; &quot;array&quot;</code></pre>
+<div class="sourceCode" id="cb402"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb402-1"><a href="basic-statistics.html#cb402-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(df)</span></code></pre></div>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<div class="sourceCode" id="cb404"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb404-1"><a href="basic-statistics.html#cb404-1" aria-hidden="true" tabindex="-1"></a><span class="co"># tranform</span></span>
+<span id="cb404-2"><a href="basic-statistics.html#cb404-2" aria-hidden="true" tabindex="-1"></a><span class="fu">t</span>(matrix)</span></code></pre></div>
+<table>
+<colgroup>
+<col width="9%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="2%" />
+<col width="1%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td align="left">speed per hour</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">7</td>
+<td align="right">7</td>
+<td align="right">8</td>
+<td align="right">9</td>
+<td align="right">10</td>
+<td align="right">10</td>
+<td align="right">10</td>
+<td align="right">11</td>
+<td align="right">11</td>
+<td align="right">12</td>
+<td align="right">12</td>
+<td align="right">12</td>
+<td align="right">12</td>
+<td align="right">13</td>
+<td align="right">13</td>
+<td align="right">13</td>
+<td align="right">13</td>
+<td align="right">14</td>
+<td align="right">14</td>
+<td align="right">14</td>
+<td align="right">14</td>
+<td align="right">15</td>
+<td align="right">15</td>
+<td align="right">15</td>
+<td align="right">16</td>
+<td align="right">16</td>
+<td align="right">17</td>
+<td align="right">17</td>
+<td align="right">17</td>
+<td align="right">18</td>
+<td align="right">18</td>
+<td align="right">18</td>
+<td align="right">18</td>
+<td align="right">19</td>
+<td align="right">19</td>
+<td align="right">19</td>
+<td align="right">20</td>
+<td align="right">20</td>
+<td align="right">20</td>
+<td align="right">20</td>
+<td align="right">20</td>
+<td align="right">22</td>
+<td align="right">23</td>
+<td align="right">24</td>
+<td align="right">24</td>
+<td align="right">24</td>
+<td align="right">24</td>
+<td align="right">25</td>
+</tr>
+<tr class="even">
+<td align="left">total dist</td>
+<td align="right">2</td>
+<td align="right">10</td>
+<td align="right">4</td>
+<td align="right">22</td>
+<td align="right">16</td>
+<td align="right">10</td>
+<td align="right">18</td>
+<td align="right">26</td>
+<td align="right">34</td>
+<td align="right">17</td>
+<td align="right">28</td>
+<td align="right">14</td>
+<td align="right">20</td>
+<td align="right">24</td>
+<td align="right">28</td>
+<td align="right">26</td>
+<td align="right">34</td>
+<td align="right">34</td>
+<td align="right">46</td>
+<td align="right">26</td>
+<td align="right">36</td>
+<td align="right">60</td>
+<td align="right">80</td>
+<td align="right">20</td>
+<td align="right">26</td>
+<td align="right">54</td>
+<td align="right">32</td>
+<td align="right">40</td>
+<td align="right">32</td>
+<td align="right">40</td>
+<td align="right">50</td>
+<td align="right">42</td>
+<td align="right">56</td>
+<td align="right">76</td>
+<td align="right">84</td>
+<td align="right">36</td>
+<td align="right">46</td>
+<td align="right">68</td>
+<td align="right">32</td>
+<td align="right">48</td>
+<td align="right">52</td>
+<td align="right">56</td>
+<td align="right">64</td>
+<td align="right">66</td>
+<td align="right">54</td>
+<td align="right">70</td>
+<td align="right">92</td>
+<td align="right">93</td>
+<td align="right">120</td>
+<td align="right">85</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="generate-new-variable-for-dataframe-character" class="section level3 hasAnchor" number="5.1.7">
+<h3><span class="header-section-number">5.1.7</span> Generate new variable for dataframe (character)<a href="basic-statistics.html#generate-new-variable-for-dataframe-character" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb405"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb405-1"><a href="basic-statistics.html#cb405-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste0</span>(<span class="st">&quot;raster_&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span></code></pre></div>
+<pre><code>##  [1] &quot;raster_1&quot;  &quot;raster_2&quot;  &quot;raster_3&quot;  &quot;raster_4&quot;  &quot;raster_5&quot;  &quot;raster_6&quot; 
+##  [7] &quot;raster_7&quot;  &quot;raster_8&quot;  &quot;raster_9&quot;  &quot;raster_10&quot;</code></pre>
+<div class="sourceCode" id="cb407"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb407-1"><a href="basic-statistics.html#cb407-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste0</span>(<span class="st">&quot;raster_&quot;</span>, <span class="fu">rep</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="at">times =</span> <span class="dv">10</span>))</span></code></pre></div>
+<pre><code>##  [1] &quot;raster_1&quot; &quot;raster_2&quot; &quot;raster_3&quot; &quot;raster_4&quot; &quot;raster_5&quot; &quot;raster_1&quot;
+##  [7] &quot;raster_2&quot; &quot;raster_3&quot; &quot;raster_4&quot; &quot;raster_5&quot; &quot;raster_1&quot; &quot;raster_2&quot;
+## [13] &quot;raster_3&quot; &quot;raster_4&quot; &quot;raster_5&quot; &quot;raster_1&quot; &quot;raster_2&quot; &quot;raster_3&quot;
+## [19] &quot;raster_4&quot; &quot;raster_5&quot; &quot;raster_1&quot; &quot;raster_2&quot; &quot;raster_3&quot; &quot;raster_4&quot;
+## [25] &quot;raster_5&quot; &quot;raster_1&quot; &quot;raster_2&quot; &quot;raster_3&quot; &quot;raster_4&quot; &quot;raster_5&quot;
+## [31] &quot;raster_1&quot; &quot;raster_2&quot; &quot;raster_3&quot; &quot;raster_4&quot; &quot;raster_5&quot; &quot;raster_1&quot;
+## [37] &quot;raster_2&quot; &quot;raster_3&quot; &quot;raster_4&quot; &quot;raster_5&quot; &quot;raster_1&quot; &quot;raster_2&quot;
+## [43] &quot;raster_3&quot; &quot;raster_4&quot; &quot;raster_5&quot; &quot;raster_1&quot; &quot;raster_2&quot; &quot;raster_3&quot;
+## [49] &quot;raster_4&quot; &quot;raster_5&quot;</code></pre>
+<div class="sourceCode" id="cb409"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb409-1"><a href="basic-statistics.html#cb409-1" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>group <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;raster_&quot;</span>, <span class="fu">rep</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="at">times =</span> <span class="dv">10</span>))</span>
+<span id="cb409-2"><a href="basic-statistics.html#cb409-2" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>id <span class="ot">&lt;-</span>  <span class="fu">paste0</span>(<span class="st">&quot;raster_&quot;</span>,  <span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>)</span></code></pre></div>
+</div>
+<div id="create-a-new-dataframe-using-rnorm---random-number-from-distribution" class="section level3 hasAnchor" number="5.1.8">
+<h3><span class="header-section-number">5.1.8</span> Create a new dataframe using ‘rnorm’ - random number from distribution<a href="basic-statistics.html#create-a-new-dataframe-using-rnorm---random-number-from-distribution" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb410"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb410-1"><a href="basic-statistics.html#cb410-1" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span>  <span class="fu">round</span>((<span class="fu">rnorm</span>(<span class="dv">50</span>,<span class="dv">0</span>, <span class="dv">1</span>)),<span class="dv">2</span>)</span>
+<span id="cb410-2"><a href="basic-statistics.html#cb410-2" aria-hidden="true" tabindex="-1"></a>group <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;raster_&quot;</span>, <span class="fu">rep</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="at">times =</span> <span class="dv">10</span>))</span>
+<span id="cb410-3"><a href="basic-statistics.html#cb410-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb410-4"><a href="basic-statistics.html#cb410-4" aria-hidden="true" tabindex="-1"></a>df_join <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(sample, group)</span>
+<span id="cb410-5"><a href="basic-statistics.html#cb410-5" aria-hidden="true" tabindex="-1"></a>df_join<span class="sc">$</span>id <span class="ot">&lt;-</span>  <span class="fu">paste0</span>(<span class="st">&quot;raster_&quot;</span>,  <span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>)</span></code></pre></div>
+</div>
+<div id="left-join-two-dataframes" class="section level3 hasAnchor" number="5.1.9">
+<h3><span class="header-section-number">5.1.9</span> Left join two dataframes<a href="basic-statistics.html#left-join-two-dataframes" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb411"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb411-1"><a href="basic-statistics.html#cb411-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb411-2"><a href="basic-statistics.html#cb411-2" aria-hidden="true" tabindex="-1"></a>data_all <span class="ot">&lt;-</span> <span class="fu">left_join</span>(df, df_join, <span class="at">by=</span><span class="st">&quot;id&quot;</span>)</span>
+<span id="cb411-3"><a href="basic-statistics.html#cb411-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data_all)</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">speed per hour</th>
+<th align="right">total dist</th>
+<th align="left">group.x</th>
+<th align="left">id</th>
+<th align="right">sample</th>
+<th align="left">group.y</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="left">raster_1</td>
+<td align="left">raster_1</td>
+<td align="right">-0.58</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">10</td>
+<td align="left">raster_2</td>
+<td align="left">raster_2</td>
+<td align="right">-0.01</td>
+<td align="left">raster_2</td>
+</tr>
+<tr class="odd">
+<td align="right">7</td>
+<td align="right">4</td>
+<td align="left">raster_3</td>
+<td align="left">raster_3</td>
+<td align="right">-1.78</td>
+<td align="left">raster_3</td>
+</tr>
+<tr class="even">
+<td align="right">7</td>
+<td align="right">22</td>
+<td align="left">raster_4</td>
+<td align="left">raster_4</td>
+<td align="right">-0.78</td>
+<td align="left">raster_4</td>
+</tr>
+<tr class="odd">
+<td align="right">8</td>
+<td align="right">16</td>
+<td align="left">raster_5</td>
+<td align="left">raster_5</td>
+<td align="right">0.13</td>
+<td align="left">raster_5</td>
+</tr>
+<tr class="even">
+<td align="right">9</td>
+<td align="right">10</td>
+<td align="left">raster_1</td>
+<td align="left">raster_6</td>
+<td align="right">-0.71</td>
+<td align="left">raster_1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="select-variables" class="section level3 hasAnchor" number="5.1.10">
+<h3><span class="header-section-number">5.1.10</span> Select variables<a href="basic-statistics.html#select-variables" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb412"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb412-1"><a href="basic-statistics.html#cb412-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(data_all, group.x, id  )</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">group.x</th>
+<th align="left">id</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">raster_1</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="even">
+<td align="left">raster_2</td>
+<td align="left">raster_2</td>
+</tr>
+<tr class="odd">
+<td align="left">raster_3</td>
+<td align="left">raster_3</td>
+</tr>
+<tr class="even">
+<td align="left">raster_4</td>
+<td align="left">raster_4</td>
+</tr>
+<tr class="odd">
+<td align="left">raster_5</td>
+<td align="left">raster_5</td>
+</tr>
+<tr class="even">
+<td align="left">raster_1</td>
+<td align="left">raster_6</td>
+</tr>
+<tr class="odd">
+<td align="left">raster_2</td>
+<td align="left">raster_7</td>
+</tr>
+<tr class="even">
+<td align="left">raster_3</td>
+<td align="left">raster_8</td>
+</tr>
+<tr class="odd">
+<td align="left">raster_4</td>
+<td align="left">raster_9</td>
+</tr>
+<tr class="even">
+<td align="left">raster_5</td>
+<td align="left">raster_10</td>
+</tr>
+<tr class="odd">
+<td align="left">raster_1</td>
+<td align="left">raster_11</td>
+</tr>
+<tr class="even">
+<td align="left">raster_2</td>
+<td align="left">raster_12</td>
+</tr>
+<tr class="odd">
+<td align="left">raster_3</td>
+<td align="left">raster_13</td>
+</tr>
+<tr class="even">
+<td align="left">raster_4</td>
+<td align="left">raster_14</td>
+</tr>
+<tr class="odd">
+<td align="left">raster_5</td>
+<td align="left">raster_15</td>
+</tr>
+<tr class="even">
+<td align="left">raster_1</td>
+<td align="left">raster_16</td>
+</tr>
+<tr class="odd">
+<td align="left">raster_2</td>
+<td align="left">raster_17</td>
+</tr>
+<tr class="even">
+<td align="left">raster_3</td>
+<td align="left">raster_18</td>
+</tr>
+<tr class="odd">
+<td align="left">raster_4</td>
+<td align="left">raster_19</td>
+</tr>
+<tr class="even">
+<td align="left">raster_5</td>
+<td align="left">raster_20</td>
+</tr>
+<tr class="odd">
+<td align="left">raster_1</td>
+<td align="left">raster_21</td>
+</tr>
+<tr class="even">
+<td align="left">raster_2</td>
+<td align="left">raster_22</td>
+</tr>
+<tr class="odd">
+<td align="left">raster_3</td>
+<td align="left">raster_23</td>
+</tr>
+<tr class="even">
+<td align="left">raster_4</td>
+<td align="left">raster_24</td>
+</tr>
+<tr class="odd">
+<td align="left">raster_5</td>
+<td align="left">raster_25</td>
+</tr>
+<tr class="even">
+<td align="left">raster_1</td>
+<td align="left">raster_26</td>
+</tr>
+<tr class="odd">
+<td align="left">raster_2</td>
+<td align="left">raster_27</td>
+</tr>
+<tr class="even">
+<td align="left">raster_3</td>
+<td align="left">raster_28</td>
+</tr>
+<tr class="odd">
+<td align="left">raster_4</td>
+<td align="left">raster_29</td>
+</tr>
+<tr class="even">
+<td align="left">raster_5</td>
+<td align="left">raster_30</td>
+</tr>
+<tr class="odd">
+<td align="left">raster_1</td>
+<td align="left">raster_31</td>
+</tr>
+<tr class="even">
+<td align="left">raster_2</td>
+<td align="left">raster_32</td>
+</tr>
+<tr class="odd">
+<td align="left">raster_3</td>
+<td align="left">raster_33</td>
+</tr>
+<tr class="even">
+<td align="left">raster_4</td>
+<td align="left">raster_34</td>
+</tr>
+<tr class="odd">
+<td align="left">raster_5</td>
+<td align="left">raster_35</td>
+</tr>
+<tr class="even">
+<td align="left">raster_1</td>
+<td align="left">raster_36</td>
+</tr>
+<tr class="odd">
+<td align="left">raster_2</td>
+<td align="left">raster_37</td>
+</tr>
+<tr class="even">
+<td align="left">raster_3</td>
+<td align="left">raster_38</td>
+</tr>
+<tr class="odd">
+<td align="left">raster_4</td>
+<td align="left">raster_39</td>
+</tr>
+<tr class="even">
+<td align="left">raster_5</td>
+<td align="left">raster_40</td>
+</tr>
+<tr class="odd">
+<td align="left">raster_1</td>
+<td align="left">raster_41</td>
+</tr>
+<tr class="even">
+<td align="left">raster_2</td>
+<td align="left">raster_42</td>
+</tr>
+<tr class="odd">
+<td align="left">raster_3</td>
+<td align="left">raster_43</td>
+</tr>
+<tr class="even">
+<td align="left">raster_4</td>
+<td align="left">raster_44</td>
+</tr>
+<tr class="odd">
+<td align="left">raster_5</td>
+<td align="left">raster_45</td>
+</tr>
+<tr class="even">
+<td align="left">raster_1</td>
+<td align="left">raster_46</td>
+</tr>
+<tr class="odd">
+<td align="left">raster_2</td>
+<td align="left">raster_47</td>
+</tr>
+<tr class="even">
+<td align="left">raster_3</td>
+<td align="left">raster_48</td>
+</tr>
+<tr class="odd">
+<td align="left">raster_4</td>
+<td align="left">raster_49</td>
+</tr>
+<tr class="even">
+<td align="left">raster_5</td>
+<td align="left">raster_50</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="filter-observations" class="section level3 hasAnchor" number="5.1.11">
+<h3><span class="header-section-number">5.1.11</span> Filter observations<a href="basic-statistics.html#filter-observations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb413"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb413-1"><a href="basic-statistics.html#cb413-1" aria-hidden="true" tabindex="-1"></a>raster_1 <span class="ot">&lt;-</span> <span class="fu">filter</span>(data_all, group.x <span class="sc">==</span> <span class="st">&quot;raster_1&quot;</span>)</span>
+<span id="cb413-2"><a href="basic-statistics.html#cb413-2" aria-hidden="true" tabindex="-1"></a>raster_1</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">speed per hour</th>
+<th align="right">total dist</th>
+<th align="left">group.x</th>
+<th align="left">id</th>
+<th align="right">sample</th>
+<th align="left">group.y</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="left">raster_1</td>
+<td align="left">raster_1</td>
+<td align="right">-0.58</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="even">
+<td align="right">9</td>
+<td align="right">10</td>
+<td align="left">raster_1</td>
+<td align="left">raster_6</td>
+<td align="right">-0.71</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="odd">
+<td align="right">11</td>
+<td align="right">28</td>
+<td align="left">raster_1</td>
+<td align="left">raster_11</td>
+<td align="right">-0.82</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="even">
+<td align="right">13</td>
+<td align="right">26</td>
+<td align="left">raster_1</td>
+<td align="left">raster_16</td>
+<td align="right">2.06</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="odd">
+<td align="right">14</td>
+<td align="right">36</td>
+<td align="left">raster_1</td>
+<td align="left">raster_21</td>
+<td align="right">-0.65</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="even">
+<td align="right">15</td>
+<td align="right">54</td>
+<td align="left">raster_1</td>
+<td align="left">raster_26</td>
+<td align="right">-0.76</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="odd">
+<td align="right">17</td>
+<td align="right">50</td>
+<td align="left">raster_1</td>
+<td align="left">raster_31</td>
+<td align="right">-0.99</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="even">
+<td align="right">19</td>
+<td align="right">36</td>
+<td align="left">raster_1</td>
+<td align="left">raster_36</td>
+<td align="right">-0.43</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="odd">
+<td align="right">20</td>
+<td align="right">52</td>
+<td align="left">raster_1</td>
+<td align="left">raster_41</td>
+<td align="right">-2.17</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="even">
+<td align="right">24</td>
+<td align="right">70</td>
+<td align="left">raster_1</td>
+<td align="left">raster_46</td>
+<td align="right">-0.99</td>
+<td align="left">raster_1</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb414"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb414-1"><a href="basic-statistics.html#cb414-1" aria-hidden="true" tabindex="-1"></a>speed_dist <span class="ot">&lt;-</span> <span class="fu">filter</span>(data_all, data_all<span class="sc">$</span><span class="st">`</span><span class="at">speed per hour</span><span class="st">`</span> <span class="sc">&lt;</span> <span class="dv">11</span> <span class="sc">&amp;</span> data_all<span class="sc">$</span><span class="st">`</span><span class="at">total dist</span><span class="st">`</span> <span class="sc">&gt;=</span> <span class="dv">10</span>)</span>
+<span id="cb414-2"><a href="basic-statistics.html#cb414-2" aria-hidden="true" tabindex="-1"></a>speed_dist</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">speed per hour</th>
+<th align="right">total dist</th>
+<th align="left">group.x</th>
+<th align="left">id</th>
+<th align="right">sample</th>
+<th align="left">group.y</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">4</td>
+<td align="right">10</td>
+<td align="left">raster_2</td>
+<td align="left">raster_2</td>
+<td align="right">-0.01</td>
+<td align="left">raster_2</td>
+</tr>
+<tr class="even">
+<td align="right">7</td>
+<td align="right">22</td>
+<td align="left">raster_4</td>
+<td align="left">raster_4</td>
+<td align="right">-0.78</td>
+<td align="left">raster_4</td>
+</tr>
+<tr class="odd">
+<td align="right">8</td>
+<td align="right">16</td>
+<td align="left">raster_5</td>
+<td align="left">raster_5</td>
+<td align="right">0.13</td>
+<td align="left">raster_5</td>
+</tr>
+<tr class="even">
+<td align="right">9</td>
+<td align="right">10</td>
+<td align="left">raster_1</td>
+<td align="left">raster_6</td>
+<td align="right">-0.71</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="odd">
+<td align="right">10</td>
+<td align="right">18</td>
+<td align="left">raster_2</td>
+<td align="left">raster_7</td>
+<td align="right">-0.04</td>
+<td align="left">raster_2</td>
+</tr>
+<tr class="even">
+<td align="right">10</td>
+<td align="right">26</td>
+<td align="left">raster_3</td>
+<td align="left">raster_8</td>
+<td align="right">-0.47</td>
+<td align="left">raster_3</td>
+</tr>
+<tr class="odd">
+<td align="right">10</td>
+<td align="right">34</td>
+<td align="left">raster_4</td>
+<td align="left">raster_9</td>
+<td align="right">0.61</td>
+<td align="left">raster_4</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="append-rows" class="section level3 hasAnchor" number="5.1.12">
+<h3><span class="header-section-number">5.1.12</span> Append rows<a href="basic-statistics.html#append-rows" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb415"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb415-1"><a href="basic-statistics.html#cb415-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(raster_1,speed_dist)</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">speed per hour</th>
+<th align="right">total dist</th>
+<th align="left">group.x</th>
+<th align="left">id</th>
+<th align="right">sample</th>
+<th align="left">group.y</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="left">raster_1</td>
+<td align="left">raster_1</td>
+<td align="right">-0.58</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="even">
+<td align="right">9</td>
+<td align="right">10</td>
+<td align="left">raster_1</td>
+<td align="left">raster_6</td>
+<td align="right">-0.71</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="odd">
+<td align="right">11</td>
+<td align="right">28</td>
+<td align="left">raster_1</td>
+<td align="left">raster_11</td>
+<td align="right">-0.82</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="even">
+<td align="right">13</td>
+<td align="right">26</td>
+<td align="left">raster_1</td>
+<td align="left">raster_16</td>
+<td align="right">2.06</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="odd">
+<td align="right">14</td>
+<td align="right">36</td>
+<td align="left">raster_1</td>
+<td align="left">raster_21</td>
+<td align="right">-0.65</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="even">
+<td align="right">15</td>
+<td align="right">54</td>
+<td align="left">raster_1</td>
+<td align="left">raster_26</td>
+<td align="right">-0.76</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="odd">
+<td align="right">17</td>
+<td align="right">50</td>
+<td align="left">raster_1</td>
+<td align="left">raster_31</td>
+<td align="right">-0.99</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="even">
+<td align="right">19</td>
+<td align="right">36</td>
+<td align="left">raster_1</td>
+<td align="left">raster_36</td>
+<td align="right">-0.43</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="odd">
+<td align="right">20</td>
+<td align="right">52</td>
+<td align="left">raster_1</td>
+<td align="left">raster_41</td>
+<td align="right">-2.17</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="even">
+<td align="right">24</td>
+<td align="right">70</td>
+<td align="left">raster_1</td>
+<td align="left">raster_46</td>
+<td align="right">-0.99</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="odd">
+<td align="right">4</td>
+<td align="right">10</td>
+<td align="left">raster_2</td>
+<td align="left">raster_2</td>
+<td align="right">-0.01</td>
+<td align="left">raster_2</td>
+</tr>
+<tr class="even">
+<td align="right">7</td>
+<td align="right">22</td>
+<td align="left">raster_4</td>
+<td align="left">raster_4</td>
+<td align="right">-0.78</td>
+<td align="left">raster_4</td>
+</tr>
+<tr class="odd">
+<td align="right">8</td>
+<td align="right">16</td>
+<td align="left">raster_5</td>
+<td align="left">raster_5</td>
+<td align="right">0.13</td>
+<td align="left">raster_5</td>
+</tr>
+<tr class="even">
+<td align="right">9</td>
+<td align="right">10</td>
+<td align="left">raster_1</td>
+<td align="left">raster_6</td>
+<td align="right">-0.71</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="odd">
+<td align="right">10</td>
+<td align="right">18</td>
+<td align="left">raster_2</td>
+<td align="left">raster_7</td>
+<td align="right">-0.04</td>
+<td align="left">raster_2</td>
+</tr>
+<tr class="even">
+<td align="right">10</td>
+<td align="right">26</td>
+<td align="left">raster_3</td>
+<td align="left">raster_8</td>
+<td align="right">-0.47</td>
+<td align="left">raster_3</td>
+</tr>
+<tr class="odd">
+<td align="right">10</td>
+<td align="right">34</td>
+<td align="left">raster_4</td>
+<td align="left">raster_9</td>
+<td align="right">0.61</td>
+<td align="left">raster_4</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="create-new-variables-instead-of-old-variables" class="section level3 hasAnchor" number="5.1.13">
+<h3><span class="header-section-number">5.1.13</span> Create new variables instead of old variables<a href="basic-statistics.html#create-new-variables-instead-of-old-variables" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb416"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb416-1"><a href="basic-statistics.html#cb416-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(data_all, </span>
+<span id="cb416-2"><a href="basic-statistics.html#cb416-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">sample =</span> <span class="fu">round</span>(sample,<span class="dv">1</span>))</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">speed per hour</th>
+<th align="right">total dist</th>
+<th align="left">group.x</th>
+<th align="left">id</th>
+<th align="right">sample</th>
+<th align="left">group.y</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="left">raster_1</td>
+<td align="left">raster_1</td>
+<td align="right">-0.6</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">10</td>
+<td align="left">raster_2</td>
+<td align="left">raster_2</td>
+<td align="right">0.0</td>
+<td align="left">raster_2</td>
+</tr>
+<tr class="odd">
+<td align="right">7</td>
+<td align="right">4</td>
+<td align="left">raster_3</td>
+<td align="left">raster_3</td>
+<td align="right">-1.8</td>
+<td align="left">raster_3</td>
+</tr>
+<tr class="even">
+<td align="right">7</td>
+<td align="right">22</td>
+<td align="left">raster_4</td>
+<td align="left">raster_4</td>
+<td align="right">-0.8</td>
+<td align="left">raster_4</td>
+</tr>
+<tr class="odd">
+<td align="right">8</td>
+<td align="right">16</td>
+<td align="left">raster_5</td>
+<td align="left">raster_5</td>
+<td align="right">0.1</td>
+<td align="left">raster_5</td>
+</tr>
+<tr class="even">
+<td align="right">9</td>
+<td align="right">10</td>
+<td align="left">raster_1</td>
+<td align="left">raster_6</td>
+<td align="right">-0.7</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="odd">
+<td align="right">10</td>
+<td align="right">18</td>
+<td align="left">raster_2</td>
+<td align="left">raster_7</td>
+<td align="right">0.0</td>
+<td align="left">raster_2</td>
+</tr>
+<tr class="even">
+<td align="right">10</td>
+<td align="right">26</td>
+<td align="left">raster_3</td>
+<td align="left">raster_8</td>
+<td align="right">-0.5</td>
+<td align="left">raster_3</td>
+</tr>
+<tr class="odd">
+<td align="right">10</td>
+<td align="right">34</td>
+<td align="left">raster_4</td>
+<td align="left">raster_9</td>
+<td align="right">0.6</td>
+<td align="left">raster_4</td>
+</tr>
+<tr class="even">
+<td align="right">11</td>
+<td align="right">17</td>
+<td align="left">raster_5</td>
+<td align="left">raster_10</td>
+<td align="right">1.2</td>
+<td align="left">raster_5</td>
+</tr>
+<tr class="odd">
+<td align="right">11</td>
+<td align="right">28</td>
+<td align="left">raster_1</td>
+<td align="left">raster_11</td>
+<td align="right">-0.8</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="even">
+<td align="right">12</td>
+<td align="right">14</td>
+<td align="left">raster_2</td>
+<td align="left">raster_12</td>
+<td align="right">-0.3</td>
+<td align="left">raster_2</td>
+</tr>
+<tr class="odd">
+<td align="right">12</td>
+<td align="right">20</td>
+<td align="left">raster_3</td>
+<td align="left">raster_13</td>
+<td align="right">1.4</td>
+<td align="left">raster_3</td>
+</tr>
+<tr class="even">
+<td align="right">12</td>
+<td align="right">24</td>
+<td align="left">raster_4</td>
+<td align="left">raster_14</td>
+<td align="right">-2.2</td>
+<td align="left">raster_4</td>
+</tr>
+<tr class="odd">
+<td align="right">12</td>
+<td align="right">28</td>
+<td align="left">raster_5</td>
+<td align="left">raster_15</td>
+<td align="right">-0.3</td>
+<td align="left">raster_5</td>
+</tr>
+<tr class="even">
+<td align="right">13</td>
+<td align="right">26</td>
+<td align="left">raster_1</td>
+<td align="left">raster_16</td>
+<td align="right">2.1</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="odd">
+<td align="right">13</td>
+<td align="right">34</td>
+<td align="left">raster_2</td>
+<td align="left">raster_17</td>
+<td align="right">2.2</td>
+<td align="left">raster_2</td>
+</tr>
+<tr class="even">
+<td align="right">13</td>
+<td align="right">34</td>
+<td align="left">raster_3</td>
+<td align="left">raster_18</td>
+<td align="right">0.2</td>
+<td align="left">raster_3</td>
+</tr>
+<tr class="odd">
+<td align="right">13</td>
+<td align="right">46</td>
+<td align="left">raster_4</td>
+<td align="left">raster_19</td>
+<td align="right">-0.9</td>
+<td align="left">raster_4</td>
+</tr>
+<tr class="even">
+<td align="right">14</td>
+<td align="right">26</td>
+<td align="left">raster_5</td>
+<td align="left">raster_20</td>
+<td align="right">0.2</td>
+<td align="left">raster_5</td>
+</tr>
+<tr class="odd">
+<td align="right">14</td>
+<td align="right">36</td>
+<td align="left">raster_1</td>
+<td align="left">raster_21</td>
+<td align="right">-0.7</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="even">
+<td align="right">14</td>
+<td align="right">60</td>
+<td align="left">raster_2</td>
+<td align="left">raster_22</td>
+<td align="right">1.4</td>
+<td align="left">raster_2</td>
+</tr>
+<tr class="odd">
+<td align="right">14</td>
+<td align="right">80</td>
+<td align="left">raster_3</td>
+<td align="left">raster_23</td>
+<td align="right">-0.8</td>
+<td align="left">raster_3</td>
+</tr>
+<tr class="even">
+<td align="right">15</td>
+<td align="right">20</td>
+<td align="left">raster_4</td>
+<td align="left">raster_24</td>
+<td align="right">0.4</td>
+<td align="left">raster_4</td>
+</tr>
+<tr class="odd">
+<td align="right">15</td>
+<td align="right">26</td>
+<td align="left">raster_5</td>
+<td align="left">raster_25</td>
+<td align="right">0.6</td>
+<td align="left">raster_5</td>
+</tr>
+<tr class="even">
+<td align="right">15</td>
+<td align="right">54</td>
+<td align="left">raster_1</td>
+<td align="left">raster_26</td>
+<td align="right">-0.8</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="odd">
+<td align="right">16</td>
+<td align="right">32</td>
+<td align="left">raster_2</td>
+<td align="left">raster_27</td>
+<td align="right">0.8</td>
+<td align="left">raster_2</td>
+</tr>
+<tr class="even">
+<td align="right">16</td>
+<td align="right">40</td>
+<td align="left">raster_3</td>
+<td align="left">raster_28</td>
+<td align="right">-0.8</td>
+<td align="left">raster_3</td>
+</tr>
+<tr class="odd">
+<td align="right">17</td>
+<td align="right">32</td>
+<td align="left">raster_4</td>
+<td align="left">raster_29</td>
+<td align="right">0.6</td>
+<td align="left">raster_4</td>
+</tr>
+<tr class="even">
+<td align="right">17</td>
+<td align="right">40</td>
+<td align="left">raster_5</td>
+<td align="left">raster_30</td>
+<td align="right">1.1</td>
+<td align="left">raster_5</td>
+</tr>
+<tr class="odd">
+<td align="right">17</td>
+<td align="right">50</td>
+<td align="left">raster_1</td>
+<td align="left">raster_31</td>
+<td align="right">-1.0</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="even">
+<td align="right">18</td>
+<td align="right">42</td>
+<td align="left">raster_2</td>
+<td align="left">raster_32</td>
+<td align="right">1.1</td>
+<td align="left">raster_2</td>
+</tr>
+<tr class="odd">
+<td align="right">18</td>
+<td align="right">56</td>
+<td align="left">raster_3</td>
+<td align="left">raster_33</td>
+<td align="right">-0.5</td>
+<td align="left">raster_3</td>
+</tr>
+<tr class="even">
+<td align="right">18</td>
+<td align="right">76</td>
+<td align="left">raster_4</td>
+<td align="left">raster_34</td>
+<td align="right">0.3</td>
+<td align="left">raster_4</td>
+</tr>
+<tr class="odd">
+<td align="right">18</td>
+<td align="right">84</td>
+<td align="left">raster_5</td>
+<td align="left">raster_35</td>
+<td align="right">0.2</td>
+<td align="left">raster_5</td>
+</tr>
+<tr class="even">
+<td align="right">19</td>
+<td align="right">36</td>
+<td align="left">raster_1</td>
+<td align="left">raster_36</td>
+<td align="right">-0.4</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="odd">
+<td align="right">19</td>
+<td align="right">46</td>
+<td align="left">raster_2</td>
+<td align="left">raster_37</td>
+<td align="right">0.3</td>
+<td align="left">raster_2</td>
+</tr>
+<tr class="even">
+<td align="right">19</td>
+<td align="right">68</td>
+<td align="left">raster_3</td>
+<td align="left">raster_38</td>
+<td align="right">-1.2</td>
+<td align="left">raster_3</td>
+</tr>
+<tr class="odd">
+<td align="right">20</td>
+<td align="right">32</td>
+<td align="left">raster_4</td>
+<td align="left">raster_39</td>
+<td align="right">-0.1</td>
+<td align="left">raster_4</td>
+</tr>
+<tr class="even">
+<td align="right">20</td>
+<td align="right">48</td>
+<td align="left">raster_5</td>
+<td align="left">raster_40</td>
+<td align="right">0.8</td>
+<td align="left">raster_5</td>
+</tr>
+<tr class="odd">
+<td align="right">20</td>
+<td align="right">52</td>
+<td align="left">raster_1</td>
+<td align="left">raster_41</td>
+<td align="right">-2.2</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="even">
+<td align="right">20</td>
+<td align="right">56</td>
+<td align="left">raster_2</td>
+<td align="left">raster_42</td>
+<td align="right">-1.5</td>
+<td align="left">raster_2</td>
+</tr>
+<tr class="odd">
+<td align="right">20</td>
+<td align="right">64</td>
+<td align="left">raster_3</td>
+<td align="left">raster_43</td>
+<td align="right">-1.2</td>
+<td align="left">raster_3</td>
+</tr>
+<tr class="even">
+<td align="right">22</td>
+<td align="right">66</td>
+<td align="left">raster_4</td>
+<td align="left">raster_44</td>
+<td align="right">-1.6</td>
+<td align="left">raster_4</td>
+</tr>
+<tr class="odd">
+<td align="right">23</td>
+<td align="right">54</td>
+<td align="left">raster_5</td>
+<td align="left">raster_45</td>
+<td align="right">0.4</td>
+<td align="left">raster_5</td>
+</tr>
+<tr class="even">
+<td align="right">24</td>
+<td align="right">70</td>
+<td align="left">raster_1</td>
+<td align="left">raster_46</td>
+<td align="right">-1.0</td>
+<td align="left">raster_1</td>
+</tr>
+<tr class="odd">
+<td align="right">24</td>
+<td align="right">92</td>
+<td align="left">raster_2</td>
+<td align="left">raster_47</td>
+<td align="right">-2.2</td>
+<td align="left">raster_2</td>
+</tr>
+<tr class="even">
+<td align="right">24</td>
+<td align="right">93</td>
+<td align="left">raster_3</td>
+<td align="left">raster_48</td>
+<td align="right">-0.6</td>
+<td align="left">raster_3</td>
+</tr>
+<tr class="odd">
+<td align="right">24</td>
+<td align="right">120</td>
+<td align="left">raster_4</td>
+<td align="left">raster_49</td>
+<td align="right">-0.4</td>
+<td align="left">raster_4</td>
+</tr>
+<tr class="even">
+<td align="right">25</td>
+<td align="right">85</td>
+<td align="left">raster_5</td>
+<td align="left">raster_50</td>
+<td align="right">0.9</td>
+<td align="left">raster_5</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="summarise-statistics" class="section level3 hasAnchor" number="5.1.14">
+<h3><span class="header-section-number">5.1.14</span> summarise statistics<a href="basic-statistics.html#summarise-statistics" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb417"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb417-1"><a href="basic-statistics.html#cb417-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">summarise</span>(data_all,</span>
+<span id="cb417-2"><a href="basic-statistics.html#cb417-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">mean_speed =</span> <span class="fu">mean</span>(sample),</span>
+<span id="cb417-3"><a href="basic-statistics.html#cb417-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">max_dist =</span> <span class="fu">max</span>( <span class="st">&quot;total dist&quot;</span> ))</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">mean_speed</th>
+<th align="left">max_dist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">-0.1758</td>
+<td align="left">total dist</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="group-dataframe-then-summarise-statistics" class="section level3 hasAnchor" number="5.1.15">
+<h3><span class="header-section-number">5.1.15</span> Group dataframe then summarise statistics<a href="basic-statistics.html#group-dataframe-then-summarise-statistics" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb418"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb418-1"><a href="basic-statistics.html#cb418-1" aria-hidden="true" tabindex="-1"></a>data_all_group <span class="ot">&lt;-</span>   <span class="fu">group_by</span>(data_all, group.x)   </span>
+<span id="cb418-2"><a href="basic-statistics.html#cb418-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">summarise</span>(data_all_group, </span>
+<span id="cb418-3"><a href="basic-statistics.html#cb418-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">mean_speed =</span> <span class="fu">mean</span>(sample),</span>
+<span id="cb418-4"><a href="basic-statistics.html#cb418-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">max_dist =</span> <span class="fu">max</span>( <span class="st">&quot;total dist&quot;</span> ))</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">group.x</th>
+<th align="right">mean_speed</th>
+<th align="left">max_dist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">raster_1</td>
+<td align="right">-0.604</td>
+<td align="left">total dist</td>
+</tr>
+<tr class="even">
+<td align="left">raster_2</td>
+<td align="right">0.186</td>
+<td align="left">total dist</td>
+</tr>
+<tr class="odd">
+<td align="left">raster_3</td>
+<td align="right">-0.573</td>
+<td align="left">total dist</td>
+</tr>
+<tr class="even">
+<td align="left">raster_4</td>
+<td align="right">-0.406</td>
+<td align="left">total dist</td>
+</tr>
+<tr class="odd">
+<td align="left">raster_5</td>
+<td align="right">0.518</td>
+<td align="left">total dist</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="ungroup-then-summarise-statistics" class="section level3 hasAnchor" number="5.1.16">
+<h3><span class="header-section-number">5.1.16</span> Ungroup then summarise statistics<a href="basic-statistics.html#ungroup-then-summarise-statistics" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb419"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb419-1"><a href="basic-statistics.html#cb419-1" aria-hidden="true" tabindex="-1"></a>ungroup_data <span class="ot">&lt;-</span> <span class="fu">ungroup</span>( data_all_group)</span>
+<span id="cb419-2"><a href="basic-statistics.html#cb419-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">summarise</span>(  ungroup_data , </span>
+<span id="cb419-3"><a href="basic-statistics.html#cb419-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">mean_speed =</span> <span class="fu">mean</span>(sample),</span>
+<span id="cb419-4"><a href="basic-statistics.html#cb419-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">max_dist =</span> <span class="fu">max</span>( <span class="st">&quot;total dist&quot;</span> ))</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">mean_speed</th>
+<th align="left">max_dist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">-0.1758</td>
+<td align="left">total dist</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="summary-linear-regression-model" class="section level3 hasAnchor" number="5.1.17">
+<h3><span class="header-section-number">5.1.17</span> Summary linear regression model<a href="basic-statistics.html#summary-linear-regression-model" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb420"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb420-1"><a href="basic-statistics.html#cb420-1" aria-hidden="true" tabindex="-1"></a>mod1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(cars<span class="sc">$</span><span class="st">`</span><span class="at">total dist</span><span class="st">`</span> <span class="sc">~</span> cars<span class="sc">$</span><span class="st">`</span><span class="at">speed per hour</span><span class="st">`</span> )</span>
+<span id="cb420-2"><a href="basic-statistics.html#cb420-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod1) </span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = cars$`total dist` ~ cars$`speed per hour`)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -29.069  -9.525  -2.272   9.215  43.201 
+## 
+## Coefficients:
+##                       Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)           -17.5791     6.7584  -2.601   0.0123 *  
+## cars$`speed per hour`   3.9324     0.4155   9.464 1.49e-12 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 15.38 on 48 degrees of freedom
+## Multiple R-squared:  0.6511, Adjusted R-squared:  0.6438 
+## F-statistic: 89.57 on 1 and 48 DF,  p-value: 1.49e-12</code></pre>
+</div>
+<div id="create-frequency-table" class="section level3 hasAnchor" number="5.1.18">
+<h3><span class="header-section-number">5.1.18</span> Create frequency table<a href="basic-statistics.html#create-frequency-table" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb422"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb422-1"><a href="basic-statistics.html#cb422-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(data_all_group<span class="sc">$</span><span class="st">`</span><span class="at">speed per hour</span><span class="st">`</span>,data_all_group<span class="sc">$</span>group.x  )</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">/</th>
+<th align="right">raster_1</th>
+<th align="right">raster_2</th>
+<th align="right">raster_3</th>
+<th align="right">raster_4</th>
+<th align="right">raster_5</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">4</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">7</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">8</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">9</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">10</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">11</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">12</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">13</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">14</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">15</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">16</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">17</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">18</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">19</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">20</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">22</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">23</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">24</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">25</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="value-and-variable-label" class="section level3 hasAnchor" number="5.1.19">
+<h3><span class="header-section-number">5.1.19</span> Value and variable label<a href="basic-statistics.html#value-and-variable-label" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb423"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb423-1"><a href="basic-statistics.html#cb423-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(iris<span class="sc">$</span>Species)</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">setosa</th>
+<th align="right">versicolor</th>
+<th align="right">virginica</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">50</td>
+<td align="right">50</td>
+<td align="right">50</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb424"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb424-1"><a href="basic-statistics.html#cb424-1" aria-hidden="true" tabindex="-1"></a>iris<span class="sc">$</span>Species <span class="ot">&lt;-</span> <span class="fu">factor</span>(iris<span class="sc">$</span>Species,<span class="at">labels =</span> <span class="fu">c</span>( <span class="st">&quot;setosanew&quot;</span>,<span class="st">&quot;versicolornew&quot;</span>,<span class="st">&quot;virginianew&quot;</span>))</span>
+<span id="cb424-2"><a href="basic-statistics.html#cb424-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(iris<span class="sc">$</span>Species)</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">setosanew</th>
+<th align="right">versicolornew</th>
+<th align="right">virginianew</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">50</td>
+<td align="right">50</td>
+<td align="right">50</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb425"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb425-1"><a href="basic-statistics.html#cb425-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Hmisc)</span></code></pre></div>
+<div class="sourceCode" id="cb426"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb426-1"><a href="basic-statistics.html#cb426-1" aria-hidden="true" tabindex="-1"></a><span class="fu">label</span>(iris<span class="sc">$</span>Species) <span class="ot">&lt;-</span> <span class="st">&quot;Species types&quot;</span></span>
+<span id="cb426-2"><a href="basic-statistics.html#cb426-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(iris<span class="sc">$</span>Species)</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">setosanew</th>
+<th align="right">versicolornew</th>
+<th align="right">virginianew</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">50</td>
+<td align="right">50</td>
+<td align="right">50</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="recode-a-variable" class="section level3 hasAnchor" number="5.1.20">
+<h3><span class="header-section-number">5.1.20</span> Recode a variable<a href="basic-statistics.html#recode-a-variable" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb427"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb427-1"><a href="basic-statistics.html#cb427-1" aria-hidden="true" tabindex="-1"></a>irisifelse <span class="ot">&lt;-</span>  iris<span class="sc">%&gt;%</span> </span>
+<span id="cb427-2"><a href="basic-statistics.html#cb427-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">Sepal.Length2 =</span> <span class="fu">ifelse</span>(Sepal.Length <span class="sc">&lt;</span> <span class="dv">6</span> , <span class="st">&quot;level1&quot;</span>, <span class="fu">ifelse</span>(Sepal.Length <span class="sc">&lt;</span> <span class="dv">7</span> , <span class="st">&quot;level2&quot;</span>, Sepal.Length)))</span>
+<span id="cb427-3"><a href="basic-statistics.html#cb427-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb427-4"><a href="basic-statistics.html#cb427-4" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(irisifelse<span class="sc">$</span>Sepal.Length2)</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">7</th>
+<th align="right">7.1</th>
+<th align="right">7.2</th>
+<th align="right">7.3</th>
+<th align="right">7.4</th>
+<th align="right">7.6</th>
+<th align="right">7.7</th>
+<th align="right">7.9</th>
+<th align="right">level1</th>
+<th align="right">level2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">83</td>
+<td align="right">54</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="data-visualization.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="statistical-models.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/05-basicsta.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
