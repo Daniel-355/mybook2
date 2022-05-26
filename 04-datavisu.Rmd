@@ -1,15 +1,465 @@
 # Data visualization
 
-## Footnotes
+<!-- ================ -->
+## Data visualization course
 
-<!-- Footnotes are put inside the square brackets after a caret `^[]`. Like this one ^[This is a footnote.].  -->
+### Summarization 
+```{r}
+library(tidyverse)
+library(dplyr)
+mtcars %>%
+  mutate( kml = mpg * 0.42) %>%
+  group_by(cyl) %>%
+   summarise(avg_US = mean(mpg), avg_metric = mean(kml))
+```
 
-## Citations
+```{r}
+mpg %>% 
+  group_by(manufacturer, year) %>% 
+  summarise_at(vars(cty, hwy), mean)
+```
+- change layout
+```{r}
+mpg %>% count(class, year)%>% 
+  spread(class, n) 
+```
+- change all characters into factors
+```{r}
+mpg <- mpg %>% 
+  mutate_if(is.character, as.factor) #if a column is a character, change to a factor
+```
+- wide to long data
+```{r}
+mpg1 <- mpg %>% 
+  gather("key", "value", cty, hwy)
+```
 
-<!-- Reference items in your bibliography file(s) using `@key`. -->
+- convert wide data to long data using `pivot_longer `
+```{r}
+## Your code here. Naming choices for 1 and 2 are yours
+dta <- mpg %>% 
+  pivot_longer(cty:hwy, names_to = "var", values_to = "value") %>%  # Both of those are 
+  # value label
+   mutate(var = ifelse( var == 'cty', 'city','highway'))
 
-<!-- For example, we are using the **bookdown** package [@R-bookdown] (check out the last code chunk in index.Rmd to see how this citation key was added) in this sample book, which was built on top of R Markdown and **knitr** [@xie2015] (this citation was added manually in an external file book.bib).  -->
-<!-- Note that the `.bib` files need to be listed in the index.Rmd with the YAML `bibliography` key. -->
+ggplot(dta, aes(x = displ, y = value)) + 
+  geom_point(aes(color = var))  +
+  geom_smooth(aes(color = var), se = F)
+```
+
+- explore distribution  
+```{r}
+library(DataExplorer)
+library(psych)
+library(naniar)
+plot_histogram(riskfactors)
+```
+
+- explore relationship/correlation
+```{r}
+library(psych)
+pairs.panels(riskfactors[,1:10])
+```
+
+- create a individual theme
+```{r}
+my_theme <- function(){
+  theme_bw() + 
+ 
+  theme(axis.title = element_text(size=16),
+  axis.text = element_text(size=14),
+  text = element_text(size = 14))
+}
+```
+### Explore missing values
+```{r}
+# install.packages("naniar")
+library(naniar)
+# head(riskfactors)
+riskfactors <- riskfactors
+```
+
+```{r}
+gg_miss_upset(riskfactors,nsets=10)
+```
+
+```{r}
+# install.packages("DataExplorer")
+
+plot_missing(riskfactors)
+```
+
+```{r}
+# take a quick look at the data types of each column
+visdat::vis_dat(riskfactors)
+```
+ 
 
 
-<!-- The RStudio Visual Markdown Editor can also make it easier to insert citations: <https://rstudio.github.io/visual-markdown-editing/#/citations> -->
+
+### Add statistical test 
+```{r ,warning=F}
+library(ggpubr)
+plt <- ggplot(  data=mpg,
+  mapping= aes(x =  as.factor(year),
+               y = cty,
+               color = as.factor(year) ) )+
+  geom_boxplot() +
+  geom_jitter(width=0.1)+
+  labs(x = 'Year',
+       y = "City mpg") +
+  my_theme()+ facet_wrap( ~ manufacturer,nrow = 2)  
+  
+# add statistical test
+  my_comparisons <- list(c('1999','2008'))
+plt + stat_compare_means() +
+stat_compare_means(comparisons = my_comparisons)
+```
+
+
+### Add texts to dots 
+```{r}
+USArrests <- USArrests %>% rownames_to_column('State')
+
+ggplot(USArrests, aes(
+x=UrbanPop,y=Murder))+
+geom_point() +
+  labs(x = "Percent of population that is urban", 
+       y = "Murder arrests (per 100,000)",
+       caption =  "McNeil (1997). Interactive Data Analysis")+
+  geom_text(aes(label=State),size=3)
+```
+
+
+### Create a panel of plots
+
+- combine multiple plots into one
+```{r}
+p1=ggplot(data=riskfactors,aes(x=age))+
+  geom_histogram(bins = 30 )
+
+p2=ggplot(data=riskfactors,aes(x=sex))+
+  geom_bar (aes(x=sex) )
+
+p3=ggplot(riskfactors,aes(x = education, y = bmi))+
+  geom_boxplot (  )
+
+p4=ggplot(riskfactors, aes(x = marital )) + 
+  geom_bar(aes(group = education, y = (..count..)/sum(..count..),fill = education)) + 
+          scale_y_continuous(labels=scales::percent) 
+
+# install.packages("ggpubr")
+library(ggpubr)
+ggarrange(p1, p2, p3, p4, ncol = 2, nrow=2)
+```
+
+
+
+### Plots in regression
+- create linear regression model
+```{r}
+data("Boston", package = "MASS")
+linear_reg <- glm(medv ~ ., data=Boston , family = gaussian())
+summary(linear_reg)
+```
+- summary
+```{r}
+knitr::kable(broom::tidy(linear_reg))
+```
+
+- create logistical regression 
+```{r}
+# load the Pima Indians dataset from the mlbench dataset
+library(mlbench)
+data(PimaIndiansDiabetes) 
+# rename dataset to have shorter name because lazy
+diabetes <- PimaIndiansDiabetes
+
+logistic_reg <- glm(diabetes ~ ., data=diabetes, family = binomial)
+
+summary(logistic_reg)
+
+```
+- summary
+
+```{r}
+knitr::kable(broom::tidy(logistic_reg))
+```
+
+
+#### Create forest plots for `coefficients` or `OR`
+```{r}
+library(sjPlot)
+plot_model(linear_reg, show.values = TRUE, value.offset = 0.5)
+```
+
+```{r}
+plot_model(logistic_reg, show.values = TRUE, value.offset = .5, vline.color = "black")
+```
+**another way**
+```{r}
+library(finalfit) 
+
+explanatory = c(  "crim"  ,  "zn"   ,   "indus"  ,   "nox"   ,  "rm"   ,   "age" ,    "dis"  ,   "rad"   ,  "tax"   ,"ptratio" ,"black"  , "lstat" )
+
+dependent = "medv"
+
+
+Boston %>%
+ coefficient_plot(dependent, explanatory, table_text_size=3, 
+                  title_text_size=12,
+                   plot_opts=list(xlab("Beta, 95% CI"), 
+                                  theme(axis.title = element_text(size=12))))
+```
+
+```{r}
+ 
+library(finalfit) 
+
+explanatory = c(  "pregnant", "glucose" , "pressure", "triceps"  ,"insulin" , "mass"   ,  "pedigree", "age"  )
+
+dependent = "diabetes"
+
+diabetes %>%
+ or_plot(dependent, explanatory, table_text_size=3, 
+                  title_text_size=12,
+                   plot_opts=list(xlab("OR, 95% CI"), 
+                                  theme(axis.title = element_text(size=12))))
+ 
+```
+
+- qq plot
+```{r}
+ggqqplot( (Boston$medv))
+```
+
+<!-- ======================== -->
+
+- Loading data set
+```{r}
+library(printr)
+library(tidyverse)
+head(iris)
+```
+## Scatter plot
+### Create a empty canvas
+- then create `aesthetic mapping`  
+- tell the function which dataset and variables to use
+```{r}
+ggplot(data = iris,        # which data set? canvas? 
+       aes(x=Sepal.Length , y=Petal.Length   ))  # which variables as aesthetics? x and y are mapped to columns of the data; different geoms can have different aesthetics (different variables). 
+```
+
+ 
+### Add a layer/geom of `points` to the canvas
+```{r}
+ggplot(data = iris,
+       mapping = aes(x=Sepal.Length , y=Petal.Length  )) + 
+  geom_point()   # adding the geometrical representation 
+```
+ 
+```{r,eval=F}
+# same plot as above
+ggplot(data = iris) + 
+  geom_point(  aes(x=Sepal.Length , y=Petal.Length  )) 
+```
+### Add another aesthetic
+- add a curve/straight line to fit these points
+- geom provides the aesthetic to ggplot
+```{r}
+# Loess curve
+ggplot(data = iris, 
+       mapping = aes(x=Sepal.Length , y=Petal.Length  )) + 
+  geom_point() +
+  geom_smooth() 
+
+```
+
+```{r}
+# Linear regression line
+ggplot(data = iris, 
+       mapping = aes(x=Sepal.Length , y=Petal.Length)) + 
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+### Add other aesthetic
+- set other aesthetics `colour, alpha (transparency), and size of points`
+
+```{r}
+ggplot(data = iris) + 
+  geom_point(aes(x=Sepal.Length , y=Petal.Length, size = Sepal.Width     ), 
+             alpha = .5, 
+             colour = "red")
+```
+
+ 
+
+```{r}
+ggplot(data = iris) + 
+  geom_point(aes(x=Sepal.Length , y=Petal.Length, size = Sepal.Width , colour=Species), #white is a variable here 
+             alpha=.9)
+```
+
+ 
+- categorize `Petal.Width` then map colour to this new variable
+```{r}
+iris <- iris %>% 
+  mutate(growth = ifelse(Petal.Width   > 1.5, "Wide", "Normal"))
+
+ggplot(data=iris) + 
+  geom_point(aes(x=Sepal.Length , y=Petal.Length, size = Sepal.Width , colour=growth), 
+             alpha=.9)
+```
+
+ 
+## Bar chart
+```{r}
+ggplot(data = iris) + 
+  geom_bar(aes(x = growth))
+```
+
+- bar chart after `group_by` 
+- then use `stat='identity'` 
+```{r}
+library(dplyr)
+results  <- iris %>% 
+  group_by(Species, growth) %>% 
+   summarise(Sepal.Length.mean=mean (Sepal.Length ))
+
+ gop <- results  %>% 
+  filter(Species != "setosa_null"  )
+ gop
+```
+- though meaningless below until line chart (just use the mean as the sum for demonstration)
+```{r}
+# We can also store parts of a plot in an object
+plot1 <- ggplot(gop) + 
+  geom_bar(aes(x=growth , y=Sepal.Length.mean), 
+           
+           stat='identity')
+plot1
+```
+### Add some options for the whole ggplot rather than layers
+- `switch` the x and y axes 
+```{r}
+plot1 + 
+  coord_flip()
+```
+
+- `reorder` x categories (`-`means descending)
+```{r}
+ggplot( gop) + 
+  geom_bar(aes(x=reorder(growth, -Sepal.Length.mean), y=Sepal.Length.mean, fill=growth), 
+           stat='identity') + 
+  coord_flip()
+```
+
+- add x axis `label` and a `theme` 
+```{r}
+ggplot(gop) + 
+  geom_bar(aes(x=reorder(growth, -Sepal.Length.mean), y=Sepal.Length.mean, fill=growth), 
+           stat='identity') + 
+  coord_flip() + 
+  xlab("Growth categories") + 
+  guides(fill=F) +
+  theme_minimal()
+```
+
+- set theme
+```{r}
+library(ggthemes)
+ggplot(data = iris) + 
+  geom_bar(aes(x = growth)) + 
+  theme_economist()
+```
+
+### Grouped bar chart 
+-bar chart with different panels
+```{r}
+ggplot(mpg, aes(x = class)) + 
+  geom_bar() + 
+  facet_wrap( ~ year)
+```
+
+- actual number (groups are stacked by default)
+```{r}
+ggplot(gop) + 
+  geom_bar(aes(x=growth, y=Sepal.Length.mean, fill=Species)
+           , stat='identity'
+           )
+```
+
+```{r}
+ggplot(mpg, aes(x = class )) + 
+  geom_bar(aes(group = year, fill = year), position = "stack")
+```
+
+- percentage
+```{r}
+ggplot(gop) + 
+  geom_bar(aes(x=growth, y=Sepal.Length.mean, fill=Species), 
+           stat='identity', 
+           position='fill')
+```
+ 
+- groups are dodge with `actual number `
+```{r}
+ggplot(gop) + 
+  geom_bar(aes(x=growth, y=Sepal.Length.mean, fill=Species), 
+           stat='identity', 
+           position='dodge')
+
+```
+- groups are dodge with `percentage`
+```{r}
+gop2 <- gop %>% 
+  group_by(growth ) %>% 
+  mutate(Sepal.Length.prop=Sepal.Length.mean/sum(Sepal.Length.mean))
+
+ggplot(gop2) + 
+  geom_bar(aes(x=growth, y=Sepal.Length.prop, fill=Species), 
+           stat='identity', 
+           position='dodge') + 
+  ylab("Votes (%)")
+```
+
+ 
+## Line charts
+ 
+```{r}
+ggplot(iris) + 
+  geom_line(aes(x=Sepal.Length , y=Petal.Length))
+```
+ 
+### Grouped by `colour variable`
+```{r}
+ggplot(iris) + 
+  geom_line(aes(x=Sepal.Length , y=Petal.Length, colour = Species))
+```
+
+ 
+- grouped by state then set how many rows or columns
+```{r}
+ggplot(iris) + 
+  geom_line(aes(x=Sepal.Length , y=Petal.Length) ) + 
+  
+  facet_wrap(~Species, nrow = 1) +      #set how many rows
+  coord_flip()  
+```
+
+### Multiple aesthetics
+```{r}
+iris <- iris %>% 
+  mutate(growth = ifelse(Petal.Width   > 1.5, "Wide", "Normal"))
+
+ggplot(iris, aes(x = Sepal.Length, y = Petal.Length)) + 
+  geom_line(size=2,color="purple")+  
+  # number format
+  scale_x_log10(labels = scales::label_number())+
+  geom_point( aes(size =  Sepal.Length,colour = as.factor(growth)),show.legend = F)+
+  facet_wrap(~ Species) 
+
+```
+
+ 

@@ -1,12 +1,464 @@
 # Deep learning
 
-<!-- You can add parts to organize one or more book chapters together. Parts can be inserted at the top of an .Rmd file, before the first-level chapter heading in that same file.  -->
+<!-- ========================  -->
+## Deep neural network
+```{r, include=FALSE}
+suppressMessages(library(readr))
+suppressMessages(library(keras))
+suppressMessages(library(DT))
+```
+### Load data  
 
-<!-- Add a numbered part: `# (PART) Act one {-}` (followed by `# A chapter`) -->
+```{r}
+# load the Pima Indians dataset from the mlbench dataset
+library(mlbench)
+data(PimaIndiansDiabetes) 
+# rename dataset to have shorter name because lazy
+diabetes <- PimaIndiansDiabetes
 
-<!-- Add an unnumbered part: `# (PART\*) Act one {-}` (followed by `# A chapter`) -->
+data.set <- diabetes
+  # datatable(data.set[sample(nrow(data.set),
+  #                         replace = FALSE,
+  #                         size = 0.005 * nrow(data.set)), ])
+```
 
-<!-- Add an appendix as a special kind of un-numbered part: `# (APPENDIX) Other stuff {-}` (followed by `# A chapter`). Chapters in an appendix are prepended with letters instead of numbers. -->
+```{r}
+summary(data.set)
+```
+### Process data and variable
+```{r}
+data.set$diabetes <- as.numeric(data.set$diabetes)
+data.set$diabetes=data.set$diabetes-1
+head(data.set$diabetes)
+```
+
+```{r}
+ 
+head(data.set)
+str(data.set)
+ 
+```
+
+- transform dataframe into matrix
+```{r}
+# Cast dataframe as a matrix
+data.set <- as.matrix(data.set)
+
+# Remove column names
+dimnames(data.set) = NULL
+```
+
+```{r}
+head(data.set)
+
+```
+
+### Split data into training and test datasets
+- including `xtrain ytrian xtest ytest`
+```{r}
+# Split for train and test data
+set.seed(100)
+indx <- sample(2,
+               nrow(data.set),
+               replace = TRUE,
+               prob = c(0.8, 0.2)) # Makes index with values 1 and 2
+```
+
+```{r}
+# Select only the feature variables
+# Take rows with index = 1
+x_train <- data.set[indx == 1, 1:8]
+x_test <- data.set[indx == 2, 1:8]
+```
+
+```{r}
+# Feature Scaling
+x_train <- scale(x_train )
+x_test <- scale(x_test )
+
+```
+
+```{r}
+y_test_actual <- data.set[indx == 2, 9]
+```
+
+- transform target as on-hot-coding format
+```{r}
+# Using similar indices to correspond to the training and test set
+y_train <- to_categorical(data.set[indx == 1, 9])
+y_test <- to_categorical(data.set[indx == 2, 9])
+head(y_train)
+head(data.set[indx == 1, 9],20)
+```
+- dimension of four splitting data sets
+```{r}
+dim(x_train)
+dim(y_train)
+dim(x_test)
+dim(y_test)
+```
+### Creating neural network model 
+#### construction of model
+- the output layer contains 3 levels
+```{r}
+# Creating the model
+model <- keras_model_sequential()
+
+model %>% 
+  layer_dense(name = "DeepLayer1",
+              units = 10,
+              activation = "relu",
+              input_shape = c(8)) %>% 
+  # input 4 features
+  layer_dense(name = "DeepLayer2",
+              units = 10,
+              activation = "relu") %>% 
+  
+  layer_dense(name = "OutputLayer",
+              units = 2,
+              activation = "softmax")
+  # output 4 categories using one-hot-coding
+summary(model)
+```
+#### Compiling the model
+```{r}
+# Compiling the model
+model %>% compile(loss = "categorical_crossentropy",
+                  optimizer = "adam",
+                  metrics = c("accuracy"))
+```
+#### Fitting the data and plot
+```{r}
+history <- model %>% 
+  fit(x_train,
+      y_train,
+      
+      # adjusting number of epoch
+      epoch = 60,
+      
+      # adjusting number of batch size
+      batch_size = 64,
+      validation_split = 0.15,
+      verbose = 2)
+```
+```{r}
+plot(history)
+```
+
+### Evaluation 
+#### Output loss and accuracy
+using `xtest` and `ytest` data sets to evaluate the built model directly
+```{r}
+model %>% 
+  evaluate(x_test,
+           y_test)
+```
+#### Output the predicted classes and confusion matrix
+```{r}
+pred <- model %>% 
+  predict(x_test) %>% k_argmax() %>% k_get_value()
+head(pred)
+
+table(Predicted = pred,
+      Actual = y_test_actual)
+```
+#### Output the predicted values
+```{r}
+prob <- model %>% 
+  predict(x_test) %>% k_get_value()
+head(prob)
+```
+#### Comparison between `prob, pred, and ytest` 
+```{r}
+comparison <- cbind(prob ,
+      pred ,
+      y_test_actual )
+head(comparison)
+```
+
+
+<!-- ==================== -->
+
+## Deep neural networks for regression
+
+### Loading packages and data sets
+```{r library import, message=FALSE, warning=FALSE}
+library(readr)
+library(keras)
+library(plotly)
+```
+
+```{r}
+data("Boston", package = "MASS")
+data.set <- Boston
+```
+
+```{r dimensions of the dataset}
+dim(data.set)
+```
+### Convert dataframe to matrix without dimnames
+```{r}
+library(DT)
+ 
+# Cast dataframe as a matrix
+data.set <- as.matrix(data.set)
+# Remove column names
+dimnames(data.set) = NULL
+head(data.set)
+```
+```{r summary of target variable}
+summary(data.set[, 14])
+```
+
+
+```{r target variable histogram, fig.cap="<b>Fig 1</b> Histogram of the target variable"}
+ hist( data.set[, 14])
+                 
+```
+### Spiting training and test data
+```{r create index for splitting}
+# Split for train and test data
+set.seed(123)
+indx <- sample(2,
+               nrow(data.set),
+               replace = TRUE,
+               prob = c(0.75, 0.25)) # Makes index with values 1 and 2
+```
+
+```{r splitting the data}
+x_train <- data.set[indx == 1, 1:13]
+x_test <- data.set[indx == 2, 1:13]
+y_train <- data.set[indx == 1, 14]
+y_test <- data.set[indx == 2, 14]
+```
+
+### Normalizing `xtrain` and `xtest` data
+```{r normalizing the train data}
+x_train <- scale(x_train)
+x_test <- scale(x_test)
+```
+
+### Creating the model
+```{r model}
+model <- keras_model_sequential() %>% 
+  layer_dense(units = 25,
+              activation = "relu",
+              input_shape = c(13)) %>% 
+  layer_dropout(0.2) %>% 
+  layer_dense(units = 25,
+              activation = "relu") %>% 
+  layer_dropout(0.2) %>% 
+  layer_dense(units = 25,
+              activation = "relu") %>% 
+  layer_dropout(0.2) %>% 
+  layer_dense(units = 1)
+```
+
+```{r}
+model %>% summary()
+ 
+```
+```{r}
+model %>% get_config()
+```
+### Compiling the model
+```{r compiling the model}
+model %>% compile(loss = "mse",
+                  optimizer = optimizer_rmsprop(),
+                  metrics = c("mean_absolute_error"))
+```
+
+### Fitting the model
+```{r fit the model, message=FALSE, warning=FALSE}
+history <- model %>% 
+  fit(x_train,
+      y_train,
+      epoch = 100,
+      batch_size = 64,
+      validation_split = 0.1,
+      callbacks = c(callback_early_stopping(monitor = "val_mean_absolute_error",
+                                            patience = 5)),
+      verbose = 2)
+```
+```{r}
+c(loss, mae) %<-% (model %>% evaluate(x_test, y_test, verbose = 0))
+paste0("Mean absolute error on test set: ", sprintf("%.2f", mae))
+```
+### Plot the training process
+```{r}
+plot(history)
+```
+### Calculating the predicted values on test data 
+```{r}
+pred2 <- model %>% 
+  predict(x_test) %>% k_get_value()
+
+head(cbind(pred2,y_test))
+```
+- calculating `mean absolute error and root mean square error` and ploting 
+```{r}
+
+error <- y_test-pred2
+head(error)
+rmse <- sqrt(mean(error)^2)
+rmse
+```
+```{r}
+plot(error)
+```
+
+
+<!-- ======================== -->
+## Convolutional neural netwrok
+### Import library
+```{r Import libraries}
+library(keras)
+```
+
+### Importing the data
+```{r Importing the data from the web}
+mnist <- dataset_mnist()
+```
+- mnist is list; it contains `trainx, trainy, testx, testy` 
+```{r}
+class(mnist)
+```
+- the dim of "mnist$train$x" is 60000   28   28
+```{r}
+# head(mnist)
+```
+### preparing the data
+- randomly sampling 1000 cases for training and 100 for testing 
+```{r}
+set.seed(123)
+index <- sample(nrow(mnist$train$x), 1000)
+x_train <- mnist$train$x[index,,]
+y_train <- (mnist$train$y[index])
+
+index <- sample(nrow(mnist$test$x), 100)
+x_test <- mnist$test$x[index,,]
+y_test <- (mnist$test$y[index])
+```
+- dim of four data sets
+```{r Dimensions  }
+dim(x_train)
+dim(y_train)
+dim(x_test)
+dim(y_test)
+```
+#### Generate tensors
+- each image is 28*28 pixel size; pass these values to computer
+```{r Setting dimensions}
+img_rows <- 28
+img_cols <- 28
+```
+
+- using `array_reshape()` function to transform `list` data into tensors 
+```{r Redefine dimensions to include channel}
+x_train <- array_reshape(x_train,
+                         c(nrow(x_train),
+                           img_rows,
+                           img_cols, 1))
+x_test <- array_reshape(x_test,
+                        c(nrow(x_test),
+                          img_rows,
+                          img_cols, 1))
+input_shape <- c(img_rows,
+                 img_cols, 1)
+```
+
+- this below is tensor data
+```{r New dimensions}
+dim(x_train)
+```
+#### Normalization and one-hot-encoded (dummy)
+- training (features) data is rescaled by dividing the maxmimum to be normalized 
+```{r Transform the brightness values}
+x_train <- x_train / 255
+x_test <- x_test / 255
+```
+ 
+- converse targets into one-hot-encoded (dummy) type using `to_categorical()` function  
+```{r One-hot encoding of target variable}
+num_classes = 10
+y_train <- to_categorical(y_train, num_classes)
+y_test <- to_categorical(y_test, num_classes)
+```
+
+```{r}
+y_train[1,]
+```
+
+### Creating the model
+
+```{r Creating the CNN}
+model <- keras_model_sequential() %>%
+  layer_conv_2d(filters = 32,
+                kernel_size = c(3,3),
+                activation = 'relu',
+                input_shape = input_shape) %>% 
+  
+  layer_conv_2d(filters = 64,
+                kernel_size = c(3,3),
+                activation = 'relu') %>% 
+  
+  layer_max_pooling_2d(pool_size = c(2, 2)) %>% 
+  
+  layer_dropout(rate = 0.25) %>% 
+  
+  layer_flatten() %>% 
+  layer_dense(units = 128,
+              activation = 'relu') %>% 
+  
+  layer_dropout(rate = 0.5) %>% 
+  layer_dense(units = num_classes,
+              activation = 'softmax')
+```
+- summary of model
+```{r}
+model %>% summary()
+```
+#### compiling
+- loss function is `categorical crossentropy`; the gradient descent will be optimized by adadelta; 
+```{r Compiling the model}
+model %>% compile(
+  loss = loss_categorical_crossentropy,
+  optimizer = optimizer_adadelta(),
+  metrics = c('accuracy')
+)
+```
+
+### Training
+
+```{r Training the model,message=T,include=T,echo=TRUE}
+batch_size <- 128
+epochs <- 10
+
+# Train model
+history <- model %>% fit(
+  x_train, y_train,
+  batch_size = batch_size,
+  epochs = epochs,
+  validation_split = 0.2
+)
+```
+```{r}
+plot(history)
+```
+
+### Evaluating the accuracy
+```{r Evaluating the model}
+score <- model %>% evaluate(x_test,
+                            y_test)
+score
+```
+
+
+
+
+
+
+
 
 
 
