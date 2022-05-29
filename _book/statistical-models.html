@@ -4,13 +4,13 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 6 Statistical models | My Little Handbook</title>
+  <title>6 Statistical models | My Little Handbook</title>
   <meta name="description" content="<p>This is a minimal example of using the bookdown package to write a book.
 The HTML output format for this example is bookdown::gitbook,
 set in the _output.yml file.</p>" />
   <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 6 Statistical models | My Little Handbook" />
+  <meta property="og:title" content="6 Statistical models | My Little Handbook" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="<p>This is a minimal example of using the bookdown package to write a book.
@@ -19,7 +19,7 @@ set in the _output.yml file.</p>" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 6 Statistical models | My Little Handbook" />
+  <meta name="twitter:title" content="6 Statistical models | My Little Handbook" />
   
   <meta name="twitter:description" content="<p>This is a minimal example of using the bookdown package to write a book.
 The HTML output format for this example is bookdown::gitbook,
@@ -29,7 +29,7 @@ set in the _output.yml file.</p>" />
 <meta name="author" content="Daniel He" />
 
 
-<meta name="date" content="2022-05-26" />
+<meta name="date" content="2022-05-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -58,6 +58,7 @@ set in the _output.yml file.</p>" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link href="libs/table1-1.0/table1_defaults.css" rel="stylesheet" />
 
 
 <style type="text/css">
@@ -293,7 +294,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.1.20" data-path="basic-statistics.html"><a href="basic-statistics.html#recode-a-variable"><i class="fa fa-check"></i><b>5.1.20</b> Recode a variable</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="statistical-models.html"><a href="statistical-models.html"><i class="fa fa-check"></i><b>6</b> Statistical models</a></li>
+<li class="chapter" data-level="6" data-path="statistical-models.html"><a href="statistical-models.html"><i class="fa fa-check"></i><b>6</b> Statistical models</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="statistical-models.html"><a href="statistical-models.html#multiple-linear-regression"><i class="fa fa-check"></i><b>6.1</b> Multiple linear regression</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="statistical-models.html"><a href="statistical-models.html#loading-and-describing-data"><i class="fa fa-check"></i><b>6.1.1</b> Loading and describing data</a></li>
+<li class="chapter" data-level="6.1.2" data-path="statistical-models.html"><a href="statistical-models.html#create-table-1"><i class="fa fa-check"></i><b>6.1.2</b> Create table 1</a></li>
+<li class="chapter" data-level="6.1.3" data-path="statistical-models.html"><a href="statistical-models.html#missingness-checking"><i class="fa fa-check"></i><b>6.1.3</b> Missingness checking</a></li>
+<li class="chapter" data-level="6.1.4" data-path="statistical-models.html"><a href="statistical-models.html#exploratory-data-analysis"><i class="fa fa-check"></i><b>6.1.4</b> Exploratory data analysis</a></li>
+<li class="chapter" data-level="6.1.5" data-path="statistical-models.html"><a href="statistical-models.html#transformations"><i class="fa fa-check"></i><b>6.1.5</b> Transformations</a></li>
+<li class="chapter" data-level="6.1.6" data-path="statistical-models.html"><a href="statistical-models.html#data-imputation-and-normalization"><i class="fa fa-check"></i><b>6.1.6</b> Data imputation and normalization</a></li>
+<li class="chapter" data-level="6.1.7" data-path="statistical-models.html"><a href="statistical-models.html#generate-dummy-variables"><i class="fa fa-check"></i><b>6.1.7</b> Generate dummy variables</a></li>
+<li class="chapter" data-level="6.1.8" data-path="statistical-models.html"><a href="statistical-models.html#spliting-data-into-trainning-data-and-test-data"><i class="fa fa-check"></i><b>6.1.8</b> Spliting data into trainning data and test data</a></li>
+<li class="chapter" data-level="6.1.9" data-path="statistical-models.html"><a href="statistical-models.html#step-regression"><i class="fa fa-check"></i><b>6.1.9</b> Step regression</a></li>
+<li class="chapter" data-level="6.1.10" data-path="statistical-models.html"><a href="statistical-models.html#create-a-model-after-selecting-variables"><i class="fa fa-check"></i><b>6.1.10</b> Create a model after selecting variables</a></li>
+<li class="chapter" data-level="6.1.11" data-path="statistical-models.html"><a href="statistical-models.html#multicollinearity-checking"><i class="fa fa-check"></i><b>6.1.11</b> Multicollinearity checking</a></li>
+<li class="chapter" data-level="6.1.12" data-path="statistical-models.html"><a href="statistical-models.html#plot-model-to-check-assumptions"><i class="fa fa-check"></i><b>6.1.12</b> Plot model to check assumptions</a></li>
+<li class="chapter" data-level="6.1.13" data-path="statistical-models.html"><a href="statistical-models.html#add-polynomial-of-quadratic-term"><i class="fa fa-check"></i><b>6.1.13</b> Add polynomial of quadratic term</a></li>
+<li class="chapter" data-level="6.1.14" data-path="statistical-models.html"><a href="statistical-models.html#add-interaction-terms"><i class="fa fa-check"></i><b>6.1.14</b> Add interaction terms</a></li>
+<li class="chapter" data-level="6.1.15" data-path="statistical-models.html"><a href="statistical-models.html#robust-regression"><i class="fa fa-check"></i><b>6.1.15</b> Robust regression</a></li>
+<li class="chapter" data-level="6.1.16" data-path="statistical-models.html"><a href="statistical-models.html#create-a-model-before-transforming-data"><i class="fa fa-check"></i><b>6.1.16</b> Create a model before transforming data</a></li>
+<li class="chapter" data-level="6.1.17" data-path="statistical-models.html"><a href="statistical-models.html#k-fold-cross-validation"><i class="fa fa-check"></i><b>6.1.17</b> K-fold cross validation</a></li>
+<li class="chapter" data-level="6.1.18" data-path="statistical-models.html"><a href="statistical-models.html#nonnest-models-comparisons"><i class="fa fa-check"></i><b>6.1.18</b> Nonnest models comparisons</a></li>
+<li class="chapter" data-level="6.1.19" data-path="statistical-models.html"><a href="statistical-models.html#create-forest-plot-for-coefficients"><i class="fa fa-check"></i><b>6.1.19</b> Create forest plot for coefficients</a></li>
+<li class="chapter" data-level="6.1.20" data-path="statistical-models.html"><a href="statistical-models.html#relative-importance"><i class="fa fa-check"></i><b>6.1.20</b> Relative Importance</a></li>
+<li class="chapter" data-level="6.1.21" data-path="statistical-models.html"><a href="statistical-models.html#model-prediction"><i class="fa fa-check"></i><b>6.1.21</b> Model prediction</a></li>
+<li class="chapter" data-level="6.1.22" data-path="statistical-models.html"><a href="statistical-models.html#external-data-validation"><i class="fa fa-check"></i><b>6.1.22</b> External data validation</a></li>
+<li class="chapter" data-level="6.1.23" data-path="statistical-models.html"><a href="statistical-models.html#to-do"><i class="fa fa-check"></i><b>6.1.23</b> To do</a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="7" data-path="probability.html"><a href="probability.html"><i class="fa fa-check"></i><b>7</b> Probability</a></li>
 <li class="chapter" data-level="8" data-path="algorithms.html"><a href="algorithms.html"><i class="fa fa-check"></i><b>8</b> Algorithms</a></li>
 <li class="chapter" data-level="9" data-path="sasmarkdown.html"><a href="sasmarkdown.html"><i class="fa fa-check"></i><b>9</b> SASmarkdown</a></li>
@@ -320,9 +349,2044 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="statistical-models" class="section level1 hasAnchor" number="6">
-<h1><span class="header-section-number">Chapter 6</span> Statistical models<a href="statistical-models.html#statistical-models" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Stay tuned!</p>
+<h1><span class="header-section-number">6</span> Statistical models<a href="statistical-models.html#statistical-models" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="multiple-linear-regression" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> Multiple linear regression<a href="statistical-models.html#multiple-linear-regression" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb428"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb428-1"><a href="statistical-models.html#cb428-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb428-2"><a href="statistical-models.html#cb428-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb428-3"><a href="statistical-models.html#cb428-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span></code></pre></div>
+<div id="loading-and-describing-data" class="section level3 hasAnchor" number="6.1.1">
+<h3><span class="header-section-number">6.1.1</span> Loading and describing data<a href="statistical-models.html#loading-and-describing-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb429"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb429-1"><a href="statistical-models.html#cb429-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(Boston)</span>
+<span id="cb429-2"><a href="statistical-models.html#cb429-2" aria-hidden="true" tabindex="-1"></a>data_ori <span class="ot">&lt;-</span> Boston</span>
+<span id="cb429-3"><a href="statistical-models.html#cb429-3" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(data_ori)</span></code></pre></div>
+<table>
+<colgroup>
+<col width="5%" />
+<col width="3%" />
+<col width="2%" />
+<col width="8%" />
+<col width="8%" />
+<col width="7%" />
+<col width="8%" />
+<col width="8%" />
+<col width="7%" />
+<col width="6%" />
+<col width="7%" />
+<col width="8%" />
+<col width="8%" />
+<col width="7%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">vars</th>
+<th align="right">n</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">median</th>
+<th align="right">trimmed</th>
+<th align="right">mad</th>
+<th align="right">min</th>
+<th align="right">max</th>
+<th align="right">range</th>
+<th align="right">skew</th>
+<th align="right">kurtosis</th>
+<th align="right">se</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">crim</td>
+<td align="right">1</td>
+<td align="right">506</td>
+<td align="right">3.6135236</td>
+<td align="right">8.6015451</td>
+<td align="right">0.25651</td>
+<td align="right">1.6816300</td>
+<td align="right">0.3283218</td>
+<td align="right">0.00632</td>
+<td align="right">88.9762</td>
+<td align="right">88.96988</td>
+<td align="right">5.1922223</td>
+<td align="right">36.5958159</td>
+<td align="right">0.3823853</td>
+</tr>
+<tr class="even">
+<td align="left">zn</td>
+<td align="right">2</td>
+<td align="right">506</td>
+<td align="right">11.3636364</td>
+<td align="right">23.3224530</td>
+<td align="right">0.00000</td>
+<td align="right">5.0800493</td>
+<td align="right">0.0000000</td>
+<td align="right">0.00000</td>
+<td align="right">100.0000</td>
+<td align="right">100.00000</td>
+<td align="right">2.2124881</td>
+<td align="right">3.9523873</td>
+<td align="right">1.0368095</td>
+</tr>
+<tr class="odd">
+<td align="left">indus</td>
+<td align="right">3</td>
+<td align="right">506</td>
+<td align="right">11.1367787</td>
+<td align="right">6.8603529</td>
+<td align="right">9.69000</td>
+<td align="right">10.9318719</td>
+<td align="right">9.3700320</td>
+<td align="right">0.46000</td>
+<td align="right">27.7400</td>
+<td align="right">27.28000</td>
+<td align="right">0.2932747</td>
+<td align="right">-1.2401949</td>
+<td align="right">0.3049799</td>
+</tr>
+<tr class="even">
+<td align="left">chas</td>
+<td align="right">4</td>
+<td align="right">506</td>
+<td align="right">0.0691700</td>
+<td align="right">0.2539940</td>
+<td align="right">0.00000</td>
+<td align="right">0.0000000</td>
+<td align="right">0.0000000</td>
+<td align="right">0.00000</td>
+<td align="right">1.0000</td>
+<td align="right">1.00000</td>
+<td align="right">3.3857377</td>
+<td align="right">9.4819703</td>
+<td align="right">0.0112914</td>
+</tr>
+<tr class="odd">
+<td align="left">nox</td>
+<td align="right">5</td>
+<td align="right">506</td>
+<td align="right">0.5546951</td>
+<td align="right">0.1158777</td>
+<td align="right">0.53800</td>
+<td align="right">0.5450601</td>
+<td align="right">0.1297275</td>
+<td align="right">0.38500</td>
+<td align="right">0.8710</td>
+<td align="right">0.48600</td>
+<td align="right">0.7249897</td>
+<td align="right">-0.0874106</td>
+<td align="right">0.0051514</td>
+</tr>
+<tr class="even">
+<td align="left">rm</td>
+<td align="right">6</td>
+<td align="right">506</td>
+<td align="right">6.2846344</td>
+<td align="right">0.7026171</td>
+<td align="right">6.20850</td>
+<td align="right">6.2528744</td>
+<td align="right">0.5122383</td>
+<td align="right">3.56100</td>
+<td align="right">8.7800</td>
+<td align="right">5.21900</td>
+<td align="right">0.4012223</td>
+<td align="right">1.8418324</td>
+<td align="right">0.0312351</td>
+</tr>
+<tr class="odd">
+<td align="left">age</td>
+<td align="right">7</td>
+<td align="right">506</td>
+<td align="right">68.5749012</td>
+<td align="right">28.1488614</td>
+<td align="right">77.50000</td>
+<td align="right">71.1960591</td>
+<td align="right">28.9848300</td>
+<td align="right">2.90000</td>
+<td align="right">100.0000</td>
+<td align="right">97.10000</td>
+<td align="right">-0.5954162</td>
+<td align="right">-0.9780297</td>
+<td align="right">1.2513695</td>
+</tr>
+<tr class="even">
+<td align="left">dis</td>
+<td align="right">8</td>
+<td align="right">506</td>
+<td align="right">3.7950427</td>
+<td align="right">2.1057101</td>
+<td align="right">3.20745</td>
+<td align="right">3.5393786</td>
+<td align="right">1.9142590</td>
+<td align="right">1.12960</td>
+<td align="right">12.1265</td>
+<td align="right">10.99690</td>
+<td align="right">1.0057898</td>
+<td align="right">0.4575916</td>
+<td align="right">0.0936102</td>
+</tr>
+<tr class="odd">
+<td align="left">rad</td>
+<td align="right">9</td>
+<td align="right">506</td>
+<td align="right">9.5494071</td>
+<td align="right">8.7072594</td>
+<td align="right">5.00000</td>
+<td align="right">8.7339901</td>
+<td align="right">2.9652000</td>
+<td align="right">1.00000</td>
+<td align="right">24.0000</td>
+<td align="right">23.00000</td>
+<td align="right">0.9988651</td>
+<td align="right">-0.8789291</td>
+<td align="right">0.3870849</td>
+</tr>
+<tr class="even">
+<td align="left">tax</td>
+<td align="right">10</td>
+<td align="right">506</td>
+<td align="right">408.2371542</td>
+<td align="right">168.5371161</td>
+<td align="right">330.00000</td>
+<td align="right">400.0443350</td>
+<td align="right">108.2298000</td>
+<td align="right">187.00000</td>
+<td align="right">711.0000</td>
+<td align="right">524.00000</td>
+<td align="right">0.6659891</td>
+<td align="right">-1.1503176</td>
+<td align="right">7.4923887</td>
+</tr>
+<tr class="odd">
+<td align="left">ptratio</td>
+<td align="right">11</td>
+<td align="right">506</td>
+<td align="right">18.4555336</td>
+<td align="right">2.1649455</td>
+<td align="right">19.05000</td>
+<td align="right">18.6625616</td>
+<td align="right">1.7049900</td>
+<td align="right">12.60000</td>
+<td align="right">22.0000</td>
+<td align="right">9.40000</td>
+<td align="right">-0.7975743</td>
+<td align="right">-0.3048010</td>
+<td align="right">0.0962436</td>
+</tr>
+<tr class="even">
+<td align="left">black</td>
+<td align="right">12</td>
+<td align="right">506</td>
+<td align="right">356.6740316</td>
+<td align="right">91.2948644</td>
+<td align="right">391.44000</td>
+<td align="right">383.1695074</td>
+<td align="right">8.0949960</td>
+<td align="right">0.32000</td>
+<td align="right">396.9000</td>
+<td align="right">396.58000</td>
+<td align="right">-2.8732597</td>
+<td align="right">7.1037150</td>
+<td align="right">4.0585518</td>
+</tr>
+<tr class="odd">
+<td align="left">lstat</td>
+<td align="right">13</td>
+<td align="right">506</td>
+<td align="right">12.6530632</td>
+<td align="right">7.1410615</td>
+<td align="right">11.36000</td>
+<td align="right">11.8990394</td>
+<td align="right">7.1090670</td>
+<td align="right">1.73000</td>
+<td align="right">37.9700</td>
+<td align="right">36.24000</td>
+<td align="right">0.9010929</td>
+<td align="right">0.4628171</td>
+<td align="right">0.3174589</td>
+</tr>
+<tr class="even">
+<td align="left">medv</td>
+<td align="right">14</td>
+<td align="right">506</td>
+<td align="right">22.5328063</td>
+<td align="right">9.1971041</td>
+<td align="right">21.20000</td>
+<td align="right">21.5623153</td>
+<td align="right">5.9304000</td>
+<td align="right">5.00000</td>
+<td align="right">50.0000</td>
+<td align="right">45.00000</td>
+<td align="right">1.1015373</td>
+<td align="right">1.4509837</td>
+<td align="right">0.4088611</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb430"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb430-1"><a href="statistical-models.html#cb430-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data_ori)</span></code></pre></div>
+<table style="width:100%;">
+<colgroup>
+<col width="1%" />
+<col width="8%" />
+<col width="7%" />
+<col width="6%" />
+<col width="7%" />
+<col width="7%" />
+<col width="6%" />
+<col width="7%" />
+<col width="7%" />
+<col width="7%" />
+<col width="6%" />
+<col width="6%" />
+<col width="7%" />
+<col width="6%" />
+<col width="6%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="left">crim</th>
+<th align="left">zn</th>
+<th align="left">indus</th>
+<th align="left">chas</th>
+<th align="left">nox</th>
+<th align="left">rm</th>
+<th align="left">age</th>
+<th align="left">dis</th>
+<th align="left">rad</th>
+<th align="left">tax</th>
+<th align="left">ptratio</th>
+<th align="left">black</th>
+<th align="left">lstat</th>
+<th align="left">medv</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Min. : 0.00632</td>
+<td align="left">Min. : 0.00</td>
+<td align="left">Min. : 0.46</td>
+<td align="left">Min. :0.00000</td>
+<td align="left">Min. :0.3850</td>
+<td align="left">Min. :3.561</td>
+<td align="left">Min. : 2.90</td>
+<td align="left">Min. : 1.130</td>
+<td align="left">Min. : 1.000</td>
+<td align="left">Min. :187.0</td>
+<td align="left">Min. :12.60</td>
+<td align="left">Min. : 0.32</td>
+<td align="left">Min. : 1.73</td>
+<td align="left">Min. : 5.00</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">1st Qu.: 0.08205</td>
+<td align="left">1st Qu.: 0.00</td>
+<td align="left">1st Qu.: 5.19</td>
+<td align="left">1st Qu.:0.00000</td>
+<td align="left">1st Qu.:0.4490</td>
+<td align="left">1st Qu.:5.886</td>
+<td align="left">1st Qu.: 45.02</td>
+<td align="left">1st Qu.: 2.100</td>
+<td align="left">1st Qu.: 4.000</td>
+<td align="left">1st Qu.:279.0</td>
+<td align="left">1st Qu.:17.40</td>
+<td align="left">1st Qu.:375.38</td>
+<td align="left">1st Qu.: 6.95</td>
+<td align="left">1st Qu.:17.02</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Median : 0.25651</td>
+<td align="left">Median : 0.00</td>
+<td align="left">Median : 9.69</td>
+<td align="left">Median :0.00000</td>
+<td align="left">Median :0.5380</td>
+<td align="left">Median :6.208</td>
+<td align="left">Median : 77.50</td>
+<td align="left">Median : 3.207</td>
+<td align="left">Median : 5.000</td>
+<td align="left">Median :330.0</td>
+<td align="left">Median :19.05</td>
+<td align="left">Median :391.44</td>
+<td align="left">Median :11.36</td>
+<td align="left">Median :21.20</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Mean : 3.61352</td>
+<td align="left">Mean : 11.36</td>
+<td align="left">Mean :11.14</td>
+<td align="left">Mean :0.06917</td>
+<td align="left">Mean :0.5547</td>
+<td align="left">Mean :6.285</td>
+<td align="left">Mean : 68.57</td>
+<td align="left">Mean : 3.795</td>
+<td align="left">Mean : 9.549</td>
+<td align="left">Mean :408.2</td>
+<td align="left">Mean :18.46</td>
+<td align="left">Mean :356.67</td>
+<td align="left">Mean :12.65</td>
+<td align="left">Mean :22.53</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">3rd Qu.: 3.67708</td>
+<td align="left">3rd Qu.: 12.50</td>
+<td align="left">3rd Qu.:18.10</td>
+<td align="left">3rd Qu.:0.00000</td>
+<td align="left">3rd Qu.:0.6240</td>
+<td align="left">3rd Qu.:6.623</td>
+<td align="left">3rd Qu.: 94.08</td>
+<td align="left">3rd Qu.: 5.188</td>
+<td align="left">3rd Qu.:24.000</td>
+<td align="left">3rd Qu.:666.0</td>
+<td align="left">3rd Qu.:20.20</td>
+<td align="left">3rd Qu.:396.23</td>
+<td align="left">3rd Qu.:16.95</td>
+<td align="left">3rd Qu.:25.00</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Max. :88.97620</td>
+<td align="left">Max. :100.00</td>
+<td align="left">Max. :27.74</td>
+<td align="left">Max. :1.00000</td>
+<td align="left">Max. :0.8710</td>
+<td align="left">Max. :8.780</td>
+<td align="left">Max. :100.00</td>
+<td align="left">Max. :12.127</td>
+<td align="left">Max. :24.000</td>
+<td align="left">Max. :711.0</td>
+<td align="left">Max. :22.00</td>
+<td align="left">Max. :396.90</td>
+<td align="left">Max. :37.97</td>
+<td align="left">Max. :50.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="create-table-1" class="section level3 hasAnchor" number="6.1.2">
+<h3><span class="header-section-number">6.1.2</span> Create table 1<a href="statistical-models.html#create-table-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb431"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb431-1"><a href="statistical-models.html#cb431-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(boot) </span>
+<span id="cb431-2"><a href="statistical-models.html#cb431-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(table1)</span>
+<span id="cb431-3"><a href="statistical-models.html#cb431-3" aria-hidden="true" tabindex="-1"></a><span class="fu">table1</span>(<span class="sc">~</span> . , <span class="at">data=</span>data_ori)</span></code></pre></div>
+<div class="Rtable1"><table class="Rtable1">
+<thead>
+<tr>
+<th class='rowlabel firstrow lastrow'></th>
+<th class='firstrow lastrow'><span class='stratlabel'>Overall<br><span class='stratn'>(N=506)</span></span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class='rowlabel firstrow'>crim</td>
+<td class='firstrow'></td>
+</tr>
+<tr>
+<td class='rowlabel'>Mean (SD)</td>
+<td>3.61 (8.60)</td>
+</tr>
+<tr>
+<td class='rowlabel lastrow'>Median [Min, Max]</td>
+<td class='lastrow'>0.257 [0.00632, 89.0]</td>
+</tr>
+<tr>
+<td class='rowlabel firstrow'>zn</td>
+<td class='firstrow'></td>
+</tr>
+<tr>
+<td class='rowlabel'>Mean (SD)</td>
+<td>11.4 (23.3)</td>
+</tr>
+<tr>
+<td class='rowlabel lastrow'>Median [Min, Max]</td>
+<td class='lastrow'>0 [0, 100]</td>
+</tr>
+<tr>
+<td class='rowlabel firstrow'>indus</td>
+<td class='firstrow'></td>
+</tr>
+<tr>
+<td class='rowlabel'>Mean (SD)</td>
+<td>11.1 (6.86)</td>
+</tr>
+<tr>
+<td class='rowlabel lastrow'>Median [Min, Max]</td>
+<td class='lastrow'>9.69 [0.460, 27.7]</td>
+</tr>
+<tr>
+<td class='rowlabel firstrow'>chas</td>
+<td class='firstrow'></td>
+</tr>
+<tr>
+<td class='rowlabel'>Mean (SD)</td>
+<td>0.0692 (0.254)</td>
+</tr>
+<tr>
+<td class='rowlabel lastrow'>Median [Min, Max]</td>
+<td class='lastrow'>0 [0, 1.00]</td>
+</tr>
+<tr>
+<td class='rowlabel firstrow'>nox</td>
+<td class='firstrow'></td>
+</tr>
+<tr>
+<td class='rowlabel'>Mean (SD)</td>
+<td>0.555 (0.116)</td>
+</tr>
+<tr>
+<td class='rowlabel lastrow'>Median [Min, Max]</td>
+<td class='lastrow'>0.538 [0.385, 0.871]</td>
+</tr>
+<tr>
+<td class='rowlabel firstrow'>rm</td>
+<td class='firstrow'></td>
+</tr>
+<tr>
+<td class='rowlabel'>Mean (SD)</td>
+<td>6.28 (0.703)</td>
+</tr>
+<tr>
+<td class='rowlabel lastrow'>Median [Min, Max]</td>
+<td class='lastrow'>6.21 [3.56, 8.78]</td>
+</tr>
+<tr>
+<td class='rowlabel firstrow'>age</td>
+<td class='firstrow'></td>
+</tr>
+<tr>
+<td class='rowlabel'>Mean (SD)</td>
+<td>68.6 (28.1)</td>
+</tr>
+<tr>
+<td class='rowlabel lastrow'>Median [Min, Max]</td>
+<td class='lastrow'>77.5 [2.90, 100]</td>
+</tr>
+<tr>
+<td class='rowlabel firstrow'>dis</td>
+<td class='firstrow'></td>
+</tr>
+<tr>
+<td class='rowlabel'>Mean (SD)</td>
+<td>3.80 (2.11)</td>
+</tr>
+<tr>
+<td class='rowlabel lastrow'>Median [Min, Max]</td>
+<td class='lastrow'>3.21 [1.13, 12.1]</td>
+</tr>
+<tr>
+<td class='rowlabel firstrow'>rad</td>
+<td class='firstrow'></td>
+</tr>
+<tr>
+<td class='rowlabel'>Mean (SD)</td>
+<td>9.55 (8.71)</td>
+</tr>
+<tr>
+<td class='rowlabel lastrow'>Median [Min, Max]</td>
+<td class='lastrow'>5.00 [1.00, 24.0]</td>
+</tr>
+<tr>
+<td class='rowlabel firstrow'>tax</td>
+<td class='firstrow'></td>
+</tr>
+<tr>
+<td class='rowlabel'>Mean (SD)</td>
+<td>408 (169)</td>
+</tr>
+<tr>
+<td class='rowlabel lastrow'>Median [Min, Max]</td>
+<td class='lastrow'>330 [187, 711]</td>
+</tr>
+<tr>
+<td class='rowlabel firstrow'>ptratio</td>
+<td class='firstrow'></td>
+</tr>
+<tr>
+<td class='rowlabel'>Mean (SD)</td>
+<td>18.5 (2.16)</td>
+</tr>
+<tr>
+<td class='rowlabel lastrow'>Median [Min, Max]</td>
+<td class='lastrow'>19.1 [12.6, 22.0]</td>
+</tr>
+<tr>
+<td class='rowlabel firstrow'>black</td>
+<td class='firstrow'></td>
+</tr>
+<tr>
+<td class='rowlabel'>Mean (SD)</td>
+<td>357 (91.3)</td>
+</tr>
+<tr>
+<td class='rowlabel lastrow'>Median [Min, Max]</td>
+<td class='lastrow'>391 [0.320, 397]</td>
+</tr>
+<tr>
+<td class='rowlabel firstrow'>lstat</td>
+<td class='firstrow'></td>
+</tr>
+<tr>
+<td class='rowlabel'>Mean (SD)</td>
+<td>12.7 (7.14)</td>
+</tr>
+<tr>
+<td class='rowlabel lastrow'>Median [Min, Max]</td>
+<td class='lastrow'>11.4 [1.73, 38.0]</td>
+</tr>
+<tr>
+<td class='rowlabel firstrow'>medv</td>
+<td class='firstrow'></td>
+</tr>
+<tr>
+<td class='rowlabel'>Mean (SD)</td>
+<td>22.5 (9.20)</td>
+</tr>
+<tr>
+<td class='rowlabel lastrow'>Median [Min, Max]</td>
+<td class='lastrow'>21.2 [5.00, 50.0]</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="missingness-checking" class="section level3 hasAnchor" number="6.1.3">
+<h3><span class="header-section-number">6.1.3</span> Missingness checking<a href="statistical-models.html#missingness-checking" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb432"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb432-1"><a href="statistical-models.html#cb432-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mice)</span>
+<span id="cb432-2"><a href="statistical-models.html#cb432-2" aria-hidden="true" tabindex="-1"></a><span class="fu">md.pattern</span>(data_ori)</span></code></pre></div>
+<pre><code>##  /\     /\
+## {  `---&#39;  }
+## {  O   O  }
+## ==&gt;  V &lt;==  No need for mice. This data set is completely observed.
+##  \  \|/  /
+##   `-----&#39;</code></pre>
+<p><img src="_main_files/figure-html/unnamed-chunk-216-1.png" width="672" /></p>
+<table style="width:100%;">
+<colgroup>
+<col width="5%" />
+<col width="6%" />
+<col width="4%" />
+<col width="8%" />
+<col width="6%" />
+<col width="5%" />
+<col width="4%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="10%" />
+<col width="8%" />
+<col width="8%" />
+<col width="6%" />
+<col width="4%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">crim</th>
+<th align="right">zn</th>
+<th align="right">indus</th>
+<th align="right">chas</th>
+<th align="right">nox</th>
+<th align="right">rm</th>
+<th align="right">age</th>
+<th align="right">dis</th>
+<th align="right">rad</th>
+<th align="right">tax</th>
+<th align="right">ptratio</th>
+<th align="right">black</th>
+<th align="right">lstat</th>
+<th align="right">medv</th>
+<th align="right"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">506</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="exploratory-data-analysis" class="section level3 hasAnchor" number="6.1.4">
+<h3><span class="header-section-number">6.1.4</span> Exploratory data analysis<a href="statistical-models.html#exploratory-data-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>-correlation matrix</p>
+<div class="sourceCode" id="cb434"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb434-1"><a href="statistical-models.html#cb434-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span>
+<span id="cb434-2"><a href="statistical-models.html#cb434-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs.panels</span>(data_ori)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-217-1.png" width="672" /></p>
+<ul>
+<li>histogram</li>
+</ul>
+<div class="sourceCode" id="cb435"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb435-1"><a href="statistical-models.html#cb435-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DataExplorer)</span>
+<span id="cb435-2"><a href="statistical-models.html#cb435-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_histogram</span>(data_ori)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-218-1.png" width="672" /></p>
+</div>
+<div id="transformations" class="section level3 hasAnchor" number="6.1.5">
+<h3><span class="header-section-number">6.1.5</span> Transformations<a href="statistical-models.html#transformations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>transformation (based on the following rule) then histogram</li>
+</ul>
+<div class="sourceCode" id="cb436"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb436-1"><a href="statistical-models.html#cb436-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb436-2"><a href="statistical-models.html#cb436-2" aria-hidden="true" tabindex="-1"></a>data_trans <span class="ot">=</span> data_ori <span class="sc">%&gt;%</span>  <span class="fu">mutate</span>(<span class="at">age=</span> <span class="fu">sqrt</span>(<span class="fu">max</span>(age)<span class="sc">+</span><span class="dv">1</span><span class="sc">-</span>age),</span>
+<span id="cb436-3"><a href="statistical-models.html#cb436-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">black=</span> <span class="fu">log10</span>(<span class="fu">max</span>(black)<span class="sc">+</span><span class="dv">1</span><span class="sc">-</span>black),</span>
+<span id="cb436-4"><a href="statistical-models.html#cb436-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">crim=</span> <span class="fu">log10</span>(crim),</span>
+<span id="cb436-5"><a href="statistical-models.html#cb436-5" aria-hidden="true" tabindex="-1"></a>                         <span class="at">dis=</span> <span class="fu">sqrt</span>(dis)   )</span>
+<span id="cb436-6"><a href="statistical-models.html#cb436-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_histogram</span>(data_trans)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-219-1.png" width="672" /></p>
+<div class="sourceCode" id="cb437"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb437-1"><a href="statistical-models.html#cb437-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pairs.panels(data2)</span></span></code></pre></div>
+<p>! <a href="https://www.statisticssolutions.com/wp-content/uploads/2018/12/b2.png">How to transform data for normality.</a></p>
+<ul>
+<li>check linearity between <code>y and x</code></li>
+</ul>
+<div class="sourceCode" id="cb438"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb438-1"><a href="statistical-models.html#cb438-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attach</span>(data_trans)</span>
+<span id="cb438-2"><a href="statistical-models.html#cb438-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(medv, rm)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-220-1.png" width="672" /></p>
+<div class="sourceCode" id="cb439"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb439-1"><a href="statistical-models.html#cb439-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(medv,lstat)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-220-2.png" width="672" /></p>
+<div class="sourceCode" id="cb440"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb440-1"><a href="statistical-models.html#cb440-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(medv,age)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-220-3.png" width="672" /></p>
+<div class="sourceCode" id="cb441"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb441-1"><a href="statistical-models.html#cb441-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(medv, black)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-220-4.png" width="672" /></p>
+<div class="sourceCode" id="cb442"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb442-1"><a href="statistical-models.html#cb442-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(medv,crim)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-220-5.png" width="672" /></p>
+</div>
+<div id="data-imputation-and-normalization" class="section level3 hasAnchor" number="6.1.6">
+<h3><span class="header-section-number">6.1.6</span> Data imputation and normalization<a href="statistical-models.html#data-imputation-and-normalization" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="for-originaldata" class="section level4 hasAnchor" number="6.1.6.1">
+<h4><span class="header-section-number">6.1.6.1</span> For original”data”<a href="statistical-models.html#for-originaldata" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li>compiling knnimpute model (see machine learning section)</li>
+</ul>
+<div class="sourceCode" id="cb443"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb443-1"><a href="statistical-models.html#cb443-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
+<span id="cb443-2"><a href="statistical-models.html#cb443-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the knn imputation model on the training data</span></span>
+<span id="cb443-3"><a href="statistical-models.html#cb443-3" aria-hidden="true" tabindex="-1"></a>y<span class="ot">=</span>data_ori<span class="sc">$</span>medv</span>
+<span id="cb443-4"><a href="statistical-models.html#cb443-4" aria-hidden="true" tabindex="-1"></a>preProcess_missingdata_model <span class="ot">&lt;-</span> <span class="fu">preProcess</span>(data_ori , <span class="at">method=</span><span class="st">&#39;knnImpute&#39;</span>)</span>
+<span id="cb443-5"><a href="statistical-models.html#cb443-5" aria-hidden="true" tabindex="-1"></a>preProcess_missingdata_model</span></code></pre></div>
+<pre><code>## Created from 506 samples and 14 variables
+## 
+## Pre-processing:
+##   - centered (14)
+##   - ignored (0)
+##   - 5 nearest neighbor imputation (14)
+##   - scaled (14)</code></pre>
+<ul>
+<li>check missingness</li>
+</ul>
+<div class="sourceCode" id="cb445"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb445-1"><a href="statistical-models.html#cb445-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the imputation model to predict the values of missing data points</span></span>
+<span id="cb445-2"><a href="statistical-models.html#cb445-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RANN)  <span class="co"># required for knnInpute</span></span>
+<span id="cb445-3"><a href="statistical-models.html#cb445-3" aria-hidden="true" tabindex="-1"></a>data_ori  <span class="ot">&lt;-</span> <span class="fu">predict</span>(preProcess_missingdata_model, <span class="at">newdata =</span> data_ori )</span>
+<span id="cb445-4"><a href="statistical-models.html#cb445-4" aria-hidden="true" tabindex="-1"></a><span class="fu">anyNA</span>(data_ori )</span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<div class="sourceCode" id="cb447"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb447-1"><a href="statistical-models.html#cb447-1" aria-hidden="true" tabindex="-1"></a>data_ori<span class="sc">$</span>medv <span class="ot">&lt;-</span> y</span></code></pre></div>
+</div>
+<div id="for-transformed-data2" class="section level4 hasAnchor" number="6.1.6.2">
+<h4><span class="header-section-number">6.1.6.2</span> For transformed “data2”<a href="statistical-models.html#for-transformed-data2" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li>compiling knnimpute model (see machine learning section)</li>
+</ul>
+<div class="sourceCode" id="cb448"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb448-1"><a href="statistical-models.html#cb448-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
+<span id="cb448-2"><a href="statistical-models.html#cb448-2" aria-hidden="true" tabindex="-1"></a>y2<span class="ot">=</span>data_trans<span class="sc">$</span>medv</span>
+<span id="cb448-3"><a href="statistical-models.html#cb448-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the knn imputation model on the training data</span></span>
+<span id="cb448-4"><a href="statistical-models.html#cb448-4" aria-hidden="true" tabindex="-1"></a>preProcess_missingdata_model2 <span class="ot">&lt;-</span> <span class="fu">preProcess</span>(data_trans , <span class="at">method=</span><span class="st">&#39;knnImpute&#39;</span>)</span>
+<span id="cb448-5"><a href="statistical-models.html#cb448-5" aria-hidden="true" tabindex="-1"></a>preProcess_missingdata_model2</span></code></pre></div>
+<pre><code>## Created from 506 samples and 14 variables
+## 
+## Pre-processing:
+##   - centered (14)
+##   - ignored (0)
+##   - 5 nearest neighbor imputation (14)
+##   - scaled (14)</code></pre>
+<ul>
+<li>check missingness</li>
+</ul>
+<div class="sourceCode" id="cb450"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb450-1"><a href="statistical-models.html#cb450-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the imputation model to predict the values of missing data points</span></span>
+<span id="cb450-2"><a href="statistical-models.html#cb450-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RANN)  <span class="co"># required for knnInpute</span></span>
+<span id="cb450-3"><a href="statistical-models.html#cb450-3" aria-hidden="true" tabindex="-1"></a>data_trans  <span class="ot">&lt;-</span> <span class="fu">predict</span>(preProcess_missingdata_model2, <span class="at">newdata =</span> data_trans )</span>
+<span id="cb450-4"><a href="statistical-models.html#cb450-4" aria-hidden="true" tabindex="-1"></a><span class="fu">anyNA</span>(data_trans )</span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<div class="sourceCode" id="cb452"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb452-1"><a href="statistical-models.html#cb452-1" aria-hidden="true" tabindex="-1"></a>data_trans<span class="sc">$</span>medv <span class="ot">&lt;-</span> y2</span></code></pre></div>
+</div>
+</div>
+<div id="generate-dummy-variables" class="section level3 hasAnchor" number="6.1.7">
+<h3><span class="header-section-number">6.1.7</span> Generate dummy variables<a href="statistical-models.html#generate-dummy-variables" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>also can do using <code>as.factor</code> function for predictors <code>x</code></li>
+</ul>
+</div>
+<div id="spliting-data-into-trainning-data-and-test-data" class="section level3 hasAnchor" number="6.1.8">
+<h3><span class="header-section-number">6.1.8</span> Spliting data into trainning data and test data<a href="statistical-models.html#spliting-data-into-trainning-data-and-test-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>by using <code>caret</code> package (test data for external validation)</li>
+</ul>
+<div class="sourceCode" id="cb453"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb453-1"><a href="statistical-models.html#cb453-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the training and test datasets</span></span>
+<span id="cb453-2"><a href="statistical-models.html#cb453-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb453-3"><a href="statistical-models.html#cb453-3" aria-hidden="true" tabindex="-1"></a><span class="co"># for original data </span></span>
+<span id="cb453-4"><a href="statistical-models.html#cb453-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Get row numbers for the training data</span></span>
+<span id="cb453-5"><a href="statistical-models.html#cb453-5" aria-hidden="true" tabindex="-1"></a>trainRowNumbers <span class="ot">&lt;-</span> <span class="fu">createDataPartition</span>(data_ori<span class="sc">$</span>medv, <span class="at">p=</span><span class="fl">0.8</span>, <span class="at">list=</span><span class="cn">FALSE</span>)</span>
+<span id="cb453-6"><a href="statistical-models.html#cb453-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb453-7"><a href="statistical-models.html#cb453-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: Create the training  dataset</span></span>
+<span id="cb453-8"><a href="statistical-models.html#cb453-8" aria-hidden="true" tabindex="-1"></a>data  <span class="ot">&lt;-</span> data_ori[trainRowNumbers,]</span>
+<span id="cb453-9"><a href="statistical-models.html#cb453-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb453-10"><a href="statistical-models.html#cb453-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 3: Create the test dataset</span></span>
+<span id="cb453-11"><a href="statistical-models.html#cb453-11" aria-hidden="true" tabindex="-1"></a>testdata  <span class="ot">&lt;-</span> data_ori[<span class="sc">-</span>trainRowNumbers,]</span>
+<span id="cb453-12"><a href="statistical-models.html#cb453-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb453-13"><a href="statistical-models.html#cb453-13" aria-hidden="true" tabindex="-1"></a><span class="co"># for transformed data</span></span>
+<span id="cb453-14"><a href="statistical-models.html#cb453-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Get row numbers for the training data</span></span>
+<span id="cb453-15"><a href="statistical-models.html#cb453-15" aria-hidden="true" tabindex="-1"></a>trainRowNumbers2 <span class="ot">&lt;-</span> <span class="fu">createDataPartition</span>(data_trans<span class="sc">$</span>medv, <span class="at">p=</span><span class="fl">0.8</span>, <span class="at">list=</span><span class="cn">FALSE</span>)</span>
+<span id="cb453-16"><a href="statistical-models.html#cb453-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb453-17"><a href="statistical-models.html#cb453-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: Create the training  dataset</span></span>
+<span id="cb453-18"><a href="statistical-models.html#cb453-18" aria-hidden="true" tabindex="-1"></a>data2 <span class="ot">&lt;-</span> data_trans[trainRowNumbers2,]</span>
+<span id="cb453-19"><a href="statistical-models.html#cb453-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb453-20"><a href="statistical-models.html#cb453-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 3: Create the test dataset</span></span>
+<span id="cb453-21"><a href="statistical-models.html#cb453-21" aria-hidden="true" tabindex="-1"></a>testdata2 <span class="ot">&lt;-</span> data_trans[<span class="sc">-</span>trainRowNumbers2,]</span></code></pre></div>
+</div>
+<div id="step-regression" class="section level3 hasAnchor" number="6.1.9">
+<h3><span class="header-section-number">6.1.9</span> Step regression<a href="statistical-models.html#step-regression" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb454"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb454-1"><a href="statistical-models.html#cb454-1" aria-hidden="true" tabindex="-1"></a>model_o <span class="ot">=</span> <span class="fu">lm</span>(  medv <span class="sc">~</span>.  , <span class="at">data=</span>data2)</span>
+<span id="cb454-2"><a href="statistical-models.html#cb454-2" aria-hidden="true" tabindex="-1"></a><span class="fu">step</span>(model_o,<span class="at">direction =</span> <span class="st">&quot;both&quot;</span>)</span></code></pre></div>
+<pre><code>## Start:  AIC=1281.15
+## medv ~ crim + zn + indus + chas + nox + rm + age + dis + rad + 
+##     tax + ptratio + black + lstat
+## 
+##           Df Sum of Sq     RSS    AIC
+## - black    1      0.17  8847.0 1279.2
+## - age      1      7.07  8853.9 1279.5
+## - crim     1     14.36  8861.2 1279.8
+## - indus    1     24.08  8870.9 1280.3
+## &lt;none&gt;                  8846.8 1281.2
+## - rad      1    103.22  8950.0 1283.9
+## - tax      1    156.33  9003.1 1286.3
+## - zn       1    198.34  9045.2 1288.2
+## - chas     1    251.31  9098.1 1290.5
+## - nox      1    692.00  9538.8 1309.8
+## - ptratio  1    840.04  9686.9 1316.1
+## - rm       1    965.90  9812.7 1321.3
+## - dis      1   1349.41 10196.2 1336.9
+## - lstat    1   2766.14 11613.0 1389.9
+## 
+## Step:  AIC=1279.16
+## medv ~ crim + zn + indus + chas + nox + rm + age + dis + rad + 
+##     tax + ptratio + lstat
+## 
+##           Df Sum of Sq     RSS    AIC
+## - age      1      7.15  8854.1 1277.5
+## - crim     1     14.32  8861.3 1277.8
+## - indus    1     24.52  8871.5 1278.3
+## &lt;none&gt;                  8847.0 1279.2
+## + black    1      0.17  8846.8 1281.2
+## - rad      1    103.72  8950.7 1281.9
+## - tax      1    157.40  9004.4 1284.3
+## - zn       1    198.20  9045.2 1286.2
+## - chas     1    251.25  9098.2 1288.6
+## - nox      1    695.37  9542.4 1308.0
+## - ptratio  1    850.76  9697.7 1314.5
+## - rm       1    966.99  9814.0 1319.4
+## - dis      1   1375.04 10222.0 1336.0
+## - lstat    1   2770.28 11617.3 1388.0
+## 
+## Step:  AIC=1277.49
+## medv ~ crim + zn + indus + chas + nox + rm + dis + rad + tax + 
+##     ptratio + lstat
+## 
+##           Df Sum of Sq     RSS    AIC
+## - crim     1     18.36  8872.5 1276.3
+## - indus    1     25.56  8879.7 1276.7
+## &lt;none&gt;                  8854.1 1277.5
+## + age      1      7.15  8847.0 1279.2
+## + black    1      0.26  8853.9 1279.5
+## - rad      1     97.20  8951.3 1279.9
+## - tax      1    152.93  9007.1 1282.5
+## - zn       1    196.76  9050.9 1284.4
+## - chas     1    255.17  9109.3 1287.0
+## - nox      1    694.68  9548.8 1306.2
+## - ptratio  1    843.66  9697.8 1312.5
+## - rm       1   1023.40  9877.5 1320.0
+## - dis      1   1633.60 10487.7 1344.4
+## - lstat    1   2978.57 11832.7 1393.5
+## 
+## Step:  AIC=1276.33
+## medv ~ zn + indus + chas + nox + rm + dis + rad + tax + ptratio + 
+##     lstat
+## 
+##           Df Sum of Sq     RSS    AIC
+## - indus    1     21.92  8894.4 1275.3
+## &lt;none&gt;                  8872.5 1276.3
+## + crim     1     18.36  8854.1 1277.5
+## + age      1     11.19  8861.3 1277.8
+## + black    1      0.13  8872.4 1278.3
+## - tax      1    158.39  9030.9 1281.5
+## - zn       1    180.19  9052.7 1282.5
+## - rad      1    212.19  9084.7 1284.0
+## - chas     1    249.50  9122.0 1285.6
+## - nox      1    689.33  9561.8 1304.8
+## - ptratio  1    873.78  9746.3 1312.6
+## - rm       1   1025.43  9897.9 1318.8
+## - dis      1   1701.37 10573.9 1345.7
+## - lstat    1   2996.77 11869.3 1392.8
+## 
+## Step:  AIC=1275.34
+## medv ~ zn + chas + nox + rm + dis + rad + tax + ptratio + lstat
+## 
+##           Df Sum of Sq     RSS    AIC
+## &lt;none&gt;                  8894.4 1275.3
+## + indus    1     21.92  8872.5 1276.3
+## + crim     1     14.72  8879.7 1276.7
+## + age      1     11.89  8882.5 1276.8
+## + black    1      0.00  8894.4 1277.3
+## - zn       1    206.52  9100.9 1282.7
+## - chas     1    237.50  9131.9 1284.1
+## - tax      1    281.42  9175.8 1286.0
+## - rad      1    293.27  9187.7 1286.5
+## - nox      1    800.54  9695.0 1308.4
+## - ptratio  1    929.05  9823.5 1313.8
+## - rm       1   1083.34  9977.8 1320.1
+## - dis      1   1706.94 10601.4 1344.8
+## - lstat    1   3024.07 11918.5 1392.5</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = medv ~ zn + chas + nox + rm + dis + rad + tax + 
+##     ptratio + lstat, data = data2)
+## 
+## Coefficients:
+## (Intercept)           zn         chas          nox           rm          dis  
+##      22.509        1.016        0.759       -2.764        2.176       -3.970  
+##         rad          tax      ptratio        lstat  
+##       2.119       -2.317       -1.991       -4.224</code></pre>
+<div class="sourceCode" id="cb457"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb457-1"><a href="statistical-models.html#cb457-1" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(step(model_o,direction = &quot;both&quot;))</span></span></code></pre></div>
+</div>
+<div id="create-a-model-after-selecting-variables" class="section level3 hasAnchor" number="6.1.10">
+<h3><span class="header-section-number">6.1.10</span> Create a model after selecting variables<a href="statistical-models.html#create-a-model-after-selecting-variables" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb458"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb458-1"><a href="statistical-models.html#cb458-1" aria-hidden="true" tabindex="-1"></a>model_trasf <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">formula =</span> medv <span class="sc">~</span> zn <span class="sc">+</span> chas <span class="sc">+</span> nox <span class="sc">+</span> rm <span class="sc">+</span> dis <span class="sc">+</span> rad <span class="sc">+</span> tax <span class="sc">+</span> </span>
+<span id="cb458-2"><a href="statistical-models.html#cb458-2" aria-hidden="true" tabindex="-1"></a>    ptratio <span class="sc">+</span> lstat, <span class="at">data =</span> data2)</span>
+<span id="cb458-3"><a href="statistical-models.html#cb458-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_trasf)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = medv ~ zn + chas + nox + rm + dis + rad + tax + 
+##     ptratio + lstat, data = data2)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -13.2923  -2.4690  -0.5086   1.6269  24.5813 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  22.5090     0.2352  95.718  &lt; 2e-16 ***
+## zn            1.0161     0.3347   3.036 0.002554 ** 
+## chas          0.7590     0.2331   3.256 0.001227 ** 
+## nox          -2.7640     0.4624  -5.978 5.05e-09 ***
+## rm            2.1760     0.3129   6.954 1.47e-11 ***
+## dis          -3.9697     0.4548  -8.729  &lt; 2e-16 ***
+## rad           2.1194     0.5858   3.618 0.000335 ***
+## tax          -2.3171     0.6538  -3.544 0.000441 ***
+## ptratio      -1.9909     0.3092  -6.440 3.47e-10 ***
+## lstat        -4.2244     0.3636 -11.618  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 4.733 on 397 degrees of freedom
+## Multiple R-squared:  0.7187, Adjusted R-squared:  0.7123 
+## F-statistic: 112.7 on 9 and 397 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div id="multicollinearity-checking" class="section level3 hasAnchor" number="6.1.11">
+<h3><span class="header-section-number">6.1.11</span> Multicollinearity checking<a href="statistical-models.html#multicollinearity-checking" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb460"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb460-1"><a href="statistical-models.html#cb460-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(model_trasf)</span></code></pre></div>
+<pre><code>##       zn     chas      nox       rm      dis      rad      tax  ptratio 
+## 2.024269 1.044796 4.074241 1.721080 3.759267 6.008751 7.469414 1.743359 
+##    lstat 
+## 2.372125</code></pre>
+</div>
+<div id="plot-model-to-check-assumptions" class="section level3 hasAnchor" number="6.1.12">
+<h3><span class="header-section-number">6.1.12</span> Plot model to check assumptions<a href="statistical-models.html#plot-model-to-check-assumptions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb462"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb462-1"><a href="statistical-models.html#cb462-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model_trasf)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-229-1.png" width="672" /><img src="_main_files/figure-html/unnamed-chunk-229-2.png" width="672" /><img src="_main_files/figure-html/unnamed-chunk-229-3.png" width="672" /><img src="_main_files/figure-html/unnamed-chunk-229-4.png" width="672" /></p>
+<ul>
+<li>histogram of residuals</li>
+</ul>
+<div class="sourceCode" id="cb463"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb463-1"><a href="statistical-models.html#cb463-1" aria-hidden="true" tabindex="-1"></a>resid<span class="ot">&lt;-</span> model_trasf<span class="sc">$</span>residuals</span>
+<span id="cb463-2"><a href="statistical-models.html#cb463-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(resid)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-230-1.png" width="672" /></p>
+<ul>
+<li>F test of model</li>
+</ul>
+<div class="sourceCode" id="cb464"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb464-1"><a href="statistical-models.html#cb464-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(model_trasf)</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">Df</th>
+<th align="right">Sum Sq</th>
+<th align="right">Mean Sq</th>
+<th align="right">F value</th>
+<th align="right">Pr(&gt;F)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">zn</td>
+<td align="right">1</td>
+<td align="right">4019.0308</td>
+<td align="right">4019.03076</td>
+<td align="right">179.38831</td>
+<td align="right">0e+00</td>
+</tr>
+<tr class="even">
+<td align="left">chas</td>
+<td align="right">1</td>
+<td align="right">1011.5766</td>
+<td align="right">1011.57663</td>
+<td align="right">45.15144</td>
+<td align="right">0e+00</td>
+</tr>
+<tr class="odd">
+<td align="left">nox</td>
+<td align="right">1</td>
+<td align="right">2785.8086</td>
+<td align="right">2785.80857</td>
+<td align="right">124.34378</td>
+<td align="right">0e+00</td>
+</tr>
+<tr class="even">
+<td align="left">rm</td>
+<td align="right">1</td>
+<td align="right">8487.0727</td>
+<td align="right">8487.07268</td>
+<td align="right">378.81810</td>
+<td align="right">0e+00</td>
+</tr>
+<tr class="odd">
+<td align="left">dis</td>
+<td align="right">1</td>
+<td align="right">951.7774</td>
+<td align="right">951.77743</td>
+<td align="right">42.48232</td>
+<td align="right">0e+00</td>
+</tr>
+<tr class="even">
+<td align="left">rad</td>
+<td align="right">1</td>
+<td align="right">558.8550</td>
+<td align="right">558.85503</td>
+<td align="right">24.94434</td>
+<td align="right">9e-07</td>
+</tr>
+<tr class="odd">
+<td align="left">tax</td>
+<td align="right">1</td>
+<td align="right">767.8718</td>
+<td align="right">767.87176</td>
+<td align="right">34.27374</td>
+<td align="right">0e+00</td>
+</tr>
+<tr class="even">
+<td align="left">ptratio</td>
+<td align="right">1</td>
+<td align="right">1119.3945</td>
+<td align="right">1119.39453</td>
+<td align="right">49.96386</td>
+<td align="right">0e+00</td>
+</tr>
+<tr class="odd">
+<td align="left">lstat</td>
+<td align="right">1</td>
+<td align="right">3024.0665</td>
+<td align="right">3024.06652</td>
+<td align="right">134.97836</td>
+<td align="right">0e+00</td>
+</tr>
+<tr class="even">
+<td align="left">Residuals</td>
+<td align="right">397</td>
+<td align="right">8894.4215</td>
+<td align="right">22.40408</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>coefficients</li>
+</ul>
+<div class="sourceCode" id="cb465"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb465-1"><a href="statistical-models.html#cb465-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">summary</span>(model_trasf))</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">Estimate</th>
+<th align="right">Std. Error</th>
+<th align="right">t value</th>
+<th align="right">Pr(&gt;|t|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">22.5089571</td>
+<td align="right">0.2351584</td>
+<td align="right">95.718273</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">zn</td>
+<td align="right">1.0160975</td>
+<td align="right">0.3346703</td>
+<td align="right">3.036115</td>
+<td align="right">0.0025545</td>
+</tr>
+<tr class="odd">
+<td align="left">chas</td>
+<td align="right">0.7589909</td>
+<td align="right">0.2331142</td>
+<td align="right">3.255876</td>
+<td align="right">0.0012275</td>
+</tr>
+<tr class="even">
+<td align="left">nox</td>
+<td align="right">-2.7639762</td>
+<td align="right">0.4623875</td>
+<td align="right">-5.977619</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="odd">
+<td align="left">rm</td>
+<td align="right">2.1760130</td>
+<td align="right">0.3129267</td>
+<td align="right">6.953747</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">dis</td>
+<td align="right">-3.9697228</td>
+<td align="right">0.4547944</td>
+<td align="right">-8.728609</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="odd">
+<td align="left">rad</td>
+<td align="right">2.1193795</td>
+<td align="right">0.5857829</td>
+<td align="right">3.618029</td>
+<td align="right">0.0003352</td>
+</tr>
+<tr class="even">
+<td align="left">tax</td>
+<td align="right">-2.3171470</td>
+<td align="right">0.6537962</td>
+<td align="right">-3.544143</td>
+<td align="right">0.0004408</td>
+</tr>
+<tr class="odd">
+<td align="left">ptratio</td>
+<td align="right">-1.9908948</td>
+<td align="right">0.3091666</td>
+<td align="right">-6.439552</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">lstat</td>
+<td align="right">-4.2244121</td>
+<td align="right">0.3636086</td>
+<td align="right">-11.618019</td>
+<td align="right">0.0000000</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>confidence interval</li>
+</ul>
+<div class="sourceCode" id="cb466"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb466-1"><a href="statistical-models.html#cb466-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(model_trasf)</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">2.5 %</th>
+<th align="right">97.5 %</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">22.0466457</td>
+<td align="right">22.971269</td>
+</tr>
+<tr class="even">
+<td align="left">zn</td>
+<td align="right">0.3581500</td>
+<td align="right">1.674045</td>
+</tr>
+<tr class="odd">
+<td align="left">chas</td>
+<td align="right">0.3006983</td>
+<td align="right">1.217283</td>
+</tr>
+<tr class="even">
+<td align="left">nox</td>
+<td align="right">-3.6730103</td>
+<td align="right">-1.854942</td>
+</tr>
+<tr class="odd">
+<td align="left">rm</td>
+<td align="right">1.5608125</td>
+<td align="right">2.791214</td>
+</tr>
+<tr class="even">
+<td align="left">dis</td>
+<td align="right">-4.8638292</td>
+<td align="right">-3.075616</td>
+</tr>
+<tr class="odd">
+<td align="left">rad</td>
+<td align="right">0.9677553</td>
+<td align="right">3.271004</td>
+</tr>
+<tr class="even">
+<td align="left">tax</td>
+<td align="right">-3.6024824</td>
+<td align="right">-1.031812</td>
+</tr>
+<tr class="odd">
+<td align="left">ptratio</td>
+<td align="right">-2.5987032</td>
+<td align="right">-1.383086</td>
+</tr>
+<tr class="even">
+<td align="left">lstat</td>
+<td align="right">-4.9392512</td>
+<td align="right">-3.509573</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="add-polynomial-of-quadratic-term" class="section level3 hasAnchor" number="6.1.13">
+<h3><span class="header-section-number">6.1.13</span> Add polynomial of quadratic term<a href="statistical-models.html#add-polynomial-of-quadratic-term" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><code>rm and lstat</code></li>
+</ul>
+<div class="sourceCode" id="cb467"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb467-1"><a href="statistical-models.html#cb467-1" aria-hidden="true" tabindex="-1"></a>model_trasf_poly <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">formula =</span> medv <span class="sc">~</span> zn <span class="sc">+</span> chas <span class="sc">+</span> nox <span class="sc">+</span>  <span class="fu">I</span>(rm<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> dis <span class="sc">+</span> rad <span class="sc">+</span> tax <span class="sc">+</span> </span>
+<span id="cb467-2"><a href="statistical-models.html#cb467-2" aria-hidden="true" tabindex="-1"></a>    ptratio <span class="sc">+</span>   <span class="fu">I</span>(lstat<span class="sc">^</span><span class="dv">2</span>), <span class="at">data =</span> data2)</span>
+<span id="cb467-3"><a href="statistical-models.html#cb467-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_trasf_poly)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = medv ~ zn + chas + nox + I(rm^2) + dis + rad + tax + 
+##     ptratio + I(lstat^2), data = data2)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -19.0736  -3.4029  -0.6212   2.8340  29.4942 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  22.2859     0.3526  63.212  &lt; 2e-16 ***
+## zn            1.5524     0.4096   3.790 0.000174 ***
+## chas          0.9570     0.2834   3.377 0.000805 ***
+## nox          -4.4962     0.5455  -8.242 2.50e-15 ***
+## I(rm^2)       1.5313     0.1589   9.637  &lt; 2e-16 ***
+## dis          -3.3186     0.5644  -5.880 8.69e-09 ***
+## rad           3.0529     0.7024   4.346 1.76e-05 ***
+## tax          -3.6647     0.7861  -4.662 4.28e-06 ***
+## ptratio      -2.6800     0.3706  -7.232 2.47e-12 ***
+## I(lstat^2)   -1.3170     0.1918  -6.865 2.56e-11 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 5.763 on 397 degrees of freedom
+## Multiple R-squared:  0.583,  Adjusted R-squared:  0.5735 
+## F-statistic: 61.67 on 9 and 397 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div id="add-interaction-terms" class="section level3 hasAnchor" number="6.1.14">
+<h3><span class="header-section-number">6.1.14</span> Add interaction terms<a href="statistical-models.html#add-interaction-terms" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><code>rm and lstat</code></li>
+<li>R2 &gt;0.7 indicates a good fit of the model</li>
+</ul>
+<div class="sourceCode" id="cb469"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb469-1"><a href="statistical-models.html#cb469-1" aria-hidden="true" tabindex="-1"></a>model_trasf_term <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">formula =</span> medv <span class="sc">~</span> zn <span class="sc">+</span> chas <span class="sc">+</span> nox <span class="sc">+</span>  (rm<span class="sc">*</span>  lstat) <span class="sc">+</span> dis <span class="sc">+</span> rad <span class="sc">+</span> tax <span class="sc">+</span> </span>
+<span id="cb469-2"><a href="statistical-models.html#cb469-2" aria-hidden="true" tabindex="-1"></a>    ptratio  , <span class="at">data =</span> data2)</span>
+<span id="cb469-3"><a href="statistical-models.html#cb469-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_trasf_term)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = medv ~ zn + chas + nox + (rm * lstat) + dis + rad + 
+##     tax + ptratio, data = data2)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -19.4595  -2.3458  -0.2389   1.7950  26.6992 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  21.4297     0.2379  90.060  &lt; 2e-16 ***
+## zn            0.5221     0.3046   1.714 0.087296 .  
+## chas          0.6538     0.2095   3.120 0.001941 ** 
+## nox          -2.0295     0.4218  -4.812 2.13e-06 ***
+## rm            1.6459     0.2860   5.754 1.75e-08 ***
+## lstat        -5.8715     0.3669 -16.002  &lt; 2e-16 ***
+## dis          -3.1810     0.4161  -7.645 1.60e-13 ***
+## rad           1.9251     0.5262   3.658 0.000288 ***
+## tax          -1.9187     0.5883  -3.261 0.001205 ** 
+## ptratio      -1.5554     0.2811  -5.534 5.70e-08 ***
+## rm:lstat     -1.8202     0.1852  -9.830  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 4.249 on 396 degrees of freedom
+## Multiple R-squared:  0.7739, Adjusted R-squared:  0.7682 
+## F-statistic: 135.5 on 10 and 396 DF,  p-value: &lt; 2.2e-16</code></pre>
+<div class="sourceCode" id="cb471"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb471-1"><a href="statistical-models.html#cb471-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model_trasf_term)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-236-1.png" width="672" /><img src="_main_files/figure-html/unnamed-chunk-236-2.png" width="672" /><img src="_main_files/figure-html/unnamed-chunk-236-3.png" width="672" /><img src="_main_files/figure-html/unnamed-chunk-236-4.png" width="672" /></p>
+</div>
+<div id="robust-regression" class="section level3 hasAnchor" number="6.1.15">
+<h3><span class="header-section-number">6.1.15</span> Robust regression<a href="statistical-models.html#robust-regression" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb472"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb472-1"><a href="statistical-models.html#cb472-1" aria-hidden="true" tabindex="-1"></a>robust_model_term <span class="ot">&lt;-</span> <span class="fu">rlm</span>(medv <span class="sc">~</span> zn <span class="sc">+</span> chas <span class="sc">+</span> nox <span class="sc">+</span>  (rm<span class="sc">*</span>  lstat) <span class="sc">+</span> dis <span class="sc">+</span> rad <span class="sc">+</span> tax <span class="sc">+</span> </span>
+<span id="cb472-2"><a href="statistical-models.html#cb472-2" aria-hidden="true" tabindex="-1"></a>    ptratio  , <span class="at">data =</span> data2)</span>
+<span id="cb472-3"><a href="statistical-models.html#cb472-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(robust_model_term)</span></code></pre></div>
+<pre><code>## 
+## Call: rlm(formula = medv ~ zn + chas + nox + (rm * lstat) + dis + rad + 
+##     tax + ptratio, data = data2)
+## Residuals:
+##       Min        1Q    Median        3Q       Max 
+## -20.90999  -1.74873  -0.09845   1.92931  33.87244 
+## 
+## Coefficients:
+##             Value    Std. Error t value 
+## (Intercept)  20.9624   0.1656   126.5763
+## zn            0.1998   0.2120     0.9424
+## chas          0.5198   0.1458     3.5643
+## nox          -1.3458   0.2935    -4.5846
+## rm            2.8773   0.1991    14.4524
+## lstat        -4.5706   0.2554   -17.8979
+## dis          -1.9208   0.2896    -6.6326
+## rad           0.9005   0.3663     2.4586
+## tax          -1.7199   0.4095    -4.2004
+## ptratio      -1.2451   0.1956    -6.3652
+## rm:lstat     -1.9899   0.1289   -15.4398
+## 
+## Residual standard error: 2.698 on 396 degrees of freedom</code></pre>
+</div>
+<div id="create-a-model-before-transforming-data" class="section level3 hasAnchor" number="6.1.16">
+<h3><span class="header-section-number">6.1.16</span> Create a model before transforming data<a href="statistical-models.html#create-a-model-before-transforming-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb474"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb474-1"><a href="statistical-models.html#cb474-1" aria-hidden="true" tabindex="-1"></a>model_trasf_orig <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">formula =</span> medv <span class="sc">~</span> zn <span class="sc">+</span> chas <span class="sc">+</span> nox <span class="sc">+</span> rm <span class="sc">+</span> dis <span class="sc">+</span> rad <span class="sc">+</span> tax <span class="sc">+</span> </span>
+<span id="cb474-2"><a href="statistical-models.html#cb474-2" aria-hidden="true" tabindex="-1"></a>    ptratio <span class="sc">+</span> lstat, <span class="at">data =</span> data)</span>
+<span id="cb474-3"><a href="statistical-models.html#cb474-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_trasf_orig)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = medv ~ zn + chas + nox + rm + dis + rad + tax + 
+##     ptratio + lstat, data = data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -14.219  -2.729  -0.463   1.920  25.992 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  22.5094     0.2430  92.619  &lt; 2e-16 ***
+## zn            0.8232     0.3754   2.193 0.028904 *  
+## chas          0.6582     0.2412   2.728 0.006652 ** 
+## nox          -1.9351     0.4727  -4.093 5.15e-05 ***
+## rm            2.3985     0.3128   7.668 1.36e-13 ***
+## dis          -2.9289     0.4565  -6.416 3.99e-10 ***
+## rad           2.2109     0.6348   3.483 0.000551 ***
+## tax          -2.1880     0.6896  -3.173 0.001627 ** 
+## ptratio      -2.0274     0.3254  -6.230 1.19e-09 ***
+## lstat        -4.3534     0.3844 -11.325  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 4.895 on 397 degrees of freedom
+## Multiple R-squared:  0.7212, Adjusted R-squared:  0.7149 
+## F-statistic: 114.1 on 9 and 397 DF,  p-value: &lt; 2.2e-16</code></pre>
+<ul>
+<li>non nest models comparisons</li>
+</ul>
+<div class="sourceCode" id="cb476"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb476-1"><a href="statistical-models.html#cb476-1" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(model_trasf,model_trasf_orig)</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">df</th>
+<th align="right">AIC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">model_trasf</td>
+<td align="right">11</td>
+<td align="right">2432.353</td>
+</tr>
+<tr class="even">
+<td align="left">model_trasf_orig</td>
+<td align="right">11</td>
+<td align="right">2459.780</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="k-fold-cross-validation" class="section level3 hasAnchor" number="6.1.17">
+<h3><span class="header-section-number">6.1.17</span> K-fold cross validation<a href="statistical-models.html#k-fold-cross-validation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>to make sure which model is better</li>
+</ul>
+<div class="sourceCode" id="cb477"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb477-1"><a href="statistical-models.html#cb477-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(&quot;DAAG&quot;)</span></span>
+<span id="cb477-2"><a href="statistical-models.html#cb477-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DAAG)</span>
+<span id="cb477-3"><a href="statistical-models.html#cb477-3" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb477-4"><a href="statistical-models.html#cb477-4" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb477-5"><a href="statistical-models.html#cb477-5" aria-hidden="true" tabindex="-1"></a>model_trasf_term_cv <span class="ot">&lt;-</span> <span class="fu">glm</span>( medv <span class="sc">~</span> zn <span class="sc">+</span> chas <span class="sc">+</span> nox <span class="sc">+</span>  (rm<span class="sc">*</span>  lstat) <span class="sc">+</span> dis <span class="sc">+</span> rad <span class="sc">+</span> tax <span class="sc">+</span> </span>
+<span id="cb477-6"><a href="statistical-models.html#cb477-6" aria-hidden="true" tabindex="-1"></a>    ptratio  , <span class="at">data =</span> data2)</span>
+<span id="cb477-7"><a href="statistical-models.html#cb477-7" aria-hidden="true" tabindex="-1"></a>cv.err  <span class="ot">&lt;-</span> <span class="fu">cv.glm</span>(data2, model_trasf_term_cv, <span class="at">K =</span> <span class="dv">10</span>)<span class="sc">$</span>delta</span>
+<span id="cb477-8"><a href="statistical-models.html#cb477-8" aria-hidden="true" tabindex="-1"></a>cv.err </span></code></pre></div>
+<pre><code>## [1] 19.24588 19.15400</code></pre>
+</div>
+<div id="nonnest-models-comparisons" class="section level3 hasAnchor" number="6.1.18">
+<h3><span class="header-section-number">6.1.18</span> Nonnest models comparisons<a href="statistical-models.html#nonnest-models-comparisons" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb479"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb479-1"><a href="statistical-models.html#cb479-1" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(model_trasf_term,model_trasf,model_trasf_orig,model_trasf_poly)</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">df</th>
+<th align="right">AIC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">model_trasf_term</td>
+<td align="right">12</td>
+<td align="right">2345.492</td>
+</tr>
+<tr class="even">
+<td align="left">model_trasf</td>
+<td align="right">11</td>
+<td align="right">2432.353</td>
+</tr>
+<tr class="odd">
+<td align="left">model_trasf_orig</td>
+<td align="right">11</td>
+<td align="right">2459.780</td>
+</tr>
+<tr class="even">
+<td align="left">model_trasf_poly</td>
+<td align="right">11</td>
+<td align="right">2592.584</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb480"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb480-1"><a href="statistical-models.html#cb480-1" aria-hidden="true" tabindex="-1"></a><span class="co"># interaction, transformation, original, polynomial by order (`data` has been normalized but not `data2`)</span></span></code></pre></div>
+<ul>
+<li>plot the final model and check the model assumption</li>
+</ul>
+<p><code>posterior predictive check,  linearity,  homogeneity of variance,  influential points,  colinearity, and  normality of residuals</code></p>
+<div class="sourceCode" id="cb481"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb481-1"><a href="statistical-models.html#cb481-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(&quot;performance&quot;)</span></span>
+<span id="cb481-2"><a href="statistical-models.html#cb481-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(performance)</span>
+<span id="cb481-3"><a href="statistical-models.html#cb481-3" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(model_trasf_term)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-242-1.png" width="672" /></p>
+</div>
+<div id="create-forest-plot-for-coefficients" class="section level3 hasAnchor" number="6.1.19">
+<h3><span class="header-section-number">6.1.19</span> Create forest plot for coefficients<a href="statistical-models.html#create-forest-plot-for-coefficients" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb482"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb482-1"><a href="statistical-models.html#cb482-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sjPlot) </span>
+<span id="cb482-2"><a href="statistical-models.html#cb482-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_model</span>(model_trasf_term, <span class="at">show.values =</span> <span class="cn">TRUE</span>, <span class="at">value.offset =</span> <span class="fl">0.4</span>) </span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-243-1.png" width="672" /></p>
+</div>
+<div id="relative-importance" class="section level3 hasAnchor" number="6.1.20">
+<h3><span class="header-section-number">6.1.20</span> Relative Importance<a href="statistical-models.html#relative-importance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>provides measures of relative importance</li>
+</ul>
+<div class="sourceCode" id="cb483"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb483-1"><a href="statistical-models.html#cb483-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(relaimpo)</span>
+<span id="cb483-2"><a href="statistical-models.html#cb483-2" aria-hidden="true" tabindex="-1"></a><span class="co"># calc.relimp(fit,type=c(&quot;lmg&quot;,&quot;last&quot;,&quot;first&quot;,&quot;pratt&quot;),</span></span>
+<span id="cb483-3"><a href="statistical-models.html#cb483-3" aria-hidden="true" tabindex="-1"></a><span class="co">#    rela=TRUE)</span></span>
+<span id="cb483-4"><a href="statistical-models.html#cb483-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Bootstrap Measures of Relative Importance (1000 samples)</span></span>
+<span id="cb483-5"><a href="statistical-models.html#cb483-5" aria-hidden="true" tabindex="-1"></a>boot <span class="ot">&lt;-</span> <span class="fu">boot.relimp</span>(model_trasf_term, <span class="at">b =</span> <span class="dv">10</span>, <span class="at">type =</span><span class="fu">c</span>(<span class="st">&quot;lmg&quot;</span> ), <span class="at">rank =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb483-6"><a href="statistical-models.html#cb483-6" aria-hidden="true" tabindex="-1"></a>                    <span class="co"># type =c(&quot;lmg&quot;,&quot;last&quot;,&quot;first&quot;,&quot;pratt&quot;)</span></span>
+<span id="cb483-7"><a href="statistical-models.html#cb483-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">diff =</span> <span class="cn">TRUE</span>, <span class="at">rela =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb483-8"><a href="statistical-models.html#cb483-8" aria-hidden="true" tabindex="-1"></a><span class="fu">booteval.relimp</span>(boot) <span class="co"># print result</span></span></code></pre></div>
+<pre><code>## Response variable: medv 
+## Total response variance: 77.88147 
+## Analysis based on 407 observations 
+## 
+## 10 Regressors: 
+## zn chas nox rm lstat dis rad tax ptratio rm:lstat 
+## Proportion of variance explained by model: 77.39%
+## Metrics are normalized to sum to 100% (rela=TRUE). 
+## 
+## Relative importance metrics: 
+## 
+##                 lmg
+## zn       0.03220843
+## chas     0.01925573
+## nox      0.05753222
+## rm       0.24841214
+## lstat    0.32582422
+## dis      0.04647715
+## rad      0.03216196
+## tax      0.05940953
+## ptratio  0.09003437
+## rm:lstat 0.08868423
+## 
+## Average coefficients for different model sizes: 
+## 
+##                  1X        2Xs        3Xs        4Xs        5Xs        6Xs
+## zn        3.1505046  2.1309586  1.5419108  1.1885764  0.9622432  0.8066737
+## chas      1.4317561  1.3828980  1.2922217  1.1827563  1.0710746  0.9666952
+## nox      -3.6683140 -2.8590532 -2.3987148 -2.1635246 -2.0628637 -2.0336275
+## rm        5.8715576  5.1812470  4.6686609  4.2214027  3.7902531  3.3584729
+## lstat    -6.3961998 -6.2413211 -6.1543204 -6.0962610 -6.0505503 -6.0111059
+## dis       2.3495853  0.6106749 -0.5986185 -1.4554886 -2.0655023 -2.4944977
+## rad      -3.2090101 -1.5469225 -0.4505596  0.2850626  0.7884232  1.1408255
+## tax      -4.1727995 -3.6061521 -3.1776467 -2.8413999 -2.5683300 -2.3434564
+## ptratio  -4.2048171 -3.4233285 -2.9476391 -2.6199136 -2.3633992 -2.1469790
+## rm:lstat -0.7386853 -1.0072327 -1.1975350 -1.3430505 -1.4610987 -1.5602846
+##                 7Xs        8Xs        9Xs       10Xs
+## zn        0.6942682  0.6122971  0.5558327  0.5221292
+## chas      0.8734919  0.7916003  0.7191770  0.6537613
+## nox      -2.0351844 -2.0434312 -2.0444974 -2.0294702
+## rm        2.9235837  2.4886854  2.0599352  1.6458985
+## lstat    -5.9756419 -5.9424093 -5.9088868 -5.8714971
+## dis      -2.7882468 -2.9825750 -3.1064663 -3.1809633
+## rad       1.3969994  1.5963587  1.7666711  1.9250667
+## tax      -2.1625306 -2.0281734 -1.9455332 -1.9186629
+## ptratio  -1.9610124 -1.8027959 -1.6694147 -1.5553973
+## rm:lstat -1.6447082 -1.7160362 -1.7745576 -1.8202278
+## 
+##  
+##  Confidence interval information ( 10 bootstrap replicates, bty= perc ): 
+## Relative Contributions with confidence intervals: 
+##  
+##                                    Lower  Upper
+##              percentage 0.95       0.95   0.95  
+## zn.lmg       0.0322     _______HIJ 0.0202 0.0358
+## chas.lmg     0.0193     _____FGHIJ 0.0016 0.0512
+## nox.lmg      0.0575     ____EFG___ 0.0427 0.0707
+## rm.lmg       0.2484     AB________ 0.1929 0.3313
+## lstat.lmg    0.3258     AB________ 0.2627 0.3840
+## dis.lmg      0.0465     _____FGHIJ 0.0287 0.0545
+## rad.lmg      0.0322     ______GHIJ 0.0213 0.0453
+## tax.lmg      0.0594     ___DEFG___ 0.0476 0.0774
+## ptratio.lmg  0.0900     __CD______ 0.0712 0.1166
+## rm:lstat.lmg 0.0887     __CDEF____ 0.0614 0.1114
+## 
+## Letters indicate the ranks covered by bootstrap CIs. 
+## (Rank bootstrap confidence intervals always obtained by percentile method) 
+## CAUTION: Bootstrap confidence intervals can be somewhat liberal. 
+## 
+##  
+##  Differences between Relative Contributions: 
+##  
+##                                      Lower   Upper
+##                      difference 0.95 0.95    0.95   
+## zn-chas.lmg           0.0130         -0.0198  0.0270
+## zn-nox.lmg           -0.0253     *   -0.0505 -0.0125
+## zn-rm.lmg            -0.2162     *   -0.3057 -0.1571
+## zn-lstat.lmg         -0.2936     *   -0.3481 -0.2295
+## zn-dis.lmg           -0.0143         -0.0246  0.0027
+## zn-rad.lmg            0.0000         -0.0214  0.0087
+## zn-tax.lmg           -0.0272     *   -0.0520 -0.0173
+## zn-ptratio.lmg       -0.0578     *   -0.0880 -0.0378
+## zn-rm:lstat.lmg      -0.0565     *   -0.0828 -0.0315
+## chas-nox.lmg         -0.0383     *   -0.0584 -0.0019
+## chas-rm.lmg          -0.2292     *   -0.3173 -0.1765
+## chas-lstat.lmg       -0.3066     *   -0.3675 -0.2115
+## chas-dis.lmg         -0.0272         -0.0377  0.0155
+## chas-rad.lmg         -0.0129         -0.0437  0.0215
+## chas-tax.lmg         -0.0402         -0.0758  0.0007
+## chas-ptratio.lmg     -0.0708     *   -0.1150 -0.0250
+## chas-rm:lstat.lmg    -0.0694     *   -0.1098 -0.0338
+## nox-rm.lmg           -0.1909     *   -0.2815 -0.1395
+## nox-lstat.lmg        -0.2683     *   -0.3305 -0.2057
+## nox-dis.lmg           0.0111         -0.0007  0.0275
+## nox-rad.lmg           0.0254     *    0.0047  0.0291
+## nox-tax.lmg          -0.0019         -0.0274  0.0065
+## nox-ptratio.lmg      -0.0325     *   -0.0666 -0.0138
+## nox-rm:lstat.lmg     -0.0312         -0.0615  0.0008
+## rm-lstat.lmg         -0.0774         -0.1910  0.0509
+## rm-dis.lmg            0.2019     *    0.1388  0.2939
+## rm-rad.lmg            0.2163     *    0.1616  0.3100
+## rm-tax.lmg            0.1890     *    0.1332  0.2837
+## rm-ptratio.lmg        0.1584     *    0.1081  0.2560
+## rm-rm:lstat.lmg       0.1597     *    0.1055  0.2633
+## lstat-dis.lmg         0.2793     *    0.2259  0.3298
+## lstat-rad.lmg         0.2937     *    0.2211  0.3527
+## lstat-tax.lmg         0.2664     *    0.1889  0.3242
+## lstat-ptratio.lmg     0.2358     *    0.1497  0.2991
+## lstat-rm:lstat.lmg    0.2371     *    0.1549  0.3056
+## dis-rad.lmg           0.0143         -0.0084  0.0228
+## dis-tax.lmg          -0.0129     *   -0.0406 -0.0044
+## dis-ptratio.lmg      -0.0436     *   -0.0797 -0.0307
+## dis-rm:lstat.lmg     -0.0422     *   -0.0746 -0.0069
+## rad-tax.lmg          -0.0272     *   -0.0321 -0.0204
+## rad-ptratio.lmg      -0.0579     *   -0.0713 -0.0377
+## rad-rm:lstat.lmg     -0.0565     *   -0.0718 -0.0258
+## tax-ptratio.lmg      -0.0306     *   -0.0473 -0.0137
+## tax-rm:lstat.lmg     -0.0293         -0.0457  0.0021
+## ptratio-rm:lstat.lmg  0.0014         -0.0253  0.0301
+## 
+## * indicates that CI for difference does not include 0. 
+## CAUTION: Bootstrap confidence intervals can be somewhat liberal.</code></pre>
+<div class="sourceCode" id="cb485"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb485-1"><a href="statistical-models.html#cb485-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">booteval.relimp</span>(boot,<span class="at">sort=</span><span class="cn">TRUE</span>)) <span class="co"># plot result</span></span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-244-1.png" width="672" /></p>
+</div>
+<div id="model-prediction" class="section level3 hasAnchor" number="6.1.21">
+<h3><span class="header-section-number">6.1.21</span> Model prediction<a href="statistical-models.html#model-prediction" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>prediction <code>ci</code> and mean <code>ci</code></li>
+</ul>
+<div class="sourceCode" id="cb486"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb486-1"><a href="statistical-models.html#cb486-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb486-2"><a href="statistical-models.html#cb486-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb486-3"><a href="statistical-models.html#cb486-3" aria-hidden="true" tabindex="-1"></a>data_pred <span class="ot">&lt;-</span>    (data2[,<span class="fu">c</span>(<span class="st">&quot;zn&quot;</span> ,<span class="st">&quot;chas&quot;</span> , <span class="st">&quot;nox&quot;</span> , <span class="st">&quot;rm&quot;</span> , <span class="st">&quot;dis&quot;</span> , <span class="st">&quot;rad&quot;</span> , <span class="st">&quot;tax&quot;</span> , </span>
+<span id="cb486-4"><a href="statistical-models.html#cb486-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;ptratio&quot;</span>, <span class="st">&quot;lstat&quot;</span>)])</span>
+<span id="cb486-5"><a href="statistical-models.html#cb486-5" aria-hidden="true" tabindex="-1"></a>data_pred[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,]</span></code></pre></div>
+<table style="width:100%;">
+<colgroup>
+<col width="2%" />
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+<col width="9%" />
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">zn</th>
+<th align="right">chas</th>
+<th align="right">nox</th>
+<th align="right">rm</th>
+<th align="right">dis</th>
+<th align="right">rad</th>
+<th align="right">tax</th>
+<th align="right">ptratio</th>
+<th align="right">lstat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1</td>
+<td align="right">0.2845483</td>
+<td align="right">-0.2723291</td>
+<td align="right">-0.1440749</td>
+<td align="right">0.4132629</td>
+<td align="right">0.2785465</td>
+<td align="right">-0.9818712</td>
+<td align="right">-0.6659492</td>
+<td align="right">-1.4575580</td>
+<td align="right">-1.0744990</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="right">-0.4872402</td>
+<td align="right">-0.2723291</td>
+<td align="right">-0.7395304</td>
+<td align="right">0.1940824</td>
+<td align="right">0.6786919</td>
+<td align="right">-0.8670245</td>
+<td align="right">-0.9863534</td>
+<td align="right">-0.3027945</td>
+<td align="right">-0.4919525</td>
+</tr>
+<tr class="odd">
+<td align="left">4</td>
+<td align="right">-0.4872402</td>
+<td align="right">-0.2723291</td>
+<td align="right">-0.8344581</td>
+<td align="right">1.0152978</td>
+<td align="right">1.1314532</td>
+<td align="right">-0.7521778</td>
+<td align="right">-1.1050216</td>
+<td align="right">0.1129203</td>
+<td align="right">-1.3601708</td>
+</tr>
+<tr class="even">
+<td align="left">5</td>
+<td align="right">-0.4872402</td>
+<td align="right">-0.2723291</td>
+<td align="right">-0.8344581</td>
+<td align="right">1.2273620</td>
+<td align="right">1.1314532</td>
+<td align="right">-0.7521778</td>
+<td align="right">-1.1050216</td>
+<td align="right">0.1129203</td>
+<td align="right">-1.0254866</td>
+</tr>
+<tr class="odd">
+<td align="left">6</td>
+<td align="right">-0.4872402</td>
+<td align="right">-0.2723291</td>
+<td align="right">-0.8344581</td>
+<td align="right">0.2068916</td>
+<td align="right">1.1314532</td>
+<td align="right">-0.7521778</td>
+<td align="right">-1.1050216</td>
+<td align="right">0.1129203</td>
+<td align="right">-1.0422909</td>
+</tr>
+<tr class="even">
+<td align="left">7</td>
+<td align="right">0.0487240</td>
+<td align="right">-0.2723291</td>
+<td align="right">-0.2648919</td>
+<td align="right">-0.3880270</td>
+<td align="right">0.9295961</td>
+<td align="right">-0.5224844</td>
+<td align="right">-0.5769480</td>
+<td align="right">-1.5037485</td>
+<td align="right">-0.0312367</td>
+</tr>
+<tr class="odd">
+<td align="left">8</td>
+<td align="right">0.0487240</td>
+<td align="right">-0.2723291</td>
+<td align="right">-0.2648919</td>
+<td align="right">-0.1603069</td>
+<td align="right">1.0872565</td>
+<td align="right">-0.5224844</td>
+<td align="right">-0.5769480</td>
+<td align="right">-1.5037485</td>
+<td align="right">0.9097999</td>
+</tr>
+<tr class="even">
+<td align="left">9</td>
+<td align="right">0.0487240</td>
+<td align="right">-0.2723291</td>
+<td align="right">-0.2648919</td>
+<td align="right">-0.9302853</td>
+<td align="right">1.1392843</td>
+<td align="right">-0.5224844</td>
+<td align="right">-0.5769480</td>
+<td align="right">-1.5037485</td>
+<td align="right">2.4193794</td>
+</tr>
+<tr class="odd">
+<td align="left">10</td>
+<td align="right">0.0487240</td>
+<td align="right">-0.2723291</td>
+<td align="right">-0.2648919</td>
+<td align="right">-0.3994130</td>
+<td align="right">1.3357787</td>
+<td align="right">-0.5224844</td>
+<td align="right">-0.5769480</td>
+<td align="right">-1.5037485</td>
+<td align="right">0.6227277</td>
+</tr>
+<tr class="even">
+<td align="left">11</td>
+<td align="right">0.0487240</td>
+<td align="right">-0.2723291</td>
+<td align="right">-0.2648919</td>
+<td align="right">0.1314594</td>
+<td align="right">1.2422167</td>
+<td align="right">-0.5224844</td>
+<td align="right">-0.5769480</td>
+<td align="right">-1.5037485</td>
+<td align="right">1.0918456</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb487"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb487-1"><a href="statistical-models.html#cb487-1" aria-hidden="true" tabindex="-1"></a>predy <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_trasf_term, data_pred[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,], <span class="at">interval=</span><span class="st">&quot;predict&quot;</span>)</span>
+<span id="cb487-2"><a href="statistical-models.html#cb487-2" aria-hidden="true" tabindex="-1"></a>predy</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">fit</th>
+<th align="right">lwr</th>
+<th align="right">upr</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1</td>
+<td align="right">30.258620</td>
+<td align="right">21.8534712</td>
+<td align="right">38.66377</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="right">24.415330</td>
+<td align="right">16.0263022</td>
+<td align="right">32.80436</td>
+</tr>
+<tr class="odd">
+<td align="left">4</td>
+<td align="right">31.759215</td>
+<td align="right">23.3073401</td>
+<td align="right">40.21109</td>
+</tr>
+<tr class="even">
+<td align="left">5</td>
+<td align="right">29.920476</td>
+<td align="right">21.4789966</td>
+<td align="right">38.36196</td>
+</tr>
+<tr class="odd">
+<td align="left">6</td>
+<td align="right">26.441050</td>
+<td align="right">18.0254500</td>
+<td align="right">34.85665</td>
+</tr>
+<tr class="even">
+<td align="left">7</td>
+<td align="right">20.820462</td>
+<td align="right">12.3963513</td>
+<td align="right">29.24457</td>
+</tr>
+<tr class="odd">
+<td align="left">8</td>
+<td align="right">15.455998</td>
+<td align="right">6.9807773</td>
+<td align="right">23.93122</td>
+</tr>
+<tr class="even">
+<td align="left">9</td>
+<td align="right">8.991037</td>
+<td align="right">0.4048231</td>
+<td align="right">17.57725</td>
+</tr>
+<tr class="odd">
+<td align="left">10</td>
+<td align="right">16.144719</td>
+<td align="right">7.6745761</td>
+<td align="right">24.61486</td>
+</tr>
+<tr class="even">
+<td align="left">11</td>
+<td align="right">13.847673</td>
+<td align="right">5.3305253</td>
+<td align="right">22.36482</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb488"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb488-1"><a href="statistical-models.html#cb488-1" aria-hidden="true" tabindex="-1"></a>confy <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_trasf_term, data_pred[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,], <span class="at">interval=</span><span class="st">&quot;confidence&quot;</span>)</span>
+<span id="cb488-2"><a href="statistical-models.html#cb488-2" aria-hidden="true" tabindex="-1"></a>confy</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">fit</th>
+<th align="right">lwr</th>
+<th align="right">upr</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1</td>
+<td align="right">30.258620</td>
+<td align="right">29.329961</td>
+<td align="right">31.18728</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="right">24.415330</td>
+<td align="right">23.646134</td>
+<td align="right">25.18452</td>
+</tr>
+<tr class="odd">
+<td align="left">4</td>
+<td align="right">31.759215</td>
+<td align="right">30.474666</td>
+<td align="right">33.04376</td>
+</tr>
+<tr class="even">
+<td align="left">5</td>
+<td align="right">29.920476</td>
+<td align="right">28.706202</td>
+<td align="right">31.13475</td>
+</tr>
+<tr class="odd">
+<td align="left">6</td>
+<td align="right">26.441050</td>
+<td align="right">25.422125</td>
+<td align="right">27.45998</td>
+</tr>
+<tr class="even">
+<td align="left">7</td>
+<td align="right">20.820462</td>
+<td align="right">19.733484</td>
+<td align="right">21.90744</td>
+</tr>
+<tr class="odd">
+<td align="left">8</td>
+<td align="right">15.455998</td>
+<td align="right">14.025877</td>
+<td align="right">16.88612</td>
+</tr>
+<tr class="even">
+<td align="left">9</td>
+<td align="right">8.991037</td>
+<td align="right">7.006358</td>
+<td align="right">10.97572</td>
+</tr>
+<tr class="odd">
+<td align="left">10</td>
+<td align="right">16.144719</td>
+<td align="right">14.745003</td>
+<td align="right">17.54443</td>
+</tr>
+<tr class="even">
+<td align="left">11</td>
+<td align="right">13.847673</td>
+<td align="right">12.187044</td>
+<td align="right">15.50830</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>ci</code> width (the lower and upper bonds)</li>
+</ul>
+<div class="sourceCode" id="cb489"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb489-1"><a href="statistical-models.html#cb489-1" aria-hidden="true" tabindex="-1"></a>confy <span class="sc">%*%</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span></code></pre></div>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left">1</td>
+<td align="right">1.857318</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="right">1.538391</td>
+</tr>
+<tr class="odd">
+<td align="left">4</td>
+<td align="right">2.569097</td>
+</tr>
+<tr class="even">
+<td align="left">5</td>
+<td align="right">2.428550</td>
+</tr>
+<tr class="odd">
+<td align="left">6</td>
+<td align="right">2.037850</td>
+</tr>
+<tr class="even">
+<td align="left">7</td>
+<td align="right">2.173956</td>
+</tr>
+<tr class="odd">
+<td align="left">8</td>
+<td align="right">2.860241</td>
+</tr>
+<tr class="even">
+<td align="left">9</td>
+<td align="right">3.969358</td>
+</tr>
+<tr class="odd">
+<td align="left">10</td>
+<td align="right">2.799431</td>
+</tr>
+<tr class="even">
+<td align="left">11</td>
+<td align="right">3.321259</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb490"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb490-1"><a href="statistical-models.html#cb490-1" aria-hidden="true" tabindex="-1"></a>predy <span class="sc">%*%</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span></code></pre></div>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left">1</td>
+<td align="right">16.81030</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="right">16.77805</td>
+</tr>
+<tr class="odd">
+<td align="left">4</td>
+<td align="right">16.90375</td>
+</tr>
+<tr class="even">
+<td align="left">5</td>
+<td align="right">16.88296</td>
+</tr>
+<tr class="odd">
+<td align="left">6</td>
+<td align="right">16.83120</td>
+</tr>
+<tr class="even">
+<td align="left">7</td>
+<td align="right">16.84822</td>
+</tr>
+<tr class="odd">
+<td align="left">8</td>
+<td align="right">16.95044</td>
+</tr>
+<tr class="even">
+<td align="left">9</td>
+<td align="right">17.17243</td>
+</tr>
+<tr class="odd">
+<td align="left">10</td>
+<td align="right">16.94029</td>
+</tr>
+<tr class="even">
+<td align="left">11</td>
+<td align="right">17.03430</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>plot the differences of predictions and actual values</li>
+</ul>
+<div class="sourceCode" id="cb491"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb491-1"><a href="statistical-models.html#cb491-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(data2<span class="sc">$</span>medv,<span class="fu">predict</span>(model_trasf_term) )</span>
+<span id="cb491-2"><a href="statistical-models.html#cb491-2" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">predict</span>(model_trasf_term)<span class="sc">~</span>data2<span class="sc">$</span>medv)</span>
+<span id="cb491-3"><a href="statistical-models.html#cb491-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(fit)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-249-1.png" width="672" /></p>
+</div>
+<div id="external-data-validation" class="section level3 hasAnchor" number="6.1.22">
+<h3><span class="header-section-number">6.1.22</span> External data validation<a href="statistical-models.html#external-data-validation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>this is not ture external validation (just for demonstration)</li>
+<li>Split the data randomly into a training set and a test set by using <code>caret</code> package.</li>
+</ul>
+<div class="sourceCode" id="cb492"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb492-1"><a href="statistical-models.html#cb492-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
+<span id="cb492-2"><a href="statistical-models.html#cb492-2" aria-hidden="true" tabindex="-1"></a>testdata2_pred <span class="ot">&lt;-</span>     (testdata2[,<span class="fu">c</span>(<span class="st">&quot;zn&quot;</span> ,<span class="st">&quot;chas&quot;</span> , <span class="st">&quot;nox&quot;</span> , <span class="st">&quot;rm&quot;</span> , <span class="st">&quot;dis&quot;</span> , <span class="st">&quot;rad&quot;</span> , <span class="st">&quot;tax&quot;</span> , </span>
+<span id="cb492-3"><a href="statistical-models.html#cb492-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;ptratio&quot;</span>, <span class="st">&quot;lstat&quot;</span>)])</span>
+<span id="cb492-4"><a href="statistical-models.html#cb492-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb492-5"><a href="statistical-models.html#cb492-5" aria-hidden="true" tabindex="-1"></a>R_sq <span class="ot">&lt;-</span> <span class="fu">R2</span>(testdata2<span class="sc">$</span>medv,<span class="fu">predict</span>(model_trasf_term,testdata2_pred))</span>
+<span id="cb492-6"><a href="statistical-models.html#cb492-6" aria-hidden="true" tabindex="-1"></a>RMSE <span class="ot">&lt;-</span> <span class="fu">RMSE</span>(testdata2<span class="sc">$</span>medv,<span class="fu">predict</span>(model_trasf_term,testdata2_pred))</span>
+<span id="cb492-7"><a href="statistical-models.html#cb492-7" aria-hidden="true" tabindex="-1"></a>MAE <span class="ot">&lt;-</span> <span class="fu">MAE</span>(testdata2<span class="sc">$</span>medv,<span class="fu">predict</span>(model_trasf_term,testdata2_pred))</span>
+<span id="cb492-8"><a href="statistical-models.html#cb492-8" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">c</span>(R_sq, RMSE, MAE))</span></code></pre></div>
+<pre><code>## [1] 0.8465718 4.1960036 3.4352611</code></pre>
+</div>
+<div id="to-do" class="section level3 hasAnchor" number="6.1.23">
+<h3><span class="header-section-number">6.1.23</span> To do<a href="statistical-models.html#to-do" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>Models comparisons in further and adjusting the final model by a loop</li>
+</ul>
 
+</div>
+</div>
 </div>
             </section>
 
