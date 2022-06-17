@@ -1,4 +1,270 @@
  
 # Miscellaneous
 
-Stay tuned!
+
+## Linear algebra
+
+### Matrix basics
+- dimensions of matrix
+```{r setup, include=FALSE,engine='R'}
+knitr::opts_chunk$set( engine='R')
+```
+
+```{r}
+   seed=123
+   X=matrix(1:12,ncol=3,nrow=4)
+   X
+   
+   dim(X)
+   dim(X)[1]
+
+   ncol(X)
+```
+- change dimensions of matrix 
+```{r}
+dim(X)=c(2,6)
+   X
+```
+- change names of matrix 
+```{r}
+  a <- matrix(1:6,nrow=2,ncol=3,byrow=FALSE)
+  b <- matrix(1:6,nrow=3,ncol=2,byrow=T)
+  c <- matrix(1:6,nrow=3,ncol=2,byrow=T,dimnames=list(c("A","B","C"),c("boy","girl")))
+  c
+```
+
+```{r}
+   rownames(c)
+   colnames(c)
+
+   rownames(c)=c("E","F","G")
+   c
+```
+- replace elements of matrix
+```{r}
+   X=matrix(1:12,nrow=4,ncol=3)
+   
+   X[2,3]
+   X[2,3]=1000
+      
+   X
+```
+- extract diagonal elements and replace them 
+```{r}
+   diag(X)
+   diag(X)=c(0,0,1)
+
+   X
+```
+- create diagonal identity matrix 
+```{r}
+  diag(c(1,2,3))
+   
+  diag(3)
+```
+- extract lower/upper triangle elements 
+```{r}
+  X
+  X[lower.tri(X)]
+   
+  X[upper.tri(X)]
+```
+- create lower/upper triangle matrix 
+```{r}
+X[lower.tri(X)]=0
+X
+```
+### Operations
+- transform 
+```{r}
+ t(X)
+```
+
+- summary by row or column 
+```{r}
+  A=matrix(1:12,3,4)
+  A 
+  rowSums(A)
+   
+  rowMeans(A)
+```
+- determinant of matrix 
+```{r}
+  X=matrix(rnorm(9),nrow=3,ncol=3)
+  det(X)
+```
+- Addition
+```{r}
+  A=matrix(1:12,nrow=3,ncol=4)
+  B=matrix(1:12,nrow=3,ncol=4)
+  A+B #same dimensions (non-conformable arrays)
+```
+- addition by scale
+```{r}
+A=matrix(1:12,nrow=3,ncol=4)
+2+A
+```
+
+
+- multiple by scale
+```{r}
+A=matrix(1:12,nrow=3,ncol=4)
+2*A
+```
+- dot multiple  
+```{r}
+   A=matrix(1:12,nrow=2,ncol=4)
+   
+   B=matrix(1:12,nrow=4,ncol=3)
+   
+   A%*%B
+```
+- kronecker multiple 
+```{r}
+   A=matrix(1:4,2,2)
+   B=matrix(rep(1,4),2,2)
+   
+   kronecker(A,B)
+```
+- inverse matrix 
+
+`must be square`
+```{r}
+   A=matrix(rnorm(9),nrow=3,ncol=3) 
+   A
+   AI=solve(A)
+   AI
+   # identity matrix    
+   (A%*%AI)
+```
+
+```{r}
+library(matlib)
+inv(A)
+```
+- generalized inverse
+`when it is not square`
+```{r}
+   library(MASS)
+   A2=matrix(1:12,nrow=3,ncol=4)
+   
+   A%*%ginv(A)
+   A%*%ginv(A)%*%A
+```
+- crossprod
+```{r}
+B=matrix(1:12,nrow=4,ncol=3)
+B
+crossprod(B)
+t(B)%*%B
+```
+
+
+```{r}
+   B=matrix(1:12,nrow=4,ncol=3)
+   ginv(B)
+   ginv(crossprod(B))
+   # solve(crossprod(B)) #is singular
+   # solve((B)) #is not square
+```
+
+- eigen values (decomposition) 
+`mxn matrix`
+`A=UΛU` 
+```{r}
+   A=matrix(1:9,nrow=3,ncol=3)
+   
+   Aeigen=eigen(A)
+   
+   Aeigen$values
+   
+   val <- diag(Aeigen$values)
+   val
+```
+- eigen vectors
+```{r}
+Aeigen$vectors
+```
+
+
+```{r}
+ round(Aeigen$vectors%*%val%*%t(Aeigen$vectors))
+ A
+```
+### Advanced operations
+- Choleskey factor
+
+`positive definite matrix (symmetric square), A=P’P`
+
+`covariance matrix is semi positive definite matrix`
+```{r}
+   A=diag(3)+1
+   A  
+   chol(A)
+```
+
+```{r}
+   t(chol(A))%*%chol(A)
+```
+`inverse using Choleshey`
+```{r}
+chol2inv(chol(A))
+inv(A)
+```
+
+ 
+- singular value (svd) decomposition 
+
+`m×n matrix`
+
+`A=UDV`
+```{r}
+   A=matrix(1:18,3,6)
+   
+   svd(A)   $d
+   t(svd(A)   $u)%*%svd(A)   $u
+   t(svd(A)   $v)%*%svd(A)   $v
+   
+```
+
+```{r}
+   svd(A)   $u %*%diag(svd(A)   $d)%*% t(svd(A)   $v)
+   A
+```
+
+- QR decomposition
+
+`m×n matrix`
+
+`A=QR，where Q’Q=I, Q is orthogonal matrix` 
+```{r}
+   A=matrix(1:12,4,3)
+   qr(A)
+```
+
+
+
+```{r}
+qr.Q(qr(A))
+```
+```{r}
+qr.R(qr(A))
+```
+
+
+
+### Solve linear equations
+
+```{r}
+   X=matrix(c(2, 2, 2, 0, 1, 1  ,2, 2, 0),ncol=3,nrow=3)
+   X
+   b=1:3
+   b
+   solve(X,b) # whether it is singular
+```
+
+### Summary
+- Eigen values (values and vectors, UΛU), singular values (s v "\" d), and QR (orthogonal and upper triangle, QR) for any matrix.
+
+- Choleskey (P’ P, lower and upper triangle) factor for positive definite matrix (cov matrix is semi). 
+

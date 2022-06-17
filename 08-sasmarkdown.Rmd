@@ -1,4 +1,25 @@
 
 # SASmarkdown
 
-Stay tuned!
+## Example 
+https://www.ssc.wisc.edu/~hemken/SASworkshops/Markdown/SASmdpackage.html 
+
+```{r libload} 
+# knitr::opts_chunk$set(echo = TRUE)
+require(SASmarkdown)
+```
+
+- `Use an Engine`
+```{r}
+saspath <- "C:/Program Files/SASHome/SASFoundation/9.4/sas.exe"
+sasopts <- "-nosplash -ls 75"
+knitr::opts_chunk$set(engine='sas', engine.path=saspath,
+                      engine.opts=sasopts, comment="")
+```
+
+
+```{r example1, engine="sas" , error=TRUE}
+proc means data=sashelp.class  ;
+run;
+```
+ 

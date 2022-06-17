@@ -1,0 +1,478 @@
+
+## Linear mixed model theory
+
+### Matrix format
+
+Linear mixed models is to analyze data that are independent, longitudinal, repeated, multilevel. LMMs allows both fixed and random effects.
+
+$$
+\mathbf{y} = \boldsymbol{X\beta} + \boldsymbol{Zu} + \boldsymbol{\varepsilon}
+$$
+
+Where y is a Nx1 column vector for the dependent variable; x is a Nxr design matrix of independent variables ;$\beta$ is a rx1 column vector of the fixed-effects regression coefficients  ; z is the Nxm design matrix for the  random effects  ; u is a mx1 vector of  random effects ; and e is a Nx1  column vector of the residuals. $xb$ is the fixed effect and $zu$ is the random effect. 
+
+$$
+\overbrace{\mathbf{y}}^{\mbox{N x 1}} \quad = \quad
+\overbrace{\underbrace{\mathbf{X}}_{\mbox{N x r}} \quad \underbrace{\boldsymbol{\beta}}_{\mbox{r x 1}}}^{\mbox{N x 1}} \quad + \quad
+\overbrace{\underbrace{\mathbf{Z}}_{\mbox{N x m}} \quad \underbrace{\boldsymbol{u}}_{\mbox{m x 1}}}^{\mbox{N x 1}} \quad + \quad
+\overbrace{\boldsymbol{\varepsilon}}^{\mbox{N x 1}}
+$$
+
+### Exmaple: reducing the work stress of nurses
+
+For a study, it is to evaluate whether an intervention reduces the work stress for nurses, 1000 nurses were investigated from 25 hospitals. y is the work stress score, and independent variables are age, gender, age of experience, ward type, and intervention. there, `only random intercepts (hospital) is considered`.  
+
+
+$$
+\overbrace{\mathbf{y}}^{ 1000 \times 1} \quad = \quad
+\overbrace{\underbrace{\mathbf{X}}_{ 1000 \times 5} \quad \underbrace{\boldsymbol{\beta}}_{5 \times 1}}^{ 1000 \times 1} \quad + \quad
+\overbrace{\underbrace{\mathbf{Z}}_{ 1000 \times 25} \quad \underbrace{\boldsymbol{u}}_{ 25 \times 1}}^{ 1000 \times 1} \quad + \quad
+\overbrace{\boldsymbol{\varepsilon}}^{ 1000 \times 1}
+$$
+
+###  Dependent variable, $y$
+$$
+\mathbf{y} = \left[ \begin{array}{l} \text{stress} \\ 7 \\ 7 \\ \ldots \\ 6 \end{array} \right] \begin{array}{l} n_{ij} \\ 1 \\ 2 \\ \ldots \\ 1000 \end{array} 
+$$
+
+###  Independent variables (fixed effects), $Xs$
+$$
+\quad \mathbf{X} = \left[ \begin{array}{llllll} \text{Intercept} & \text{Age} & \text{Gender} & \text{Ward type} & \text{Age of exper} & \text{Intervention} \\ 1 & 34.97 & 0 & 1 & 60 & 1 \\ 1 & 33.92 & 0 & 0 & 67 & 1 \\ \ldots & \ldots & \ldots & \ldots & \ldots & \ldots \\ 1 & 26.07 & 0 & 1 & 64 & 0 \\ \end{array} \right] \begin{array}{l} n_{ij} \\ 1 \\ 2 \\ \ldots \\ 1000 \end{array}
+$$
+
+###  Fixed effect coefficients, $\hat{\beta}$ 
+$$
+\boldsymbol{\hat{\beta}} = \left[ \begin{array}{l} \text{beta} \\ 72.1 \\ 135.6 \\ \ldots \\ 37.8 \end{array} \right] \begin{array}{l} n_{} \\ intercept \\ 1 \\ \ldots \\ 5 \end{array} 
+$$
+
+#### How to solve $\hat{\beta}$
+
+minimize $\ell$ the likelihood function by letting the derivation = 0
+$$\ell=-\log L$$
+
+$$
+\begin{aligned}
+\ell(\mathbf{y}, \beta, \gamma) &=\frac{1}{2}\left\{n \log (2 \pi)+\log |\mathbf{V}(\gamma)|+(\mathbf{y}-\mathbf{X} \beta)^{\prime}(\mathbf{V}(\gamma))^{-1}(\mathbf{y}-\mathbf{X} \beta)\right\} \\
+& \propto \frac{1}{2}\left\{\log |\mathbf{V}(\gamma)|+(\mathbf{y}-\mathbf{X} \beta)^{\prime}(\mathbf{V}(\gamma))^{-1}(\mathbf{y}-\mathbf{X} \beta)\right\}
+\end{aligned}
+$$
+or (using restricted likelihood for **adjust**)
+
+$$
+\frac{1}{2}\left\{\log |\mathbf{V}(\gamma)|+(\mathbf{y}-\mathbf{X} \beta)^{\prime}(\mathbf{V}(\gamma))^{-1}(\mathbf{y}-\mathbf{X} \beta)+\log \left|\mathbf{X}^{\prime}(\mathbf{V}(\gamma))^{-1} \mathbf{X}\right|\right\}
+$$
+
+where $\gamma$ derived from $R=\sigma^{2} \mathbf{I}$. 
+
+$$
+(\hat{\beta}, \hat{\gamma})=\underset{(\beta, \gamma)}{\operatorname{argmin}} \ell(\mathbf{y}, \beta, \gamma)
+$$
+
+`minimization by three steps`
+
+- 1) The estimate of the fixed effect parameters $\beta$ is expressed as a function of the random effect parameters $\gamma$, 
+$$
+\hat{\beta}(\gamma) =  \left(\mathbf{X}^{\prime}(\mathbf{V}(\gamma))^{-1} \mathbf{X}\right)^{-1}\mathbf{X}^{\prime}(\mathbf{V}(\gamma))^{-1} \mathbf{y}
+$$
+
+- 2) Minimizing $\ell(\mathbf{y}, \hat{\beta}(\gamma), \gamma)$ as a function of $\gamma$ to calculate the random effect parameters.
+$$\ell(\mathbf{y}, \hat{\beta}(\gamma), \gamma)$$
+
+- 3) Go back to solve the fixed effect parameters  $\hat{\beta}=\hat{\beta}(\hat{\gamma})$.
+
+
+
+### Variance- covariance matrix of $\hat{\beta}$
+
+$$
+\boldsymbol{\hat{\beta}} \sim \mathcal{N}(\mathbf{\beta}, \mathbf{\sigma^2_{\beta}})
+$$
+
+where $\sigma^2_{\hat{\beta}}$ is a rxr (6x6) variance-covariance matrix of the fixed effects $\boldsymbol{\hat{\beta}}$. 
+
+therefore 
+
+$$
+\quad \mathbf{\sigma^2_{\hat{\beta}}} = \left[ \begin{array}{llllll} \text{_1} & \text{_2} & \text{_3} & \text{... } & \text{_5}   \\ \sigma^2_{1,1} & \sigma^2_{1,2} & ... & ... & ...  \\ \sigma^2_{2,1} & \sigma^2_{2,2} & ... & ... & ...   \\ \ldots & \ldots & \ldots & \ldots & \ldots   \\ ... & ... & \sigma^2_{3,3} & ... & ...   \\ \\ ... & ... & ... & \sigma^2_{...} & ...   \\ ... & ... & ... & ... & \sigma^2_{5,5}  \\ \end{array} \right] \begin{array}{l} n_{ij} \\ 1 \\ 2 \\ ... \\ 4  \\ 5 \end{array}
+$$
+
+### Random effects, $Z$
+$$
+\quad \mathbf{Z} = \left[ \begin{array}{llllll} \text{h_1} & \text{h_2} & \text{h_3} & \text{... } & \text{h_24} & \text{h_25} \\ 1 & 0 & 0 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 & 0 & 0 \\ \ldots & \ldots & \ldots & \ldots & \ldots & \ldots \\ 0 & 0 & 1 & 0 & 0 & 0 \\ \\ 0 & 0 & 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 0 & 1 & 0 \\ \ldots & \ldots & \ldots & \ldots & \ldots & \ldots \\ 0 & 0 & 0 & 0 & 0 & 1 \\ \end{array} \right] \begin{array}{l} n_{ij} \\ 1 \\ 2 \\ ... \\ 4 \\ 5 \\ 6 \\ 7 \\ \ldots \\ 1000 \end{array}
+$$
+`h_ represents hospital`
+
+### Random effects coefficients, $u$
+$$
+\boldsymbol{u} = \left[ \begin{array}{l} \boldsymbol{u} \\ 7.1 \\ 15.6 \\ \ldots \\ 33.8 \end{array} \right] \begin{array}{l} n_{} \\ 1 \\ 2 \\ \ldots \\ 25 \end{array} 
+$$
+`if there are two random effect variables, a intercept and a slope`
+$$
+\boldsymbol{u} = \left[ \begin{array}{l} \boldsymbol{u} \\ 7.1 \\ 15.6 \\ \ldots \\ 33.8 \\ slope \end{array} \right] \begin{array}{l} n_{} \\ 1 \\ 2 \\ \ldots \\ 25\\ ... \end{array} 
+$$
+
+- How to calculate $\hat{\mathbf{u}}$
+
+$$
+\hat{\mathbf{u}}=\mathrm{G}\mathrm{Z}^{\prime} \mathbf{V}^{-1}(\mathbf{y}-\mathbf{X} \hat{\beta})
+$$
+
+e.g. (with one random intercept)
+$$
+\begin{aligned}
+\hat{\mathbf{u}}_{i} &=\left(\sigma_{B}^{2}, \sigma_{B}^{2}\right) U^{-1}\left(\begin{array}{l}
+y_{i 1}-\bar{y} \\
+y_{i 2}-\bar{y}
+\end{array}\right) \\
+&=\left(\sigma^{2} \sigma_{B}^{2}, \sigma^{2} \sigma_{B}^{2}\right)\left(\begin{array}{l}
+y_{i 1}-\bar{y} \\
+y_{i 2}-\bar{y}
+\end{array}\right) / \sigma^{2}\left(\sigma^{2}+2 \sigma_{B}^{2}\right) \\
+&=\frac{\overline{y_{i}}-\bar{y}}{\frac{\sigma^{2}}{2 \sigma_{B}^{2}}+1}
+\end{aligned}
+$$
+
+### Variance-covariance matrix of the random effects, $\boldsymbol{u}$
+
+since
+$$
+\boldsymbol{u} \sim \mathcal{N}(\mathbf{0}, \mathbf{G})
+$$
+
+where G is a mxm (25x25) diagonal variance-covariance matrix of the random effects $\boldsymbol{u}$. 
+
+therefore
+$$
+\quad \mathbf{G} = \left[ \begin{array}{llllll} \text{_1} & \text{_2} & \text{_3} & \text{... } & \text{_25} & \text{_25} \\ \sigma^2_{1,1} & ... & ... & ... & ... & ... \\ ... & \sigma^2_{2,2} & ... & ... & ... & ... \\ \ldots & \ldots & \ldots & \ldots & \ldots & \ldots \\ ... & ... & \sigma^2_{3,3} & ... & ... & ... \\ \\ ... & ... & ... & \sigma^2_{...} & ... & ... \\ ... & ... & ... & ... & \sigma^2_{24,24} & ... \\ \ldots & \ldots & \ldots & \ldots & \ldots & \ldots \\ ... & ... & ... & ... & ... & \sigma^2_{25,25} \\ \end{array} \right] \begin{array}{l} n_{ij} \\ 1 \\ 2 \\ ... \\ 4 \\ 5 \\ 6 \\ 7 \\ \ldots \\ 25 \end{array}
+$$
+`Typically G has a very simple diagonal structure. (random intercept)`
+
+$$
+\begin{bmatrix}
+\sigma^{2}_{u}  
+\end{bmatrix}=\mathbf{\boldsymbol{I\sigma^2_{u}}} = \left[ \begin{array}{llllll} \text{_1} & \text{_2} & \text{_3} & \text{... } & \text{_24} & \text{_25} \\ \sigma^2_{u} & 0 & 0 & 0 & 0 & 0 \\ 0 & \sigma^2_{u} & 0 & 0 & 0 & 0 \\ \ldots & \ldots & \ldots & \ldots & \ldots & \ldots \\ 0 & 0 & \sigma^2_{u} & 0 & 0 & 0 \\ \\ 0 & 0 & 0 & \sigma^2_{u} & 0 & 0 \\ 0 & 0 & 0 & 0 & \sigma^2_{u} & 0 \\ \ldots & \ldots & \ldots & \ldots & \ldots & \ldots \\ 0 & 0 & 0 & 0 & 0 & \sigma^2_{u} \\ \end{array} \right] \begin{array}{l} n_{ij} \\ 1 \\ 2 \\ ... \\ 4 \\ 5 \\ 6 \\ 7 \\ \ldots \\ 25 \end{array}
+$$
+
+we know 
+$$
+\mathbf{G} =
+\begin{bmatrix}
+\sigma^{2}_{int}  
+\end{bmatrix}=
+\begin{bmatrix}
+\sigma^{2}_{u}  
+\end{bmatrix}
+$$
+
+**`if there are two random effect variables, a intercept and a slope`**
+
+$$
+\mathbf{G} =
+\begin{bmatrix}
+\sigma^{2}_{int} & \sigma^{2}_{int,slope} \\
+\sigma^{2}_{int,slope} & \sigma^{2}_{slope}
+\end{bmatrix}
+$$
+
+### How to solve $\sigma^{2}$ and $\sigma_{u(B)}^{2}$
+
+we know 
+$$
+\mathbf{\mu} = E(\boldsymbol{X\beta} + \boldsymbol{Zu} + \boldsymbol{\varepsilon}) =\boldsymbol{X\beta} \quad \text{other terms have mean zero} \
+$$
+ 
+$$
+\begin{aligned}
+\mathbf{V} &=\operatorname{var}(\mathbf{y})=\operatorname{var}(\mathbf{X} \beta+\mathbf{Z} \mathbf{u}+\varepsilon) \quad \text{[from model ]}\\
+&=\operatorname{var}(\mathbf{X} \beta)+\operatorname{var}(\mathbf{Z u})+\operatorname{var}(\varepsilon) \quad \text{[all terms are independent]}\\
+&=\operatorname{var}(\mathbf{Z u})+\operatorname{var}(\varepsilon) \quad \text{[variance of fixed effects is zero]}\\
+&=Z \operatorname{var}(\mathbf{u}) Z^{\prime}+\operatorname{var}(\varepsilon) \quad \text{[ Z  is constant ]}\\
+&=\mathrm{ZGZ}^{\prime}+\mathrm{R} \quad \text{[from model ]}\\
+\end{aligned}
+$$
+
+e.g. the covariance matrix $\mathbf{V}$ can be calculated in some conditions (with 3 random coefficients).  
+
+$$
+\begin{aligned}
+\mathbf{V}=& \operatorname{var}(\mathbf{y})=\mathbf{Z G Z}^{\prime}+\sigma^{2} \mathbf{I} \\
+=&\left(\begin{array}{llllll}
+\sigma^{2}+\sigma_{B}^{2} & \sigma_{B}^{2} & 0 & 0 & 0 & 0 \\
+\sigma_{B}^{2} & \sigma^{2}+\sigma_{B}^{2} & 0 & 0 & 0 & 0 \\
+0 & 0 & \sigma^{2}+\sigma_{B}^{2} & \sigma_{B}^{2} & 0 & 0 \\
+0 & 0 & \sigma_{B}^{2} & \sigma^{2}+\sigma_{B}^{2} & 0 & 0 \\
+0 & 0 & 0 & 0 & \sigma^{2}+\sigma_{B}^{2} & \sigma_{B}^{2} \\
+0 & 0 & 0 & 0 & \sigma_{B}^{2} & \sigma^{2}+\sigma_{B}^{2}
+\end{array}\right)
+\end{aligned}
+$$ 
+ 
+*Remark,*  
+$$
+\operatorname{var}(\mathbf{A x})=\operatorname{Avar}(\mathbf{x}) \mathbf{A}^{\prime}
+$$
+
+*Remark,* 
+
+$$
+\operatorname{var}(\mathbf{x}+\mathbf{y})=\operatorname{var}(\mathbf{x})+\operatorname{var}(\mathbf{y})
+$$
+generally
+$$
+\begin{align}
+Var(X+Y) &= Cov(X+Y,X+Y)  \\
+ &= E((X+Y)^2)-E(X+Y)E(X+Y)   \\
+&\text{by expanding,}  \\
+ &= E(X^2) - (E(X))^2 + E(Y^2) - (E(Y))^2 + 2(E(XY) - E(X)E(Y))  \\
+ &= Var(X) + Var(Y) + 2(E(XY)) - E(X)E(Y))  \\
+ &= Var(X) + Var(Y) + 2Cov(X,Y)
+\end{align}
+$$
+
+
+therefore,  
+
+$$
+\begin{aligned}
+\log |\mathbf{V}(\gamma)| &=3 \log \left(\sigma^{2}\right)+3 \log \left(\sigma^{2}+2 \sigma_{B}^{2}\right) \\
+\log \left|\mathbf{X}^{\prime}(\mathbf{V}(\gamma))^{-1} \mathbf{X}\right| &=\log (n)-\log \left(\sigma^{2}+2 \sigma_{B}^{2}\right) \\
+(\mathbf{y}-\mathbf{X} \beta)^{\prime}(\mathbf{V}(\gamma))^{-1}(\mathbf{y}-\mathbf{X} \beta)=& \frac{1}{\sigma^{2}\left(\sigma^{2}+2 \sigma_{B}^{2}\right)} \times \\
+&\left(\left(\sigma^{2}+\sigma_{B}^{2}\right) \sum_{i=1}^{3} \sum_{j=1}^{2}\left(y_{i j}-\mu\right)^{2}-2 \sigma_{B}^{2} \sum_{i=1}^{3}\left(y_{i 1}-\mu\right)\left(y_{i 2}-\mu\right)\right)
+\end{aligned}
+$$
+Here, $r$ represents $\sigma_{B}^{2}$ and $\sigma^{2}$ 
+
+Using profile likelihood 
+$$
+\begin{aligned}
+\ell_{R E}\left(\mu, \sigma^{2}, \sigma_{B}^{2}\right) \propto & 3 \log \left(\sigma^{2}\right)+3 \log \left(\sigma^{2}+2 \sigma_{B}^{2}\right)-\log \left(\sigma^{2}+2 \sigma_{B}^{2}\right) \\
+&+\frac{1}{\sigma^{2}\left(\sigma^{2}+2 \sigma_{B}^{2}\right)}\left(\left(\sigma^{2}+\sigma_{B}^{2}\right) \sum_{i=1}^{3} \sum_{j=1}^{2}\left(y_{i j}-\mu\right)^{2}-2 \sigma_{B}^{2} \sum_{i=1}^{3}\left(y_{i 1}-\mu\right)\left(y_{i 2}-\mu\right)\right)
+\end{aligned}
+$$
+then take the derivative with respect to the two variance parameters, equate with zero and solve. 
+$$
+\begin{aligned}
+\hat{\sigma}^{2} &=M S E \\
+\hat{\sigma}_{B}^{2} &=\frac{M S E-M S_{B}}{2}
+\end{aligned}
+$$
+`the REML approach gives the same results as the moments method`
+
+<!-- $$ -->
+<!-- \begin{aligned} -->
+<!-- \sigma^{2} &=E(M S E) \\ -->
+<!-- \sigma^{2}+2\sigma_{B}^{2} &=\ { E(M S_{B})}  -->
+<!-- \end{aligned} -->
+<!-- $$ -->
+*variance of random effect (in level) < mean square of errors < mean square between levels*
+
+### Residuals (errors) and their variance- covariance matrix
+
+$$
+\boldsymbol{\varepsilon} = \left[ \begin{array}{l} \boldsymbol{\varepsilon} \\ \varepsilon_{1} \\ \varepsilon_{2} \\ \ldots \\ \varepsilon_{1000} \end{array} \right] \begin{array}{l} n_{} \\ 1 \\ 2 \\ \ldots \\ 1000 \end{array} 
+$$
+`which is independent and identically distributed` 
+
+$$
+\boldsymbol{\varepsilon} \sim \mathcal{N}(\mathbf{0}, \mathbf{\boldsymbol{I\sigma^2_{\varepsilon}}})
+$$
+where 
+$$
+\mathbf{R}=\mathbf{\boldsymbol{I\sigma^2_{\varepsilon}}} = \left[ \begin{array}{llllll} \text{_1} & \text{_2} & \text{_3} & \text{... } & \text{_999} & \text{_1000} \\ \sigma^2_{\varepsilon} & 0 & 0 & 0 & 0 & 0 \\ 0 & \sigma^2_{\varepsilon} & 0 & 0 & 0 & 0 \\ \ldots & \ldots & \ldots & \ldots & \ldots & \ldots \\ 0 & 0 & \sigma^2_{\varepsilon} & 0 & 0 & 0 \\ \\ 0 & 0 & 0 & \sigma^2_{\varepsilon} & 0 & 0 \\ 0 & 0 & 0 & 0 & \sigma^2_{\varepsilon} & 0 \\ \ldots & \ldots & \ldots & \ldots & \ldots & \ldots \\ 0 & 0 & 0 & 0 & 0 & \sigma^2_{\varepsilon} \\ \end{array} \right] \begin{array}{l} n_{ij} \\ 1 \\ 2 \\ ... \\ 4 \\ 5 \\ 6 \\ 7 \\ \ldots \\ 1000 \end{array}
+$$
+
+### Estimated parameters
+
+So the final estimated elements are $\beta$, $u$, and $R$. The final distribution of the model is:
+$$
+(\mathbf{y} | \boldsymbol{\beta}; \boldsymbol{u} = u) \sim
+\mathcal{N}(\boldsymbol{X\beta} + \boldsymbol{Z}u, \mathbf{R})
+$$
+we can not estimate $\varepsilon$ but its variance $\sigma^2_{\varepsilon}\quad  or \quad R$. 
+
+### LMM equation
+
+$$
+Y_{ij} = (\gamma_{00} + u_{0j}) + \gamma_{10}Age_{ij} + \gamma_{20}Married_{ij} + \gamma_{30}SEX_{ij} + \gamma_{40}WBC_{ij} + \gamma_{50}RBC_{ij} + e_{ij}
+$$
+
+In this equation for the i-th patient for the j-th doctor, a specific intercept is given to a particular doctor.
+
+### Testing of models (also suitable for fixed effect coefficients)
+
+test $A \rightarrow B$ if $B$ is a sub-model of $A$. 
+$$
+G_{A \rightarrow B}=2 \ell_{r e}^{(B)}-2 \ell_{r e}^{(A)}
+$$
+
+where $G_{A \rightarrow B}$ is asymptotically  $\chi_{f}^{2}$ distributed, k=number of tested parameters.
+
+Additionally, `can choose the smallest AIC or BIC when non nested models` 
+$$
+\begin{aligned}
+&\mathrm{AIC}=-2 \cdot \log L(\hat{\theta_i})+2 \cdot p \\
+&\mathrm{BIC}=-2 \cdot \log L(\hat{\theta_i})+\log (n) p
+\end{aligned}
+$$
+`p is the number of parameters`
+
+### Testing of fixed effect coefficients (only ML)
+
+A linear hypothesis
+
+$$
+\mathbf{L}^{\prime} \beta=c
+$$
+
+e.g. 
+$$
+\underbrace{\left(\begin{array}{llll}
+0 & 1 & 0 & 0
+\end{array}\right)}_{\mathbf{L}^{\prime}}\left(\begin{array}{c}
+\mu \\
+\alpha_{1} \\
+\alpha_{2} \\
+\alpha_{3}
+\end{array}\right)=0
+$$
+we know
+
+$$
+\mathbf{L}^{\prime} \hat{\beta}=\mathbf{L}^{\prime}\left(\mathbf{X}^{\prime} \mathbf{V}^{-1} \mathbf{X}\right)^{-1} \mathbf{X}^{\prime} \mathbf{V}^{-1} \mathbf{y}
+$$
+  
+$$
+\mathbf{L}^{\prime} \hat{\beta} \sim N\left(\mathbf{L}^{\prime} \beta, \mathbf{L}^{\prime}\left(\mathbf{X}^{\prime} \mathbf{V}^{-1} \mathbf{X}\right)^{-1} \mathbf{L}\right)
+$$
+$$
+\left(\mathbf{L}^{\prime} \hat{\beta}-c\right) \sim N\left(0, \mathbf{L}^{\prime}\left(\mathbf{X}^{\prime} \mathbf{V}^{-1} \mathbf{X}\right)^{-1} \mathbf{L}\right)
+$$
+therefore, using Wald test 
+
+$$
+W=\left(\mathbf{L}^{\prime} \hat{\beta}-c\right)^{\prime}\left(\mathbf{L}^{\prime}\left(\mathbf{X}^{\prime} \mathbf{V}^{-1} \mathbf{X}\right)^{-1} \mathbf{L}\right)^{-1}\left(\mathbf{L}^{\prime} \hat{\beta}-c\right)^{\prime}
+$$
+$W$ is approximately $\chi_{\operatorname{rank}(\mathrm{L})^{2}}$  distributed. 
+
+**But, better approximation: Wald F–test (& Satterthwaite’s)**
+
+### The $95 \%$ confidence interval of fixed effect coefficients
+
+$$
+\mathbf{}^{} \hat{\beta} \pm t_{0.975, d f} \sqrt{\mathbf{}\left(\mathbf{X}^{\prime} \mathbf{V}^{-1} \mathbf{X}\right)^{-1} \mathbf{}}
+$$
+
+### Testing of random effect coefficients (typically variances, REML)
+
+test $A \rightarrow B$ if $B$ is a sub-model of $A$. 
+$$
+G_{A \rightarrow B}=2 \ell_{r e}^{(B)}-2 \ell_{r e}^{(A)}
+$$
+
+where $G_{A \rightarrow B}$ is asymptotically  $\chi_{0}^{2}$ and $\chi_{1}^{2}$ mixture distribution.
+
+therefore, **p value** is 
+
+$P(\chi_{1}^{2}>=G_{A \rightarrow B}) \quad /2$
+ 
+### Confidence intervals for random effects parameters (variances)
+
+Use a $\chi^{2}$-based (Satterthwaite) approximation approach.
+
+- assuming asymptotically  
+$$\quad \hat{\sigma}_{b}^{2} \sim \frac{\sigma^{2}}{d f} \chi_{d f}^{2}$$
+- The $95 \%$ confidence interval 
+
+$$\frac{d f \hat{\sigma}_{b}^{2}}{\chi_{0.025 ; d f}^{2}}<\sigma_{b}^{2}<\frac{d f \hat{\sigma}_{b}^{2}}{\chi_{0.975 ; d f}^{2}}$$
+
+- $d f$
+
+$$
+\hat{d f}=\frac{2 \hat{\sigma}_{b}^{4}}{\operatorname{var}\left(\hat{\sigma}_{b}^{2}\right)}
+$$
+### Specified covariance structures, 12 lecture)
+
+mixed model can be expressed as
+$$
+\mathbf{y} \sim N\left(\mathbf{X} \beta, \mathbf{Z G Z}^{\prime}+\mathbf{R}\right),
+$$
+
+The total covariance of all observations 
+$$
+\mathbf{V}=\mathbf{Z G Z}{ }^{\prime}+\mathbf{R}
+$$
+
+The ZGZ' part is specified through the random effects of the model. 
+for the $\mathbf{R}$ part, we will put some structure into $\mathrm{R}$
+
+`the structure known from the random effects model`
+#### compound symmetry
+ $\operatorname{cov}\left(y_{i_{1}}, y_{i_{2}}\right)= \begin{cases}0 & , \text { if individual } i_{1} \neq \text { individual }_{i_{2}} \text { and } i_{1} \neq i_{2} \\ \sigma_{\text {individual }}^{2} & , \text { if individual } i_{1}=\text { individual }_{i_{2}} \text { and } i_{1} \neq i_{2} \\ \sigma_{\text {individual }}^{2}+\sigma^{2} & , \text { if } i_{1}=i_{2}\end{cases}$
+ 
+#### Guassian model of spatial correlation
+depending on "how far" observations are apart are known as spatial.
+ 
+$$
+V_{i_{1}, i_{2}}= \begin{cases}0 & , \text { if individual } i_{1} \neq \text { individual } i_{2} \text { and } i_{1} \neq i_{2} \\ \nu^{2}+\tau^{2} \exp \left\{\frac{-\left(t_{i_{1}}-t_{i_{2}}\right)^{2}}{\rho^{2}}\right\} & , \text { if individual } i_{1}=\text { individual } i_{2} \text { and } i_{1} \neq i_{2} \\ \nu^{2}+\tau^{2}+\sigma^{2} & , \text { if } i_{1}=i_{2}\end{cases}
+$$ 
+#### $\mathrm{R}$ has several build-in correlation structures:
+ 
+$$
+\begin{array}{ccc}
+\text { Write in R } & \text { Name } & \text { Correlation term } \\
+\hline \text { corGaus } & \text { Gaussian } & \tau^{2} \exp \left\{\frac{-\left(t_{i_{1}}-t_{i_{2}}\right)^{2}}{\rho^{2}}\right\} \\
+\text { corExp } & \text { exponential } & \tau^{2} \exp \left\{\frac{-\left|t_{i_{1}}-t_{i_{2}}\right|}{\rho \rho}\right\} \\
+\text { corAR1 } & \text { autoregressive(1) } & \tau^{2} \rho^{\left|i_{1}-i_{2}\right|} \\
+\text { corSymm } & \text { unstructured } & \tau_{i_{1}, i_{2}}^{2} \\
+\hline
+\end{array}
+$$
+Notice:
+- Keep it simple 
+- Graphical methods 
+- Information criteria: AIC or BIC  
+- Try to cross-validate  
+
+
+### Model diagnostics
+since 
+$$
+\hat{\epsilon}_{i}=y_{i}-\hat{y}_{i}
+$$
+and 
+$$
+\operatorname{Var}\left(\hat{\epsilon}_{i}\right)=\sigma^{2}\left(1-h_{i}\right)^{2}
+$$
+`where $h_{i}$ is the so-called leverage for observation $i$. `
+
+therefore,
+
+Standardized residuals
+$$
+\hat{\epsilon}_{i}=\frac{y_{i}-\hat{y}_{i}}{\hat{\sigma}\left(1-h_{i}\right)}
+$$
+
+Studentized residuals
+$$
+\hat{\epsilon}_{i}=\frac{y_{i}-\hat{y}_{i}}{\hat{\sigma}_{(i)}\left(1-h_{i}\right)}
+$$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+ 
+ 

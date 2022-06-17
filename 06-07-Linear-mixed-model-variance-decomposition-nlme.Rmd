@@ -1,0 +1,544 @@
+ 
+## Linear mixed model covariance decomposition (nlme)
+
+### Load data
+```{r}
+data(Orthodont, package="nlme")
+Data <- Orthodont
+```
+
+
+```{r}
+library(ggplot2)
+ggplot(Data, aes(y = distance, x = age,  color = Sex)) +
+    geom_smooth(method = "lm",se=F) + geom_point() + theme_classic()
+```
+```{r}
+library(ggplot2)
+ggplot(Data, aes(y = distance, x = age, fill = Subject, color = Sex)) +
+    geom_smooth(method = "lm",se=F) + geom_point() + theme_classic()
+```
+
+### Using lme (nlme)
+```{r}
+library(nlme)
+fit.lmer2 <- lme(distance ~ age + Sex  , random = ~1   | Subject, data = Data) 
+summary(fit.lmer2)
+library(lme4)
+# lme4
+fit.lmer <- lmer(distance ~ age + Sex  +(1 | Subject), data = Data) 
+# compound symmetry
+```
+
+- t test
+```{r}
+tstat <- fixef(fit.lmer2)/sqrt(diag(vcov(fit.lmer2)))
+pval <- 2*pt(-abs(tstat), df = fit.lmer2$fixDF$X)
+Tresult <- data.frame(t = tstat, p = round(pval, 4))
+print(Tresult)
+```
+
+- F test
+```{r}
+anova(fit.lmer2 ) 
+```
+
+- restricted model test
+```{r}
+anova(fit.lmer2, L = c(0, 1, 0)) 
+```
+
+- likelihood test
+```{r}
+fit.lmer2.2 <- lme(distance ~   Sex  , random = ~1   | Subject, data = Data) 
+anova(fit.lmer2, fit.lmer2.2)
+
+```
+`And now by hand` 
+```{r}
+logLik  <- logLik(fit.lmer2)
+logLik0 <- logLik(fit.lmer2.2)
+
+LR <- 2 * (logLik - logLik0)
+pval <- pchisq(LR, df = 2, lower.tail = FALSE)
+LRresult <- data.frame(LR = LR, p = round(pval, 4), row.names = "age")
+print(LRresult)
+```
+<!-- https://www2.karlin.mff.cuni.cz/~komarek/vyuka/2020_21/nmst432/lmm_lme.html -->
+
+### Model diagnosing 
+```{r}
+library(nlme)
+plot.lme(fit.lmer2)
+```
+
+### Get x, y, z matrixs (using lme4)
+```{r}
+X=(getME(fit.lmer, "X"))
+y=getME(fit.lmer, "y")
+Z <- getME(fit.lmer, "Z")
+
+Z2 <- model.matrix(~Subject-1,data=Data)
+
+```
+
+`check z matrix`
+```{r}
+dummyz<- as.matrix (Z)==Z2
+table(dummyz)
+dim(Z)
+```
+`check y and X matrixs`
+```{r}
+dummyx<- Data[,c(2)]==X[,2]
+table(dummyx)
+```
+
+### Fixed effect coefficient
+```{r}
+bhat <- fit.lmer2$coef$fixed
+bhat
+# fixef()
+```
+- fixed effect coefficient confidence intervals 
+```{r}
+intervals(fit.lmer2)
+ 
+```
+
+#### Plot fixed effect coefficients and theri ci
+```{r}
+tab <- cbind(Est = intervals(fit.lmer2)[["fixed"]][,2], LL = intervals(fit.lmer2)[["fixed"]][,1], UL=
+intervals(fit.lmer2)[["fixed"]][,3])
+#Extracting the fixed effect estimates and manually calculating the 95% confidence limits
+#qnorm extracts the standard normal critical value for 1-alpha/2= 1-0.05/2=0.975
+Odds= (tab)
+round(Odds,4)
+
+Odds=as.data.frame(Odds)
+Odds$Label=rownames(Odds)
+ 
+ggplot(Odds[-1,],aes(x=Est,y=Label))+geom_point()+
+geom_errorbarh(aes(xmax = UL, xmin = LL))+
+  
+theme_bw()+geom_vline(xintercept=0,col="darkgray",size=1.2,linetype=2)+
+theme(axis.title.y = element_blank(),axis.text = element_text(size=10),
+axis.title.x = element_text(size=12))+labs(x="Beta coefficients")
+```
+
+
+`And now by hand` 
+```{r}
+print(tquants <- qt(0.975, df = fit.lmer2$fixDF$X))
+
+Low <- fixef(fit.lmer2) - tquants * sqrt(diag(vcov(fit.lmer2)))
+Upp <- fixef(fit.lmer2) + tquants * sqrt(diag(vcov(fit.lmer2)))
+EstInt <- data.frame(Lower = Low, Estimate = fixef(fit.lmer2), Upper = Upp)
+print(EstInt)
+```
+
+
+### Random effect coefficient
+```{r}
+fit.lmer2$coef$random
+```
+### Fixed effect coefficients covariance 
+```{r}
+fit.lmer2$varFix
+# vcov(fit.lmer2)
+sqrt(diag(vcov(fit.lmer2)))
+```
+
+`fixed effect coefficients correlation `
+```{r}
+-0.04174818/prod(sqrt( diag(fit.lmer2$varFix)[-3] ))
+```
+
+
+### Random effect covariance and correlation  
+```{r}
+pdMatrix(fit.lmer2$modelStruct$reStruct[[1]])*fit.lmer2$sigma**2
+
+getVarCov(fit.lmer2)  #using default 
+getVarCov(fit.lmer2, individual = "F01", type = "marginal")
+getVarCov(fit.lmer2, type = "conditional")
+```
+
+```{r}
+vc <- as.numeric(as.matrix(VarCorr(fit.lmer2))[,1])
+vc/sum(vc)
+VarCorr(fit.lmer2)
+```
+
+### Get y covariance directly 
+`= Z REcov Zt + sigma**2`
+```{r}
+require(mgcv)
+library(nlme)
+ 
+cov <- extract.lme.cov(fit.lmer2,Data)
+head(cov)
+dim(cov)
+```
+
+### Residual variance
+```{r}
+fit.lmer2$sigma**2
+```
+
+### Compute fixed effect coefficients
+```{r}
+library(matlib)
+inv(t(as.matrix(X))%*%inv(as.matrix(cov))%*%as.matrix(X))%*%t(as.matrix(X))%*%inv(as.matrix(cov))%*%y
+```
+### Compute covariance of fixed efffect coefficients
+```{r}
+inv(t(as.matrix(X))%*%inv(as.matrix(cov))%*%as.matrix(X))
+```
+### Compute random effect coefficients
+```{r}
+Lambda_new <-as.numeric(VarCorr(fit.lmer2)[1])*diag(length(levels(Data$Subject)))
+# head(Lambda_new)
+```
+
+
+```{r}
+uhat <- fit.lmer2$coef$random 
+comput_uhat <- (as.matrix(Lambda_new))%*%t(Z)%*%inv(as.matrix(cov))%*%(y-as.matrix(X)%*%(bhat))
+cbind((comput_uhat@x),(uhat[["Subject"]]))
+```
+
+### Compute predicted values 
+
+
+`usually computing mean and  prediction ci by using bootstrapping and simulated methods` 
+
+approximate at below:  
+
+
+*This [webpage](<!-- https://stackoverflow.com/questions/14358811/extract-prediction-band-from-lme-fit -->) calculates the sd like above, but I think the following is also correct. *
+
+#### the conditional distribution 
+
+$$
+\mathbf{y}_{} \mid \mathbf{b}_{} \sim \mathbf{N}\left(\mathbf{X}_{} \boldsymbol{\beta}+\mathbf{Z}_{} \mathbf{b}_{}, \boldsymbol{\Sigma}_{}\right)
+$$
+therefore
+
+- `conditional mean prediction`
+$$
+\begin{align}
+E(\hat{Y}_0)&=E\mathbf{(X_0\hat{\beta} + Z_0\hat{u})}=\mathbf{X_0\beta + Z_0{u}}=E\mathbf{(Y_0)}\\
+var(\hat{Y}_0)&=E\mathbf{((X_0\hat{\beta}-X_0\beta)+ (Z_0\hat{u} - Z_0{u}))}^2\\&=E\mathbf{((X_0\hat{\beta}-X_0\beta)^2+ (Z_0\hat{u} - Z_0{u})^2+ 2 ((X_0\hat{\beta}-X_0\beta)* (Z_0\hat{u} - Z_0{u}))  )}
+\\
+              &=E\mathbf{\left(
+X_0(\hat{\beta}-\beta)(\hat{\beta}-\beta)'X_0' \right)}+
+E\mathbf{\left(
+Z_0(\hat{u}-u)(\hat{u}-u)'Z_0' \right)}+2E ((X_0(\hat{\beta}-\beta))* (Z_0(\hat{u} - {u}))) ?
+\\
+              &=\sigma^2\mathbf{X_0\left( X'X
+\right)^{-1}X_0'}+ \sigma^2\mathbf{Z_0\left( Z'Z
+\right)^{-1}Z_0'} + 2 *0*0 \quad \text {if independent}\\
+&= \mathbf{X_0 cov (X) X_0'}+  \mathbf{Z_0 cov (Z) Z_0'}  \\
+\end{align}
+$$
+
+    `generally`
+$$
+\begin{align}
+Var(X+Y) &= Cov(X+Y,X+Y)  \\
+ &= E((X+Y)^2)-E(X+Y)E(X+Y)   \\
+&\text{by expanding,}  \\
+ &= E(X^2) - (E(X))^2 + E(Y^2) - (E(Y))^2 + 2(E(XY) - E(X)E(Y))  \\
+ &= Var(X) + Var(Y) + 2(E(XY)) - E(X)E(Y))  \\
+\end{align}
+$$
+
+
+- `conditional individual prediction`
+$$
+\begin{align}
+E(\hat{Y}_0)&= E\mathbf{(Y_0)}\\
+var(\hat{Y}_0) 
+&= \mathbf{X_0 cov (X) X_0'}+  \mathbf{Z_0 cov (Z) Z_0'} + \sigma^2 \\
+\end{align}
+$$
+
+$$
+\begin{align}
+\hat{Y}_0& \sim N(\mu_{\hat{Y}_0},\sigma^2_{\hat{Y}_0})\\
+\end{align}
+$$
+
+- `lower level (conditional prediction) in R` 
+```{r}
+# how to calculate predicted values
+yhat <- X%*%(fit.lmer2$coef$fixed)+Z%*% as.numeric ( uhat[["Subject"]])
+
+head(cbind (yhat,predict(fit.lmer2),y))  #create individual trajectory curve   
+
+```
+
+```{r}
+#compute standard error for marginal predictions
+predvar_rand <- diag(X %*% fit.lmer2$varFix %*% t(X)) + diag(Z %*%  diag(getVarCov(fit.lmer2)[1]  ,27) %*% t(Z))
+
+SE_rand <- sqrt (predvar_rand)  #mean prediction 
+SE_rand2 <- sqrt(predvar_rand+fit.lmer2$sigma^2)  #individual prediction 
+head(SE_rand,20)
+head(SE_rand2,20)
+```
+
+`see below `
+
+
+#### The marginal distribution 
+$$
+\mathbf{y}_{} \sim \mathrm{N}\left(\mathbf{X}_{} \boldsymbol{\beta}, \mathbf{V}_{}\right)
+$$
+
+$$
+\operatorname{Cov}[\mathbf{y}]=\mathbf{V}=\mathbf{Z D Z}^{\prime}+\Sigma
+$$
+
+*$\mathbf{Z}_{} \mathbf{D Z}_{}^{\prime}$ represents the random-effects structure*
+
+therefore
+
+- `marginal mean prediction`
+
+$$
+\begin{align}
+E(\hat{Y}_0)&=E\mathbf{(X_0\hat{\beta})}=\mathbf{X_0\beta}=E\mathbf{(Y_0)}\\
+var(\hat{Y}_0)&=E\mathbf{(X_0\hat{\beta}-X_0\beta)}^2\\
+              &=E\mathbf{\left(
+X_0(\hat{\beta}-\beta)(\hat{\beta}-\beta)'X_0' \right)}\\
+              &=E\mathbf{X_0\left(
+(\hat{\beta}-\beta)(\hat{\beta}-\beta)' \right)X_0'}\\
+              &=\mathbf{X_0Cov(X)X_0'}\\
+\end{align}
+$$
+
+- `marginal individual prediction`
+$$
+\begin{align}
+E(\hat{Y}_0)&= E\mathbf{(Y_0)}\\
+var(\hat{Y}_0) 
+&= \mathbf{X_0 cov (X) X_0'}+    \sigma^2 \\
+\end{align}
+$$
+
+- `higher level (marginal)` in R
+ 
+```{r}
+#compute standard error for marginal predictions
+predvar <- diag(X %*% fit.lmer2$varFix %*% t(X))
+
+SE <- sqrt (predvar)  #mean prediction 
+SE2 <- sqrt(predvar+fit.lmer2$sigma^2)  #individual prediction
+head(SE,10)
+head(SE2,10)
+```
+
+```{r}
+up=predict(fit.lmer2, newdata=Data, level=0) +1.96 *SE  #mean prediction 
+up2=predict(fit.lmer2, newdata=Data, level=0) +1.96 *SE2  #individual prediction 
+head(up)
+head(up2)
+```
+
+```{r,message=F}
+library(tidyverse)
+library(ggeffects)
+ggpredict(fit.lmer2,terms=c("age" ))
+ggpredict(fit.lmer2,terms=c("age" ))  %>% plot(rawdata = T, dot.alpha = 0.2)
+# ggpredict(fit.lmer2,"age",   type = "re" )  %>% plot(rawdata = T, dot.alpha = 0.2)
+```
+
+**Compute SE by hand and compare with above SE: **
+
+0.520408163
+0.489795918
+0.489795918
+0.520408163
+
+```{r}
+head(SE,10)
+```
+
+
+```{r}
+# head(predict(fit.lmer2))
+# head (predict(fit.lmer2, newdata=Data, level=1)) #predicted value
+# head (predict(fit.lmer2, newdata=Data, level=0)) #mean and ci   
+```
+<!-- `fixed effect variance` -->
+<!-- ```{r} -->
+<!-- diag (X%*%(vcov(fit.lmer2))%*%t(X)) -->
+<!-- ``` -->
+
+<!-- `marginal y mean and variance directly` -->
+<!-- # ```{r} -->
+<!-- # ymean <- X%*%(fit.lmer2$coef$fixed)  # multiple comparisons (combine clusters) -->
+<!-- # ysd  <- sqrt (diag (cov)) -->
+<!-- # head(cbind (ymean,ysd )) -->
+<!-- # ``` -->
+
+
+### Using lme with Gaussian
+`it means the correlation in a group but not correlation in variables (different covariances)`
+```{r}
+library(nlme)
+
+fit.lmer.gaus <- lme(distance ~ age + Sex  , random = ~1 | Subject, correlation=corGaus(form= ~ age|Subject, nugget=TRUE), data = Data) 
+summary(fit.lmer.gaus)
+```
+- Plotting of the empirical covariation (of residuals) versus "age"
+
+`when describing the spatial pattern of a measured variable, a common way of visualizing the spatial autocorrelation of a variable is a variogram plot.`
+
+`checking the semi-variance change by the distance of spatial autocorrelation. `
+
+```{r,warning=FALSE}
+print(plot(Variogram(fit.lmer.gaus, form =~as.numeric(age)|Subject,
+data = Data)))
+```
+
+
+```{r}
+require(mgcv)
+library(nlme)
+ 
+cov.gaus <- extract.lme.cov(fit.lmer.gaus,Data)
+head(cov.gaus)
+dim(cov.gaus)
+```
+- Compute fixed effect coefficients using Gaussian
+```{r}
+library(matlib)
+inv(t(as.matrix(X))%*%inv(as.matrix(cov.gaus))%*%as.matrix(X))%*%t(as.matrix(X))%*%inv(as.matrix(cov.gaus))%*%y
+fit.lmer.gaus$coef$fixed
+```
+
+*the same below*
+
+### Using lme with autoregressive  
+```{r}
+fit.lmer.AR1 <- lme(distance ~ age + Sex  , random = ~1 | Subject, correlation=corAR1(form= ~ as.numeric(age)|Subject ), data = Data) 
+summary(fit.lmer.AR1)
+```
+- Plotting of the empirical covariation (of residuals) versus "age" 
+```{r,warning=FALSE}
+print(plot(Variogram(fit.lmer.AR1, form =~as.numeric(age)|Subject,
+data = Data)))
+```
+
+```{r}
+require(mgcv)
+library(nlme)
+ 
+cov.AR1 <- extract.lme.cov(fit.lmer.AR1,Data)
+head(cov.AR1)
+dim(cov.AR1)
+```
+
+### Using lme with exponential  
+```{r}
+fit.lmer.Exp <- lme(distance ~ age + Sex  , random = ~1 | Subject, correlation=corExp(form= ~ as.numeric(age)|Subject ), data = Data) 
+summary(fit.lmer.Exp)
+```
+- Plotting of the empirical covariation (of residuals) versus "age"
+```{r,warning=FALSE}
+print(plot(Variogram(fit.lmer.Exp, form =~as.numeric(age)|Subject,
+data = Data)))
+```
+
+```{r}
+require(mgcv)
+library(nlme)
+ 
+cov.Exp <- extract.lme.cov(fit.lmer.Exp,Data)
+head(cov.Exp)
+dim(cov.Exp)
+```
+
+
+
+### Using lme with unstructured  
+```{r}
+fit.lmer.corSymm <- lme(distance ~ age + Sex  , random = ~1 |  (Subject), correlation=corSymm(form= ~ 1| (Subject) ),
+                     weights = varIdent(form=~1|age),
+                     data = Data)
+summary(fit.lmer.corSymm)
+```
+- Plotting of the empirical covariation (of residuals) versus "age"
+```{r,warning=FALSE}
+print(plot(Variogram(fit.lmer.corSymm, form =~as.numeric(age)|Subject,
+data = Data)))
+```
+
+```{r}
+require(mgcv)
+library(nlme)
+ 
+cov.corSymm <- extract.lme.cov(fit.lmer.corSymm,Data)
+head(cov.corSymm)
+dim(cov.corSymm)
+```
+
+<!-- - Using gls with unstructured  -->
+<!-- ```{r} -->
+<!-- gls.corSymm <- gls(distance ~ age + Sex  ,    -->
+<!--                      correlation=corSymm(form= ~ 1| (Subject) ), -->
+<!--                      weights = varIdent(form=~1|age), -->
+<!--                      data = Data) -->
+<!-- summary(gls.corSymm) -->
+<!-- ``` -->
+
+### Using lme with compound symm 
+```{r}
+fit.lmer.Symm <- lme(distance ~ age + Sex  , random = ~1 |  (Subject), correlation=corCompSymm(form= ~ as.numeric(age)| (Subject) ), data = Data) 
+summary(fit.lmer.Symm)
+```
+- Plotting of the empirical covariation (of residuals) versus "age"
+```{r,warning=FALSE}
+print(plot(Variogram(fit.lmer.Symm, form =~as.numeric(age)|Subject,
+data = Data)))
+```
+
+```{r}
+require(mgcv)
+library(nlme)
+ 
+cov.Symm <- extract.lme.cov(fit.lmer.Symm,Data)
+head(cov.Symm)
+dim(cov.Symm)
+```
+
+### Using gls with unstructured, corSymm 
+```{r}
+gls.corsymm <- gls(distance ~ Sex +age, Orthodont,
+                   correlation = corSymm(form = ~ 1 | Subject),
+                   weights = varIdent(form=~1|age))
+summary(gls.corsymm)
+```
+
+
+
+### Using gls with compound symm, which = lmer model default = lme default = lme compound symm =lme auto reg in this example  
+```{r}
+gls.comsys <- gls(distance ~ Sex +age, Orthodont,
+                   correlation = corCompSymm(form = ~ 1 | Subject))
+summary(gls.comsys)
+```
+
+**lme4 does not allow to specify it, and it can only fit LMMs with independent residual errors. However, the range of available variance-covariance matrices for the random effects are restricted to diagonal or general matrices. **
+
+
+
+
+
+
+
+
+

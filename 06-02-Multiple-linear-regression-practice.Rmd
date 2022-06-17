@@ -1,6 +1,5 @@
-# Statistical models
 
-## Multiple linear regression
+## Multiple linear regression practice
     
 ```{r, message=FALSE}
 library(car)
@@ -290,10 +289,9 @@ plot(booteval.relimp(boot,sort=TRUE)) # plot result
 ### Model prediction 
 - prediction `ci` and mean `ci`
 ```{r}
-library(tidyverse)
 library(dplyr)
-data_pred <-    (data2[,c("zn" ,"chas" , "nox" , "rm" , "dis" , "rad" , "tax" , 
-    "ptratio", "lstat")])
+data_pred <-   dplyr::select(data2 , zn , chas , nox , rm , dis , rad , tax , 
+    ptratio , lstat)
 data_pred[1:10,]
 ```
 
@@ -304,8 +302,9 @@ predy
 ```{r}
 confy <- predict(model_trasf_term, data_pred[1:10,], interval="confidence")
 confy
- 
+
 ```
+
 - `ci` width (the lower and upper bonds)
 ```{r}
 confy %*% c(0, -1, 1)
@@ -319,13 +318,47 @@ fit <- lm(predict(model_trasf_term)~data2$medv)
 abline(fit)
 ```
 
+- compute y hat and confidence interval 
+```{r}
+data_ci <-  dplyr::select(data2, zn ,chas ,tax , medv)
+model_ci <- lm(formula = medv ~ zn + chas +tax , data = data_ci)
+summary(model_ci)
+```
+
+`compute y hat and compare with y predict and actual y`
+```{r}
+XCI <- data.frame(intercept=1, data_ci[,1:3])
+comp_y <- as.matrix(XCI)%*%as.numeric(model_ci$coefficients)
+
+head(cbind(comp_y,predict(model_ci, XCI), data_ci[,4]))
+```
+
+`compute ci`
+```{r}
+library(matlib)
+var.yhat <- sigma(model_ci)**2* as.matrix(XCI[1 ,]) %*% inv(t(as.matrix(XCI)) %*% as.matrix (XCI))%*%t(as.matrix(XCI[1 ,]))
+# var.yhat
+cbind(
+(predict(model_ci, XCI[1 ,])-1.96 * sqrt(var.yhat)),
+(predict(model_ci, XCI[1 ,]) ),
+(predict(model_ci, XCI[1 ,])+1.96 * sqrt(var.yhat))
+)
+
+predict(model_ci, XCI[1 ,], interval="confidence")
+```
+
+
+$$
+E(\hat{Y}_0)=\sigma^2\mathbf{X_0\left( X'X\right)^{-1}X_0'}
+$$
+
 ### External data validation 
 - this is not ture external validation (just for demonstration)
 - Split the data randomly into a training set and a test set by using `caret` package.
 ```{r}
 library(caret)
-testdata2_pred <-     (testdata2[,c("zn" ,"chas" , "nox" , "rm" , "dis" , "rad" , "tax" , 
-    "ptratio", "lstat")])
+testdata2_pred <-   dplyr::select(testdata2, zn , chas , nox , rm , dis , rad , tax , 
+    ptratio , lstat)
 
 R_sq <- R2(testdata2$medv,predict(model_trasf_term,testdata2_pred))
 RMSE <- RMSE(testdata2$medv,predict(model_trasf_term,testdata2_pred))
@@ -335,4 +368,11 @@ print(c(R_sq, RMSE, MAE))
 
 ### To do
 - Models comparisons in further and adjusting the final model by a loop   
+ 
+
+
+
+
+
+
  

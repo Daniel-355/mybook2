@@ -1,4 +1,235 @@
  
 # Algorithms
  
-Stay tuned! 
+## Maximum likelihood estimation
+### Likelihood estimation 
+
+`(without random effects)`
+
+With the normal distribution of errors, likelihood can be expressed explicitly as the product of the densities of each of the $n$ independent **normal** observations.  
+$$\ell=-\log L$$
+<!-- $$ -->
+<!-- L\left(\left(y_{1}, \ldots, y_{n}\right), \mu, \sigma^{2}\right)=\prod_{i=1}^{n} \frac{1}{\sqrt{2 \pi \sigma^{2}}} \exp \left(-\frac{\left(y_{i}-\mu\right)^{2}}{2 \sigma^{2}}\right) -->
+<!-- $$ -->
+
+- the negative log-likelihood 
+$$
+\begin{aligned}
+\ell\left(\left(y_{1}, \ldots, y_{n}\right), \mu, \sigma^{2}\right) &=-\log \left[\prod_{i=1}^{n} \frac{1}{\sqrt{2 \pi \sigma^{2}}} \exp \left(-\frac{\left(y_{i}-\mu\right)^{2}}{2 \sigma^{2}}\right)\right] \\
+&=-\sum_{i=1}^{n}\left[\log \left(\frac{1}{\sqrt{2 \pi \sigma^{2}}}\right)+\left(-\frac{\left(y_{i}-\mu\right)^{2}}{2 \sigma^{2}}\right)\right]
+\end{aligned}
+$$
+then, 
+
+- for matrix format 
+
+$$
+\begin{aligned}
+\ell(\mathbf{y}, \beta, \gamma) &=\frac{1}{2}\left\{n \log (2 \pi)+\log \left|\sigma^{2} \mathbf{I}\right|+(\mathbf{y}-\mathbf{X} \beta)^{\prime}\left(\sigma^{2} \mathbf{I}\right)^{-1}(\mathbf{y}-\mathbf{X} \beta)\right\} \\
+&=\frac{1}{2}\left\{n \log (2 \pi)+\log \left(\prod_{i=1}^{n} \sigma^{2}\right)+(\mathbf{y}-\mathbf{X} \beta)^{\prime}(\mathbf{y}-\mathbf{X} \beta) / \sigma^{2}\right\} \\
+&=\frac{1}{2}\left\{n \log (2 \pi)+n \log \left(\sigma^{2}\right)+(\mathbf{y}-\mu)^{\prime}(\mathbf{y}-\mu) / \sigma^{2}\right\} \\
+&=\frac{1}{2}\left\{n \log (2 \pi)+n \log \left(\sigma^{2}\right)+\sum_{i=1}^{n}\left(y_{i}-\mu\right)^{2} / \sigma^{2}\right\}
+\end{aligned}
+$$
+    *where $\gamma$ derived from $\sigma^{2} \mathbf{I}$.* 
+
+- minimize $\ell$ by taking the derivative
+$$
+argmin(\ell(\mathbf{y}, \beta, \gamma))
+$$
+
+
+`taking the derivatives of the negative log-likelihood function. `
+
+$$
+\begin{aligned}
+\frac{\partial \ell\left(\mu, \sigma^{2}\right)}{\partial \mu} &=\frac{1}{2}\left[\sum_{i=1}^{n}(-2)\left(y_{i}-\mu\right) / \sigma^{2}\right] \\
+&=\left(n \mu-\sum_{i=1}^{n} y_{i}\right) / \sigma^{2}=0
+\end{aligned}
+$$
+
+$$
+\frac{\partial \ell\left(\mu, \sigma^{2}\right)}{\partial \sigma^{2}}=\frac{1}{2}\left[\frac{n}{\sigma^{2}}-\frac{\sum_{i=1}^{n}\left(y_{i}-\mu\right)^{2}}{\left(\sigma^{2}\right)^{2}}\right]=0
+$$
+
+`setting the derivatives equal to zero and solving for the parameters `
+
+$$
+\begin{aligned}
+\hat{\mu} &=\bar{y} \\
+\hat{\sigma}^{2} &=\frac{1}{n} \sum_{i=1}^{n}\left(y_{i}-\mu\right)^{2} \\
+&=\frac{1}{n} \sum_{i=1}^{n}\left(y_{i}-\bar{y}\right)^{2}
+\end{aligned}
+$$
+
+`but for REML`
+$$
+\begin{aligned}
+\hat{\sigma}^{2} &=\frac{1}{n-1} \sum_{i=1}^{n}\left(y_{i}-\mu\right)^{2} \\
+&=\frac{1}{n-1} \sum_{i=1}^{n}\left(y_{i}-\bar{y}\right)^{2}
+\end{aligned}
+$$
+
+### `R demonstration`
+
+- toy data
+
+```{r}
+set.seed(123)
+n <- 20000
+x <- rnorm(n, 2, sqrt(2))
+s <- rnorm(n, 0, 0.8)
+y <- 1.5+x*3+s
+mydata <- data.frame(y,x)
+```
+
+- using linear regression
+```{r,warning=F}
+lmfit <- lm(y~., data=mydata)
+# logLik(lmfit)
+coefficients(lmfit)
+(summary(lmfit)$sigma**2)
+```
+- using `-log max likelihood estimate` formula 
+
+**notice, using vector and matrix notation**
+```{r}
+ ## Using the mathematical expression:
+ minusloglik <- function(param){
+   beta <- param[-1] #Regression Coefficients
+   sigma <- param[1] #Variance
+   y <- as.vector(mydata$y) #DV
+   x <- cbind(1, mydata$x) #IV
+   mu <- x%*%beta #multiply matrices
+   0.5*(n*log(2*pi) + n*log(sigma) + sum((y-mu)^2)/sigma)
+ }
+```
+ 
+```{r,warning=F}
+MLoptimize <- optim(  c (1,  1, 1 ), minusloglik)
+## The results:
+MLoptimize$par
+```
+
+- using max likelihood estimate directly (normal distribution)
+```{r,warning=F,message=F}
+# max 
+library(maxLik)
+ols.lf <- function(param) {
+  beta <- param[-1] #Regression Coefficients
+  sigma <- param[1] #Variance
+  y <- as.vector(mydata$y) #DV
+  x <- cbind(1, mydata$x) #IV
+  mu <- x%*%beta #multiply matrices
+  sum(dnorm(y, mu, sqrt(sigma), log = TRUE)) #normal distribution(vector of observations, mean, sd)
+}  
+
+mle_ols <- maxLik(logLik = ols.lf, start = c(sigma = 1, beta1 = 1, beta2 = 1 ))
+summary(mle_ols)
+```
+
+- another example
+```{r,warning=F}
+ols.lf <- function(param) {
+  beta <- param[-1] #Regression Coefficients
+  sigma <- param[1] #Variance
+  y <- as.vector(mtcars$mpg) #DV
+  x <- cbind(1, mtcars$cyl, mtcars$disp) #IV
+  mu <- x%*%beta #multiply matrices
+  sum(dnorm(y, mu, sqrt(sigma), log = TRUE)) #normal distribution(vector of observations, mean, sd)
+}  
+
+mle_ols <- maxLik(logLik = ols.lf, start = c(sigma = 1, beta1 = 1, beta2 = 1, beta3=1))
+summary(mle_ols)
+
+#Checking against linear regression
+lmfit2 <- (lm(mpg~cyl+disp, data=mtcars))
+lmfit2
+(summary(lmfit2)$sigma**2)
+```
+
+ 
+### Estimate confidence intervals using the likelihood 
+
+Most classical confidence intervals for parameters are estimated using the likelihood approach, the Wald interval (or the asymptotic normality property).  
+
+$$
+\hat{\theta}_{i} \pm z_{1-\alpha / 2} S E_{\hat{\theta}_{i}}
+$$
+
+where the standard error is from the **second derivative of the log-likelihood function**. This is the **Hessian matrix/(observed) Information matrix** if there is more than one single model parameter.
+
+- take second derivative of the log-likelihood function
+
+$$
+I(\theta)=\ell^{\prime \prime}(\theta)
+$$
+
+*e.g. for one independent variable (with parameters: $\beta$ and $\sigma^2$ in the model).*
+
+*Here, giving the four entries of the $2 \times 2$ Hessian matrix *
+$$
+\frac{\partial^{2} \ell\left(\mu, \sigma^{2}\right)}{\partial \mu^{2}}=\frac{n}{\sigma^{2}}
+$$
+$$
+\frac{\partial^{2} \ell\left(\mu, \sigma^{2}\right)}{ \partial\left(\sigma^{2}\right) }=\sqrt{\frac{2\left(\hat{\sigma}^{2}\right)^{2}}{n}}
+$$
+
+$$
+\frac{\partial^{2} \ell\left(\mu, \sigma^{2}\right)}{\partial \mu \partial\left(\sigma^{2}\right)}=0\\
+\frac{\partial^{2} \ell\left(\mu, \sigma^{2}\right)}{ \partial\left(\sigma^{2}\right)\partial \mu}=0
+$$
+
+therefore
+$$
+S E_{\hat{\theta}_{i}}=\sqrt{\left(I(\hat{\theta})^{-1}\right)_{i}}
+$$
+
+`the inverse of the Fisher information is just each diagonal element, so`
+
+- For $\beta$
+$$
+S E_{\hat{\mu}}=\sqrt{\left(I\left(\hat{\mu}, \hat{\sigma}^{2}\right)^{-1}\right)_{11}}=\sqrt{\frac{\hat{\sigma}^{2}}{n}}
+$$
+`Thus, the Wald confidence interval for the mean would be`
+$$
+\hat{u}^{2} \pm z_{1-\alpha / 2} \sqrt{\frac{\hat{\sigma}^{2}}{n}}
+$$
+
+- For variance 
+$$
+S E_{\hat{\sigma}^{2}}=\sqrt{\left(I\left(\hat{\mu}, \hat{\sigma}^{2}\right)^{-1}\right)_{22}}=\sqrt{\frac{2\left(\hat{\sigma}^{2}\right)^{2}}{n}}
+$$
+
+`Thus, the Wald confidence interval for the variance would be` 
+$$
+\hat{\sigma}^{2} \pm z_{1-\alpha / 2} \hat{\sigma}^{2} \sqrt{\frac{2}{n}}
+$$
+
+**However, the following approach confidence interval will generally
+have much better small sample properties than the Wald interval.**
+
+$$\left\{\theta \mid \frac{L(\theta)}{L(\hat{\theta})}>\exp (-3.84 / 2)\right\}$$
+
+### The profile likelihood 
+
+It can be profiled by maximizing the likelihood function with respect to all the other parameters.
+
+In the following equation,  $\sigma^{2}$ expressed by $\mu$ 
+ 
+$$
+\begin{aligned}
+L_{p}(\mu) &=L\left(\mu, \frac{1}{n} \sum_{i=1}^{n}\left(y_{i}-\mu\right)^{2}\right) \\
+&=\prod_{i=1}^{n} \frac{1}{\sqrt{2 \pi \frac{1}{n} \sum_{i=1}^{n}\left(y_{i}-\mu\right)^{2}}} \exp \left(-\frac{\left(y_{i}-\mu\right)^{2}}{2 \frac{1}{n} \sum_{i=1}^{n}\left(y_{i}-\mu\right)^{2}}\right)
+\end{aligned}
+$$
+  
+Similarly, the profile likelihood for the variance $\sigma^{2}$ can be expressed 
+$$
+\begin{aligned}
+L_{p}\left(\sigma^{2}\right) &=L\left(\hat{\mu}\left(\sigma^{2}\right), \sigma^{2}\right) \\
+&=L\left(\bar{y}, \sigma^{2}\right)
+\end{aligned}
+$$
+
+This becomes particularly simple, as the $u$-estimate does not depend on the $\sigma$.

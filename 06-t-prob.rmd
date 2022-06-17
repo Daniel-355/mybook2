@@ -1,5 +1,173 @@
  
-
 # Probability
 
-Stay tuned!
+## Probability basics
+
+### Events
+- Probability is the likelihood of an outcome. 
+e.g. {any combination of two dice}
+
+- Event is a collection of outcomes. 
+e.g. {both dice show the same face}
+
+- The outcome space is all the possible outcomes. 
+e.g. {all the possible outcomes die show}
+
+<!-- mutual independence of events,mutual independence of random variables, mutual independence of observations, `confusion`-->  
+
+### Probability formulas  
+
+- `discrete variable`
+
+$$
+P(E) = \frac{number\ of\ outcomes\ in\ E}{number\ of\ possible\ outcomes}
+$$
+
+- `continuous varable` 
+
+$$
+P\begin{pmatrix}a\leq X \leq b \end{pmatrix} = \int_a^b f(x) dx
+$$
+*Probabilities of continuous random variables (X) are the area under the curve. The probability of any value is always zero. when X = k,*
+
+$$
+P\begin{pmatrix}X = k \end{pmatrix} = 0
+$$
+
+### Calculation of probability (operations)
+
+`union probability, addition rule +`
+$$
+\begin{aligned}
+&P(A \cup B)=P(A)+P(B)-P(A \cap B) \\
+&P(A \cup B)=P(A)+P(B) \quad \text { if } \mathrm{A} \text { and } \mathrm{B} \text { are mutually exclusive }
+\end{aligned}
+$$
+`joint probability, multiple rule x` 
+$$
+\begin{aligned}
+&P(A \cap B)=P(A \mid B) P(B)=P(B \mid A) P(A) \\
+&P(A \cap B)=P(A) P(B) \quad \text { if } \mathrm{A} \text { and } \mathrm{B} \text { are independent }
+\end{aligned}
+$$
+`Marginal Probability` is without reference to any other event or events
+$$
+ P(A)  or  P(B)
+$$
+
+`conditional Probability`
+$$
+P(A\mid B)=\dfrac{P(A \: \cap\: B)}{P(B)}
+$$
+`p-values are conditional probabilities.`
+
+### Bayes's theorem  
+- multiple law
+$$
+P(A \cap B) = P(A\ |\ B) P(B) = P(B\ |\ A) P(A)
+$$
+
+- bayes's formula  
+
+$$
+P(B_j\ |\ A) = \frac{P(A\ |\ B_j) P(B_j)}{P(A)}\
+$$
+
+- law of total probability $P(A)$
+
+$$
+P(A) = P(A\ |\ B_1) P(B_1) + \cdots + P(A\ |\ B_n) P(B_n).\notag
+$$
+
+### Random variables and distribution functions
+
+Random variable takes on different values determined by chance. we can use random variables' mathematical (distribution) function to find their probability. 
+
+- probability mass function (PMF, discrete), e.g. Binomial Distribution. upon some conditions are satisfied, the sampling distribution of the sample proportion is approximately normal. 
+- Probability Density Function (PDF, continuous), e.g. normal distribution, t, chi-squre, f...
+- Cumulative Distribution Function (CDF). 
+
+
+### Probability distribution
+`joint distribution, discrete variables` 
+$$
+P\left(X=x_{i}, Y=y_{j}\right)=p_{i j}, i, j=1,2, \ldots
+$$
+`Marginal distribution, discrete variables` 
+$$
+P\left(X=x_{i}\right)=\sum_{j=1}^{\infty} p_{i j}=p_{i}, i=1,2, \ldots
+$$
+`conditional probability, discrete variables`
+$$
+P\left(Y=y_{j} \mid X=x_{i}\right)=\frac{p_{i j}}{p_{i}}, j=1,2, \ldots
+$$
+
+### Conditional expectation 
+Conditional expectation is the mathematical expectation of a conditional distribution. 
+
+`The discrete variable`
+
+$$
+E(Y|X_i)=\sum_{i=1}^{N}{(Y_i|X_i)}\cdot p(Y_i|X_i)
+$$
+
+`The continuous variable`
+
+$$
+E(Y|X)=\int{(Y|X)}\cdot g(Y|X)dY
+$$
+
+`expectation formula, discrete variable`
+$$
+\mu=E(X)=\sum x_if(x_i)
+$$
+
+### Conditional variance
+
+`variance formula, discrete variable`
+$$
+\sigma^2=\text{Var}(X)=\sum (x_i-\mu)^2f(x_i)
+$$
+
+*Conditional expectation and conditional variance exist and can be estimated by regression models.*
+
+
+### Sampling 
+
+We make inferences about the population based on the sample (inference) after summarizing data (description). 
+
+The error is resulting from using a sample characteristic (statistic) to estimate a population characteristic (parameter).
+
+`Standard Error`
+$$
+SD(\bar{X})=SE(\bar{X})=\dfrac{\sigma}{\sqrt{n}}
+$$
+
+**Central limit theorem and law of large numbers**
+
+- For a large sample size,  x mean is approximately normally distributed, regardless of the distribution of the population one samples from. so, the population parameter can be estimated using the sample. 
+
+- With large samples, The mean of the sampling distribution is very close to the population mean. 
+
+
+### Confidence interval
+
+The higher the confidence level, the wider the width of the interval and thus the poorer the precision.
+
+$$
+\text{point estimate }\pm M\times \hat{SE}(\text{estimate})
+$$
+`the margin of error`
+$$
+E=z_{\alpha/2}\sqrt{\dfrac{\hat{p}(1-\hat{p})}{n}}
+$$
+
+### Introduction to Hypothesis Testing 
+
+-Set up the hypotheses and decide on the significance level.
+
+-Construct and calculate the test statistic.
+
+-Calculate probability value (p-value).
+
+-Make a decision and state an overall conclusion.  

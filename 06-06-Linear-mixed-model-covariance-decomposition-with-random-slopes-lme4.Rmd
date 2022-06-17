@@ -1,0 +1,202 @@
+
+
+## Linear mixed model covariance decomposition with random slopes- lme4
+
+### Load data
+```{r}
+data(Orthodont, package="nlme")
+Data <- Orthodont
+```
+  
+### Using lmm
+
+```{r}
+library(lme4) 
+fit.lmer.slope <- lmer(distance ~ age + Sex  +(1+ age | Subject), data = Data) 
+summary(fit.lmer.slope)
+```
+
+**default is compound symmetry**
+
+### Get x,y,z 
+```{r}
+X=(getME(fit.lmer.slope, "X"))
+head(X)
+y=getME(fit.lmer.slope, "y")
+head(y)
+
+Z <- getME(fit.lmer.slope, "Z")
+head(Z)
+dim(Z)
+```
+
+### Get fixed effect and random effect coefficients
+```{r}
+bhat <- getME(fit.lmer.slope, "fixef") #getME(fit.lmer, "beta")  # fixef(fit.lmer)
+bhat 
+uhat <- ranef(fit.lmer.slope) 
+uhat
+ 
+```
+
+### Get random effect covariance structure (covariance matrix expandation)      
+
+**`notice z matrix structure`**
+
+<!-- # ```{r} -->
+<!-- # vc <- VarCorr(fit.lmer.slope)  -->
+<!-- # up <- vc[["Subject"]][1]*diag(ncol(Z))[ c(1:(ncol(Z)/2),0), ] -->
+<!-- # down <- vc[["Subject"]][4]*diag(ncol(Z))[ c((ncol(Z)/2+1):(ncol(Z)),0), ] -->
+<!-- # Lambda_new <- rbind(up,down) -->
+<!-- #   -->
+<!-- # head(Lambda_new) -->
+<!-- # dim(Lambda_new) -->
+<!-- # ``` -->
+
+```{r}
+vc <- VarCorr(fit.lmer.slope)
+Lambda_new <- bdiag(replicate(length(levels(Data$Subject)), vc[["Subject"]], simplify = FALSE))
+head(Lambda_new)
+dim(Lambda_new)
+```
+
+- **"theta": random-effects parameter estimates: these are parameterized as the relative Cholesky factors of each random effect term**
+
+- **use other cov structure by nlme**
+
+- **lme4 does not allow to specify it, and it can only fit LMMs with independent residual errors. However, the range of available variance-covariance matrices for the random effects are restricted to diagonal or general matrices. **
+
+<!--   Get  ST    -->
+<!-- ```{r} -->
+<!-- ST <- getME(fit.lmer, "ST") # $r$  -->
+
+<!-- ``` -->
+<!-- https://rdrr.io/cran/lme4/man/getME.html -->
+<!-- https://en.wikipedia.org/wiki/Cholesky_decomposition -->
+
+<!--   Get lower   -->
+<!-- ```{r} -->
+<!-- lower <- getME(fit.lmer, "lower") # $r$  -->
+<!-- lower -->
+<!-- ``` -->
+
+### Get residual variance and its identity matrix
+```{r}
+sigma <- getME(fit.lmer.slope, "sigma")**2 
+sigma
+head(sigma*diag(nrow(Data)))
+ 
+```
+
+### Get y covariance matrix  
+
+```{r}
+VM <- Z%*%Lambda_new%*%t(Z)+sigma*diag(nrow(Data)) 
+head(VM)
+dim(VM)
+```
+
+### Get fixed effect coefficients covariance matrix
+```{r}
+vcov <- vcov(fit.lmer.slope) #fixed cov
+vcov
+# computer correlation coefficients 
+vcov@x[2]/prod(sqrt( diag(vcov(fit.lmer.slope))[-3] ))
+```
+
+### Get random effect coefficients covariance matrix (standard deviation)
+```{r}
+vc <- VarCorr(fit.lmer.slope) 
+vc ## default print method: standard dev and corr
+as.matrix(Matrix::bdiag(vc)) #random effect covariance matrix
+ 
+# https://stackoverflow.com/questions/47307340/extracting-the-i-estimated-variance-covariance-matrix-of-random-effects-and-or
+# https://support.sas.com/documentation/cdl/en/statug/63033/HTML/default/viewer.htm#statug_mixed_sect022.htm
+```
+
+
+### Computer fixed effect coefficients
+
+```{r}
+library(matlib)
+inv(t(as.matrix(X))%*%inv(as.matrix(VM))%*%as.matrix(X))%*%t(as.matrix(X))%*%inv(as.matrix(VM))%*%y
+bhat
+```
+
+### Computer covariance of fixed efffect coefficients
+```{r}
+inv(t(as.matrix(X))%*%inv(as.matrix(VM))%*%as.matrix(X))
+# standard error
+sqrt(inv(t(as.matrix(X))%*%inv(as.matrix(VM))%*%as.matrix(X)))
+
+# the following equals lmm summary
+vcov(fit.lmer.slope) 
+sqrt(vcov(fit.lmer.slope))
+```
+**default is compound symmetry**
+
+### Computer random effect coefficients 
+```{r}
+comput_uhat <- (as.matrix(Lambda_new))%*%t(Z)%*%inv(as.matrix(VM))%*%(y-as.matrix(X)%*%(bhat))
+cbind((comput_uhat@x),(uhat[["Subject"]]))
+
+```
+
+- covariance matrix of random effect coefficients
+```{r}
+head(Lambda_new)
+```
+ 
+
+### Computer predicted values
+```{r}
+yhat <- X%*%(bhat)+Z%*%comput_uhat
+# comput_uhat= uhat
+head(yhat)
+head(fitted(fit.lmer.slope))
+```
+
+
+### Using lmm with two grouping factors
+
+```{r}
+library(lme4) 
+fit.lmer.slope2 <- lmer(distance ~ age + Sex  +(1+ age | Subject)+ (1 | age), data = Data) 
+summary(fit.lmer.slope2)
+```
+ 
+### Get  z2 
+
+`58= 54+4 ages `
+```{r}
+Z2 <- getME(fit.lmer.slope2, "Z")
+head(Z2,10)
+dim(Z2)
+```
+
+### Using lmm with nested or crossed random effects 
+
+```{r}
+library(lme4) 
+fit.lmer.slope3 <- lmer(distance ~ age + Sex  +(1 | Sex/Subject), data = Data) 
+summary(fit.lmer.slope3)
+```
+ 
+### Get  z3 
+
+`29= 27+2 ages `
+```{r}
+Z3 <- getME(fit.lmer.slope3, "Z")
+head(Z3,10)
+dim(Z3)
+```
+
+`Remark`
+
+nested random effects occur when one factor (grouping variable) appears only within a particular level of another factor (grouping variable).  
+lmer 
+(1|group1/group2)
+ 
+Crossed random effects are simply: not nested. individual observations are nested separately within the two or more factors.  
+lmer 
+(1|group1) + (1|group2)
