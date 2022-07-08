@@ -171,3 +171,551 @@ $$
 -Calculate probability value (p-value).
 
 -Make a decision and state an overall conclusion.  
+
+
+## Probability R practice
+  - pros: don't need complicated probability theory, easy (simulation)
+  - cons: hard to get the exact solution 
+
+### Integrate 
+```{r}
+integrate(function(x){x^2},0,2)$value
+```
+### Derivation
+```{r}
+fxy = expression(2*x^2+y+3*x*y^2)
+dxy = deriv(fxy, c("x", "y"), func = TRUE)
+dxy(1,2)  
+```
+
+### Create random variables with specific distributions 
+```{r}
+ dnorm(0)# density at a number 
+ pnorm(1.28)# cumulative possibility 
+ qnorm(0.95)#  quantile
+ rnorm(10)# random numbers
+```
+ 
+`using covariance matrix to generate Gaussian multiple variables `
+```{r}
+ library(MASS)
+ Sigma <- matrix(c(10,3,3,2),2,2)
+ mvrnorm(n=20, rep(0, 2), Sigma)
+```
+
+ 
+### Prob function
+```{r}
+pnorm(1.96,    0,1)
+qnorm(0.025,    0,1)
+pchisq(3.84,1,lower.tail=F)
+mean(rchisq(10000,1)>3.84) #simulation 
+
+```
+
+
+### Vector and operations
+```{r}
+seq(1,10,  2)
+x=rep(1:3,6)
+x
+y=rep(1:3, each = 6)
+y
+
+x+y
+x-y
+x*y
+x/y
+x%*%y
+```
+### Select and substitute elements of vector
+```{r}
+x[c(2,3)]
+x[-1]
+x[x>2]
+x[x==2]
+
+# substitute 
+x[x == 2] <- 0.5
+x
+```
+
+### Matrix and operations
+```{r}
+matrix(1:10,2,5)
+matrix(1:10,5,2)
+a <- matrix(12:20,3,3)
+a[2,]
+a[,2]
+a[-2,]
+a[,-2]
+a[2,1]=21
+a 
+```
+
+### Compute inverse, determinant and eigen values of matrix 
+```{r}
+a<-matrix(c(11,21,31,21,32,43,12,32,54),3,3)
+solve(a)
+det(a)
+solve(a)*det(a)
+
+t(a)
+eigen(a)
+```
+### Dataframe 
+```{r}
+name<-c('A','B','C')
+chinese<-c(92,96,95)
+math<-c(86, 85, 92)
+score<-data.frame(name, chinese, math)
+score
+score[2]
+score$math
+```
+
+
+
+
+### Solve problems using simulation
+`for loop`
+```{r}
+sim<-10000
+p<-numeric(sim)
+# numeric=NULL
+for (i in 1:sim){
+  p[i]<-  abs(mean(rnorm(10,20,sqrt(3)))-mean(rnorm(15,20,sqrt(3))))<0.1
+}
+
+mean(p)
+```
+`using replicate`
+```{r}
+mean(replicate(10000,abs(mean(rnorm(10,20,sqrt(3)))-mean(rnorm(15,20,sqrt(3))))<0.1))
+
+```
+`using apply function`
+```{r}
+A<-matrix(rnorm(250000,  20,sqrt(3)),10000,25)
+head(A)
+
+f<-function(x)   {abs(mean(x[1:10])-mean(x[11:25]))}
+# solve the mean by apply
+
+mean(apply(A,1,f)>0.1)
+```
+
+`using probability method`
+```{r}
+ pnorm(0.1,0,sqrt(0.5))-pnorm(-0.1,0,sqrt(0.5))
+```
+### Permutations and combinations
+```{r}
+choose(10,2)
+# combn(10,2)
+factorial(10)
+prod(1:10)
+ 
+```
+### Search value position in vector 
+```{r}
+a<-c(1,2,3,5,0,9)
+which(a==min(a))
+
+sum(a)
+unique(a)
+length(a)
+min(a)
+max(a)
+all(c(3,4) %in% a)
+
+```
+
+### Solve directly and optimize 
+`plot and find the range of solve`
+```{r}
+f<-function(x){x^2-exp(x)} 
+uniroot(f,c(-0.8,-0.6))  $root
+
+f2<-function(x){abs(x^2-exp(x))} 
+optimize   (f2,lower=-0.8,upper=-0.6)$minimum
+```
+### Calculate probability using simulation method
+`questions: randomly select 3 numbers out of 1:10, the sum is 9. `
+```{r}
+badge<-1:10 
+sim<-10000 
+p<-numeric(sim) 
+
+for (i in 1:sim){ a<-sample(badge,3,replace=F) 
+p[i]<-sum(a)==9 }
+
+mean(p)
+```
+`questions: eat three flavors tangyuan. `
+```{r}
+Tangyuan<-c(rep('A',8),rep('B',8),rep('C',8))
+sim<-10000
+p<-numeric(sim)
+# how to do it according to the condition
+for (i in 1:sim){
+  a<-sample(Tangyuan,24,replace=F)
+  p[i]<-(length(unique(a[1:6]))==3)&(length(unique(a[7:12]))==3)&(length(unique(a[13:18]))==3)&(length(unique(a[19:24]))==3)
+}
+mean(p)
+```
+`question: select 2 balls when they are the same color. `
+```{r}
+box1<-c(rep('white',5), rep("black",11), rep('red',8))
+box2<-c(rep('white',10), rep("black",8), rep('red',6))
+sim<-10000
+p<-numeric(sim)
+
+for (i in 1:sim){
+  a<-sample(box1, 1)
+  b<-sample(box2, 1)
+  p[i]<- a==b
+}
+mean(p)
+ 
+```
+`select after putting them back`
+```{r}
+box<-c(rep("white",4),rep("red",2))
+sim<-10000
+t<-numeric(sim)
+
+for (i in 1:sim){
+  a<-sample(box, 2 ,replace=T)
+  #  there are two white balls
+  t[i]<-length(a[a=="white"])==2
+}
+mean(t)
+
+```
+`question: two students have the same birthday out of 30 students`
+```{r}
+n<-30
+sim<-10000
+t<-numeric(sim)
+
+for (i in 1:sim){
+  a<-sample(1:365, n, replace=T)
+  t[i]<-n-length(unique(a))
+}
+1-mean(t==0)
+ 
+
+#  probability
+1-prod(365:(365-30+1))/365^30
+
+```
+
+`An event is a set of outcomes. You can describe certain events using random variables (x, distribution). the distribution of random variable function. `
+
+### Discrete random variable
+`question: choose correct one out of four answers`
+```{r}
+x<-0:5
+y<-dbinom(x,5,1/4)
+plot(x,y,col=2,type='h')
+```
+
+- using plot
+`the probability of shooting is 0.02, what is the most likelihood of hit with 400 shootings`
+```{r}
+k<-0:400
+p<-dbinom(k,400,0.02)
+plot(k,p,type='h',col=2)
+plot(k,p,type='h',col=2,xlim=c(0,20))
+
+dbinom(7,400,0.02)
+dbinom(8,400,0.02)
+```
+
+
+### Exponent distribution
+`question: lifetime of a light (lamda=1/2000)`
+```{r}
+integrate(dexp,rate=1/2000,1000,Inf)$value
+ 
+f<-function(x){dexp(x,rate=1/2000)}
+integrate(f,1000,Inf) $value
+ 
+1-pexp(1000,rate=1/2000)
+ 
+mean(rexp(10000,rate=1/2000)>1000)
+```
+### Normal distribution plot
+`continue variable`
+```{r}
+x<-seq(-3,3,0.01)
+plot(x, dnorm(x,mean=0, sd=2),type="l",xlab="x",ylab = "f(x)", col=1,lwd=2,ylim=c(0,1))   #density function
+
+lines(x, dnorm(x,mean=0, sd=1),lty=2, col=2,lwd=2)
+
+lines(x, dnorm(x,mean=0, sd=0.5), lty=3,col=3,lwd=2)
+
+exbeta<-c(expression(paste(mu,"=0,", sigma,"=2")), expression(paste(mu,"=0,",sigma,"=1")), expression(paste(mu,"=0,", sigma,"=0.5")))
+legend("topright", exbeta, lty = c(1, 2,3),col=c(1,2,3),lwd=2)
+```
+
+```{r}
+x<-seq(-3,3,0.01)
+plot(x, dnorm(x,mean=-1, sd=1),type="l",xlab="x",ylab = "f(x)", col=1,lwd=2,ylim=c(0,0.6))
+lines(x, dnorm(x,mean=0, sd=1),lty=2, col=2,lwd=2)
+lines(x, dnorm(x,mean=1, sd=1), lty=3,col=3,lwd=2)
+exbeta<-c(expression(paste(mu,"=-1,", sigma,"=1")), expression(paste(mu,"=0,",sigma,"=1")), expression(paste(mu,"=1,", sigma,"=1")))
+legend("topright", exbeta, lty = c(1, 2,3),col=c(1,2,3),lwd=2)
+```
+`question: solve sigma using nomoral distribution  `
+```{r}
+sigma<-1
+repeat{
+sigma<-sigma+0.01
+if (pnorm(200,160,sigma)-pnorm(120,160,sigma)<0.80) break
+}
+sigma
+# alternative 
+sigma<-1
+while( pnorm(200,160,sigma)-pnorm(120,160,sigma)>=0.80){sigma<-sigma+0.01}
+sigma
+```
+
+### Distribution of random variable function
+`qestion: x^2 and 2x distributions `
+```{r}
+x<-c(-1,0,1,2,2.5)
+weight<-c(0.2,0.1,0.1,0.3,0.3)
+toss<-sample(x,10000,replace=T,weight)
+table(toss^2)/length(toss^2)
+
+table(2*toss)/length(2*toss)
+```
+`quetsion: continous vairable density   `
+```{r}
+x <- seq(0,5,0.01)
+truth<-rep(0,length(x))
+truth[0<=x&x<1]<-2/3
+truth[1<=x&x<2]<-1/3
+
+plot(density(abs(runif(1000000,-1,2))),main=NA, ylim=c(0,1),lwd=3,lty=3)
+
+lines(x,truth,col="red",lwd=2)
+legend("topright",c("True Density","Estimated Density"), col=c("red","black"),lwd=3,lty=c(1,3))
+```
+
+### Join and margin probability 
+`question: x is randomly selected from 1:4, y randomly select from x`
+```{r}
+p<-function(x,y) {
+sim<-10000
+t<-numeric(sim)
+for (i in 1:sim) {
+a<-sample(1:4,1)
+b<-sample(1:a,1)
+t[i]<-(a==x)&(b==y) }
+mean(t)
+}
+PF<-matrix(0,4,4)
+for (i in 1:4) {
+for (j in 1:4) {
+PF[i,j]<-p(i, j) } }
+PF
+apply(PF,1,sum)
+apply(PF,2,sum)
+```
+### Multiple random variables plots
+`2 discrete variables distribution `
+```{r}
+x<-sample(1:4, 10000, replace=T, prob=c(1/4, 1/4, 1/4, 1/4))
+y<-numeric(10000)
+for(i in 1:10000) {
+if(x[i]==1) {y[i]<-sample(1:4,1,replace=T, prob=c(1,0,0,0))}
+if(x[i]==2) {y[i]<-sample(1:4,1,replace=T, prob=c(1/2,1/2,0,0))}
+if(x[i]==3) {y[i]<-sample(1:4,1,replace=T, prob=c(1/3,1/3,1/3,0))}
+if(x[i]==4) {y[i]<-sample(1:4,1,replace=T, prob=c(1/4,1/4,1/4,1/4))}
+}
+z1<-x+y
+table(z1)/length(z1)
+z2<-x*y
+table(z2)/length(z2)
+z3<-pmax(x,y)
+table(z3)/length(z3)
+
+z4<-x/y
+table(z4)/length(z4)
+```
+
+`two normal distributions  `
+`X～N(0,1),Y～N(0,1), Z=X+Y, therefre Z~N(0,2)`
+```{r}
+Z<-function(n){
+x<-seq(-4,4,0.01)
+truth<-dnorm(x,0,sqrt(2))
+
+plot(density(rnorm(n)+rnorm(n)),main="Density Estimate of the Normal Addition Model",ylim=c(0,0.4),lwd=2,lty=2)
+
+lines(x,truth,col="red",lwd=2)
+legend("topright",c("True","Estimated"),col=c("red","black"),lwd=2,lty=c(1,2))
+}
+
+Z(10000)
+```
+
+### Generate a circle using simulated random dots
+`D={(x,y)|x^2 + y^2 <= 1}`
+```{r}
+x<-runif(10000,-1,1)
+y<-runif(10000,-1,1)
+
+a<-x[x^2+y^2<=1]
+b<-y[x^2+y^2<=1]
+plot(a,b,col=4)
+```
+
+`oval`
+```{r}
+a<-3
+b<-1
+x<-runif(10000,-a,a)
+y<-runif(10000,-b,b)
+x1<-x[x^2/a^2+y^2/b^2<=1]
+y1<-y[x^2/a^2+y^2/b^2<=1]
+plot(x1,y1,col=3)
+```
+
+### Expectation 
+`discrete variable`
+`question: the benefit of products is different.` 
+```{r}
+sim<-10000
+t<-numeric(sim)
+
+for (i in 1:sim) {
+Y<-1500
+X<-rexp(1,rate=1/10)
+
+Y[1<X&X<=2]<-2000
+Y[2<X&X<=3]<-2500
+Y[3<X]<-3000
+t[i]<-Y
+}
+
+mean(t)
+```
+`continue variable`
+ 
+### Central Limit Theorem
+```{r}
+###Central Limit Theorem for Expotential distribution
+layout(matrix(c(1,3,2,4 ),ncol=2))
+r<-1000
+lambda<-1/100
+
+for (n in c(1,5,10,30)){
+mu<-1/lambda
+xbar<-numeric(r)
+sxbar<-1/(sqrt(n)*lambda)
+
+for(i in 1:r){
+xbar[i]<-mean(rexp(n,rate=lambda))
+}
+
+hist(xbar,prob=T,main=paste('SampDist.Xbar,n=',n),col=gray(.8))
+Npdf<-dnorm(seq(mu-3*sxbar,mu+3*sxbar,0.01),mu,sxbar)
+lines(seq(mu-3*sxbar,mu+3*sxbar,0.01),Npdf,lty=2,col=2)
+box()
+}
+```
+ 
+```{r}
+#####The central limit theorem for uniform distribution
+layout(matrix(c(1,3,2,4),ncol=2))
+r<-10000
+mu<-5
+sigma<-10/sqrt(12)
+for (n in c(1,5,10,30)){
+xbar<-numeric(r)
+sxbar<-sigma/sqrt(n)
+for (i in 1:r){
+xbar[i]<-mean(runif(n,0,10))}
+hist(xbar,prob=T,main=paste('SampDist.Xbar,n=',n),col=gray(0.8),ylim=c(0,1/(sqrt(1*pi)*sxbar)))
+XX<-seq(mu-3*sxbar,mu+3*sxbar,0.01)
+Npdf<-dnorm(XX,mu,sxbar)
+lines(XX,Npdf,lty=2,col=2)
+box()}
+```
+
+### Law of large numbers
+```{r}
+N <- 5000
+set.seed(123) 
+
+x <- sample(1:10, N,    replace = T)
+s <- cumsum(x)    
+r.avg <- s/(1:N)
+
+options(scipen = 10)  
+
+plot(r.avg, ylim=c(1, 10), type = "l", xlab = "Observations"
+     ,ylab = "Probability", lwd = 2)
+lines(c(0,N), c(5.5,5.5),col="red", lwd = 2)
+```
+
+### Empirical distribution 
+```{r}
+x<-c(-2,-1.2,1.5,2.3,3.5)
+plot(ecdf(x),col=2)
+abline(v=0,col=3)
+```
+
+`question: three numbers are from N(2,9), and what is the prob of their mean >3?`
+```{r}
+A<-matrix(rnorm(30000,2,3),10000,3)
+mean(apply(A,1,mean)>3)
+```
+
+### Maximum likelihood estimate 
+`question: eatimate mean and variance` 
+```{r}
+sample<-c(1.38, 3.96, -0.16, 8.12, 6.30, 2.61, -1.35, 0.03, 3.94, 1.11)
+n<-length(sample)
+muhat<-mean(sample)
+sigsqhat<-sum((sample-muhat)^2)/n
+muhat
+sigsqhat
+
+loglike<-function(theta){
+a<--n/2*log(2*pi)-n/2*log(theta[2])-sum((sample-theta[1])^2)/(2*theta[2])
+return(-a)
+}
+optim(c(2,2),loglike,method="BFGS")$par
+```
+### t distribution, F distribution plots, and common distributions
+```{r}
+n<-30
+x<-seq(-6,6,0.01)
+y<-seq(-6,6,1)
+
+Truth<-df(x,1,n)
+
+plot(density(rt(10000,n)^2),main="PDF",ylim=c(0,1),lty=2,xlim=c(-6,6)) #simulation 
+
+lines(x, dt(x,n), col=3) #t dist
+ 
+lines(x, dchisq(x,2), col=4) #chisq dist
+ 
+lines(x,Truth,col=2) #f dist
+abline (v=0 ,col=7)  
+
+ 
+points(y,dbinom(y, size=12, prob=0.2),col=1) #binomial dist
+points(y,dpois(y, 6),col=2) #poisson dist
+
+lines(y,dunif(-6:6,min=-6,max=6 ),col=5) #uniform
+
+ 
+```
+
+

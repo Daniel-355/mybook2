@@ -233,3 +233,84 @@ L_{p}\left(\sigma^{2}\right) &=L\left(\hat{\mu}\left(\sigma^{2}\right), \sigma^{
 $$
 
 This becomes particularly simple, as the $u$-estimate does not depend on the $\sigma$.
+
+
+### Maximum likelihood estimate practice 
+`question: eatimate mean and variance` 
+```{r}
+sample<-c(1.38, 3.96, -0.16, 8.12, 6.30, 2.61, -1.35, 0.03, 3.94, 1.11)
+n<-length(sample)
+muhat<-mean(sample)
+sigsqhat<-sum((sample-muhat)^2)/n
+muhat
+sigsqhat
+
+loglike<-function(theta){
+a<--n/2*log(2*pi)-n/2*log(theta[2])-sum((sample-theta[1])^2)/(2*theta[2])
+return(-a)
+}
+optim(c(2,2),loglike,method="BFGS")$par
+```
+
+## Gradient descent
+- linear regression 
+```{r}
+library("ggplot2")
+# fit a linear model
+res <- lm( hwy ~ cty ,data=mpg)
+summary(res)
+```
+- compute regression coefficients
+```{r}
+# squared error cost function
+cost <- function(X, y, theta) {
+  sum( (X %*% theta - y)^2 ) / (2*length(y))
+}
+
+# learning rate and iteration limit
+alpha <- 0.005
+num_iters <- 20000
+
+# keep history
+cost_history <- double(num_iters)
+theta_history <- list(num_iters)
+
+# initialize coefficients
+theta <- matrix(c(0,0), nrow=2)
+
+x=mpg$cty
+y=mpg$hwy
+
+# add a column of 1's for the intercept coefficient
+X <- cbind(1, matrix(x))
+
+# gradient descent
+for (i in 1:num_iters) {
+  error <- (X %*% theta - y)
+  delta <- t(X) %*% error / length(y)   #derivation
+  
+  theta <- theta - alpha * delta
+  
+  cost_history[i] <- cost(X, y, theta)
+  theta_history[[i]] <- theta
+}
+
+print(theta)
+
+tail(cost_history)
+```
+- plot the cost function
+```{r}
+plot(cost_history, type='line', col='red', lwd=2, main='Cost function', ylab='cost', xlab='Iterations')
+```
+- compare two ways (linear regresion vs. gradient descent)
+```{r}
+x=mpg$cty
+y=mpg$cty*theta[2]  +  theta[1]
+plot(x,y, main='Linear regression by gradient descent')
+# line(x,y ,col=3)
+abline(lm(mpg$hwy ~ mpg$cty),col="blue",lwd = 4)
+abline(res, col='red')
+```
+
+
