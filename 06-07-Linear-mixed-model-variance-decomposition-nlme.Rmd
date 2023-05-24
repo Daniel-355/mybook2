@@ -534,8 +534,18 @@ summary(gls.comsys)
 
 **lme4 does not allow to specify it, and it can only fit LMMs with independent residual errors. However, the range of available variance-covariance matrices for the random effects are restricted to diagonal or general matrices. **
 
+## Manual simulating data for linear mix model
+[see here](https://rpubs.com/Daniel_He/1041001)
+
+## How to calculate the prediction interval for LMM
+[see here](https://rpubs.com/Daniel_He/1041063)
 
 
+## Least-squares means with interaction effect
+[see here](https://rpubs.com/Daniel_He/1041369)
+
+## Spline regression
+[see here](https://rpubs.com/Daniel_He/1041069)
 
 
 

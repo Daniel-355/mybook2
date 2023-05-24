@@ -8,7 +8,7 @@
   <meta name="description" content="<p>This is a minimal example of using the bookdown package to write a book.
 The HTML output format for this example is bookdown::gitbook,
 set in the _output.yml file.</p>" />
-  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
 
   <meta property="og:title" content="3 Deep learning | My Little Handbook" />
   <meta property="og:type" content="book" />
@@ -29,7 +29,7 @@ set in the _output.yml file.</p>" />
 <meta name="author" content="Daniel He" />
 
 
-<meta name="date" content="2022-07-08" />
+<meta name="date" content="2023-05-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -159,7 +159,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.1.9" data-path="data-wrangling.html"><a href="data-wrangling.html#pivot-longer-wide-to-long"><i class="fa fa-check"></i><b>1.1.9</b> Pivot longer (wide to long)</a></li>
 <li class="chapter" data-level="1.1.10" data-path="data-wrangling.html"><a href="data-wrangling.html#separate-columns"><i class="fa fa-check"></i><b>1.1.10</b> Separate columns</a></li>
 <li class="chapter" data-level="1.1.11" data-path="data-wrangling.html"><a href="data-wrangling.html#recoderelabel-data"><i class="fa fa-check"></i><b>1.1.11</b> Recode/relabel data</a></li>
-<li class="chapter" data-level="1.1.12" data-path="data-wrangling.html"><a href="data-wrangling.html#combine-data-sets"><i class="fa fa-check"></i><b>1.1.12</b> Combine data sets</a></li>
+<li class="chapter" data-level="1.1.12" data-path="data-wrangling.html"><a href="data-wrangling.html#deduplication"><i class="fa fa-check"></i><b>1.1.12</b> deduplication</a></li>
+<li class="chapter" data-level="1.1.13" data-path="data-wrangling.html"><a href="data-wrangling.html#combine-data-sets"><i class="fa fa-check"></i><b>1.1.13</b> Combine data sets</a></li>
+<li class="chapter" data-level="1.1.14" data-path="data-wrangling.html"><a href="data-wrangling.html#working-with-character-strings"><i class="fa fa-check"></i><b>1.1.14</b> Working with character strings</a></li>
+<li class="chapter" data-level="1.1.15" data-path="data-wrangling.html"><a href="data-wrangling.html#conditional-operations"><i class="fa fa-check"></i><b>1.1.15</b> Conditional operations</a></li>
 </ul></li>
 <li class="chapter" data-level="1.2" data-path="data-wrangling.html"><a href="data-wrangling.html#how-to-do-aggregation-summarization"><i class="fa fa-check"></i><b>1.2</b> How to do aggregation/ summarization</a>
 <ul>
@@ -168,6 +171,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.2.3" data-path="data-wrangling.html"><a href="data-wrangling.html#mutate-new-variables-after-grouping"><i class="fa fa-check"></i><b>1.2.3</b> Mutate new variables after grouping</a></li>
 <li class="chapter" data-level="1.2.4" data-path="data-wrangling.html"><a href="data-wrangling.html#recode-and-generate-new-variables-then-value-label"><i class="fa fa-check"></i><b>1.2.4</b> Recode and generate new variables, then value label</a></li>
 </ul></li>
+<li class="chapter" data-level="1.3" data-path="data-wrangling.html"><a href="data-wrangling.html#how-to-creat-table-1-with-test"><i class="fa fa-check"></i><b>1.3</b> How to creat table 1 with test</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="machine-learning.html"><a href="machine-learning.html"><i class="fa fa-check"></i><b>2</b> Machine learning</a>
 <ul>
@@ -284,7 +288,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.5.13" data-path="data-visualization.html"><a href="data-visualization.html#create-stats"><i class="fa fa-check"></i><b>4.5.13</b> Create stats</a></li>
 <li class="chapter" data-level="4.5.14" data-path="data-visualization.html"><a href="data-visualization.html#facets"><i class="fa fa-check"></i><b>4.5.14</b> Facets</a></li>
 <li class="chapter" data-level="4.5.15" data-path="data-visualization.html"><a href="data-visualization.html#theme"><i class="fa fa-check"></i><b>4.5.15</b> Theme</a></li>
+<li class="chapter" data-level="4.5.16" data-path="data-visualization.html"><a href="data-visualization.html#how-to-setup-subscripts-or-superscripts"><i class="fa fa-check"></i><b>4.5.16</b> How to setup subscripts or superscripts</a></li>
 </ul></li>
+<li class="chapter" data-level="4.6" data-path="data-visualization.html"><a href="data-visualization.html#how-to-create-advanced-plots"><i class="fa fa-check"></i><b>4.6</b> How to create advanced plots</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="basic-statistics.html"><a href="basic-statistics.html"><i class="fa fa-check"></i><b>5</b> Basic statistics</a>
 <ul>
@@ -368,108 +374,112 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.3.20" data-path="statistical-models.html"><a href="statistical-models.html#relative-importance"><i class="fa fa-check"></i><b>6.3.20</b> Relative Importance</a></li>
 <li class="chapter" data-level="6.3.21" data-path="statistical-models.html"><a href="statistical-models.html#model-prediction"><i class="fa fa-check"></i><b>6.3.21</b> Model prediction</a></li>
 <li class="chapter" data-level="6.3.22" data-path="statistical-models.html"><a href="statistical-models.html#external-data-validation"><i class="fa fa-check"></i><b>6.3.22</b> External data validation</a></li>
-<li class="chapter" data-level="6.3.23" data-path="statistical-models.html"><a href="statistical-models.html#to-do"><i class="fa fa-check"></i><b>6.3.23</b> To do</a></li>
 </ul></li>
-<li class="chapter" data-level="6.4" data-path="statistical-models.html"><a href="statistical-models.html#linear-mixed-model-theory"><i class="fa fa-check"></i><b>6.4</b> Linear mixed model theory</a>
+<li class="chapter" data-level="6.4" data-path="statistical-models.html"><a href="statistical-models.html#variable-selection"><i class="fa fa-check"></i><b>6.4</b> Variable selection</a></li>
+<li class="chapter" data-level="6.5" data-path="statistical-models.html"><a href="statistical-models.html#linear-mixed-model-theory"><i class="fa fa-check"></i><b>6.5</b> Linear mixed model theory</a>
 <ul>
-<li class="chapter" data-level="6.4.1" data-path="statistical-models.html"><a href="statistical-models.html#matrix-format-1"><i class="fa fa-check"></i><b>6.4.1</b> Matrix format</a></li>
-<li class="chapter" data-level="6.4.2" data-path="statistical-models.html"><a href="statistical-models.html#exmaple-reducing-the-work-stress-of-nurses"><i class="fa fa-check"></i><b>6.4.2</b> Exmaple: reducing the work stress of nurses</a></li>
-<li class="chapter" data-level="6.4.3" data-path="statistical-models.html"><a href="statistical-models.html#dependent-variable-y"><i class="fa fa-check"></i><b>6.4.3</b> Dependent variable, <span class="math inline">\(y\)</span></a></li>
-<li class="chapter" data-level="6.4.4" data-path="statistical-models.html"><a href="statistical-models.html#independent-variables-fixed-effects-xs"><i class="fa fa-check"></i><b>6.4.4</b> Independent variables (fixed effects), <span class="math inline">\(Xs\)</span></a></li>
-<li class="chapter" data-level="6.4.5" data-path="statistical-models.html"><a href="statistical-models.html#fixed-effect-coefficients-hatbeta"><i class="fa fa-check"></i><b>6.4.5</b> Fixed effect coefficients, <span class="math inline">\(\hat{\beta}\)</span></a></li>
-<li class="chapter" data-level="6.4.6" data-path="statistical-models.html"><a href="statistical-models.html#variance--covariance-matrix-of-hatbeta"><i class="fa fa-check"></i><b>6.4.6</b> Variance- covariance matrix of <span class="math inline">\(\hat{\beta}\)</span></a></li>
-<li class="chapter" data-level="6.4.7" data-path="statistical-models.html"><a href="statistical-models.html#random-effects-z"><i class="fa fa-check"></i><b>6.4.7</b> Random effects, <span class="math inline">\(Z\)</span></a></li>
-<li class="chapter" data-level="6.4.8" data-path="statistical-models.html"><a href="statistical-models.html#random-effects-coefficients-u"><i class="fa fa-check"></i><b>6.4.8</b> Random effects coefficients, <span class="math inline">\(u\)</span></a></li>
-<li class="chapter" data-level="6.4.9" data-path="statistical-models.html"><a href="statistical-models.html#variance-covariance-matrix-of-the-random-effects-boldsymbolu"><i class="fa fa-check"></i><b>6.4.9</b> Variance-covariance matrix of the random effects, <span class="math inline">\(\boldsymbol{u}\)</span></a></li>
-<li class="chapter" data-level="6.4.10" data-path="statistical-models.html"><a href="statistical-models.html#how-to-solve-sigma2-and-sigma_ub2"><i class="fa fa-check"></i><b>6.4.10</b> How to solve <span class="math inline">\(\sigma^{2}\)</span> and <span class="math inline">\(\sigma_{u(B)}^{2}\)</span></a></li>
-<li class="chapter" data-level="6.4.11" data-path="statistical-models.html"><a href="statistical-models.html#residuals-errors-and-their-variance--covariance-matrix"><i class="fa fa-check"></i><b>6.4.11</b> Residuals (errors) and their variance- covariance matrix</a></li>
-<li class="chapter" data-level="6.4.12" data-path="statistical-models.html"><a href="statistical-models.html#estimated-parameters"><i class="fa fa-check"></i><b>6.4.12</b> Estimated parameters</a></li>
-<li class="chapter" data-level="6.4.13" data-path="statistical-models.html"><a href="statistical-models.html#lmm-equation"><i class="fa fa-check"></i><b>6.4.13</b> LMM equation</a></li>
-<li class="chapter" data-level="6.4.14" data-path="statistical-models.html"><a href="statistical-models.html#testing-of-models-also-suitable-for-fixed-effect-coefficients"><i class="fa fa-check"></i><b>6.4.14</b> Testing of models (also suitable for fixed effect coefficients)</a></li>
-<li class="chapter" data-level="6.4.15" data-path="statistical-models.html"><a href="statistical-models.html#testing-of-fixed-effect-coefficients-only-ml"><i class="fa fa-check"></i><b>6.4.15</b> Testing of fixed effect coefficients (only ML)</a></li>
-<li class="chapter" data-level="6.4.16" data-path="statistical-models.html"><a href="statistical-models.html#the-95-confidence-interval-of-fixed-effect-coefficients"><i class="fa fa-check"></i><b>6.4.16</b> The <span class="math inline">\(95 \%\)</span> confidence interval of fixed effect coefficients</a></li>
-<li class="chapter" data-level="6.4.17" data-path="statistical-models.html"><a href="statistical-models.html#testing-of-random-effect-coefficients-typically-variances-reml"><i class="fa fa-check"></i><b>6.4.17</b> Testing of random effect coefficients (typically variances, REML)</a></li>
-<li class="chapter" data-level="6.4.18" data-path="statistical-models.html"><a href="statistical-models.html#confidence-intervals-for-random-effects-parameters-variances"><i class="fa fa-check"></i><b>6.4.18</b> Confidence intervals for random effects parameters (variances)</a></li>
-<li class="chapter" data-level="6.4.19" data-path="statistical-models.html"><a href="statistical-models.html#model-diagnostics"><i class="fa fa-check"></i><b>6.4.19</b> Model diagnostics</a></li>
+<li class="chapter" data-level="6.5.1" data-path="statistical-models.html"><a href="statistical-models.html#matrix-format-1"><i class="fa fa-check"></i><b>6.5.1</b> Matrix format</a></li>
+<li class="chapter" data-level="6.5.2" data-path="statistical-models.html"><a href="statistical-models.html#exmaple-reducing-the-work-stress-of-nurses"><i class="fa fa-check"></i><b>6.5.2</b> Exmaple: reducing the work stress of nurses</a></li>
+<li class="chapter" data-level="6.5.3" data-path="statistical-models.html"><a href="statistical-models.html#dependent-variable-y"><i class="fa fa-check"></i><b>6.5.3</b> Dependent variable, <span class="math inline">\(y\)</span></a></li>
+<li class="chapter" data-level="6.5.4" data-path="statistical-models.html"><a href="statistical-models.html#independent-variables-fixed-effects-xs"><i class="fa fa-check"></i><b>6.5.4</b> Independent variables (fixed effects), <span class="math inline">\(Xs\)</span></a></li>
+<li class="chapter" data-level="6.5.5" data-path="statistical-models.html"><a href="statistical-models.html#fixed-effect-coefficients-hatbeta"><i class="fa fa-check"></i><b>6.5.5</b> Fixed effect coefficients, <span class="math inline">\(\hat{\beta}\)</span></a></li>
+<li class="chapter" data-level="6.5.6" data-path="statistical-models.html"><a href="statistical-models.html#variance--covariance-matrix-of-hatbeta"><i class="fa fa-check"></i><b>6.5.6</b> Variance- covariance matrix of <span class="math inline">\(\hat{\beta}\)</span></a></li>
+<li class="chapter" data-level="6.5.7" data-path="statistical-models.html"><a href="statistical-models.html#random-effects-z"><i class="fa fa-check"></i><b>6.5.7</b> Random effects, <span class="math inline">\(Z\)</span></a></li>
+<li class="chapter" data-level="6.5.8" data-path="statistical-models.html"><a href="statistical-models.html#random-effects-coefficients-u"><i class="fa fa-check"></i><b>6.5.8</b> Random effects coefficients, <span class="math inline">\(u\)</span></a></li>
+<li class="chapter" data-level="6.5.9" data-path="statistical-models.html"><a href="statistical-models.html#variance-covariance-matrix-of-the-random-effects-boldsymbolu"><i class="fa fa-check"></i><b>6.5.9</b> Variance-covariance matrix of the random effects, <span class="math inline">\(\boldsymbol{u}\)</span></a></li>
+<li class="chapter" data-level="6.5.10" data-path="statistical-models.html"><a href="statistical-models.html#how-to-solve-sigma2-and-sigma_ub2"><i class="fa fa-check"></i><b>6.5.10</b> How to solve <span class="math inline">\(\sigma^{2}\)</span> and <span class="math inline">\(\sigma_{u(B)}^{2}\)</span></a></li>
+<li class="chapter" data-level="6.5.11" data-path="statistical-models.html"><a href="statistical-models.html#residuals-errors-and-their-variance--covariance-matrix"><i class="fa fa-check"></i><b>6.5.11</b> Residuals (errors) and their variance- covariance matrix</a></li>
+<li class="chapter" data-level="6.5.12" data-path="statistical-models.html"><a href="statistical-models.html#estimated-parameters"><i class="fa fa-check"></i><b>6.5.12</b> Estimated parameters</a></li>
+<li class="chapter" data-level="6.5.13" data-path="statistical-models.html"><a href="statistical-models.html#lmm-equation"><i class="fa fa-check"></i><b>6.5.13</b> LMM equation</a></li>
+<li class="chapter" data-level="6.5.14" data-path="statistical-models.html"><a href="statistical-models.html#testing-of-models-also-suitable-for-fixed-effect-coefficients"><i class="fa fa-check"></i><b>6.5.14</b> Testing of models (also suitable for fixed effect coefficients)</a></li>
+<li class="chapter" data-level="6.5.15" data-path="statistical-models.html"><a href="statistical-models.html#testing-of-fixed-effect-coefficients-only-ml"><i class="fa fa-check"></i><b>6.5.15</b> Testing of fixed effect coefficients (only ML)</a></li>
+<li class="chapter" data-level="6.5.16" data-path="statistical-models.html"><a href="statistical-models.html#the-95-confidence-interval-of-fixed-effect-coefficients"><i class="fa fa-check"></i><b>6.5.16</b> The <span class="math inline">\(95 \%\)</span> confidence interval of fixed effect coefficients</a></li>
+<li class="chapter" data-level="6.5.17" data-path="statistical-models.html"><a href="statistical-models.html#testing-of-random-effect-coefficients-typically-variances-reml"><i class="fa fa-check"></i><b>6.5.17</b> Testing of random effect coefficients (typically variances, REML)</a></li>
+<li class="chapter" data-level="6.5.18" data-path="statistical-models.html"><a href="statistical-models.html#confidence-intervals-for-random-effects-parameters-variances"><i class="fa fa-check"></i><b>6.5.18</b> Confidence intervals for random effects parameters (variances)</a></li>
+<li class="chapter" data-level="6.5.19" data-path="statistical-models.html"><a href="statistical-models.html#model-diagnostics"><i class="fa fa-check"></i><b>6.5.19</b> Model diagnostics</a></li>
 </ul></li>
-<li class="chapter" data-level="6.5" data-path="statistical-models.html"><a href="statistical-models.html#linear-mixed-model-practice"><i class="fa fa-check"></i><b>6.5</b> Linear mixed model practice</a>
+<li class="chapter" data-level="6.6" data-path="statistical-models.html"><a href="statistical-models.html#linear-mixed-model-practice"><i class="fa fa-check"></i><b>6.6</b> Linear mixed model practice</a>
 <ul>
-<li class="chapter" data-level="6.5.1" data-path="statistical-models.html"><a href="statistical-models.html#loading-data-and-library"><i class="fa fa-check"></i><b>6.5.1</b> Loading data and library</a></li>
-<li class="chapter" data-level="6.5.2" data-path="statistical-models.html"><a href="statistical-models.html#general-linear-regression"><i class="fa fa-check"></i><b>6.5.2</b> General linear regression</a></li>
-<li class="chapter" data-level="6.5.3" data-path="statistical-models.html"><a href="statistical-models.html#generalized-linear-regression"><i class="fa fa-check"></i><b>6.5.3</b> Generalized linear regression</a></li>
-<li class="chapter" data-level="6.5.4" data-path="statistical-models.html"><a href="statistical-models.html#varying-intercept-by-adding-a-stratum-variable-as-fixed-effect-glm"><i class="fa fa-check"></i><b>6.5.4</b> Varying intercept by adding a stratum variable as fixed effect (glm)</a></li>
-<li class="chapter" data-level="6.5.5" data-path="statistical-models.html"><a href="statistical-models.html#comparisions-of-models"><i class="fa fa-check"></i><b>6.5.5</b> Comparisions of models</a></li>
-<li class="chapter" data-level="6.5.6" data-path="statistical-models.html"><a href="statistical-models.html#adding-class-and-school-as-fixed-effects-glm"><i class="fa fa-check"></i><b>6.5.6</b> Adding class and school as fixed effects (glm)</a></li>
-<li class="chapter" data-level="6.5.7" data-path="statistical-models.html"><a href="statistical-models.html#considering-different-slopes-by-stratum-glm"><i class="fa fa-check"></i><b>6.5.7</b> Considering different slopes by stratum (glm)</a></li>
-<li class="chapter" data-level="6.5.8" data-path="statistical-models.html"><a href="statistical-models.html#varying-intercept-with-lmm"><i class="fa fa-check"></i><b>6.5.8</b> Varying intercept with LMM</a></li>
-<li class="chapter" data-level="6.5.9" data-path="statistical-models.html"><a href="statistical-models.html#varying-slope-with-lmm"><i class="fa fa-check"></i><b>6.5.9</b> Varying slope with LMM</a></li>
-<li class="chapter" data-level="6.5.10" data-path="statistical-models.html"><a href="statistical-models.html#summary-the-model-8"><i class="fa fa-check"></i><b>6.5.10</b> Summary the model 8</a></li>
-<li class="chapter" data-level="6.5.11" data-path="statistical-models.html"><a href="statistical-models.html#extracting-elements-parameters"><i class="fa fa-check"></i><b>6.5.11</b> Extracting elements (parameters)</a></li>
-<li class="chapter" data-level="6.5.12" data-path="statistical-models.html"><a href="statistical-models.html#model-diagnostics-1"><i class="fa fa-check"></i><b>6.5.12</b> Model diagnostics</a></li>
-<li class="chapter" data-level="6.5.13" data-path="statistical-models.html"><a href="statistical-models.html#notice"><i class="fa fa-check"></i><b>6.5.13</b> Notice</a></li>
+<li class="chapter" data-level="6.6.1" data-path="statistical-models.html"><a href="statistical-models.html#loading-data-and-library"><i class="fa fa-check"></i><b>6.6.1</b> Loading data and library</a></li>
+<li class="chapter" data-level="6.6.2" data-path="statistical-models.html"><a href="statistical-models.html#general-linear-regression"><i class="fa fa-check"></i><b>6.6.2</b> General linear regression</a></li>
+<li class="chapter" data-level="6.6.3" data-path="statistical-models.html"><a href="statistical-models.html#generalized-linear-regression"><i class="fa fa-check"></i><b>6.6.3</b> Generalized linear regression</a></li>
+<li class="chapter" data-level="6.6.4" data-path="statistical-models.html"><a href="statistical-models.html#varying-intercept-by-adding-a-stratum-variable-as-fixed-effect-glm"><i class="fa fa-check"></i><b>6.6.4</b> Varying intercept by adding a stratum variable as fixed effect (glm)</a></li>
+<li class="chapter" data-level="6.6.5" data-path="statistical-models.html"><a href="statistical-models.html#comparisions-of-models"><i class="fa fa-check"></i><b>6.6.5</b> Comparisions of models</a></li>
+<li class="chapter" data-level="6.6.6" data-path="statistical-models.html"><a href="statistical-models.html#adding-class-and-school-as-fixed-effects-glm"><i class="fa fa-check"></i><b>6.6.6</b> Adding class and school as fixed effects (glm)</a></li>
+<li class="chapter" data-level="6.6.7" data-path="statistical-models.html"><a href="statistical-models.html#considering-different-slopes-by-stratum-glm"><i class="fa fa-check"></i><b>6.6.7</b> Considering different slopes by stratum (glm)</a></li>
+<li class="chapter" data-level="6.6.8" data-path="statistical-models.html"><a href="statistical-models.html#varying-intercept-with-lmm"><i class="fa fa-check"></i><b>6.6.8</b> Varying intercept with LMM</a></li>
+<li class="chapter" data-level="6.6.9" data-path="statistical-models.html"><a href="statistical-models.html#varying-slope-with-lmm"><i class="fa fa-check"></i><b>6.6.9</b> Varying slope with LMM</a></li>
+<li class="chapter" data-level="6.6.10" data-path="statistical-models.html"><a href="statistical-models.html#summary-the-model-8"><i class="fa fa-check"></i><b>6.6.10</b> Summary the model 8</a></li>
+<li class="chapter" data-level="6.6.11" data-path="statistical-models.html"><a href="statistical-models.html#extracting-elements-parameters"><i class="fa fa-check"></i><b>6.6.11</b> Extracting elements (parameters)</a></li>
+<li class="chapter" data-level="6.6.12" data-path="statistical-models.html"><a href="statistical-models.html#model-diagnostics-1"><i class="fa fa-check"></i><b>6.6.12</b> Model diagnostics</a></li>
+<li class="chapter" data-level="6.6.13" data-path="statistical-models.html"><a href="statistical-models.html#notice"><i class="fa fa-check"></i><b>6.6.13</b> Notice</a></li>
 </ul></li>
-<li class="chapter" data-level="6.6" data-path="statistical-models.html"><a href="statistical-models.html#linear-mixed-model-covariance-decomposition-with-random-intercept--lme4"><i class="fa fa-check"></i><b>6.6</b> Linear mixed model covariance decomposition with random intercept- lme4</a>
+<li class="chapter" data-level="6.7" data-path="statistical-models.html"><a href="statistical-models.html#linear-mixed-model-covariance-decomposition-with-random-intercept--lme4"><i class="fa fa-check"></i><b>6.7</b> Linear mixed model covariance decomposition with random intercept- lme4</a>
 <ul>
-<li class="chapter" data-level="6.6.1" data-path="statistical-models.html"><a href="statistical-models.html#load-data-1"><i class="fa fa-check"></i><b>6.6.1</b> Load data</a></li>
-<li class="chapter" data-level="6.6.2" data-path="statistical-models.html"><a href="statistical-models.html#using-glm"><i class="fa fa-check"></i><b>6.6.2</b> Using glm</a></li>
-<li class="chapter" data-level="6.6.3" data-path="statistical-models.html"><a href="statistical-models.html#using-glm-with-random-slopes"><i class="fa fa-check"></i><b>6.6.3</b> Using glm with random slopes</a></li>
-<li class="chapter" data-level="6.6.4" data-path="statistical-models.html"><a href="statistical-models.html#using-lmm"><i class="fa fa-check"></i><b>6.6.4</b> Using lmm</a></li>
-<li class="chapter" data-level="6.6.5" data-path="statistical-models.html"><a href="statistical-models.html#get-xyz"><i class="fa fa-check"></i><b>6.6.5</b> Get x,y,z</a></li>
-<li class="chapter" data-level="6.6.6" data-path="statistical-models.html"><a href="statistical-models.html#get-fixed-effect-and-random-effect-coefficients"><i class="fa fa-check"></i><b>6.6.6</b> Get fixed effect and random effect coefficients</a></li>
-<li class="chapter" data-level="6.6.7" data-path="statistical-models.html"><a href="statistical-models.html#get-random-effect-covariance-structure-covariance-matrix-expandation"><i class="fa fa-check"></i><b>6.6.7</b> Get random effect covariance structure (covariance matrix expandation)</a></li>
-<li class="chapter" data-level="6.6.8" data-path="statistical-models.html"><a href="statistical-models.html#get-residual-variance-and-its-identity-matrix"><i class="fa fa-check"></i><b>6.6.8</b> Get residual variance and its identity matrix</a></li>
-<li class="chapter" data-level="6.6.9" data-path="statistical-models.html"><a href="statistical-models.html#get-y-covariance-matrix"><i class="fa fa-check"></i><b>6.6.9</b> Get y covariance matrix</a></li>
-<li class="chapter" data-level="6.6.10" data-path="statistical-models.html"><a href="statistical-models.html#get-fixed-effect-coefficients-covariance-matrix"><i class="fa fa-check"></i><b>6.6.10</b> Get fixed effect coefficients covariance matrix</a></li>
-<li class="chapter" data-level="6.6.11" data-path="statistical-models.html"><a href="statistical-models.html#get-random-effect-coefficients-covariance-matrix-standard-deviation"><i class="fa fa-check"></i><b>6.6.11</b> Get random effect coefficients covariance matrix (standard deviation)</a></li>
-<li class="chapter" data-level="6.6.12" data-path="statistical-models.html"><a href="statistical-models.html#computer-fixed-effect-coefficients"><i class="fa fa-check"></i><b>6.6.12</b> Computer fixed effect coefficients</a></li>
-<li class="chapter" data-level="6.6.13" data-path="statistical-models.html"><a href="statistical-models.html#computer-covariance-of-fixed-efffect-coefficients"><i class="fa fa-check"></i><b>6.6.13</b> Computer covariance of fixed efffect coefficients</a></li>
-<li class="chapter" data-level="6.6.14" data-path="statistical-models.html"><a href="statistical-models.html#computer-random-effect-coefficients"><i class="fa fa-check"></i><b>6.6.14</b> Computer random effect coefficients</a></li>
-<li class="chapter" data-level="6.6.15" data-path="statistical-models.html"><a href="statistical-models.html#computer-predicted-values"><i class="fa fa-check"></i><b>6.6.15</b> Computer predicted values</a></li>
+<li class="chapter" data-level="6.7.1" data-path="statistical-models.html"><a href="statistical-models.html#load-data-1"><i class="fa fa-check"></i><b>6.7.1</b> Load data</a></li>
+<li class="chapter" data-level="6.7.2" data-path="statistical-models.html"><a href="statistical-models.html#using-glm"><i class="fa fa-check"></i><b>6.7.2</b> Using glm</a></li>
+<li class="chapter" data-level="6.7.3" data-path="statistical-models.html"><a href="statistical-models.html#using-glm-with-random-slopes"><i class="fa fa-check"></i><b>6.7.3</b> Using glm with random slopes</a></li>
+<li class="chapter" data-level="6.7.4" data-path="statistical-models.html"><a href="statistical-models.html#using-lmm"><i class="fa fa-check"></i><b>6.7.4</b> Using lmm</a></li>
+<li class="chapter" data-level="6.7.5" data-path="statistical-models.html"><a href="statistical-models.html#get-xyz"><i class="fa fa-check"></i><b>6.7.5</b> Get x,y,z</a></li>
+<li class="chapter" data-level="6.7.6" data-path="statistical-models.html"><a href="statistical-models.html#get-fixed-effect-and-random-effect-coefficients"><i class="fa fa-check"></i><b>6.7.6</b> Get fixed effect and random effect coefficients</a></li>
+<li class="chapter" data-level="6.7.7" data-path="statistical-models.html"><a href="statistical-models.html#get-random-effect-covariance-structure-covariance-matrix-expandation"><i class="fa fa-check"></i><b>6.7.7</b> Get random effect covariance structure (covariance matrix expandation)</a></li>
+<li class="chapter" data-level="6.7.8" data-path="statistical-models.html"><a href="statistical-models.html#get-residual-variance-and-its-identity-matrix"><i class="fa fa-check"></i><b>6.7.8</b> Get residual variance and its identity matrix</a></li>
+<li class="chapter" data-level="6.7.9" data-path="statistical-models.html"><a href="statistical-models.html#get-y-covariance-matrix"><i class="fa fa-check"></i><b>6.7.9</b> Get y covariance matrix</a></li>
+<li class="chapter" data-level="6.7.10" data-path="statistical-models.html"><a href="statistical-models.html#get-fixed-effect-coefficients-covariance-matrix"><i class="fa fa-check"></i><b>6.7.10</b> Get fixed effect coefficients covariance matrix</a></li>
+<li class="chapter" data-level="6.7.11" data-path="statistical-models.html"><a href="statistical-models.html#get-random-effect-coefficients-covariance-matrix-standard-deviation"><i class="fa fa-check"></i><b>6.7.11</b> Get random effect coefficients covariance matrix (standard deviation)</a></li>
+<li class="chapter" data-level="6.7.12" data-path="statistical-models.html"><a href="statistical-models.html#computer-fixed-effect-coefficients"><i class="fa fa-check"></i><b>6.7.12</b> Computer fixed effect coefficients</a></li>
+<li class="chapter" data-level="6.7.13" data-path="statistical-models.html"><a href="statistical-models.html#computer-covariance-of-fixed-efffect-coefficients"><i class="fa fa-check"></i><b>6.7.13</b> Computer covariance of fixed efffect coefficients</a></li>
+<li class="chapter" data-level="6.7.14" data-path="statistical-models.html"><a href="statistical-models.html#computer-random-effect-coefficients"><i class="fa fa-check"></i><b>6.7.14</b> Computer random effect coefficients</a></li>
+<li class="chapter" data-level="6.7.15" data-path="statistical-models.html"><a href="statistical-models.html#computer-predicted-values"><i class="fa fa-check"></i><b>6.7.15</b> Computer predicted values</a></li>
 </ul></li>
-<li class="chapter" data-level="6.7" data-path="statistical-models.html"><a href="statistical-models.html#linear-mixed-model-covariance-decomposition-with-random-slopes--lme4"><i class="fa fa-check"></i><b>6.7</b> Linear mixed model covariance decomposition with random slopes- lme4</a>
+<li class="chapter" data-level="6.8" data-path="statistical-models.html"><a href="statistical-models.html#linear-mixed-model-covariance-decomposition-with-random-slopes--lme4"><i class="fa fa-check"></i><b>6.8</b> Linear mixed model covariance decomposition with random slopes- lme4</a>
 <ul>
-<li class="chapter" data-level="6.7.1" data-path="statistical-models.html"><a href="statistical-models.html#load-data-2"><i class="fa fa-check"></i><b>6.7.1</b> Load data</a></li>
-<li class="chapter" data-level="6.7.2" data-path="statistical-models.html"><a href="statistical-models.html#using-lmm-1"><i class="fa fa-check"></i><b>6.7.2</b> Using lmm</a></li>
-<li class="chapter" data-level="6.7.3" data-path="statistical-models.html"><a href="statistical-models.html#get-xyz-1"><i class="fa fa-check"></i><b>6.7.3</b> Get x,y,z</a></li>
-<li class="chapter" data-level="6.7.4" data-path="statistical-models.html"><a href="statistical-models.html#get-fixed-effect-and-random-effect-coefficients-1"><i class="fa fa-check"></i><b>6.7.4</b> Get fixed effect and random effect coefficients</a></li>
-<li class="chapter" data-level="6.7.5" data-path="statistical-models.html"><a href="statistical-models.html#get-random-effect-covariance-structure-covariance-matrix-expandation-1"><i class="fa fa-check"></i><b>6.7.5</b> Get random effect covariance structure (covariance matrix expandation)</a></li>
-<li class="chapter" data-level="6.7.6" data-path="statistical-models.html"><a href="statistical-models.html#get-residual-variance-and-its-identity-matrix-1"><i class="fa fa-check"></i><b>6.7.6</b> Get residual variance and its identity matrix</a></li>
-<li class="chapter" data-level="6.7.7" data-path="statistical-models.html"><a href="statistical-models.html#get-y-covariance-matrix-1"><i class="fa fa-check"></i><b>6.7.7</b> Get y covariance matrix</a></li>
-<li class="chapter" data-level="6.7.8" data-path="statistical-models.html"><a href="statistical-models.html#get-fixed-effect-coefficients-covariance-matrix-1"><i class="fa fa-check"></i><b>6.7.8</b> Get fixed effect coefficients covariance matrix</a></li>
-<li class="chapter" data-level="6.7.9" data-path="statistical-models.html"><a href="statistical-models.html#get-random-effect-coefficients-covariance-matrix-standard-deviation-1"><i class="fa fa-check"></i><b>6.7.9</b> Get random effect coefficients covariance matrix (standard deviation)</a></li>
-<li class="chapter" data-level="6.7.10" data-path="statistical-models.html"><a href="statistical-models.html#computer-fixed-effect-coefficients-1"><i class="fa fa-check"></i><b>6.7.10</b> Computer fixed effect coefficients</a></li>
-<li class="chapter" data-level="6.7.11" data-path="statistical-models.html"><a href="statistical-models.html#computer-covariance-of-fixed-efffect-coefficients-1"><i class="fa fa-check"></i><b>6.7.11</b> Computer covariance of fixed efffect coefficients</a></li>
-<li class="chapter" data-level="6.7.12" data-path="statistical-models.html"><a href="statistical-models.html#computer-random-effect-coefficients-1"><i class="fa fa-check"></i><b>6.7.12</b> Computer random effect coefficients</a></li>
-<li class="chapter" data-level="6.7.13" data-path="statistical-models.html"><a href="statistical-models.html#computer-predicted-values-1"><i class="fa fa-check"></i><b>6.7.13</b> Computer predicted values</a></li>
-<li class="chapter" data-level="6.7.14" data-path="statistical-models.html"><a href="statistical-models.html#using-lmm-with-two-grouping-factors"><i class="fa fa-check"></i><b>6.7.14</b> Using lmm with two grouping factors</a></li>
-<li class="chapter" data-level="6.7.15" data-path="statistical-models.html"><a href="statistical-models.html#get-z2"><i class="fa fa-check"></i><b>6.7.15</b> Get z2</a></li>
-<li class="chapter" data-level="6.7.16" data-path="statistical-models.html"><a href="statistical-models.html#using-lmm-with-nested-or-crossed-random-effects"><i class="fa fa-check"></i><b>6.7.16</b> Using lmm with nested or crossed random effects</a></li>
-<li class="chapter" data-level="6.7.17" data-path="statistical-models.html"><a href="statistical-models.html#get-z3"><i class="fa fa-check"></i><b>6.7.17</b> Get z3</a></li>
+<li class="chapter" data-level="6.8.1" data-path="statistical-models.html"><a href="statistical-models.html#load-data-2"><i class="fa fa-check"></i><b>6.8.1</b> Load data</a></li>
+<li class="chapter" data-level="6.8.2" data-path="statistical-models.html"><a href="statistical-models.html#using-lmm-1"><i class="fa fa-check"></i><b>6.8.2</b> Using lmm</a></li>
+<li class="chapter" data-level="6.8.3" data-path="statistical-models.html"><a href="statistical-models.html#get-xyz-1"><i class="fa fa-check"></i><b>6.8.3</b> Get x,y,z</a></li>
+<li class="chapter" data-level="6.8.4" data-path="statistical-models.html"><a href="statistical-models.html#get-fixed-effect-and-random-effect-coefficients-1"><i class="fa fa-check"></i><b>6.8.4</b> Get fixed effect and random effect coefficients</a></li>
+<li class="chapter" data-level="6.8.5" data-path="statistical-models.html"><a href="statistical-models.html#get-random-effect-covariance-structure-covariance-matrix-expandation-1"><i class="fa fa-check"></i><b>6.8.5</b> Get random effect covariance structure (covariance matrix expandation)</a></li>
+<li class="chapter" data-level="6.8.6" data-path="statistical-models.html"><a href="statistical-models.html#get-residual-variance-and-its-identity-matrix-1"><i class="fa fa-check"></i><b>6.8.6</b> Get residual variance and its identity matrix</a></li>
+<li class="chapter" data-level="6.8.7" data-path="statistical-models.html"><a href="statistical-models.html#get-y-covariance-matrix-1"><i class="fa fa-check"></i><b>6.8.7</b> Get y covariance matrix</a></li>
+<li class="chapter" data-level="6.8.8" data-path="statistical-models.html"><a href="statistical-models.html#get-fixed-effect-coefficients-covariance-matrix-1"><i class="fa fa-check"></i><b>6.8.8</b> Get fixed effect coefficients covariance matrix</a></li>
+<li class="chapter" data-level="6.8.9" data-path="statistical-models.html"><a href="statistical-models.html#get-random-effect-coefficients-covariance-matrix-standard-deviation-1"><i class="fa fa-check"></i><b>6.8.9</b> Get random effect coefficients covariance matrix (standard deviation)</a></li>
+<li class="chapter" data-level="6.8.10" data-path="statistical-models.html"><a href="statistical-models.html#computer-fixed-effect-coefficients-1"><i class="fa fa-check"></i><b>6.8.10</b> Computer fixed effect coefficients</a></li>
+<li class="chapter" data-level="6.8.11" data-path="statistical-models.html"><a href="statistical-models.html#computer-covariance-of-fixed-efffect-coefficients-1"><i class="fa fa-check"></i><b>6.8.11</b> Computer covariance of fixed efffect coefficients</a></li>
+<li class="chapter" data-level="6.8.12" data-path="statistical-models.html"><a href="statistical-models.html#computer-random-effect-coefficients-1"><i class="fa fa-check"></i><b>6.8.12</b> Computer random effect coefficients</a></li>
+<li class="chapter" data-level="6.8.13" data-path="statistical-models.html"><a href="statistical-models.html#computer-predicted-values-1"><i class="fa fa-check"></i><b>6.8.13</b> Computer predicted values</a></li>
+<li class="chapter" data-level="6.8.14" data-path="statistical-models.html"><a href="statistical-models.html#using-lmm-with-two-grouping-factors"><i class="fa fa-check"></i><b>6.8.14</b> Using lmm with two grouping factors</a></li>
+<li class="chapter" data-level="6.8.15" data-path="statistical-models.html"><a href="statistical-models.html#get-z2"><i class="fa fa-check"></i><b>6.8.15</b> Get z2</a></li>
+<li class="chapter" data-level="6.8.16" data-path="statistical-models.html"><a href="statistical-models.html#using-lmm-with-nested-or-crossed-random-effects"><i class="fa fa-check"></i><b>6.8.16</b> Using lmm with nested or crossed random effects</a></li>
+<li class="chapter" data-level="6.8.17" data-path="statistical-models.html"><a href="statistical-models.html#get-z3"><i class="fa fa-check"></i><b>6.8.17</b> Get z3</a></li>
 </ul></li>
-<li class="chapter" data-level="6.8" data-path="statistical-models.html"><a href="statistical-models.html#linear-mixed-model-covariance-decomposition-nlme"><i class="fa fa-check"></i><b>6.8</b> Linear mixed model covariance decomposition (nlme)</a>
+<li class="chapter" data-level="6.9" data-path="statistical-models.html"><a href="statistical-models.html#linear-mixed-model-covariance-decomposition-nlme"><i class="fa fa-check"></i><b>6.9</b> Linear mixed model covariance decomposition (nlme)</a>
 <ul>
-<li class="chapter" data-level="6.8.1" data-path="statistical-models.html"><a href="statistical-models.html#load-data-3"><i class="fa fa-check"></i><b>6.8.1</b> Load data</a></li>
-<li class="chapter" data-level="6.8.2" data-path="statistical-models.html"><a href="statistical-models.html#using-lme-nlme"><i class="fa fa-check"></i><b>6.8.2</b> Using lme (nlme)</a></li>
-<li class="chapter" data-level="6.8.3" data-path="statistical-models.html"><a href="statistical-models.html#model-diagnosing"><i class="fa fa-check"></i><b>6.8.3</b> Model diagnosing</a></li>
-<li class="chapter" data-level="6.8.4" data-path="statistical-models.html"><a href="statistical-models.html#get-x-y-z-matrixs-using-lme4"><i class="fa fa-check"></i><b>6.8.4</b> Get x, y, z matrixs (using lme4)</a></li>
-<li class="chapter" data-level="6.8.5" data-path="statistical-models.html"><a href="statistical-models.html#fixed-effect-coefficient"><i class="fa fa-check"></i><b>6.8.5</b> Fixed effect coefficient</a></li>
-<li class="chapter" data-level="6.8.6" data-path="statistical-models.html"><a href="statistical-models.html#random-effect-coefficient"><i class="fa fa-check"></i><b>6.8.6</b> Random effect coefficient</a></li>
-<li class="chapter" data-level="6.8.7" data-path="statistical-models.html"><a href="statistical-models.html#fixed-effect-coefficients-covariance"><i class="fa fa-check"></i><b>6.8.7</b> Fixed effect coefficients covariance</a></li>
-<li class="chapter" data-level="6.8.8" data-path="statistical-models.html"><a href="statistical-models.html#random-effect-covariance-and-correlation"><i class="fa fa-check"></i><b>6.8.8</b> Random effect covariance and correlation</a></li>
-<li class="chapter" data-level="6.8.9" data-path="statistical-models.html"><a href="statistical-models.html#get-y-covariance-directly"><i class="fa fa-check"></i><b>6.8.9</b> Get y covariance directly</a></li>
-<li class="chapter" data-level="6.8.10" data-path="statistical-models.html"><a href="statistical-models.html#residual-variance"><i class="fa fa-check"></i><b>6.8.10</b> Residual variance</a></li>
-<li class="chapter" data-level="6.8.11" data-path="statistical-models.html"><a href="statistical-models.html#compute-fixed-effect-coefficients"><i class="fa fa-check"></i><b>6.8.11</b> Compute fixed effect coefficients</a></li>
-<li class="chapter" data-level="6.8.12" data-path="statistical-models.html"><a href="statistical-models.html#compute-covariance-of-fixed-efffect-coefficients"><i class="fa fa-check"></i><b>6.8.12</b> Compute covariance of fixed efffect coefficients</a></li>
-<li class="chapter" data-level="6.8.13" data-path="statistical-models.html"><a href="statistical-models.html#compute-random-effect-coefficients"><i class="fa fa-check"></i><b>6.8.13</b> Compute random effect coefficients</a></li>
-<li class="chapter" data-level="6.8.14" data-path="statistical-models.html"><a href="statistical-models.html#compute-predicted-values"><i class="fa fa-check"></i><b>6.8.14</b> Compute predicted values</a></li>
-<li class="chapter" data-level="6.8.15" data-path="statistical-models.html"><a href="statistical-models.html#using-lme-with-gaussian"><i class="fa fa-check"></i><b>6.8.15</b> Using lme with Gaussian</a></li>
-<li class="chapter" data-level="6.8.16" data-path="statistical-models.html"><a href="statistical-models.html#using-lme-with-autoregressive"><i class="fa fa-check"></i><b>6.8.16</b> Using lme with autoregressive</a></li>
-<li class="chapter" data-level="6.8.17" data-path="statistical-models.html"><a href="statistical-models.html#using-lme-with-exponential"><i class="fa fa-check"></i><b>6.8.17</b> Using lme with exponential</a></li>
-<li class="chapter" data-level="6.8.18" data-path="statistical-models.html"><a href="statistical-models.html#using-lme-with-unstructured"><i class="fa fa-check"></i><b>6.8.18</b> Using lme with unstructured</a></li>
-<li class="chapter" data-level="6.8.19" data-path="statistical-models.html"><a href="statistical-models.html#using-lme-with-compound-symm"><i class="fa fa-check"></i><b>6.8.19</b> Using lme with compound symm</a></li>
-<li class="chapter" data-level="6.8.20" data-path="statistical-models.html"><a href="statistical-models.html#using-gls-with-unstructured-corsymm"><i class="fa fa-check"></i><b>6.8.20</b> Using gls with unstructured, corSymm</a></li>
-<li class="chapter" data-level="6.8.21" data-path="statistical-models.html"><a href="statistical-models.html#using-gls-with-compound-symm-which-lmer-model-default-lme-default-lme-compound-symm-lme-auto-reg-in-this-example"><i class="fa fa-check"></i><b>6.8.21</b> Using gls with compound symm, which = lmer model default = lme default = lme compound symm =lme auto reg in this example</a></li>
+<li class="chapter" data-level="6.9.1" data-path="statistical-models.html"><a href="statistical-models.html#load-data-3"><i class="fa fa-check"></i><b>6.9.1</b> Load data</a></li>
+<li class="chapter" data-level="6.9.2" data-path="statistical-models.html"><a href="statistical-models.html#using-lme-nlme"><i class="fa fa-check"></i><b>6.9.2</b> Using lme (nlme)</a></li>
+<li class="chapter" data-level="6.9.3" data-path="statistical-models.html"><a href="statistical-models.html#model-diagnosing"><i class="fa fa-check"></i><b>6.9.3</b> Model diagnosing</a></li>
+<li class="chapter" data-level="6.9.4" data-path="statistical-models.html"><a href="statistical-models.html#get-x-y-z-matrixs-using-lme4"><i class="fa fa-check"></i><b>6.9.4</b> Get x, y, z matrixs (using lme4)</a></li>
+<li class="chapter" data-level="6.9.5" data-path="statistical-models.html"><a href="statistical-models.html#fixed-effect-coefficient"><i class="fa fa-check"></i><b>6.9.5</b> Fixed effect coefficient</a></li>
+<li class="chapter" data-level="6.9.6" data-path="statistical-models.html"><a href="statistical-models.html#random-effect-coefficient"><i class="fa fa-check"></i><b>6.9.6</b> Random effect coefficient</a></li>
+<li class="chapter" data-level="6.9.7" data-path="statistical-models.html"><a href="statistical-models.html#fixed-effect-coefficients-covariance"><i class="fa fa-check"></i><b>6.9.7</b> Fixed effect coefficients covariance</a></li>
+<li class="chapter" data-level="6.9.8" data-path="statistical-models.html"><a href="statistical-models.html#random-effect-covariance-and-correlation"><i class="fa fa-check"></i><b>6.9.8</b> Random effect covariance and correlation</a></li>
+<li class="chapter" data-level="6.9.9" data-path="statistical-models.html"><a href="statistical-models.html#get-y-covariance-directly"><i class="fa fa-check"></i><b>6.9.9</b> Get y covariance directly</a></li>
+<li class="chapter" data-level="6.9.10" data-path="statistical-models.html"><a href="statistical-models.html#residual-variance"><i class="fa fa-check"></i><b>6.9.10</b> Residual variance</a></li>
+<li class="chapter" data-level="6.9.11" data-path="statistical-models.html"><a href="statistical-models.html#compute-fixed-effect-coefficients"><i class="fa fa-check"></i><b>6.9.11</b> Compute fixed effect coefficients</a></li>
+<li class="chapter" data-level="6.9.12" data-path="statistical-models.html"><a href="statistical-models.html#compute-covariance-of-fixed-efffect-coefficients"><i class="fa fa-check"></i><b>6.9.12</b> Compute covariance of fixed efffect coefficients</a></li>
+<li class="chapter" data-level="6.9.13" data-path="statistical-models.html"><a href="statistical-models.html#compute-random-effect-coefficients"><i class="fa fa-check"></i><b>6.9.13</b> Compute random effect coefficients</a></li>
+<li class="chapter" data-level="6.9.14" data-path="statistical-models.html"><a href="statistical-models.html#compute-predicted-values"><i class="fa fa-check"></i><b>6.9.14</b> Compute predicted values</a></li>
+<li class="chapter" data-level="6.9.15" data-path="statistical-models.html"><a href="statistical-models.html#using-lme-with-gaussian"><i class="fa fa-check"></i><b>6.9.15</b> Using lme with Gaussian</a></li>
+<li class="chapter" data-level="6.9.16" data-path="statistical-models.html"><a href="statistical-models.html#using-lme-with-autoregressive"><i class="fa fa-check"></i><b>6.9.16</b> Using lme with autoregressive</a></li>
+<li class="chapter" data-level="6.9.17" data-path="statistical-models.html"><a href="statistical-models.html#using-lme-with-exponential"><i class="fa fa-check"></i><b>6.9.17</b> Using lme with exponential</a></li>
+<li class="chapter" data-level="6.9.18" data-path="statistical-models.html"><a href="statistical-models.html#using-lme-with-unstructured"><i class="fa fa-check"></i><b>6.9.18</b> Using lme with unstructured</a></li>
+<li class="chapter" data-level="6.9.19" data-path="statistical-models.html"><a href="statistical-models.html#using-lme-with-compound-symm"><i class="fa fa-check"></i><b>6.9.19</b> Using lme with compound symm</a></li>
+<li class="chapter" data-level="6.9.20" data-path="statistical-models.html"><a href="statistical-models.html#using-gls-with-unstructured-corsymm"><i class="fa fa-check"></i><b>6.9.20</b> Using gls with unstructured, corSymm</a></li>
+<li class="chapter" data-level="6.9.21" data-path="statistical-models.html"><a href="statistical-models.html#using-gls-with-compound-symm-which-lmer-model-default-lme-default-lme-compound-symm-lme-auto-reg-in-this-example"><i class="fa fa-check"></i><b>6.9.21</b> Using gls with compound symm, which = lmer model default = lme default = lme compound symm =lme auto reg in this example</a></li>
 </ul></li>
+<li class="chapter" data-level="6.10" data-path="statistical-models.html"><a href="statistical-models.html#manual-simulating-data-for-linear-mix-model"><i class="fa fa-check"></i><b>6.10</b> Manual simulating data for linear mix model</a></li>
+<li class="chapter" data-level="6.11" data-path="statistical-models.html"><a href="statistical-models.html#how-to-calculate-the-prediction-interval-for-lmm"><i class="fa fa-check"></i><b>6.11</b> How to calculate the prediction interval for LMM</a></li>
+<li class="chapter" data-level="6.12" data-path="statistical-models.html"><a href="statistical-models.html#least-squares-means-with-interaction-effect"><i class="fa fa-check"></i><b>6.12</b> Least-squares means with interaction effect</a></li>
+<li class="chapter" data-level="6.13" data-path="statistical-models.html"><a href="statistical-models.html#spline-regression"><i class="fa fa-check"></i><b>6.13</b> Spline regression</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="probability.html"><a href="probability.html"><i class="fa fa-check"></i><b>7</b> Probability</a>
 <ul>
@@ -529,33 +539,112 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.1.5" data-path="algorithms.html"><a href="algorithms.html#maximum-likelihood-estimate-practice"><i class="fa fa-check"></i><b>8.1.5</b> Maximum likelihood estimate practice</a></li>
 </ul></li>
 <li class="chapter" data-level="8.2" data-path="algorithms.html"><a href="algorithms.html#gradient-descent"><i class="fa fa-check"></i><b>8.2</b> Gradient descent</a></li>
+<li class="chapter" data-level="8.3" data-path="algorithms.html"><a href="algorithms.html#markov-chain-monte-carlo"><i class="fa fa-check"></i><b>8.3</b> Markov chain Monte Carlo</a></li>
+<li class="chapter" data-level="8.4" data-path="algorithms.html"><a href="algorithms.html#expectation-maximum"><i class="fa fa-check"></i><b>8.4</b> Expectation maximum</a></li>
+<li class="chapter" data-level="8.5" data-path="algorithms.html"><a href="algorithms.html#combine-estimates-by-pooling-rules"><i class="fa fa-check"></i><b>8.5</b> Combine estimates by pooling rules</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="sasmarkdown.html"><a href="sasmarkdown.html"><i class="fa fa-check"></i><b>9</b> SASmarkdown</a>
 <ul>
 <li class="chapter" data-level="9.1" data-path="sasmarkdown.html"><a href="sasmarkdown.html#how-to-install-sasmarkdown"><i class="fa fa-check"></i><b>9.1</b> How to install sasmarkdown</a></li>
-<li class="chapter" data-level="9.2" data-path="sasmarkdown.html"><a href="sasmarkdown.html#common-statements"><i class="fa fa-check"></i><b>9.2</b> Common statements</a></li>
-</ul></li>
-<li class="chapter" data-level="10" data-path="miscellaneous.html"><a href="miscellaneous.html"><i class="fa fa-check"></i><b>10</b> Miscellaneous</a>
+<li class="chapter" data-level="9.2" data-path="sasmarkdown.html"><a href="sasmarkdown.html#common-statements"><i class="fa fa-check"></i><b>9.2</b> Common statements</a>
 <ul>
-<li class="chapter" data-level="10.1" data-path="miscellaneous.html"><a href="miscellaneous.html#linear-algebra"><i class="fa fa-check"></i><b>10.1</b> Linear algebra</a>
+<li class="chapter" data-level="9.2.1" data-path="sasmarkdown.html"><a href="sasmarkdown.html#read-in-date-data-using-informat"><i class="fa fa-check"></i><b>9.2.1</b> read in (date) data using informat</a></li>
+<li class="chapter" data-level="9.2.2" data-path="sasmarkdown.html"><a href="sasmarkdown.html#compute-mean-and-freqency"><i class="fa fa-check"></i><b>9.2.2</b> compute mean and freqency</a></li>
+<li class="chapter" data-level="9.2.3" data-path="sasmarkdown.html"><a href="sasmarkdown.html#sort-a-data-set"><i class="fa fa-check"></i><b>9.2.3</b> sort a data set</a></li>
+<li class="chapter" data-level="9.2.4" data-path="sasmarkdown.html"><a href="sasmarkdown.html#transpose-or-reshape"><i class="fa fa-check"></i><b>9.2.4</b> transpose or reshape</a></li>
+<li class="chapter" data-level="9.2.5" data-path="sasmarkdown.html"><a href="sasmarkdown.html#conditional-statement"><i class="fa fa-check"></i><b>9.2.5</b> conditional statement</a></li>
+<li class="chapter" data-level="9.2.6" data-path="sasmarkdown.html"><a href="sasmarkdown.html#using-like-operation-to-select-rows-contaning-a-pattern"><i class="fa fa-check"></i><b>9.2.6</b> using like operation to select rows contaning a pattern</a></li>
+<li class="chapter" data-level="9.2.7" data-path="sasmarkdown.html"><a href="sasmarkdown.html#change-format-of-the-variable"><i class="fa fa-check"></i><b>9.2.7</b> change format of the variable</a></li>
+<li class="chapter" data-level="9.2.8" data-path="sasmarkdown.html"><a href="sasmarkdown.html#basic-operations"><i class="fa fa-check"></i><b>9.2.8</b> basic operations</a></li>
+<li class="chapter" data-level="9.2.9" data-path="sasmarkdown.html"><a href="sasmarkdown.html#rename-variables-1"><i class="fa fa-check"></i><b>9.2.9</b> rename variables</a></li>
+<li class="chapter" data-level="9.2.10" data-path="sasmarkdown.html"><a href="sasmarkdown.html#extract-text-from-a-character-value"><i class="fa fa-check"></i><b>9.2.10</b> extract text from a character value</a></li>
+<li class="chapter" data-level="9.2.11" data-path="sasmarkdown.html"><a href="sasmarkdown.html#convert-the-character-value-into-a-numeric-value-and-reverse"><i class="fa fa-check"></i><b>9.2.11</b> convert the character value into a numeric value and reverse</a></li>
+<li class="chapter" data-level="9.2.12" data-path="sasmarkdown.html"><a href="sasmarkdown.html#change-the-length-of-the-variable"><i class="fa fa-check"></i><b>9.2.12</b> change the length of the variable</a></li>
+<li class="chapter" data-level="9.2.13" data-path="sasmarkdown.html"><a href="sasmarkdown.html#create-a-report"><i class="fa fa-check"></i><b>9.2.13</b> create a report</a></li>
+<li class="chapter" data-level="9.2.14" data-path="sasmarkdown.html"><a href="sasmarkdown.html#create-a-random-variable"><i class="fa fa-check"></i><b>9.2.14</b> create a random variable</a></li>
+<li class="chapter" data-level="9.2.15" data-path="sasmarkdown.html"><a href="sasmarkdown.html#combine-two-texts"><i class="fa fa-check"></i><b>9.2.15</b> combine two texts</a></li>
+<li class="chapter" data-level="9.2.16" data-path="sasmarkdown.html"><a href="sasmarkdown.html#compress-spaces"><i class="fa fa-check"></i><b>9.2.16</b> compress spaces</a></li>
+<li class="chapter" data-level="9.2.17" data-path="sasmarkdown.html"><a href="sasmarkdown.html#identify-the-position-of-a-specified-text"><i class="fa fa-check"></i><b>9.2.17</b> identify the position of a specified text</a></li>
+<li class="chapter" data-level="9.2.18" data-path="sasmarkdown.html"><a href="sasmarkdown.html#convert-upcase-lower-case-and-propcase"><i class="fa fa-check"></i><b>9.2.18</b> convert upcase, lower case and propcase</a></li>
+<li class="chapter" data-level="9.2.19" data-path="sasmarkdown.html"><a href="sasmarkdown.html#deduplication-1"><i class="fa fa-check"></i><b>9.2.19</b> deduplication</a></li>
+<li class="chapter" data-level="9.2.20" data-path="sasmarkdown.html"><a href="sasmarkdown.html#select-sub-data-set"><i class="fa fa-check"></i><b>9.2.20</b> select sub data set</a></li>
+<li class="chapter" data-level="9.2.21" data-path="sasmarkdown.html"><a href="sasmarkdown.html#create-macro-using-do-loop-statement"><i class="fa fa-check"></i><b>9.2.21</b> create macro using do loop statement</a></li>
+<li class="chapter" data-level="9.2.22" data-path="sasmarkdown.html"><a href="sasmarkdown.html#output-intermediate-tables"><i class="fa fa-check"></i><b>9.2.22</b> output intermediate tables</a></li>
+<li class="chapter" data-level="9.2.23" data-path="sasmarkdown.html"><a href="sasmarkdown.html#creat-a-sequence-number"><i class="fa fa-check"></i><b>9.2.23</b> creat a sequence number</a></li>
+<li class="chapter" data-level="9.2.24" data-path="sasmarkdown.html"><a href="sasmarkdown.html#merge-data-sets"><i class="fa fa-check"></i><b>9.2.24</b> merge data sets</a></li>
+<li class="chapter" data-level="9.2.25" data-path="sasmarkdown.html"><a href="sasmarkdown.html#create-table-1-1"><i class="fa fa-check"></i><b>9.2.25</b> create table 1</a></li>
+<li class="chapter" data-level="9.2.26" data-path="sasmarkdown.html"><a href="sasmarkdown.html#create-table-1-without-statistical-test"><i class="fa fa-check"></i><b>9.2.26</b> create table 1 without statistical test</a></li>
+<li class="chapter" data-level="9.2.27" data-path="sasmarkdown.html"><a href="sasmarkdown.html#perform-a-regression"><i class="fa fa-check"></i><b>9.2.27</b> perform a regression</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="sasmarkdown.html"><a href="sasmarkdown.html#using-macro"><i class="fa fa-check"></i><b>9.3</b> Using macro</a>
 <ul>
-<li class="chapter" data-level="10.1.1" data-path="miscellaneous.html"><a href="miscellaneous.html#matrix-basics"><i class="fa fa-check"></i><b>10.1.1</b> Matrix basics</a></li>
-<li class="chapter" data-level="10.1.2" data-path="miscellaneous.html"><a href="miscellaneous.html#operations"><i class="fa fa-check"></i><b>10.1.2</b> Operations</a></li>
-<li class="chapter" data-level="10.1.3" data-path="miscellaneous.html"><a href="miscellaneous.html#advanced-operations"><i class="fa fa-check"></i><b>10.1.3</b> Advanced operations</a></li>
-<li class="chapter" data-level="10.1.4" data-path="miscellaneous.html"><a href="miscellaneous.html#solve-linear-equations"><i class="fa fa-check"></i><b>10.1.4</b> Solve linear equations</a></li>
-<li class="chapter" data-level="10.1.5" data-path="miscellaneous.html"><a href="miscellaneous.html#summary"><i class="fa fa-check"></i><b>10.1.5</b> Summary</a></li>
+<li class="chapter" data-level="9.3.1" data-path="sasmarkdown.html"><a href="sasmarkdown.html#create-a-macro-variable"><i class="fa fa-check"></i><b>9.3.1</b> Create a macro variable</a></li>
+<li class="chapter" data-level="9.3.2" data-path="sasmarkdown.html"><a href="sasmarkdown.html#select-variables-names"><i class="fa fa-check"></i><b>9.3.2</b> Select variables names</a></li>
+<li class="chapter" data-level="9.3.3" data-path="sasmarkdown.html"><a href="sasmarkdown.html#use-iterative-do-to-syntax-to-iterate-a-specific-number"><i class="fa fa-check"></i><b>9.3.3</b> Use iterative DO TO syntax to iterate a Specific Number</a></li>
+<li class="chapter" data-level="9.3.4" data-path="sasmarkdown.html"><a href="sasmarkdown.html#proc-report-allows-more-flexibility-in-displaying-the-data"><i class="fa fa-check"></i><b>9.3.4</b> PROC REPORT allows more flexibility in displaying the data</a></li>
+<li class="chapter" data-level="9.3.5" data-path="sasmarkdown.html"><a href="sasmarkdown.html#create-a-macro-to-calculate-descriptive-stats-and-summarize-tabels"><i class="fa fa-check"></i><b>9.3.5</b> Create a macro to calculate descriptive stats and summarize tabels</a></li>
 </ul></li>
-<li class="chapter" data-level="10.2" data-path="miscellaneous.html"><a href="miscellaneous.html#calculus"><i class="fa fa-check"></i><b>10.2</b> Calculus</a>
+<li class="chapter" data-level="9.4" data-path="sasmarkdown.html"><a href="sasmarkdown.html#use-sas-format"><i class="fa fa-check"></i><b>9.4</b> Use SAS format</a>
 <ul>
-<li class="chapter" data-level="10.2.1" data-path="miscellaneous.html"><a href="miscellaneous.html#derivation-1"><i class="fa fa-check"></i><b>10.2.1</b> Derivation</a></li>
-<li class="chapter" data-level="10.2.2" data-path="miscellaneous.html"><a href="miscellaneous.html#integration"><i class="fa fa-check"></i><b>10.2.2</b> Integration</a></li>
+<li class="chapter" data-level="9.4.1" data-path="sasmarkdown.html"><a href="sasmarkdown.html#creating-labels-for-different-values"><i class="fa fa-check"></i><b>9.4.1</b> Creating labels for different values</a></li>
+<li class="chapter" data-level="9.4.2" data-path="sasmarkdown.html"><a href="sasmarkdown.html#storing-farmats-to-a-library--way-1"><i class="fa fa-check"></i><b>9.4.2</b> Storing farmats to a library- way 1</a></li>
+<li class="chapter" data-level="9.4.3" data-path="sasmarkdown.html"><a href="sasmarkdown.html#use-stored-defined-format--way-2"><i class="fa fa-check"></i><b>9.4.3</b> Use stored defined format- way 2</a></li>
+<li class="chapter" data-level="9.4.4" data-path="sasmarkdown.html"><a href="sasmarkdown.html#use-stored-defined-format--way-3"><i class="fa fa-check"></i><b>9.4.4</b> Use stored defined format- way 3</a></li>
+<li class="chapter" data-level="9.4.5" data-path="sasmarkdown.html"><a href="sasmarkdown.html#use-stored-defined-format-in-batch--way-4"><i class="fa fa-check"></i><b>9.4.5</b> Use stored defined format in batch- way 4</a></li>
+<li class="chapter" data-level="9.4.6" data-path="sasmarkdown.html"><a href="sasmarkdown.html#modify-format-of-the-existing-proc-format"><i class="fa fa-check"></i><b>9.4.6</b> Modify format of the existing proc format</a></li>
+<li class="chapter" data-level="9.4.7" data-path="sasmarkdown.html"><a href="sasmarkdown.html#transform-missing-to-char-then-to-numeric-again"><i class="fa fa-check"></i><b>9.4.7</b> Transform missing to char then to numeric again</a></li>
+<li class="chapter" data-level="9.4.8" data-path="sasmarkdown.html"><a href="sasmarkdown.html#output-format-of-the-existing-format-name-by-alphabet-order"><i class="fa fa-check"></i><b>9.4.8</b> Output format of the existing format name by alphabet order</a></li>
+<li class="chapter" data-level="9.4.9" data-path="sasmarkdown.html"><a href="sasmarkdown.html#a-macro-to-copy-the-existing-proc-format"><i class="fa fa-check"></i><b>9.4.9</b> A macro to copy the existing proc format</a></li>
+<li class="chapter" data-level="9.4.10" data-path="sasmarkdown.html"><a href="sasmarkdown.html#a-macro-to-view-the-list-of-variables"><i class="fa fa-check"></i><b>9.4.10</b> A macro to view the list of variables</a></li>
 </ul></li>
-<li class="chapter" data-level="10.3" data-path="miscellaneous.html"><a href="miscellaneous.html#sample-size-calculation"><i class="fa fa-check"></i><b>10.3</b> Sample size calculation</a></li>
-<li class="chapter" data-level="10.4" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-evaluate-z-score"><i class="fa fa-check"></i><b>10.4</b> How to evaluate z score</a></li>
-<li class="chapter" data-level="10.5" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-create-a-bookdown"><i class="fa fa-check"></i><b>10.5</b> How to create a bookdown</a></li>
-<li class="chapter" data-level="10.6" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-create-a-blogdown"><i class="fa fa-check"></i><b>10.6</b> How to create a blogdown</a></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="english.html"><a href="english.html"><i class="fa fa-check"></i><b>11</b> English</a></li>
+<li class="chapter" data-level="10" data-path="causal-inference.html"><a href="causal-inference.html"><i class="fa fa-check"></i><b>10</b> Causal inference</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="causal-inference.html"><a href="causal-inference.html#causal-inference-introduction"><i class="fa fa-check"></i><b>10.1</b> Causal inference introduction</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="causal-inference.html"><a href="causal-inference.html#definitions-and-directed-acyclic-graph-dag"><i class="fa fa-check"></i><b>10.1.1</b> Definitions and directed acyclic graph (DAG)</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="causal-inference.html"><a href="causal-inference.html#inverse-probability-weighting"><i class="fa fa-check"></i><b>10.2</b> Inverse probability weighting</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="causal-inference.html"><a href="causal-inference.html#matching-and-weighting-wo-imputation"><i class="fa fa-check"></i><b>10.2.1</b> Matching and weighting w/o imputation</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="causal-inference.html"><a href="causal-inference.html#g-formula"><i class="fa fa-check"></i><b>10.3</b> G formula</a></li>
+<li class="chapter" data-level="10.4" data-path="causal-inference.html"><a href="causal-inference.html#double-robust-estimators"><i class="fa fa-check"></i><b>10.4</b> Double Robust Estimators</a>
+<ul>
+<li class="chapter" data-level="10.4.1" data-path="causal-inference.html"><a href="causal-inference.html#superlearner"><i class="fa fa-check"></i><b>10.4.1</b> SuperLearner</a></li>
+<li class="chapter" data-level="10.4.2" data-path="causal-inference.html"><a href="causal-inference.html#double-robust-estimators-using-superlearner_sl3"><i class="fa fa-check"></i><b>10.4.2</b> Double robust estimators using SuperLearner_sl3</a></li>
+<li class="chapter" data-level="10.4.3" data-path="causal-inference.html"><a href="causal-inference.html#double-robust-estimators-using-tmle"><i class="fa fa-check"></i><b>10.4.3</b> Double robust estimators using TMLE</a></li>
+<li class="chapter" data-level="10.4.4" data-path="causal-inference.html"><a href="causal-inference.html#longitudinal-targeted-maximum-likelihood-estimation"><i class="fa fa-check"></i><b>10.4.4</b> Longitudinal targeted maximum likelihood estimation</a></li>
+</ul></li>
+<li class="chapter" data-level="10.5" data-path="causal-inference.html"><a href="causal-inference.html#instrumental-variable-regression"><i class="fa fa-check"></i><b>10.5</b> Instrumental variable regression</a></li>
+<li class="chapter" data-level="10.6" data-path="causal-inference.html"><a href="causal-inference.html#mediation-analysis"><i class="fa fa-check"></i><b>10.6</b> Mediation analysis</a></li>
+<li class="chapter" data-level="10.7" data-path="causal-inference.html"><a href="causal-inference.html#confounding-and-effect-measure-modification"><i class="fa fa-check"></i><b>10.7</b> Confounding and effect measure modification</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="miscellaneous.html"><a href="miscellaneous.html"><i class="fa fa-check"></i><b>11</b> Miscellaneous</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="miscellaneous.html"><a href="miscellaneous.html#linear-algebra"><i class="fa fa-check"></i><b>11.1</b> Linear algebra</a>
+<ul>
+<li class="chapter" data-level="11.1.1" data-path="miscellaneous.html"><a href="miscellaneous.html#matrix-basics"><i class="fa fa-check"></i><b>11.1.1</b> Matrix basics</a></li>
+<li class="chapter" data-level="11.1.2" data-path="miscellaneous.html"><a href="miscellaneous.html#operations"><i class="fa fa-check"></i><b>11.1.2</b> Operations</a></li>
+<li class="chapter" data-level="11.1.3" data-path="miscellaneous.html"><a href="miscellaneous.html#advanced-operations"><i class="fa fa-check"></i><b>11.1.3</b> Advanced operations</a></li>
+<li class="chapter" data-level="11.1.4" data-path="miscellaneous.html"><a href="miscellaneous.html#solve-linear-equations"><i class="fa fa-check"></i><b>11.1.4</b> Solve linear equations</a></li>
+<li class="chapter" data-level="11.1.5" data-path="miscellaneous.html"><a href="miscellaneous.html#summary"><i class="fa fa-check"></i><b>11.1.5</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="11.2" data-path="miscellaneous.html"><a href="miscellaneous.html#calculus"><i class="fa fa-check"></i><b>11.2</b> Calculus</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="miscellaneous.html"><a href="miscellaneous.html#derivation-1"><i class="fa fa-check"></i><b>11.2.1</b> Derivation</a></li>
+<li class="chapter" data-level="11.2.2" data-path="miscellaneous.html"><a href="miscellaneous.html#integration"><i class="fa fa-check"></i><b>11.2.2</b> Integration</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="miscellaneous.html"><a href="miscellaneous.html#sample-size-calculation"><i class="fa fa-check"></i><b>11.3</b> Sample size calculation</a></li>
+<li class="chapter" data-level="11.4" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-evaluate-z-score"><i class="fa fa-check"></i><b>11.4</b> How to evaluate z score</a></li>
+<li class="chapter" data-level="11.5" data-path="miscellaneous.html"><a href="miscellaneous.html#mathmatic-coupling"><i class="fa fa-check"></i><b>11.5</b> Mathmatic coupling</a></li>
+<li class="chapter" data-level="11.6" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-create-a-bookdown"><i class="fa fa-check"></i><b>11.6</b> How to create a bookdown</a></li>
+<li class="chapter" data-level="11.7" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-create-a-blogdown"><i class="fa fa-check"></i><b>11.7</b> How to create a blogdown</a></li>
+<li class="chapter" data-level="11.8" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-install-tensorflow-and-keras"><i class="fa fa-check"></i><b>11.8</b> How to install tensorflow and keras</a></li>
+<li class="chapter" data-level="11.9" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-use-github-in-team"><i class="fa fa-check"></i><b>11.9</b> How to use github in team</a></li>
+<li class="chapter" data-level="11.10" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-insert-picture-indrectly-in-markdown"><i class="fa fa-check"></i><b>11.10</b> How to insert picture indrectly in markdown</a></li>
+<li class="chapter" data-level="11.11" data-path="miscellaneous.html"><a href="miscellaneous.html#r-cheatsheets"><i class="fa fa-check"></i><b>11.11</b> R cheatsheets</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -583,17 +672,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">3.1</span> Deep neural network<a href="deep-learning.html#deep-neural-network" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="load-data" class="section level3 hasAnchor" number="3.1.1">
 <h3><span class="header-section-number">3.1.1</span> Load data<a href="deep-learning.html#load-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="deep-learning.html#cb186-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the Pima Indians dataset from the mlbench dataset</span></span>
-<span id="cb186-2"><a href="deep-learning.html#cb186-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mlbench)</span>
-<span id="cb186-3"><a href="deep-learning.html#cb186-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(PimaIndiansDiabetes) </span>
-<span id="cb186-4"><a href="deep-learning.html#cb186-4" aria-hidden="true" tabindex="-1"></a><span class="co"># rename dataset to have shorter name because lazy</span></span>
-<span id="cb186-5"><a href="deep-learning.html#cb186-5" aria-hidden="true" tabindex="-1"></a>diabetes <span class="ot">&lt;-</span> PimaIndiansDiabetes</span>
-<span id="cb186-6"><a href="deep-learning.html#cb186-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb186-7"><a href="deep-learning.html#cb186-7" aria-hidden="true" tabindex="-1"></a>data.set <span class="ot">&lt;-</span> diabetes</span>
-<span id="cb186-8"><a href="deep-learning.html#cb186-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># datatable(data.set[sample(nrow(data.set),</span></span>
-<span id="cb186-9"><a href="deep-learning.html#cb186-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                         replace = FALSE,</span></span>
-<span id="cb186-10"><a href="deep-learning.html#cb186-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                         size = 0.005 * nrow(data.set)), ])</span></span></code></pre></div>
-<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="deep-learning.html#cb187-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data.set)</span></code></pre></div>
+<div class="sourceCode" id="cb301"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb301-1"><a href="deep-learning.html#cb301-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the Pima Indians dataset from the mlbench dataset</span></span>
+<span id="cb301-2"><a href="deep-learning.html#cb301-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mlbench)</span>
+<span id="cb301-3"><a href="deep-learning.html#cb301-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(PimaIndiansDiabetes) </span>
+<span id="cb301-4"><a href="deep-learning.html#cb301-4" aria-hidden="true" tabindex="-1"></a><span class="co"># rename dataset to have shorter name because lazy</span></span>
+<span id="cb301-5"><a href="deep-learning.html#cb301-5" aria-hidden="true" tabindex="-1"></a>diabetes <span class="ot">&lt;-</span> PimaIndiansDiabetes</span>
+<span id="cb301-6"><a href="deep-learning.html#cb301-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb301-7"><a href="deep-learning.html#cb301-7" aria-hidden="true" tabindex="-1"></a>data.set <span class="ot">&lt;-</span> diabetes</span>
+<span id="cb301-8"><a href="deep-learning.html#cb301-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># datatable(data.set[sample(nrow(data.set),</span></span>
+<span id="cb301-9"><a href="deep-learning.html#cb301-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                         replace = FALSE,</span></span>
+<span id="cb301-10"><a href="deep-learning.html#cb301-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                         size = 0.005 * nrow(data.set)), ])</span></span></code></pre></div>
+<div class="sourceCode" id="cb302"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb302-1"><a href="deep-learning.html#cb302-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data.set)</span></code></pre></div>
 <pre><code>##     pregnant         glucose         pressure         triceps     
 ##  Min.   : 0.000   Min.   :  0.0   Min.   :  0.00   Min.   : 0.00  
 ##  1st Qu.: 1.000   1st Qu.: 99.0   1st Qu.: 62.00   1st Qu.: 0.00  
@@ -611,11 +700,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="process-data-and-variable" class="section level3 hasAnchor" number="3.1.2">
 <h3><span class="header-section-number">3.1.2</span> Process data and variable<a href="deep-learning.html#process-data-and-variable" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="deep-learning.html#cb189-1" aria-hidden="true" tabindex="-1"></a>data.set<span class="sc">$</span>diabetes <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data.set<span class="sc">$</span>diabetes)</span>
-<span id="cb189-2"><a href="deep-learning.html#cb189-2" aria-hidden="true" tabindex="-1"></a>data.set<span class="sc">$</span>diabetes<span class="ot">=</span>data.set<span class="sc">$</span>diabetes<span class="dv">-1</span></span>
-<span id="cb189-3"><a href="deep-learning.html#cb189-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data.set<span class="sc">$</span>diabetes)</span></code></pre></div>
+<div class="sourceCode" id="cb304"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb304-1"><a href="deep-learning.html#cb304-1" aria-hidden="true" tabindex="-1"></a>data.set<span class="sc">$</span>diabetes <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data.set<span class="sc">$</span>diabetes)</span>
+<span id="cb304-2"><a href="deep-learning.html#cb304-2" aria-hidden="true" tabindex="-1"></a>data.set<span class="sc">$</span>diabetes<span class="ot">=</span>data.set<span class="sc">$</span>diabetes<span class="dv">-1</span></span>
+<span id="cb304-3"><a href="deep-learning.html#cb304-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data.set<span class="sc">$</span>diabetes)</span></code></pre></div>
 <pre><code>## [1] 1 0 1 0 1 0</code></pre>
-<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="deep-learning.html#cb191-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data.set)</span></code></pre></div>
+<div class="sourceCode" id="cb306"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb306-1"><a href="deep-learning.html#cb306-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data.set)</span></code></pre></div>
 <pre><code>##   pregnant glucose pressure triceps insulin mass pedigree age diabetes
 ## 1        6     148       72      35       0 33.6    0.627  50        1
 ## 2        1      85       66      29       0 26.6    0.351  31        0
@@ -623,7 +712,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4        1      89       66      23      94 28.1    0.167  21        0
 ## 5        0     137       40      35     168 43.1    2.288  33        1
 ## 6        5     116       74       0       0 25.6    0.201  30        0</code></pre>
-<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="deep-learning.html#cb193-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(data.set)</span></code></pre></div>
+<div class="sourceCode" id="cb308"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb308-1"><a href="deep-learning.html#cb308-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(data.set)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    768 obs. of  9 variables:
 ##  $ pregnant: num  6 1 8 1 0 5 3 10 2 8 ...
 ##  $ glucose : num  148 85 183 89 137 116 78 115 197 125 ...
@@ -637,12 +726,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>transform dataframe into matrix</li>
 </ul>
-<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="deep-learning.html#cb195-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Cast dataframe as a matrix</span></span>
-<span id="cb195-2"><a href="deep-learning.html#cb195-2" aria-hidden="true" tabindex="-1"></a>data.set <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(data.set)</span>
-<span id="cb195-3"><a href="deep-learning.html#cb195-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb195-4"><a href="deep-learning.html#cb195-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove column names</span></span>
-<span id="cb195-5"><a href="deep-learning.html#cb195-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(data.set) <span class="ot">=</span> <span class="cn">NULL</span></span></code></pre></div>
-<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="deep-learning.html#cb196-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data.set)</span></code></pre></div>
+<div class="sourceCode" id="cb310"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb310-1"><a href="deep-learning.html#cb310-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Cast dataframe as a matrix</span></span>
+<span id="cb310-2"><a href="deep-learning.html#cb310-2" aria-hidden="true" tabindex="-1"></a>data.set <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(data.set)</span>
+<span id="cb310-3"><a href="deep-learning.html#cb310-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb310-4"><a href="deep-learning.html#cb310-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove column names</span></span>
+<span id="cb310-5"><a href="deep-learning.html#cb310-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(data.set) <span class="ot">=</span> <span class="cn">NULL</span></span></code></pre></div>
+<div class="sourceCode" id="cb311"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb311-1"><a href="deep-learning.html#cb311-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data.set)</span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6]  [,7] [,8] [,9]
 ## [1,]    6  148   72   35    0 33.6 0.627   50    1
 ## [2,]    1   85   66   29    0 26.6 0.351   31    0
@@ -656,28 +745,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>including <code>xtrain ytrian xtest ytest</code></li>
 </ul>
-<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="deep-learning.html#cb198-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Split for train and test data</span></span>
-<span id="cb198-2"><a href="deep-learning.html#cb198-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
-<span id="cb198-3"><a href="deep-learning.html#cb198-3" aria-hidden="true" tabindex="-1"></a>indx <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">2</span>,</span>
-<span id="cb198-4"><a href="deep-learning.html#cb198-4" aria-hidden="true" tabindex="-1"></a>               <span class="fu">nrow</span>(data.set),</span>
-<span id="cb198-5"><a href="deep-learning.html#cb198-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">replace =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb198-6"><a href="deep-learning.html#cb198-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.2</span>)) <span class="co"># Makes index with values 1 and 2</span></span></code></pre></div>
-<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb199-1"><a href="deep-learning.html#cb199-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select only the feature variables</span></span>
-<span id="cb199-2"><a href="deep-learning.html#cb199-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Take rows with index = 1</span></span>
-<span id="cb199-3"><a href="deep-learning.html#cb199-3" aria-hidden="true" tabindex="-1"></a>x_train <span class="ot">&lt;-</span> data.set[indx <span class="sc">==</span> <span class="dv">1</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>]</span>
-<span id="cb199-4"><a href="deep-learning.html#cb199-4" aria-hidden="true" tabindex="-1"></a>x_test <span class="ot">&lt;-</span> data.set[indx <span class="sc">==</span> <span class="dv">2</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>]</span></code></pre></div>
-<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb200-1"><a href="deep-learning.html#cb200-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Feature Scaling</span></span>
-<span id="cb200-2"><a href="deep-learning.html#cb200-2" aria-hidden="true" tabindex="-1"></a>x_train <span class="ot">&lt;-</span> <span class="fu">scale</span>(x_train )</span>
-<span id="cb200-3"><a href="deep-learning.html#cb200-3" aria-hidden="true" tabindex="-1"></a>x_test <span class="ot">&lt;-</span> <span class="fu">scale</span>(x_test )</span></code></pre></div>
-<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="deep-learning.html#cb201-1" aria-hidden="true" tabindex="-1"></a>y_test_actual <span class="ot">&lt;-</span> data.set[indx <span class="sc">==</span> <span class="dv">2</span>, <span class="dv">9</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb313"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb313-1"><a href="deep-learning.html#cb313-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Split for train and test data</span></span>
+<span id="cb313-2"><a href="deep-learning.html#cb313-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
+<span id="cb313-3"><a href="deep-learning.html#cb313-3" aria-hidden="true" tabindex="-1"></a>indx <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">2</span>,</span>
+<span id="cb313-4"><a href="deep-learning.html#cb313-4" aria-hidden="true" tabindex="-1"></a>               <span class="fu">nrow</span>(data.set),</span>
+<span id="cb313-5"><a href="deep-learning.html#cb313-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">replace =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb313-6"><a href="deep-learning.html#cb313-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.2</span>)) <span class="co"># Makes index with values 1 and 2</span></span></code></pre></div>
+<div class="sourceCode" id="cb314"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb314-1"><a href="deep-learning.html#cb314-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select only the feature variables</span></span>
+<span id="cb314-2"><a href="deep-learning.html#cb314-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Take rows with index = 1</span></span>
+<span id="cb314-3"><a href="deep-learning.html#cb314-3" aria-hidden="true" tabindex="-1"></a>x_train <span class="ot">&lt;-</span> data.set[indx <span class="sc">==</span> <span class="dv">1</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>]</span>
+<span id="cb314-4"><a href="deep-learning.html#cb314-4" aria-hidden="true" tabindex="-1"></a>x_test <span class="ot">&lt;-</span> data.set[indx <span class="sc">==</span> <span class="dv">2</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb315"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb315-1"><a href="deep-learning.html#cb315-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Feature Scaling</span></span>
+<span id="cb315-2"><a href="deep-learning.html#cb315-2" aria-hidden="true" tabindex="-1"></a>x_train <span class="ot">&lt;-</span> <span class="fu">scale</span>(x_train )</span>
+<span id="cb315-3"><a href="deep-learning.html#cb315-3" aria-hidden="true" tabindex="-1"></a>x_test <span class="ot">&lt;-</span> <span class="fu">scale</span>(x_test )</span></code></pre></div>
+<div class="sourceCode" id="cb316"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb316-1"><a href="deep-learning.html#cb316-1" aria-hidden="true" tabindex="-1"></a>y_test_actual <span class="ot">&lt;-</span> data.set[indx <span class="sc">==</span> <span class="dv">2</span>, <span class="dv">9</span>]</span></code></pre></div>
 <ul>
 <li>transform target as on-hot-coding format</li>
 </ul>
-<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="deep-learning.html#cb202-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using similar indices to correspond to the training and test set</span></span>
-<span id="cb202-2"><a href="deep-learning.html#cb202-2" aria-hidden="true" tabindex="-1"></a>y_train <span class="ot">&lt;-</span> <span class="fu">to_categorical</span>(data.set[indx <span class="sc">==</span> <span class="dv">1</span>, <span class="dv">9</span>])</span></code></pre></div>
-<pre><code>## Loaded Tensorflow version 2.8.0</code></pre>
-<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="deep-learning.html#cb204-1" aria-hidden="true" tabindex="-1"></a>y_test <span class="ot">&lt;-</span> <span class="fu">to_categorical</span>(data.set[indx <span class="sc">==</span> <span class="dv">2</span>, <span class="dv">9</span>])</span>
-<span id="cb204-2"><a href="deep-learning.html#cb204-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(y_train)</span></code></pre></div>
+<div class="sourceCode" id="cb317"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb317-1"><a href="deep-learning.html#cb317-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using similar indices to correspond to the training and test set</span></span>
+<span id="cb317-2"><a href="deep-learning.html#cb317-2" aria-hidden="true" tabindex="-1"></a>y_train <span class="ot">&lt;-</span> <span class="fu">to_categorical</span>(data.set[indx <span class="sc">==</span> <span class="dv">1</span>, <span class="dv">9</span>])</span>
+<span id="cb317-3"><a href="deep-learning.html#cb317-3" aria-hidden="true" tabindex="-1"></a>y_test <span class="ot">&lt;-</span> <span class="fu">to_categorical</span>(data.set[indx <span class="sc">==</span> <span class="dv">2</span>, <span class="dv">9</span>])</span>
+<span id="cb317-4"><a href="deep-learning.html#cb317-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(y_train)</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]    0    1
 ## [2,]    1    0
@@ -685,18 +773,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## [4,]    1    0
 ## [5,]    0    1
 ## [6,]    1    0</code></pre>
-<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb206-1"><a href="deep-learning.html#cb206-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data.set[indx <span class="sc">==</span> <span class="dv">1</span>, <span class="dv">9</span>],<span class="dv">20</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb319"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb319-1"><a href="deep-learning.html#cb319-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data.set[indx <span class="sc">==</span> <span class="dv">1</span>, <span class="dv">9</span>],<span class="dv">20</span>)</span></code></pre></div>
 <pre><code>##  [1] 1 0 1 0 1 0 0 1 1 0 0 1 1 1 1 1 0 1 0 0</code></pre>
 <ul>
 <li>dimension of four splitting data sets</li>
 </ul>
-<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb208-1"><a href="deep-learning.html#cb208-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(x_train)</span></code></pre></div>
+<div class="sourceCode" id="cb321"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb321-1"><a href="deep-learning.html#cb321-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(x_train)</span></code></pre></div>
 <pre><code>## [1] 609   8</code></pre>
-<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="deep-learning.html#cb210-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(y_train)</span></code></pre></div>
+<div class="sourceCode" id="cb323"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb323-1"><a href="deep-learning.html#cb323-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(y_train)</span></code></pre></div>
 <pre><code>## [1] 609   2</code></pre>
-<div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb212-1"><a href="deep-learning.html#cb212-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(x_test)</span></code></pre></div>
+<div class="sourceCode" id="cb325"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb325-1"><a href="deep-learning.html#cb325-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(x_test)</span></code></pre></div>
 <pre><code>## [1] 159   8</code></pre>
-<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="deep-learning.html#cb214-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(y_test)</span></code></pre></div>
+<div class="sourceCode" id="cb327"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb327-1"><a href="deep-learning.html#cb327-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(y_test)</span></code></pre></div>
 <pre><code>## [1] 159   2</code></pre>
 </div>
 <div id="creating-neural-network-model" class="section level3 hasAnchor" number="3.1.4">
@@ -706,24 +794,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>the output layer contains 3 levels</li>
 </ul>
-<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="deep-learning.html#cb216-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating the model</span></span>
-<span id="cb216-2"><a href="deep-learning.html#cb216-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">keras_model_sequential</span>()</span>
-<span id="cb216-3"><a href="deep-learning.html#cb216-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb216-4"><a href="deep-learning.html#cb216-4" aria-hidden="true" tabindex="-1"></a>model <span class="sc">%&gt;%</span> </span>
-<span id="cb216-5"><a href="deep-learning.html#cb216-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">name =</span> <span class="st">&quot;DeepLayer1&quot;</span>,</span>
-<span id="cb216-6"><a href="deep-learning.html#cb216-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">units =</span> <span class="dv">10</span>,</span>
-<span id="cb216-7"><a href="deep-learning.html#cb216-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">activation =</span> <span class="st">&quot;relu&quot;</span>,</span>
-<span id="cb216-8"><a href="deep-learning.html#cb216-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">8</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb216-9"><a href="deep-learning.html#cb216-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># input 4 features</span></span>
-<span id="cb216-10"><a href="deep-learning.html#cb216-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">name =</span> <span class="st">&quot;DeepLayer2&quot;</span>,</span>
-<span id="cb216-11"><a href="deep-learning.html#cb216-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">units =</span> <span class="dv">10</span>,</span>
-<span id="cb216-12"><a href="deep-learning.html#cb216-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">activation =</span> <span class="st">&quot;relu&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb216-13"><a href="deep-learning.html#cb216-13" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb216-14"><a href="deep-learning.html#cb216-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">name =</span> <span class="st">&quot;OutputLayer&quot;</span>,</span>
-<span id="cb216-15"><a href="deep-learning.html#cb216-15" aria-hidden="true" tabindex="-1"></a>              <span class="at">units =</span> <span class="dv">2</span>,</span>
-<span id="cb216-16"><a href="deep-learning.html#cb216-16" aria-hidden="true" tabindex="-1"></a>              <span class="at">activation =</span> <span class="st">&quot;softmax&quot;</span>)</span>
-<span id="cb216-17"><a href="deep-learning.html#cb216-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># output 4 categories using one-hot-coding</span></span>
-<span id="cb216-18"><a href="deep-learning.html#cb216-18" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code></pre></div>
+<div class="sourceCode" id="cb329"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb329-1"><a href="deep-learning.html#cb329-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating the model</span></span>
+<span id="cb329-2"><a href="deep-learning.html#cb329-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">keras_model_sequential</span>()</span>
+<span id="cb329-3"><a href="deep-learning.html#cb329-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb329-4"><a href="deep-learning.html#cb329-4" aria-hidden="true" tabindex="-1"></a>model <span class="sc">%&gt;%</span> </span>
+<span id="cb329-5"><a href="deep-learning.html#cb329-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">name =</span> <span class="st">&quot;DeepLayer1&quot;</span>,</span>
+<span id="cb329-6"><a href="deep-learning.html#cb329-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">units =</span> <span class="dv">10</span>,</span>
+<span id="cb329-7"><a href="deep-learning.html#cb329-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">activation =</span> <span class="st">&quot;relu&quot;</span>,</span>
+<span id="cb329-8"><a href="deep-learning.html#cb329-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">8</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb329-9"><a href="deep-learning.html#cb329-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># input 4 features</span></span>
+<span id="cb329-10"><a href="deep-learning.html#cb329-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">name =</span> <span class="st">&quot;DeepLayer2&quot;</span>,</span>
+<span id="cb329-11"><a href="deep-learning.html#cb329-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">units =</span> <span class="dv">10</span>,</span>
+<span id="cb329-12"><a href="deep-learning.html#cb329-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">activation =</span> <span class="st">&quot;relu&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb329-13"><a href="deep-learning.html#cb329-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb329-14"><a href="deep-learning.html#cb329-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">name =</span> <span class="st">&quot;OutputLayer&quot;</span>,</span>
+<span id="cb329-15"><a href="deep-learning.html#cb329-15" aria-hidden="true" tabindex="-1"></a>              <span class="at">units =</span> <span class="dv">2</span>,</span>
+<span id="cb329-16"><a href="deep-learning.html#cb329-16" aria-hidden="true" tabindex="-1"></a>              <span class="at">activation =</span> <span class="st">&quot;softmax&quot;</span>)</span>
+<span id="cb329-17"><a href="deep-learning.html#cb329-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># output 4 categories using one-hot-coding</span></span>
+<span id="cb329-18"><a href="deep-learning.html#cb329-18" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code></pre></div>
 <pre><code>## Model: &quot;sequential&quot;
 ## ________________________________________________________________________________
 ##  Layer (type)                       Output Shape                    Param #     
@@ -739,26 +827,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="compiling-the-model" class="section level4 hasAnchor" number="3.1.4.2">
 <h4><span class="header-section-number">3.1.4.2</span> Compiling the model<a href="deep-learning.html#compiling-the-model" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="deep-learning.html#cb218-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compiling the model</span></span>
-<span id="cb218-2"><a href="deep-learning.html#cb218-2" aria-hidden="true" tabindex="-1"></a>model <span class="sc">%&gt;%</span> <span class="fu">compile</span>(<span class="at">loss =</span> <span class="st">&quot;categorical_crossentropy&quot;</span>,</span>
-<span id="cb218-3"><a href="deep-learning.html#cb218-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">optimizer =</span> <span class="st">&quot;adam&quot;</span>,</span>
-<span id="cb218-4"><a href="deep-learning.html#cb218-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">metrics =</span> <span class="fu">c</span>(<span class="st">&quot;accuracy&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb331"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb331-1"><a href="deep-learning.html#cb331-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compiling the model</span></span>
+<span id="cb331-2"><a href="deep-learning.html#cb331-2" aria-hidden="true" tabindex="-1"></a>model <span class="sc">%&gt;%</span> <span class="fu">compile</span>(<span class="at">loss =</span> <span class="st">&quot;categorical_crossentropy&quot;</span>,</span>
+<span id="cb331-3"><a href="deep-learning.html#cb331-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">optimizer =</span> <span class="st">&quot;adam&quot;</span>,</span>
+<span id="cb331-4"><a href="deep-learning.html#cb331-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">metrics =</span> <span class="fu">c</span>(<span class="st">&quot;accuracy&quot;</span>))</span></code></pre></div>
 </div>
 <div id="fitting-the-data-and-plot" class="section level4 hasAnchor" number="3.1.4.3">
 <h4><span class="header-section-number">3.1.4.3</span> Fitting the data and plot<a href="deep-learning.html#fitting-the-data-and-plot" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="deep-learning.html#cb219-1" aria-hidden="true" tabindex="-1"></a>history <span class="ot">&lt;-</span> model <span class="sc">%&gt;%</span> </span>
-<span id="cb219-2"><a href="deep-learning.html#cb219-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(x_train,</span>
-<span id="cb219-3"><a href="deep-learning.html#cb219-3" aria-hidden="true" tabindex="-1"></a>      y_train,</span>
-<span id="cb219-4"><a href="deep-learning.html#cb219-4" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb219-5"><a href="deep-learning.html#cb219-5" aria-hidden="true" tabindex="-1"></a>      <span class="co"># adjusting number of epoch</span></span>
-<span id="cb219-6"><a href="deep-learning.html#cb219-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">epoch =</span> <span class="dv">60</span>,</span>
-<span id="cb219-7"><a href="deep-learning.html#cb219-7" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb219-8"><a href="deep-learning.html#cb219-8" aria-hidden="true" tabindex="-1"></a>      <span class="co"># adjusting number of batch size</span></span>
-<span id="cb219-9"><a href="deep-learning.html#cb219-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">batch_size =</span> <span class="dv">64</span>,</span>
-<span id="cb219-10"><a href="deep-learning.html#cb219-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">validation_split =</span> <span class="fl">0.15</span>,</span>
-<span id="cb219-11"><a href="deep-learning.html#cb219-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">verbose =</span> <span class="dv">2</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="deep-learning.html#cb220-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(history)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-115-1.png" width="672" /></p>
+<div class="sourceCode" id="cb332"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb332-1"><a href="deep-learning.html#cb332-1" aria-hidden="true" tabindex="-1"></a>history <span class="ot">&lt;-</span> model <span class="sc">%&gt;%</span> </span>
+<span id="cb332-2"><a href="deep-learning.html#cb332-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(x_train,</span>
+<span id="cb332-3"><a href="deep-learning.html#cb332-3" aria-hidden="true" tabindex="-1"></a>      y_train,</span>
+<span id="cb332-4"><a href="deep-learning.html#cb332-4" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb332-5"><a href="deep-learning.html#cb332-5" aria-hidden="true" tabindex="-1"></a>      <span class="co"># adjusting number of epoch</span></span>
+<span id="cb332-6"><a href="deep-learning.html#cb332-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">epoch =</span> <span class="dv">60</span>,</span>
+<span id="cb332-7"><a href="deep-learning.html#cb332-7" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb332-8"><a href="deep-learning.html#cb332-8" aria-hidden="true" tabindex="-1"></a>      <span class="co"># adjusting number of batch size</span></span>
+<span id="cb332-9"><a href="deep-learning.html#cb332-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">batch_size =</span> <span class="dv">64</span>,</span>
+<span id="cb332-10"><a href="deep-learning.html#cb332-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">validation_split =</span> <span class="fl">0.15</span>,</span>
+<span id="cb332-11"><a href="deep-learning.html#cb332-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">verbose =</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb333"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb333-1"><a href="deep-learning.html#cb333-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(history)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-170-1.png" width="672" /></p>
 </div>
 </div>
 <div id="evaluation-1" class="section level3 hasAnchor" number="3.1.5">
@@ -766,51 +854,51 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="output-loss-and-accuracy" class="section level4 hasAnchor" number="3.1.5.1">
 <h4><span class="header-section-number">3.1.5.1</span> Output loss and accuracy<a href="deep-learning.html#output-loss-and-accuracy" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>using <code>xtest</code> and <code>ytest</code> data sets to evaluate the built model directly</p>
-<div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb221-1"><a href="deep-learning.html#cb221-1" aria-hidden="true" tabindex="-1"></a>model <span class="sc">%&gt;%</span> </span>
-<span id="cb221-2"><a href="deep-learning.html#cb221-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">evaluate</span>(x_test,</span>
-<span id="cb221-3"><a href="deep-learning.html#cb221-3" aria-hidden="true" tabindex="-1"></a>           y_test)</span></code></pre></div>
+<div class="sourceCode" id="cb334"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb334-1"><a href="deep-learning.html#cb334-1" aria-hidden="true" tabindex="-1"></a>model <span class="sc">%&gt;%</span> </span>
+<span id="cb334-2"><a href="deep-learning.html#cb334-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">evaluate</span>(x_test,</span>
+<span id="cb334-3"><a href="deep-learning.html#cb334-3" aria-hidden="true" tabindex="-1"></a>           y_test)</span></code></pre></div>
 <pre><code>##      loss  accuracy 
-## 0.4688513 0.7924528</code></pre>
+## 0.4377943 0.8050314</code></pre>
 </div>
 <div id="output-the-predicted-classes-and-confusion-matrix" class="section level4 hasAnchor" number="3.1.5.2">
 <h4><span class="header-section-number">3.1.5.2</span> Output the predicted classes and confusion matrix<a href="deep-learning.html#output-the-predicted-classes-and-confusion-matrix" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="deep-learning.html#cb223-1" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> model <span class="sc">%&gt;%</span> </span>
-<span id="cb223-2"><a href="deep-learning.html#cb223-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict</span>(x_test) <span class="sc">%&gt;%</span> <span class="fu">k_argmax</span>() <span class="sc">%&gt;%</span> <span class="fu">k_get_value</span>()</span>
-<span id="cb223-3"><a href="deep-learning.html#cb223-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pred)</span></code></pre></div>
-<pre><code>## [1] 0 1 0 0 0 0</code></pre>
-<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="deep-learning.html#cb225-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="at">Predicted =</span> pred,</span>
-<span id="cb225-2"><a href="deep-learning.html#cb225-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">Actual =</span> y_test_actual)</span></code></pre></div>
+<div class="sourceCode" id="cb336"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb336-1"><a href="deep-learning.html#cb336-1" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> model <span class="sc">%&gt;%</span> </span>
+<span id="cb336-2"><a href="deep-learning.html#cb336-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict</span>(x_test) <span class="sc">%&gt;%</span> <span class="fu">k_argmax</span>() <span class="sc">%&gt;%</span> <span class="fu">k_get_value</span>()</span>
+<span id="cb336-3"><a href="deep-learning.html#cb336-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pred)</span></code></pre></div>
+<pre><code>## [1] 0 1 0 1 0 0</code></pre>
+<div class="sourceCode" id="cb338"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb338-1"><a href="deep-learning.html#cb338-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="at">Predicted =</span> pred,</span>
+<span id="cb338-2"><a href="deep-learning.html#cb338-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">Actual =</span> y_test_actual)</span></code></pre></div>
 <pre><code>##          Actual
 ## Predicted  0  1
-##         0 91 20
-##         1 13 35</code></pre>
+##         0 89 16
+##         1 15 39</code></pre>
 </div>
 <div id="output-the-predicted-values" class="section level4 hasAnchor" number="3.1.5.3">
 <h4><span class="header-section-number">3.1.5.3</span> Output the predicted values<a href="deep-learning.html#output-the-predicted-values" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="deep-learning.html#cb227-1" aria-hidden="true" tabindex="-1"></a>prob <span class="ot">&lt;-</span> model <span class="sc">%&gt;%</span> </span>
-<span id="cb227-2"><a href="deep-learning.html#cb227-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict</span>(x_test) <span class="sc">%&gt;%</span> <span class="fu">k_get_value</span>()</span>
-<span id="cb227-3"><a href="deep-learning.html#cb227-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(prob)</span></code></pre></div>
-<pre><code>##            [,1]       [,2]
-## [1,] 0.91165835 0.08834162
-## [2,] 0.09532551 0.90467453
-## [3,] 0.92566639 0.07433363
-## [4,] 0.54701668 0.45298335
-## [5,] 0.96424216 0.03575778
-## [6,] 0.75708139 0.24291863</code></pre>
+<div class="sourceCode" id="cb340"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb340-1"><a href="deep-learning.html#cb340-1" aria-hidden="true" tabindex="-1"></a>prob <span class="ot">&lt;-</span> model <span class="sc">%&gt;%</span> </span>
+<span id="cb340-2"><a href="deep-learning.html#cb340-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict</span>(x_test) <span class="sc">%&gt;%</span> <span class="fu">k_get_value</span>()</span>
+<span id="cb340-3"><a href="deep-learning.html#cb340-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(prob)</span></code></pre></div>
+<pre><code>##           [,1]       [,2]
+## [1,] 0.9460909 0.05390910
+## [2,] 0.2285375 0.77146250
+## [3,] 0.9760912 0.02390883
+## [4,] 0.2749580 0.72504199
+## [5,] 0.9534137 0.04658630
+## [6,] 0.5437824 0.45621768</code></pre>
 </div>
 <div id="comparison-between-prob-pred-and-ytest" class="section level4 hasAnchor" number="3.1.5.4">
 <h4><span class="header-section-number">3.1.5.4</span> Comparison between <code>prob, pred, and ytest</code><a href="deep-learning.html#comparison-between-prob-pred-and-ytest" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="deep-learning.html#cb229-1" aria-hidden="true" tabindex="-1"></a>comparison <span class="ot">&lt;-</span> <span class="fu">cbind</span>(prob ,</span>
-<span id="cb229-2"><a href="deep-learning.html#cb229-2" aria-hidden="true" tabindex="-1"></a>      pred ,</span>
-<span id="cb229-3"><a href="deep-learning.html#cb229-3" aria-hidden="true" tabindex="-1"></a>      y_test_actual )</span>
-<span id="cb229-4"><a href="deep-learning.html#cb229-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(comparison)</span></code></pre></div>
-<pre><code>##                            pred y_test_actual
-## [1,] 0.91165835 0.08834162    0             1
-## [2,] 0.09532551 0.90467453    1             1
-## [3,] 0.92566639 0.07433363    0             0
-## [4,] 0.54701668 0.45298335    0             1
-## [5,] 0.96424216 0.03575778    0             0
-## [6,] 0.75708139 0.24291863    0             0</code></pre>
+<div class="sourceCode" id="cb342"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb342-1"><a href="deep-learning.html#cb342-1" aria-hidden="true" tabindex="-1"></a>comparison <span class="ot">&lt;-</span> <span class="fu">cbind</span>(prob ,</span>
+<span id="cb342-2"><a href="deep-learning.html#cb342-2" aria-hidden="true" tabindex="-1"></a>      pred ,</span>
+<span id="cb342-3"><a href="deep-learning.html#cb342-3" aria-hidden="true" tabindex="-1"></a>      y_test_actual )</span>
+<span id="cb342-4"><a href="deep-learning.html#cb342-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(comparison)</span></code></pre></div>
+<pre><code>##                           pred y_test_actual
+## [1,] 0.9460909 0.05390910    0             1
+## [2,] 0.2285375 0.77146250    1             1
+## [3,] 0.9760912 0.02390883    0             0
+## [4,] 0.2749580 0.72504199    1             1
+## [5,] 0.9534137 0.04658630    0             0
+## [6,] 0.5437824 0.45621768    0             0</code></pre>
 <!-- ==================== -->
 </div>
 </div>
@@ -819,23 +907,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">3.2</span> Deep neural networks for regression<a href="deep-learning.html#deep-neural-networks-for-regression" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="loading-packages-and-data-sets" class="section level3 hasAnchor" number="3.2.1">
 <h3><span class="header-section-number">3.2.1</span> Loading packages and data sets<a href="deep-learning.html#loading-packages-and-data-sets" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="deep-learning.html#cb231-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb231-2"><a href="deep-learning.html#cb231-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(keras)</span>
-<span id="cb231-3"><a href="deep-learning.html#cb231-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span></code></pre></div>
-<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="deep-learning.html#cb232-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;Boston&quot;</span>, <span class="at">package =</span> <span class="st">&quot;MASS&quot;</span>)</span>
-<span id="cb232-2"><a href="deep-learning.html#cb232-2" aria-hidden="true" tabindex="-1"></a>data.set <span class="ot">&lt;-</span> Boston</span></code></pre></div>
-<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="deep-learning.html#cb233-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(data.set)</span></code></pre></div>
+<div class="sourceCode" id="cb344"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb344-1"><a href="deep-learning.html#cb344-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb344-2"><a href="deep-learning.html#cb344-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(keras)</span>
+<span id="cb344-3"><a href="deep-learning.html#cb344-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span></code></pre></div>
+<div class="sourceCode" id="cb345"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb345-1"><a href="deep-learning.html#cb345-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;Boston&quot;</span>, <span class="at">package =</span> <span class="st">&quot;MASS&quot;</span>)</span>
+<span id="cb345-2"><a href="deep-learning.html#cb345-2" aria-hidden="true" tabindex="-1"></a>data.set <span class="ot">&lt;-</span> Boston</span></code></pre></div>
+<div class="sourceCode" id="cb346"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb346-1"><a href="deep-learning.html#cb346-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(data.set)</span></code></pre></div>
 <pre><code>## [1] 506  14</code></pre>
 </div>
 <div id="convert-dataframe-to-matrix-without-dimnames" class="section level3 hasAnchor" number="3.2.2">
 <h3><span class="header-section-number">3.2.2</span> Convert dataframe to matrix without dimnames<a href="deep-learning.html#convert-dataframe-to-matrix-without-dimnames" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="deep-learning.html#cb235-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DT)</span>
-<span id="cb235-2"><a href="deep-learning.html#cb235-2" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb235-3"><a href="deep-learning.html#cb235-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Cast dataframe as a matrix</span></span>
-<span id="cb235-4"><a href="deep-learning.html#cb235-4" aria-hidden="true" tabindex="-1"></a>data.set <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(data.set)</span>
-<span id="cb235-5"><a href="deep-learning.html#cb235-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove column names</span></span>
-<span id="cb235-6"><a href="deep-learning.html#cb235-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(data.set) <span class="ot">=</span> <span class="cn">NULL</span></span>
-<span id="cb235-7"><a href="deep-learning.html#cb235-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data.set)</span></code></pre></div>
+<div class="sourceCode" id="cb348"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb348-1"><a href="deep-learning.html#cb348-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DT)</span>
+<span id="cb348-2"><a href="deep-learning.html#cb348-2" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb348-3"><a href="deep-learning.html#cb348-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Cast dataframe as a matrix</span></span>
+<span id="cb348-4"><a href="deep-learning.html#cb348-4" aria-hidden="true" tabindex="-1"></a>data.set <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(data.set)</span>
+<span id="cb348-5"><a href="deep-learning.html#cb348-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove column names</span></span>
+<span id="cb348-6"><a href="deep-learning.html#cb348-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(data.set) <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb348-7"><a href="deep-learning.html#cb348-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data.set)</span></code></pre></div>
 <pre><code>##         [,1] [,2] [,3] [,4]  [,5]  [,6] [,7]   [,8] [,9] [,10] [,11]  [,12]
 ## [1,] 0.00632   18 2.31    0 0.538 6.575 65.2 4.0900    1   296  15.3 396.90
 ## [2,] 0.02731    0 7.07    0 0.469 6.421 78.9 4.9671    2   242  17.8 396.90
@@ -850,10 +938,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## [4,]  2.94  33.4
 ## [5,]  5.33  36.2
 ## [6,]  5.21  28.7</code></pre>
-<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="deep-learning.html#cb237-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data.set[, <span class="dv">14</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb350"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb350-1"><a href="deep-learning.html#cb350-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data.set[, <span class="dv">14</span>])</span></code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##    5.00   17.02   21.20   22.53   25.00   50.00</code></pre>
-<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="deep-learning.html#cb239-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">hist</span>( data.set[, <span class="dv">14</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb352"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb352-1"><a href="deep-learning.html#cb352-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">hist</span>( data.set[, <span class="dv">14</span>])</span></code></pre></div>
 <div class="figure">
 <img src="_main_files/figure-html/target%20variable%20histogram-1.png" alt="&lt;b&gt;Fig 1&lt;/b&gt; Histogram of the target variable" width="672" />
 <p class="caption">
@@ -863,37 +951,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="spiting-training-and-test-data" class="section level3 hasAnchor" number="3.2.3">
 <h3><span class="header-section-number">3.2.3</span> Spiting training and test data<a href="deep-learning.html#spiting-training-and-test-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb240-1"><a href="deep-learning.html#cb240-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Split for train and test data</span></span>
-<span id="cb240-2"><a href="deep-learning.html#cb240-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb240-3"><a href="deep-learning.html#cb240-3" aria-hidden="true" tabindex="-1"></a>indx <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">2</span>,</span>
-<span id="cb240-4"><a href="deep-learning.html#cb240-4" aria-hidden="true" tabindex="-1"></a>               <span class="fu">nrow</span>(data.set),</span>
-<span id="cb240-5"><a href="deep-learning.html#cb240-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">replace =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb240-6"><a href="deep-learning.html#cb240-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.75</span>, <span class="fl">0.25</span>)) <span class="co"># Makes index with values 1 and 2</span></span></code></pre></div>
-<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="deep-learning.html#cb241-1" aria-hidden="true" tabindex="-1"></a>x_train <span class="ot">&lt;-</span> data.set[indx <span class="sc">==</span> <span class="dv">1</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">13</span>]</span>
-<span id="cb241-2"><a href="deep-learning.html#cb241-2" aria-hidden="true" tabindex="-1"></a>x_test <span class="ot">&lt;-</span> data.set[indx <span class="sc">==</span> <span class="dv">2</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">13</span>]</span>
-<span id="cb241-3"><a href="deep-learning.html#cb241-3" aria-hidden="true" tabindex="-1"></a>y_train <span class="ot">&lt;-</span> data.set[indx <span class="sc">==</span> <span class="dv">1</span>, <span class="dv">14</span>]</span>
-<span id="cb241-4"><a href="deep-learning.html#cb241-4" aria-hidden="true" tabindex="-1"></a>y_test <span class="ot">&lt;-</span> data.set[indx <span class="sc">==</span> <span class="dv">2</span>, <span class="dv">14</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb353"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb353-1"><a href="deep-learning.html#cb353-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Split for train and test data</span></span>
+<span id="cb353-2"><a href="deep-learning.html#cb353-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb353-3"><a href="deep-learning.html#cb353-3" aria-hidden="true" tabindex="-1"></a>indx <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">2</span>,</span>
+<span id="cb353-4"><a href="deep-learning.html#cb353-4" aria-hidden="true" tabindex="-1"></a>               <span class="fu">nrow</span>(data.set),</span>
+<span id="cb353-5"><a href="deep-learning.html#cb353-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">replace =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb353-6"><a href="deep-learning.html#cb353-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.75</span>, <span class="fl">0.25</span>)) <span class="co"># Makes index with values 1 and 2</span></span></code></pre></div>
+<div class="sourceCode" id="cb354"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb354-1"><a href="deep-learning.html#cb354-1" aria-hidden="true" tabindex="-1"></a>x_train <span class="ot">&lt;-</span> data.set[indx <span class="sc">==</span> <span class="dv">1</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">13</span>]</span>
+<span id="cb354-2"><a href="deep-learning.html#cb354-2" aria-hidden="true" tabindex="-1"></a>x_test <span class="ot">&lt;-</span> data.set[indx <span class="sc">==</span> <span class="dv">2</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">13</span>]</span>
+<span id="cb354-3"><a href="deep-learning.html#cb354-3" aria-hidden="true" tabindex="-1"></a>y_train <span class="ot">&lt;-</span> data.set[indx <span class="sc">==</span> <span class="dv">1</span>, <span class="dv">14</span>]</span>
+<span id="cb354-4"><a href="deep-learning.html#cb354-4" aria-hidden="true" tabindex="-1"></a>y_test <span class="ot">&lt;-</span> data.set[indx <span class="sc">==</span> <span class="dv">2</span>, <span class="dv">14</span>]</span></code></pre></div>
 </div>
 <div id="normalizing-xtrain-and-xtest-data" class="section level3 hasAnchor" number="3.2.4">
 <h3><span class="header-section-number">3.2.4</span> Normalizing <code>xtrain</code> and <code>xtest</code> data<a href="deep-learning.html#normalizing-xtrain-and-xtest-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="deep-learning.html#cb242-1" aria-hidden="true" tabindex="-1"></a>x_train <span class="ot">&lt;-</span> <span class="fu">scale</span>(x_train)</span>
-<span id="cb242-2"><a href="deep-learning.html#cb242-2" aria-hidden="true" tabindex="-1"></a>x_test <span class="ot">&lt;-</span> <span class="fu">scale</span>(x_test)</span></code></pre></div>
+<div class="sourceCode" id="cb355"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb355-1"><a href="deep-learning.html#cb355-1" aria-hidden="true" tabindex="-1"></a>x_train <span class="ot">&lt;-</span> <span class="fu">scale</span>(x_train)</span>
+<span id="cb355-2"><a href="deep-learning.html#cb355-2" aria-hidden="true" tabindex="-1"></a>x_test <span class="ot">&lt;-</span> <span class="fu">scale</span>(x_test)</span></code></pre></div>
 </div>
 <div id="creating-the-model" class="section level3 hasAnchor" number="3.2.5">
 <h3><span class="header-section-number">3.2.5</span> Creating the model<a href="deep-learning.html#creating-the-model" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="deep-learning.html#cb243-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">keras_model_sequential</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb243-2"><a href="deep-learning.html#cb243-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">25</span>,</span>
-<span id="cb243-3"><a href="deep-learning.html#cb243-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">activation =</span> <span class="st">&quot;relu&quot;</span>,</span>
-<span id="cb243-4"><a href="deep-learning.html#cb243-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">13</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb243-5"><a href="deep-learning.html#cb243-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dropout</span>(<span class="fl">0.2</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb243-6"><a href="deep-learning.html#cb243-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">25</span>,</span>
-<span id="cb243-7"><a href="deep-learning.html#cb243-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">activation =</span> <span class="st">&quot;relu&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb243-8"><a href="deep-learning.html#cb243-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dropout</span>(<span class="fl">0.2</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb243-9"><a href="deep-learning.html#cb243-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">25</span>,</span>
-<span id="cb243-10"><a href="deep-learning.html#cb243-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">activation =</span> <span class="st">&quot;relu&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb243-11"><a href="deep-learning.html#cb243-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dropout</span>(<span class="fl">0.2</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb243-12"><a href="deep-learning.html#cb243-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">1</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb244-1"><a href="deep-learning.html#cb244-1" aria-hidden="true" tabindex="-1"></a>model <span class="sc">%&gt;%</span> <span class="fu">summary</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb356"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb356-1"><a href="deep-learning.html#cb356-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">keras_model_sequential</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb356-2"><a href="deep-learning.html#cb356-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">25</span>,</span>
+<span id="cb356-3"><a href="deep-learning.html#cb356-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">activation =</span> <span class="st">&quot;relu&quot;</span>,</span>
+<span id="cb356-4"><a href="deep-learning.html#cb356-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">13</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb356-5"><a href="deep-learning.html#cb356-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dropout</span>(<span class="fl">0.2</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb356-6"><a href="deep-learning.html#cb356-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">25</span>,</span>
+<span id="cb356-7"><a href="deep-learning.html#cb356-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">activation =</span> <span class="st">&quot;relu&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb356-8"><a href="deep-learning.html#cb356-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dropout</span>(<span class="fl">0.2</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb356-9"><a href="deep-learning.html#cb356-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">25</span>,</span>
+<span id="cb356-10"><a href="deep-learning.html#cb356-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">activation =</span> <span class="st">&quot;relu&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb356-11"><a href="deep-learning.html#cb356-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dropout</span>(<span class="fl">0.2</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb356-12"><a href="deep-learning.html#cb356-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb357"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb357-1"><a href="deep-learning.html#cb357-1" aria-hidden="true" tabindex="-1"></a>model <span class="sc">%&gt;%</span> <span class="fu">summary</span>()</span></code></pre></div>
 <pre><code>## Model: &quot;sequential_1&quot;
 ## ________________________________________________________________________________
 ##  Layer (type)                       Output Shape                    Param #     
@@ -910,63 +998,63 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Trainable params: 1,676
 ## Non-trainable params: 0
 ## ________________________________________________________________________________</code></pre>
-<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="deep-learning.html#cb246-1" aria-hidden="true" tabindex="-1"></a>model <span class="sc">%&gt;%</span> <span class="fu">get_config</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb359"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb359-1"><a href="deep-learning.html#cb359-1" aria-hidden="true" tabindex="-1"></a>model <span class="sc">%&gt;%</span> <span class="fu">get_config</span>()</span></code></pre></div>
 <pre><code>## {&#39;name&#39;: &#39;sequential_1&#39;, &#39;layers&#39;: [{&#39;class_name&#39;: &#39;InputLayer&#39;, &#39;config&#39;: {&#39;batch_input_shape&#39;: (None, 13), &#39;dtype&#39;: &#39;float32&#39;, &#39;sparse&#39;: False, &#39;ragged&#39;: False, &#39;name&#39;: &#39;dense_3_input&#39;}}, {&#39;class_name&#39;: &#39;Dense&#39;, &#39;config&#39;: {&#39;name&#39;: &#39;dense_3&#39;, &#39;trainable&#39;: True, &#39;batch_input_shape&#39;: (None, 13), &#39;dtype&#39;: &#39;float32&#39;, &#39;units&#39;: 25, &#39;activation&#39;: &#39;relu&#39;, &#39;use_bias&#39;: True, &#39;kernel_initializer&#39;: {&#39;class_name&#39;: &#39;GlorotUniform&#39;, &#39;config&#39;: {&#39;seed&#39;: None}}, &#39;bias_initializer&#39;: {&#39;class_name&#39;: &#39;Zeros&#39;, &#39;config&#39;: {}}, &#39;kernel_regularizer&#39;: None, &#39;bias_regularizer&#39;: None, &#39;activity_regularizer&#39;: None, &#39;kernel_constraint&#39;: None, &#39;bias_constraint&#39;: None}}, {&#39;class_name&#39;: &#39;Dropout&#39;, &#39;config&#39;: {&#39;name&#39;: &#39;dropout_2&#39;, &#39;trainable&#39;: True, &#39;dtype&#39;: &#39;float32&#39;, &#39;rate&#39;: 0.2, &#39;noise_shape&#39;: None, &#39;seed&#39;: None}}, {&#39;class_name&#39;: &#39;Dense&#39;, &#39;config&#39;: {&#39;name&#39;: &#39;dense_2&#39;, &#39;trainable&#39;: True, &#39;dtype&#39;: &#39;float32&#39;, &#39;units&#39;: 25, &#39;activation&#39;: &#39;relu&#39;, &#39;use_bias&#39;: True, &#39;kernel_initializer&#39;: {&#39;class_name&#39;: &#39;GlorotUniform&#39;, &#39;config&#39;: {&#39;seed&#39;: None}}, &#39;bias_initializer&#39;: {&#39;class_name&#39;: &#39;Zeros&#39;, &#39;config&#39;: {}}, &#39;kernel_regularizer&#39;: None, &#39;bias_regularizer&#39;: None, &#39;activity_regularizer&#39;: None, &#39;kernel_constraint&#39;: None, &#39;bias_constraint&#39;: None}}, {&#39;class_name&#39;: &#39;Dropout&#39;, &#39;config&#39;: {&#39;name&#39;: &#39;dropout_1&#39;, &#39;trainable&#39;: True, &#39;dtype&#39;: &#39;float32&#39;, &#39;rate&#39;: 0.2, &#39;noise_shape&#39;: None, &#39;seed&#39;: None}}, {&#39;class_name&#39;: &#39;Dense&#39;, &#39;config&#39;: {&#39;name&#39;: &#39;dense_1&#39;, &#39;trainable&#39;: True, &#39;dtype&#39;: &#39;float32&#39;, &#39;units&#39;: 25, &#39;activation&#39;: &#39;relu&#39;, &#39;use_bias&#39;: True, &#39;kernel_initializer&#39;: {&#39;class_name&#39;: &#39;GlorotUniform&#39;, &#39;config&#39;: {&#39;seed&#39;: None}}, &#39;bias_initializer&#39;: {&#39;class_name&#39;: &#39;Zeros&#39;, &#39;config&#39;: {}}, &#39;kernel_regularizer&#39;: None, &#39;bias_regularizer&#39;: None, &#39;activity_regularizer&#39;: None, &#39;kernel_constraint&#39;: None, &#39;bias_constraint&#39;: None}}, {&#39;class_name&#39;: &#39;Dropout&#39;, &#39;config&#39;: {&#39;name&#39;: &#39;dropout&#39;, &#39;trainable&#39;: True, &#39;dtype&#39;: &#39;float32&#39;, &#39;rate&#39;: 0.2, &#39;noise_shape&#39;: None, &#39;seed&#39;: None}}, {&#39;class_name&#39;: &#39;Dense&#39;, &#39;config&#39;: {&#39;name&#39;: &#39;dense&#39;, &#39;trainable&#39;: True, &#39;dtype&#39;: &#39;float32&#39;, &#39;units&#39;: 1, &#39;activation&#39;: &#39;linear&#39;, &#39;use_bias&#39;: True, &#39;kernel_initializer&#39;: {&#39;class_name&#39;: &#39;GlorotUniform&#39;, &#39;config&#39;: {&#39;seed&#39;: None}}, &#39;bias_initializer&#39;: {&#39;class_name&#39;: &#39;Zeros&#39;, &#39;config&#39;: {}}, &#39;kernel_regularizer&#39;: None, &#39;bias_regularizer&#39;: None, &#39;activity_regularizer&#39;: None, &#39;kernel_constraint&#39;: None, &#39;bias_constraint&#39;: None}}]}</code></pre>
 </div>
 <div id="compiling-the-model-1" class="section level3 hasAnchor" number="3.2.6">
 <h3><span class="header-section-number">3.2.6</span> Compiling the model<a href="deep-learning.html#compiling-the-model-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="deep-learning.html#cb248-1" aria-hidden="true" tabindex="-1"></a>model <span class="sc">%&gt;%</span> <span class="fu">compile</span>(<span class="at">loss =</span> <span class="st">&quot;mse&quot;</span>,</span>
-<span id="cb248-2"><a href="deep-learning.html#cb248-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">optimizer =</span> <span class="fu">optimizer_rmsprop</span>(),</span>
-<span id="cb248-3"><a href="deep-learning.html#cb248-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">metrics =</span> <span class="fu">c</span>(<span class="st">&quot;mean_absolute_error&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb361"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb361-1"><a href="deep-learning.html#cb361-1" aria-hidden="true" tabindex="-1"></a>model <span class="sc">%&gt;%</span> <span class="fu">compile</span>(<span class="at">loss =</span> <span class="st">&quot;mse&quot;</span>,</span>
+<span id="cb361-2"><a href="deep-learning.html#cb361-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">optimizer =</span> <span class="fu">optimizer_rmsprop</span>(),</span>
+<span id="cb361-3"><a href="deep-learning.html#cb361-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">metrics =</span> <span class="fu">c</span>(<span class="st">&quot;mean_absolute_error&quot;</span>))</span></code></pre></div>
 </div>
 <div id="fitting-the-model" class="section level3 hasAnchor" number="3.2.7">
 <h3><span class="header-section-number">3.2.7</span> Fitting the model<a href="deep-learning.html#fitting-the-model" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="deep-learning.html#cb249-1" aria-hidden="true" tabindex="-1"></a>history <span class="ot">&lt;-</span> model <span class="sc">%&gt;%</span> </span>
-<span id="cb249-2"><a href="deep-learning.html#cb249-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(x_train,</span>
-<span id="cb249-3"><a href="deep-learning.html#cb249-3" aria-hidden="true" tabindex="-1"></a>      y_train,</span>
-<span id="cb249-4"><a href="deep-learning.html#cb249-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">epoch =</span> <span class="dv">100</span>,</span>
-<span id="cb249-5"><a href="deep-learning.html#cb249-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">batch_size =</span> <span class="dv">64</span>,</span>
-<span id="cb249-6"><a href="deep-learning.html#cb249-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">validation_split =</span> <span class="fl">0.1</span>,</span>
-<span id="cb249-7"><a href="deep-learning.html#cb249-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">callbacks =</span> <span class="fu">c</span>(<span class="fu">callback_early_stopping</span>(<span class="at">monitor =</span> <span class="st">&quot;val_mean_absolute_error&quot;</span>,</span>
-<span id="cb249-8"><a href="deep-learning.html#cb249-8" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">patience =</span> <span class="dv">5</span>)),</span>
-<span id="cb249-9"><a href="deep-learning.html#cb249-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">verbose =</span> <span class="dv">2</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="deep-learning.html#cb250-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(loss, mae) <span class="sc">%&lt;-%</span> (model <span class="sc">%&gt;%</span> <span class="fu">evaluate</span>(x_test, y_test, <span class="at">verbose =</span> <span class="dv">0</span>))</span>
-<span id="cb250-2"><a href="deep-learning.html#cb250-2" aria-hidden="true" tabindex="-1"></a><span class="fu">paste0</span>(<span class="st">&quot;Mean absolute error on test set: &quot;</span>, <span class="fu">sprintf</span>(<span class="st">&quot;%.2f&quot;</span>, mae))</span></code></pre></div>
-<pre><code>## [1] &quot;Mean absolute error on test set: 4.40&quot;</code></pre>
+<div class="sourceCode" id="cb362"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb362-1"><a href="deep-learning.html#cb362-1" aria-hidden="true" tabindex="-1"></a>history <span class="ot">&lt;-</span> model <span class="sc">%&gt;%</span> </span>
+<span id="cb362-2"><a href="deep-learning.html#cb362-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(x_train,</span>
+<span id="cb362-3"><a href="deep-learning.html#cb362-3" aria-hidden="true" tabindex="-1"></a>      y_train,</span>
+<span id="cb362-4"><a href="deep-learning.html#cb362-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">epoch =</span> <span class="dv">100</span>,</span>
+<span id="cb362-5"><a href="deep-learning.html#cb362-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">batch_size =</span> <span class="dv">64</span>,</span>
+<span id="cb362-6"><a href="deep-learning.html#cb362-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">validation_split =</span> <span class="fl">0.1</span>,</span>
+<span id="cb362-7"><a href="deep-learning.html#cb362-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">callbacks =</span> <span class="fu">c</span>(<span class="fu">callback_early_stopping</span>(<span class="at">monitor =</span> <span class="st">&quot;val_mean_absolute_error&quot;</span>,</span>
+<span id="cb362-8"><a href="deep-learning.html#cb362-8" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">patience =</span> <span class="dv">5</span>)),</span>
+<span id="cb362-9"><a href="deep-learning.html#cb362-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">verbose =</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb363"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb363-1"><a href="deep-learning.html#cb363-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(loss, mae) <span class="sc">%&lt;-%</span> (model <span class="sc">%&gt;%</span> <span class="fu">evaluate</span>(x_test, y_test, <span class="at">verbose =</span> <span class="dv">0</span>))</span>
+<span id="cb363-2"><a href="deep-learning.html#cb363-2" aria-hidden="true" tabindex="-1"></a><span class="fu">paste0</span>(<span class="st">&quot;Mean absolute error on test set: &quot;</span>, <span class="fu">sprintf</span>(<span class="st">&quot;%.2f&quot;</span>, mae))</span></code></pre></div>
+<pre><code>## [1] &quot;Mean absolute error on test set: 3.35&quot;</code></pre>
 </div>
 <div id="plot-the-training-process" class="section level3 hasAnchor" number="3.2.8">
 <h3><span class="header-section-number">3.2.8</span> Plot the training process<a href="deep-learning.html#plot-the-training-process" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb252-1"><a href="deep-learning.html#cb252-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(history)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-125-1.png" width="672" />
+<div class="sourceCode" id="cb365"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb365-1"><a href="deep-learning.html#cb365-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(history)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-180-1.png" width="672" />
 ### Calculating the predicted values on test data</p>
-<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb253-1"><a href="deep-learning.html#cb253-1" aria-hidden="true" tabindex="-1"></a>pred2 <span class="ot">&lt;-</span> model <span class="sc">%&gt;%</span> </span>
-<span id="cb253-2"><a href="deep-learning.html#cb253-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict</span>(x_test) <span class="sc">%&gt;%</span> <span class="fu">k_get_value</span>()</span>
-<span id="cb253-3"><a href="deep-learning.html#cb253-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb253-4"><a href="deep-learning.html#cb253-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">cbind</span>(pred2,y_test))</span></code></pre></div>
+<div class="sourceCode" id="cb366"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb366-1"><a href="deep-learning.html#cb366-1" aria-hidden="true" tabindex="-1"></a>pred2 <span class="ot">&lt;-</span> model <span class="sc">%&gt;%</span> </span>
+<span id="cb366-2"><a href="deep-learning.html#cb366-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict</span>(x_test) <span class="sc">%&gt;%</span> <span class="fu">k_get_value</span>()</span>
+<span id="cb366-3"><a href="deep-learning.html#cb366-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb366-4"><a href="deep-learning.html#cb366-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">cbind</span>(pred2,y_test))</span></code></pre></div>
 <pre><code>##               y_test
-## [1,] 23.93786   21.6
-## [2,] 31.00385   33.4
-## [3,] 29.89205   36.2
-## [4,] 13.15364   27.1
-## [5,] 13.52814   15.0
-## [6,] 17.96552   19.9</code></pre>
+## [1,] 26.03332   21.6
+## [2,] 35.04463   33.4
+## [3,] 34.17176   36.2
+## [4,] 18.20966   27.1
+## [5,] 18.71533   15.0
+## [6,] 18.99636   19.9</code></pre>
 <ul>
 <li>calculating <code>mean absolute error and root mean square error</code> and ploting</li>
 </ul>
-<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb255-1"><a href="deep-learning.html#cb255-1" aria-hidden="true" tabindex="-1"></a>error <span class="ot">&lt;-</span> y_test<span class="sc">-</span>pred2</span>
-<span id="cb255-2"><a href="deep-learning.html#cb255-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(error)</span></code></pre></div>
-<pre><code>##           [,1]
-## [1,] -2.337864
-## [2,]  2.396149
-## [3,]  6.307948
-## [4,] 13.946360
-## [5,]  1.471858
-## [6,]  1.934481</code></pre>
-<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="deep-learning.html#cb257-1" aria-hidden="true" tabindex="-1"></a>rmse <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>(error)<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb257-2"><a href="deep-learning.html#cb257-2" aria-hidden="true" tabindex="-1"></a>rmse</span></code></pre></div>
-<pre><code>## [1] 0.9275442</code></pre>
-<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb259-1"><a href="deep-learning.html#cb259-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(error)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-128-1.png" width="672" /></p>
+<div class="sourceCode" id="cb368"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb368-1"><a href="deep-learning.html#cb368-1" aria-hidden="true" tabindex="-1"></a>error <span class="ot">&lt;-</span> y_test<span class="sc">-</span>pred2</span>
+<span id="cb368-2"><a href="deep-learning.html#cb368-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(error)</span></code></pre></div>
+<pre><code>##            [,1]
+## [1,] -4.4333214
+## [2,] -1.6446320
+## [3,]  2.0282433
+## [4,]  8.8903442
+## [5,] -3.7153301
+## [6,]  0.9036411</code></pre>
+<div class="sourceCode" id="cb370"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb370-1"><a href="deep-learning.html#cb370-1" aria-hidden="true" tabindex="-1"></a>rmse <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>(error)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb370-2"><a href="deep-learning.html#cb370-2" aria-hidden="true" tabindex="-1"></a>rmse</span></code></pre></div>
+<pre><code>## [1] 0.3510331</code></pre>
+<div class="sourceCode" id="cb372"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb372-1"><a href="deep-learning.html#cb372-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(error)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-183-1.png" width="672" /></p>
 <!-- ======================== -->
 </div>
 </div>
@@ -974,69 +1062,69 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">3.3</span> Convolutional neural netwrok<a href="deep-learning.html#convolutional-neural-netwrok" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="import-library" class="section level3 hasAnchor" number="3.3.1">
 <h3><span class="header-section-number">3.3.1</span> Import library<a href="deep-learning.html#import-library" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb260-1"><a href="deep-learning.html#cb260-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(keras)</span></code></pre></div>
+<div class="sourceCode" id="cb373"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb373-1"><a href="deep-learning.html#cb373-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(keras)</span></code></pre></div>
 </div>
 <div id="importing-the-data" class="section level3 hasAnchor" number="3.3.2">
 <h3><span class="header-section-number">3.3.2</span> Importing the data<a href="deep-learning.html#importing-the-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb261-1"><a href="deep-learning.html#cb261-1" aria-hidden="true" tabindex="-1"></a>mnist <span class="ot">&lt;-</span> <span class="fu">dataset_mnist</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb374"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb374-1"><a href="deep-learning.html#cb374-1" aria-hidden="true" tabindex="-1"></a>mnist <span class="ot">&lt;-</span> <span class="fu">dataset_mnist</span>()</span></code></pre></div>
 <ul>
 <li>mnist is list; it contains <code>trainx, trainy, testx, testy</code></li>
 </ul>
-<div class="sourceCode" id="cb262"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb262-1"><a href="deep-learning.html#cb262-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(mnist)</span></code></pre></div>
+<div class="sourceCode" id="cb375"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb375-1"><a href="deep-learning.html#cb375-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(mnist)</span></code></pre></div>
 <pre><code>## [1] &quot;list&quot;</code></pre>
 <ul>
 <li>the dim of “mnist<span class="math inline">\(train\)</span>x” is 60000 28 28</li>
 </ul>
-<div class="sourceCode" id="cb264"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb264-1"><a href="deep-learning.html#cb264-1" aria-hidden="true" tabindex="-1"></a><span class="co"># head(mnist)</span></span></code></pre></div>
+<div class="sourceCode" id="cb377"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb377-1"><a href="deep-learning.html#cb377-1" aria-hidden="true" tabindex="-1"></a><span class="co"># head(mnist)</span></span></code></pre></div>
 </div>
 <div id="preparing-the-data" class="section level3 hasAnchor" number="3.3.3">
 <h3><span class="header-section-number">3.3.3</span> preparing the data<a href="deep-learning.html#preparing-the-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li>randomly sampling 1000 cases for training and 100 for testing</li>
 </ul>
-<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="deep-learning.html#cb265-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb265-2"><a href="deep-learning.html#cb265-2" aria-hidden="true" tabindex="-1"></a>index <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">nrow</span>(mnist<span class="sc">$</span>train<span class="sc">$</span>x), <span class="dv">1000</span>)</span>
-<span id="cb265-3"><a href="deep-learning.html#cb265-3" aria-hidden="true" tabindex="-1"></a>x_train <span class="ot">&lt;-</span> mnist<span class="sc">$</span>train<span class="sc">$</span>x[index,,]</span>
-<span id="cb265-4"><a href="deep-learning.html#cb265-4" aria-hidden="true" tabindex="-1"></a>y_train <span class="ot">&lt;-</span> (mnist<span class="sc">$</span>train<span class="sc">$</span>y[index])</span>
-<span id="cb265-5"><a href="deep-learning.html#cb265-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb265-6"><a href="deep-learning.html#cb265-6" aria-hidden="true" tabindex="-1"></a>index <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">nrow</span>(mnist<span class="sc">$</span>test<span class="sc">$</span>x), <span class="dv">100</span>)</span>
-<span id="cb265-7"><a href="deep-learning.html#cb265-7" aria-hidden="true" tabindex="-1"></a>x_test <span class="ot">&lt;-</span> mnist<span class="sc">$</span>test<span class="sc">$</span>x[index,,]</span>
-<span id="cb265-8"><a href="deep-learning.html#cb265-8" aria-hidden="true" tabindex="-1"></a>y_test <span class="ot">&lt;-</span> (mnist<span class="sc">$</span>test<span class="sc">$</span>y[index])</span></code></pre></div>
+<div class="sourceCode" id="cb378"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb378-1"><a href="deep-learning.html#cb378-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb378-2"><a href="deep-learning.html#cb378-2" aria-hidden="true" tabindex="-1"></a>index <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">nrow</span>(mnist<span class="sc">$</span>train<span class="sc">$</span>x), <span class="dv">1000</span>)</span>
+<span id="cb378-3"><a href="deep-learning.html#cb378-3" aria-hidden="true" tabindex="-1"></a>x_train <span class="ot">&lt;-</span> mnist<span class="sc">$</span>train<span class="sc">$</span>x[index,,]</span>
+<span id="cb378-4"><a href="deep-learning.html#cb378-4" aria-hidden="true" tabindex="-1"></a>y_train <span class="ot">&lt;-</span> (mnist<span class="sc">$</span>train<span class="sc">$</span>y[index])</span>
+<span id="cb378-5"><a href="deep-learning.html#cb378-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb378-6"><a href="deep-learning.html#cb378-6" aria-hidden="true" tabindex="-1"></a>index <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">nrow</span>(mnist<span class="sc">$</span>test<span class="sc">$</span>x), <span class="dv">100</span>)</span>
+<span id="cb378-7"><a href="deep-learning.html#cb378-7" aria-hidden="true" tabindex="-1"></a>x_test <span class="ot">&lt;-</span> mnist<span class="sc">$</span>test<span class="sc">$</span>x[index,,]</span>
+<span id="cb378-8"><a href="deep-learning.html#cb378-8" aria-hidden="true" tabindex="-1"></a>y_test <span class="ot">&lt;-</span> (mnist<span class="sc">$</span>test<span class="sc">$</span>y[index])</span></code></pre></div>
 <ul>
 <li>dim of four data sets</li>
 </ul>
-<div class="sourceCode" id="cb266"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb266-1"><a href="deep-learning.html#cb266-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(x_train)</span></code></pre></div>
+<div class="sourceCode" id="cb379"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb379-1"><a href="deep-learning.html#cb379-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(x_train)</span></code></pre></div>
 <pre><code>## [1] 1000   28   28</code></pre>
-<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb268-1"><a href="deep-learning.html#cb268-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(y_train)</span></code></pre></div>
+<div class="sourceCode" id="cb381"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb381-1"><a href="deep-learning.html#cb381-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(y_train)</span></code></pre></div>
 <pre><code>## [1] 1000</code></pre>
-<div class="sourceCode" id="cb270"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb270-1"><a href="deep-learning.html#cb270-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(x_test)</span></code></pre></div>
+<div class="sourceCode" id="cb383"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb383-1"><a href="deep-learning.html#cb383-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(x_test)</span></code></pre></div>
 <pre><code>## [1] 100  28  28</code></pre>
-<div class="sourceCode" id="cb272"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb272-1"><a href="deep-learning.html#cb272-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(y_test)</span></code></pre></div>
+<div class="sourceCode" id="cb385"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb385-1"><a href="deep-learning.html#cb385-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(y_test)</span></code></pre></div>
 <pre><code>## [1] 100</code></pre>
 <div id="generate-tensors" class="section level4 hasAnchor" number="3.3.3.1">
 <h4><span class="header-section-number">3.3.3.1</span> Generate tensors<a href="deep-learning.html#generate-tensors" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <ul>
 <li>each image is 28*28 pixel size; pass these values to computer</li>
 </ul>
-<div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb274-1"><a href="deep-learning.html#cb274-1" aria-hidden="true" tabindex="-1"></a>img_rows <span class="ot">&lt;-</span> <span class="dv">28</span></span>
-<span id="cb274-2"><a href="deep-learning.html#cb274-2" aria-hidden="true" tabindex="-1"></a>img_cols <span class="ot">&lt;-</span> <span class="dv">28</span></span></code></pre></div>
+<div class="sourceCode" id="cb387"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb387-1"><a href="deep-learning.html#cb387-1" aria-hidden="true" tabindex="-1"></a>img_rows <span class="ot">&lt;-</span> <span class="dv">28</span></span>
+<span id="cb387-2"><a href="deep-learning.html#cb387-2" aria-hidden="true" tabindex="-1"></a>img_cols <span class="ot">&lt;-</span> <span class="dv">28</span></span></code></pre></div>
 <ul>
 <li>using <code>array_reshape()</code> function to transform <code>list</code> data into tensors</li>
 </ul>
-<div class="sourceCode" id="cb275"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb275-1"><a href="deep-learning.html#cb275-1" aria-hidden="true" tabindex="-1"></a>x_train <span class="ot">&lt;-</span> <span class="fu">array_reshape</span>(x_train,</span>
-<span id="cb275-2"><a href="deep-learning.html#cb275-2" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">c</span>(<span class="fu">nrow</span>(x_train),</span>
-<span id="cb275-3"><a href="deep-learning.html#cb275-3" aria-hidden="true" tabindex="-1"></a>                           img_rows,</span>
-<span id="cb275-4"><a href="deep-learning.html#cb275-4" aria-hidden="true" tabindex="-1"></a>                           img_cols, <span class="dv">1</span>))</span>
-<span id="cb275-5"><a href="deep-learning.html#cb275-5" aria-hidden="true" tabindex="-1"></a>x_test <span class="ot">&lt;-</span> <span class="fu">array_reshape</span>(x_test,</span>
-<span id="cb275-6"><a href="deep-learning.html#cb275-6" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">c</span>(<span class="fu">nrow</span>(x_test),</span>
-<span id="cb275-7"><a href="deep-learning.html#cb275-7" aria-hidden="true" tabindex="-1"></a>                          img_rows,</span>
-<span id="cb275-8"><a href="deep-learning.html#cb275-8" aria-hidden="true" tabindex="-1"></a>                          img_cols, <span class="dv">1</span>))</span>
-<span id="cb275-9"><a href="deep-learning.html#cb275-9" aria-hidden="true" tabindex="-1"></a>input_shape <span class="ot">&lt;-</span> <span class="fu">c</span>(img_rows,</span>
-<span id="cb275-10"><a href="deep-learning.html#cb275-10" aria-hidden="true" tabindex="-1"></a>                 img_cols, <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb388"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb388-1"><a href="deep-learning.html#cb388-1" aria-hidden="true" tabindex="-1"></a>x_train <span class="ot">&lt;-</span> <span class="fu">array_reshape</span>(x_train,</span>
+<span id="cb388-2"><a href="deep-learning.html#cb388-2" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">c</span>(<span class="fu">nrow</span>(x_train),</span>
+<span id="cb388-3"><a href="deep-learning.html#cb388-3" aria-hidden="true" tabindex="-1"></a>                           img_rows,</span>
+<span id="cb388-4"><a href="deep-learning.html#cb388-4" aria-hidden="true" tabindex="-1"></a>                           img_cols, <span class="dv">1</span>))</span>
+<span id="cb388-5"><a href="deep-learning.html#cb388-5" aria-hidden="true" tabindex="-1"></a>x_test <span class="ot">&lt;-</span> <span class="fu">array_reshape</span>(x_test,</span>
+<span id="cb388-6"><a href="deep-learning.html#cb388-6" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">c</span>(<span class="fu">nrow</span>(x_test),</span>
+<span id="cb388-7"><a href="deep-learning.html#cb388-7" aria-hidden="true" tabindex="-1"></a>                          img_rows,</span>
+<span id="cb388-8"><a href="deep-learning.html#cb388-8" aria-hidden="true" tabindex="-1"></a>                          img_cols, <span class="dv">1</span>))</span>
+<span id="cb388-9"><a href="deep-learning.html#cb388-9" aria-hidden="true" tabindex="-1"></a>input_shape <span class="ot">&lt;-</span> <span class="fu">c</span>(img_rows,</span>
+<span id="cb388-10"><a href="deep-learning.html#cb388-10" aria-hidden="true" tabindex="-1"></a>                 img_cols, <span class="dv">1</span>)</span></code></pre></div>
 <ul>
 <li>this below is tensor data</li>
 </ul>
-<div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb276-1"><a href="deep-learning.html#cb276-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(x_train)</span></code></pre></div>
+<div class="sourceCode" id="cb389"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb389-1"><a href="deep-learning.html#cb389-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(x_train)</span></code></pre></div>
 <pre><code>## [1] 1000   28   28    1</code></pre>
 </div>
 <div id="normalization-and-one-hot-encoded-dummy" class="section level4 hasAnchor" number="3.3.3.2">
@@ -1044,45 +1132,45 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>training (features) data is rescaled by dividing the maxmimum to be normalized</li>
 </ul>
-<div class="sourceCode" id="cb278"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb278-1"><a href="deep-learning.html#cb278-1" aria-hidden="true" tabindex="-1"></a>x_train <span class="ot">&lt;-</span> x_train <span class="sc">/</span> <span class="dv">255</span></span>
-<span id="cb278-2"><a href="deep-learning.html#cb278-2" aria-hidden="true" tabindex="-1"></a>x_test <span class="ot">&lt;-</span> x_test <span class="sc">/</span> <span class="dv">255</span></span></code></pre></div>
+<div class="sourceCode" id="cb391"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb391-1"><a href="deep-learning.html#cb391-1" aria-hidden="true" tabindex="-1"></a>x_train <span class="ot">&lt;-</span> x_train <span class="sc">/</span> <span class="dv">255</span></span>
+<span id="cb391-2"><a href="deep-learning.html#cb391-2" aria-hidden="true" tabindex="-1"></a>x_test <span class="ot">&lt;-</span> x_test <span class="sc">/</span> <span class="dv">255</span></span></code></pre></div>
 <ul>
 <li>converse targets into one-hot-encoded (dummy) type using <code>to_categorical()</code> function</li>
 </ul>
-<div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb279-1"><a href="deep-learning.html#cb279-1" aria-hidden="true" tabindex="-1"></a>num_classes <span class="ot">=</span> <span class="dv">10</span></span>
-<span id="cb279-2"><a href="deep-learning.html#cb279-2" aria-hidden="true" tabindex="-1"></a>y_train <span class="ot">&lt;-</span> <span class="fu">to_categorical</span>(y_train, num_classes)</span>
-<span id="cb279-3"><a href="deep-learning.html#cb279-3" aria-hidden="true" tabindex="-1"></a>y_test <span class="ot">&lt;-</span> <span class="fu">to_categorical</span>(y_test, num_classes)</span></code></pre></div>
-<div class="sourceCode" id="cb280"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb280-1"><a href="deep-learning.html#cb280-1" aria-hidden="true" tabindex="-1"></a>y_train[<span class="dv">1</span>,]</span></code></pre></div>
+<div class="sourceCode" id="cb392"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb392-1"><a href="deep-learning.html#cb392-1" aria-hidden="true" tabindex="-1"></a>num_classes <span class="ot">=</span> <span class="dv">10</span></span>
+<span id="cb392-2"><a href="deep-learning.html#cb392-2" aria-hidden="true" tabindex="-1"></a>y_train <span class="ot">&lt;-</span> <span class="fu">to_categorical</span>(y_train, num_classes)</span>
+<span id="cb392-3"><a href="deep-learning.html#cb392-3" aria-hidden="true" tabindex="-1"></a>y_test <span class="ot">&lt;-</span> <span class="fu">to_categorical</span>(y_test, num_classes)</span></code></pre></div>
+<div class="sourceCode" id="cb393"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb393-1"><a href="deep-learning.html#cb393-1" aria-hidden="true" tabindex="-1"></a>y_train[<span class="dv">1</span>,]</span></code></pre></div>
 <pre><code>##  [1] 0 0 0 0 0 0 1 0 0 0</code></pre>
 </div>
 </div>
 <div id="creating-the-model-1" class="section level3 hasAnchor" number="3.3.4">
 <h3><span class="header-section-number">3.3.4</span> Creating the model<a href="deep-learning.html#creating-the-model-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb282"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb282-1"><a href="deep-learning.html#cb282-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">keras_model_sequential</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb282-2"><a href="deep-learning.html#cb282-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_conv_2d</span>(<span class="at">filters =</span> <span class="dv">32</span>,</span>
-<span id="cb282-3"><a href="deep-learning.html#cb282-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">kernel_size =</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">3</span>),</span>
-<span id="cb282-4"><a href="deep-learning.html#cb282-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">activation =</span> <span class="st">&#39;relu&#39;</span>,</span>
-<span id="cb282-5"><a href="deep-learning.html#cb282-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">input_shape =</span> input_shape) <span class="sc">%&gt;%</span> </span>
-<span id="cb282-6"><a href="deep-learning.html#cb282-6" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb282-7"><a href="deep-learning.html#cb282-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_conv_2d</span>(<span class="at">filters =</span> <span class="dv">64</span>,</span>
-<span id="cb282-8"><a href="deep-learning.html#cb282-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">kernel_size =</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">3</span>),</span>
-<span id="cb282-9"><a href="deep-learning.html#cb282-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">activation =</span> <span class="st">&#39;relu&#39;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb282-10"><a href="deep-learning.html#cb282-10" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb282-11"><a href="deep-learning.html#cb282-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_max_pooling_2d</span>(<span class="at">pool_size =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb282-12"><a href="deep-learning.html#cb282-12" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb282-13"><a href="deep-learning.html#cb282-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dropout</span>(<span class="at">rate =</span> <span class="fl">0.25</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb282-14"><a href="deep-learning.html#cb282-14" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb282-15"><a href="deep-learning.html#cb282-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_flatten</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb282-16"><a href="deep-learning.html#cb282-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">128</span>,</span>
-<span id="cb282-17"><a href="deep-learning.html#cb282-17" aria-hidden="true" tabindex="-1"></a>              <span class="at">activation =</span> <span class="st">&#39;relu&#39;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb282-18"><a href="deep-learning.html#cb282-18" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb282-19"><a href="deep-learning.html#cb282-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dropout</span>(<span class="at">rate =</span> <span class="fl">0.5</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb282-20"><a href="deep-learning.html#cb282-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> num_classes,</span>
-<span id="cb282-21"><a href="deep-learning.html#cb282-21" aria-hidden="true" tabindex="-1"></a>              <span class="at">activation =</span> <span class="st">&#39;softmax&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb395"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb395-1"><a href="deep-learning.html#cb395-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">keras_model_sequential</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb395-2"><a href="deep-learning.html#cb395-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_conv_2d</span>(<span class="at">filters =</span> <span class="dv">32</span>,</span>
+<span id="cb395-3"><a href="deep-learning.html#cb395-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">kernel_size =</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">3</span>),</span>
+<span id="cb395-4"><a href="deep-learning.html#cb395-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">activation =</span> <span class="st">&#39;relu&#39;</span>,</span>
+<span id="cb395-5"><a href="deep-learning.html#cb395-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">input_shape =</span> input_shape) <span class="sc">%&gt;%</span> </span>
+<span id="cb395-6"><a href="deep-learning.html#cb395-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb395-7"><a href="deep-learning.html#cb395-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_conv_2d</span>(<span class="at">filters =</span> <span class="dv">64</span>,</span>
+<span id="cb395-8"><a href="deep-learning.html#cb395-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">kernel_size =</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">3</span>),</span>
+<span id="cb395-9"><a href="deep-learning.html#cb395-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">activation =</span> <span class="st">&#39;relu&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb395-10"><a href="deep-learning.html#cb395-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb395-11"><a href="deep-learning.html#cb395-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_max_pooling_2d</span>(<span class="at">pool_size =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb395-12"><a href="deep-learning.html#cb395-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb395-13"><a href="deep-learning.html#cb395-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dropout</span>(<span class="at">rate =</span> <span class="fl">0.25</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb395-14"><a href="deep-learning.html#cb395-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb395-15"><a href="deep-learning.html#cb395-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_flatten</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb395-16"><a href="deep-learning.html#cb395-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">128</span>,</span>
+<span id="cb395-17"><a href="deep-learning.html#cb395-17" aria-hidden="true" tabindex="-1"></a>              <span class="at">activation =</span> <span class="st">&#39;relu&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb395-18"><a href="deep-learning.html#cb395-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb395-19"><a href="deep-learning.html#cb395-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dropout</span>(<span class="at">rate =</span> <span class="fl">0.5</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb395-20"><a href="deep-learning.html#cb395-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> num_classes,</span>
+<span id="cb395-21"><a href="deep-learning.html#cb395-21" aria-hidden="true" tabindex="-1"></a>              <span class="at">activation =</span> <span class="st">&#39;softmax&#39;</span>)</span></code></pre></div>
 <ul>
 <li>summary of model</li>
 </ul>
-<div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb283-1"><a href="deep-learning.html#cb283-1" aria-hidden="true" tabindex="-1"></a>model <span class="sc">%&gt;%</span> <span class="fu">summary</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb396"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb396-1"><a href="deep-learning.html#cb396-1" aria-hidden="true" tabindex="-1"></a>model <span class="sc">%&gt;%</span> <span class="fu">summary</span>()</span></code></pre></div>
 <pre><code>## Model: &quot;sequential_2&quot;
 ## ________________________________________________________________________________
 ##  Layer (type)                       Output Shape                    Param #     
@@ -1105,35 +1193,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>loss function is <code>categorical crossentropy</code>; the gradient descent will be optimized by adadelta;</li>
 </ul>
-<div class="sourceCode" id="cb285"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb285-1"><a href="deep-learning.html#cb285-1" aria-hidden="true" tabindex="-1"></a>model <span class="sc">%&gt;%</span> <span class="fu">compile</span>(</span>
-<span id="cb285-2"><a href="deep-learning.html#cb285-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">loss =</span> loss_categorical_crossentropy,</span>
-<span id="cb285-3"><a href="deep-learning.html#cb285-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">optimizer =</span> <span class="fu">optimizer_adadelta</span>(),</span>
-<span id="cb285-4"><a href="deep-learning.html#cb285-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">metrics =</span> <span class="fu">c</span>(<span class="st">&#39;accuracy&#39;</span>)</span>
-<span id="cb285-5"><a href="deep-learning.html#cb285-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb398"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb398-1"><a href="deep-learning.html#cb398-1" aria-hidden="true" tabindex="-1"></a>model <span class="sc">%&gt;%</span> <span class="fu">compile</span>(</span>
+<span id="cb398-2"><a href="deep-learning.html#cb398-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">loss =</span> loss_categorical_crossentropy,</span>
+<span id="cb398-3"><a href="deep-learning.html#cb398-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">optimizer =</span> <span class="fu">optimizer_adadelta</span>(),</span>
+<span id="cb398-4"><a href="deep-learning.html#cb398-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">metrics =</span> <span class="fu">c</span>(<span class="st">&#39;accuracy&#39;</span>)</span>
+<span id="cb398-5"><a href="deep-learning.html#cb398-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 </div>
 </div>
 <div id="training" class="section level3 hasAnchor" number="3.3.5">
 <h3><span class="header-section-number">3.3.5</span> Training<a href="deep-learning.html#training" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb286"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb286-1"><a href="deep-learning.html#cb286-1" aria-hidden="true" tabindex="-1"></a>batch_size <span class="ot">&lt;-</span> <span class="dv">128</span></span>
-<span id="cb286-2"><a href="deep-learning.html#cb286-2" aria-hidden="true" tabindex="-1"></a>epochs <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb286-3"><a href="deep-learning.html#cb286-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb286-4"><a href="deep-learning.html#cb286-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Train model</span></span>
-<span id="cb286-5"><a href="deep-learning.html#cb286-5" aria-hidden="true" tabindex="-1"></a>history <span class="ot">&lt;-</span> model <span class="sc">%&gt;%</span> <span class="fu">fit</span>(</span>
-<span id="cb286-6"><a href="deep-learning.html#cb286-6" aria-hidden="true" tabindex="-1"></a>  x_train, y_train,</span>
-<span id="cb286-7"><a href="deep-learning.html#cb286-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">batch_size =</span> batch_size,</span>
-<span id="cb286-8"><a href="deep-learning.html#cb286-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">epochs =</span> epochs,</span>
-<span id="cb286-9"><a href="deep-learning.html#cb286-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">validation_split =</span> <span class="fl">0.2</span></span>
-<span id="cb286-10"><a href="deep-learning.html#cb286-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<div class="sourceCode" id="cb287"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb287-1"><a href="deep-learning.html#cb287-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(history)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-134-1.png" width="672" /></p>
+<div class="sourceCode" id="cb399"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb399-1"><a href="deep-learning.html#cb399-1" aria-hidden="true" tabindex="-1"></a>batch_size <span class="ot">&lt;-</span> <span class="dv">128</span></span>
+<span id="cb399-2"><a href="deep-learning.html#cb399-2" aria-hidden="true" tabindex="-1"></a>epochs <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb399-3"><a href="deep-learning.html#cb399-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb399-4"><a href="deep-learning.html#cb399-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Train model</span></span>
+<span id="cb399-5"><a href="deep-learning.html#cb399-5" aria-hidden="true" tabindex="-1"></a>history <span class="ot">&lt;-</span> model <span class="sc">%&gt;%</span> <span class="fu">fit</span>(</span>
+<span id="cb399-6"><a href="deep-learning.html#cb399-6" aria-hidden="true" tabindex="-1"></a>  x_train, y_train,</span>
+<span id="cb399-7"><a href="deep-learning.html#cb399-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">batch_size =</span> batch_size,</span>
+<span id="cb399-8"><a href="deep-learning.html#cb399-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">epochs =</span> epochs,</span>
+<span id="cb399-9"><a href="deep-learning.html#cb399-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">validation_split =</span> <span class="fl">0.2</span></span>
+<span id="cb399-10"><a href="deep-learning.html#cb399-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb400"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb400-1"><a href="deep-learning.html#cb400-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(history)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-189-1.png" width="672" /></p>
 </div>
 <div id="evaluating-the-accuracy" class="section level3 hasAnchor" number="3.3.6">
 <h3><span class="header-section-number">3.3.6</span> Evaluating the accuracy<a href="deep-learning.html#evaluating-the-accuracy" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb288"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb288-1"><a href="deep-learning.html#cb288-1" aria-hidden="true" tabindex="-1"></a>score <span class="ot">&lt;-</span> model <span class="sc">%&gt;%</span> <span class="fu">evaluate</span>(x_test,</span>
-<span id="cb288-2"><a href="deep-learning.html#cb288-2" aria-hidden="true" tabindex="-1"></a>                            y_test)</span>
-<span id="cb288-3"><a href="deep-learning.html#cb288-3" aria-hidden="true" tabindex="-1"></a>score</span></code></pre></div>
-<pre><code>##      loss  accuracy 
-## 0.2502894 0.9200000</code></pre>
+<div class="sourceCode" id="cb401"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb401-1"><a href="deep-learning.html#cb401-1" aria-hidden="true" tabindex="-1"></a>score <span class="ot">&lt;-</span> model <span class="sc">%&gt;%</span> <span class="fu">evaluate</span>(x_test,</span>
+<span id="cb401-2"><a href="deep-learning.html#cb401-2" aria-hidden="true" tabindex="-1"></a>                            y_test)</span>
+<span id="cb401-3"><a href="deep-learning.html#cb401-3" aria-hidden="true" tabindex="-1"></a>score</span></code></pre></div>
+<pre><code>##     loss accuracy 
+## 2.318527 0.050000</code></pre>
 
 </div>
 </div>
@@ -1204,7 +1292,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

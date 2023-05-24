@@ -1,0 +1,56 @@
+
+# Causal inference 
+
+## Causal inference introduction
+ 
+### Definitions and directed acyclic graph (DAG) 
+
+[see here](https://rpubs.com/Daniel_He/1044962)
+
+[see here](https://rpubs.com/Daniel_He/1040663)
+
+#### A online tool to draw and analyze causal digrams- DAGitty
+
+[see here](https://rpubs.com/Daniel_He/1042290)
+
+## Inverse probability weighting 
+
+[see here](https://rpubs.com/Daniel_He/1042374)
+
+### Matching and weighting w/o imputation
+
+[see here](https://rpubs.com/Daniel_He/1045042)
+
+## G formula
+
+[see here](https://rpubs.com/Daniel_He/1042853)
+ 
+## Double Robust Estimators
+
+### SuperLearner
+[see here](https://rpubs.com/Daniel_He/1040282)
+[see here](https://rpubs.com/Daniel_He/1040613)
+
+### Double robust estimators using SuperLearner_sl3
+[see here](https://rpubs.com/Daniel_He/1044668)
+
+### Double robust estimators using TMLE
+
+[see here](https://rpubs.com/Daniel_He/1044972)
+
+### Longitudinal targeted maximum likelihood estimation
+[see here](https://rpubs.com/Daniel_He/1040166)
+
+## Instrumental variable regression
+
+[see here](https://rpubs.com/Daniel_He/1044674)
+
+## Mediation analysis
+
+[see here](https://rpubs.com/Daniel_He/1044915)
+
+## Confounding and effect measure modification
+[see here](https://rpubs.com/Daniel_He/966236)
+
+
+

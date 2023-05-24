@@ -442,6 +442,40 @@ cat("Z score=",((log(289 ))-(mean))/std)
 pnorm(0.4465193, mean=0, sd=1)     
 ```
 
+## Mathmatic coupling
+`It makes sig into non sig` 
+```{r}
+set.seed(1234)   # Random seed
+x1 <- rnorm(1000)  #Normal IVs
+x2 <- rnorm(1000)
+x3 <- rnorm(1000)
+
+yraw <- x1 + x2 + x3 + rnorm(1000,0, 10)
+y1to9  <- (yraw + -1*min(yraw)  + 1)
+y1to9  <- trunc(y1to9*(9/(max(y1to9))))  #Create a Y variable that goes 1 to 9       
+
+ 
+cuty <- cut(y1to9,5)
+head(cuty)
+ 
+
+model1 <- lm(y1to9~x1 + x2 + x3)  # Regular model
+summary(model1)  #Gives sensible values
+
+model2 <- lm(y1to9~x1 + x2 + x3 + cuty)  # Adding the cut of y
+summary(model2)  #X1, x2, x3 not sig; R^2 is 0.75
+```
+
+```{r}
+df <- data.frame(cuty, y1to9)
+# it causes the coefficient of x1 is 1; others equal 0.
+library(ggplot2)
+ggplot(data = df, 
+       mapping = aes(as.numeric(cuty), y1to9)) + 
+  geom_point() +
+  geom_smooth( method = "lm")
+```
+
 
  
 ## How to create a bookdown  
@@ -506,4 +540,151 @@ pnorm(0.4465193, mean=0, sd=1)
 
 
  
+## How to install tensorflow and keras
+`see youtube` [tutorial](https://www.youtube.com/watch?v=cIUg11mAmK4)  
 
+- Install TensorFlow from rstudio github.
+
+  - library(usethis)
+
+  - library(devtools)
+
+  - `options(download.file.method = "wininet") #if need`
+
+  - devtools::install_github("rstudio/tensorflow",force = T)
+
+  - library(tensorflow)
+
+  - library(reticulate)
+
+  - `options(download.file.method = "auto") #if need`
+
+  - reticulate::install_miniconda(force = TRUE)
+
+  - install_tensorflow()
+
+- Install Keras from rstudio github.
+
+  - devtools::install_github("rstudio/keras")
+
+    `Execute the below`
+ 
+  - library(keras) 
+
+    `restart r studio`
+ 
+  - install_keras() 
+
+
+## How to use github in team
+- clone main 
+
+  * $ git config --global user.name "Daniel"
+
+
+  * $ git config --global user.email "daniel@gmail.com"
+
+
+  * $ git clone https://xx
+
+
+  * $ pwd
+
+
+  * $ cd xx/
+
+- create branch
+
+  * $ git branch 
+
+  * $ git branch hello
+ 
+  * $ git checkout
+
+  * $ git checkout hello
+  
+  * (git checkout -b hello)
+
+- push to branch
+
+  * $ git add -A
+ 
+  * $ git commit -m "branch"
+ 
+  * $ git push -u origin hello
+ 
+
+- merge main then pull request
+ 
+  * wb- compare and pull request (click here github)
+
+  * wb- merge pull request
+  
+  * wb- comfirm merge
+
+  * wb- Pull request successfully merged and closed
+ 
+ 
+
+- pull all and push all  
+
+  * git pull origin master
+ 
+  * git add -A
+ 
+  * git commit -m "newbranch"
+ 
+  * git push  
+ 
+  * ls  
+
+  * wb- contribute- compare  
+  * wb- create new pull  
+  * wb- create new request  
+  * wb- merge pull request  
+  * wb- comfirm merge  
+  * wb- Pull request successfully merged and closed  
+
+ 
+
+
+- miscellanies
+ 
+  - git checkout master
+  
+  - git branch -D xxx
+ 
+  - git status <: modified>
+ 
+  - git merge newbranch
+
+  - git push origin master
+ 
+  - get remote -v
+  - git remote rm xxxxx
+  - cd "C:\project"
+  - cd notes/
+  - mkdir projects
+ 
+  - git reflog
+  - git reset or git revert 
+ 
+  - git init <add .git>
+  - rm -rf .git <remove .git>
+
+## How to insert picture indrectly in markdown
+```{r,warning=F}
+library(rstudioapi) 
+library(rmarkdown)
+
+library(imageclipr)
+```
+ 
+
+[link] (https://github.com/Toniiiio/imageclipr) 
+
+## R cheatsheets
+[cheatsheets](https://github.com/rstudio/cheatsheets)
+
+
+ 

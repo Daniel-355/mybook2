@@ -21,7 +21,7 @@ This is my first book.
 
 **First of all, sincerely thanks where thanks are due.**
 
-![“In God we Trust, all others bring data”. ](.\firefighters2.jpg)
+![“In God we Trust, all others bring data”. ](.\skywheel.jpg)
  
 
 ```{r include=FALSE}

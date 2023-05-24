@@ -313,4 +313,12 @@ abline(lm(mpg$hwy ~ mpg$cty),col="blue",lwd = 4)
 abline(res, col='red')
 ```
 
+## Markov chain Monte Carlo
+[see here](https://rpubs.com/Daniel_He/1040697)
 
+## Expectation maximum
+[see here](https://rpubs.com/Daniel_He/1040673)
+
+## Combine estimates by pooling rules
+
+[see here](https://rpubs.com/Daniel_He/1040979)

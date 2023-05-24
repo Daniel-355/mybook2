@@ -22,9 +22,67 @@ knitr::opts_chunk$set(engine='sashtml', engine.path=saspath,
 
 `Data can not be used in different chunks`
 
-- compute mean and freqency 
+### read in (date) data using informat
 ```{r , engine="sas" , error=TRUE}
-proc means data=sashelp.class  ;
+/*import and export raw data using infile*/
+data test;
+
+/*infile "c:/document/data.text";*/
+input name $ height weight;
+length height 4;
+cards 
+;
+Daniel 173 150
+;
+run;
+proc print;run;
+```
+
+```{r , engine="sas" , error=TRUE}
+data have;
+input char_date : $20. fmt : $20.;
+/* set a new variable format*/
+num_char=inputn(char_date,fmt);
+format num_char date9. ;
+cards;
+12-08-2015  DDMMYY12.
+12/8/2016   MMDDYY12.
+05/25/2015  MMDDYY12.
+;
+run;
+proc print;run;
+```
+```{r , engine="sas" , error=TRUE}
+data have;
+input char_date MMDDYY10.  ;
+/* output format */
+format char_date date9. ;
+cards;
+12-08-2015   
+12/8/2016   
+05/25/2015   
+;
+run;
+proc print;run;
+```
+
+```{r , engine="sas" , error=TRUE}
+data have;
+/* set input and output format*/
+input char_date MMDDYY10.  ;
+format char_date MMDDYY10. ;
+cards;
+12-08-2015   
+12/8/2016   
+05/25/2015   
+;
+run;
+proc print;run;
+````
+
+### compute mean and freqency 
+```{r , engine="sas" , error=TRUE}
+proc means data=sashelp.class maxdec=5 ;
 run;
 
 proc freq data=sashelp.class  ;
@@ -36,7 +94,7 @@ run;
 
 ```
 
-- sort a data set
+### sort a data set
 ```{r , engine="sas" , error=TRUE}
 proc sort data=sashelp.class Out= name ;
 by name;
@@ -46,7 +104,9 @@ proc print data= name (obs=10) ;
 run;
 ```
 
-- transpose wide format data to long format data
+### transpose or reshape
+
+`wide format data to long format data`
 ```{r , engine="sas" , error=TRUE}
 proc transpose data= sashelp.class out= Field;
 by name;
@@ -55,7 +115,24 @@ Run;
 proc print data= field (obs=10) ;
 run;
 ```
-- conditional statement
+
+`long format data to wide format data`
+```{r , engine="sas" , error=TRUE}
+proc transpose data= sashelp.class out= Field;
+by name;
+Run;
+
+proc transpose data=Field out=Field_wide  ;
+    by name ;
+    id _name_;
+    var col1;
+run;
+
+proc print data= field_wide (obs=10) ;
+run;
+```
+
+### conditional statement
 ```{r , engine="sas" , error=TRUE}
  
 DATA ab;
@@ -67,10 +144,45 @@ Run;
 proc print data=ab (obs=10);
 run;
 ```
+```{r , engine="sas" , error=TRUE}
+/*if else syntax*/
+Data class;
+set sashelp.class;
+if weight >=100 then weight_cat =3;
+else if weight >=90 and weight <100 then weight_cat =2 ;
+else weight_cat =1;
+attrib weight_cat label = "weight category,  1=Inad, 2=Adeq, 3=Exces"; 
+run;
 
+proc print data=class (obs=3);
+run;
+```
+```{r , engine="sas" , error=TRUE}
+/*if index*/
+data test;
+set sashelp.class;
+length gender $10 ;
+if index(sex,"M")>0 THEN gender="male";
+if index(sex,"F")>0 THEN gender="female";
+RUN;
 
- 
-- change format of the variable 
+proc print data=test (obs=5);
+run;
+```
+
+### using like operation to select rows contaning a pattern
+```{r , engine="sas" , error=TRUE}
+/*using like operation to select rows contaning a pattern-matching text.*/
+proc print data =sashelp.class;
+where upcase(name) like '%A%';
+run;
+
+proc print data =sashelp.class;
+where  (name) like '%A%';
+run;
+```
+
+### change format of the variable 
 ```{r , engine="sas" , error=TRUE}
 proc format;
    value AGEnew
@@ -93,7 +205,7 @@ proc freq data=ab;
         run;
         
 ```
-- basic operations
+### basic operations
 ```{r  , engine="sas" , error=TRUE}
 Data Mathdata;
 A= 10.12345;
@@ -121,7 +233,9 @@ Run;
 proc print data=mathdata (obs=10);
 run;
 ```
-- rename a variable
+### rename variables  
+
+`a variable`
 ```{r  , engine="sas" , error=TRUE}
  Data AB;
 set sashelp.class; Rename AGE= AGENEW;
@@ -130,7 +244,43 @@ Run;
 proc print data=AB;
 run;
 ```
-- extract text from a character  value
+
+`multiple variables`
+```{r  , engine="sas" , error=TRUE}
+/*rename*/
+data AAA;
+ set sashelp.class;
+run;
+
+/*create a list*/
+proc sql noprint;
+   select cats(name,'=',name,'_new')
+          into : lis
+          separated by ' '
+          from dictionary.columns
+          where libname = 'WORK' and memname = 'AAA';
+quit;
+%put &lis;
+
+proc datasets library = work nolist;
+   modify AAA;
+   rename &lis;
+quit;
+
+proc print data=aaa (obs=2);
+run;    
+          
+/*function to deal with text*/
+%scan(&lis,2);   
+/*#scan variable*/
+%substr(NAME, %length(NAME),1);  
+/*#extract character*/
+%substr(NAME, 2,1);    
+%index(&lis,"Age=Age_new") ;         
+/*#identify this exists  */
+```
+
+### extract text from a character  value
 ```{r  , engine="sas" , error=TRUE}
 Data Mathdata;
 Text = "Hello World";
@@ -140,7 +290,7 @@ Run;
 proc print data=mathdata  ;
 run;
 ```
-- convert the character value into a numeric value and reverse
+### convert the character value into a numeric value and reverse
 ```{r , engine="sas" , error=TRUE}
 Data ABC;
 set sashelp.class;
@@ -162,7 +312,7 @@ proc contents data=abc  ;
 run;
 ```
 
-- change the length of the variable
+### change the length of the variable
 ```{r , engine="sas" , error=TRUE}
 Data ABC;
 set sashelp.class;
@@ -174,7 +324,7 @@ proc contents data=abc  ;
 run;
  
 ```
-- create a report
+### create a report
 ```{r , engine="sas" , error=TRUE}
 proc report data=sashelp.class;
 Column age;
@@ -182,7 +332,7 @@ Define age / display;
 Run;
 ```
 
-- create a random variable
+### create a random variable
 ```{r , engine="sas" , error=TRUE}
 data ab;
 set sashelp.class;
@@ -192,7 +342,7 @@ run;
 proc print data=ab (obs=10); 
 run;
 ```
-- combine two texts
+### combine two texts
 ```{r , engine="sas" , error=TRUE}
 Data Mathdata;
 Text = "Hello";
@@ -203,7 +353,7 @@ Run;
 proc print data=Mathdata  ; 
 run;
 ```
-- compress spaces
+### compress spaces
 ```{r , engine="sas" , error=TRUE}
 Data Mathdata;
 Text = "Hello  World  ";
@@ -215,7 +365,7 @@ proc print data=Mathdata  ;
 run;
 ```
 
-- identify the position of a specified text
+### identify the position of a specified text
 ```{r , engine="sas" , error=TRUE}
 Data Mathdata;
 Text = "Hello World";
@@ -225,7 +375,7 @@ Run;
 proc print data=Mathdata  ; 
 run;
 ```
-- convert upcase, lower case and propcase
+### convert upcase, lower case and propcase
 ```{r , engine="sas" , error=TRUE}
 Data Mathdata;
 Text = "Hello World";
@@ -237,7 +387,7 @@ Run;
 proc print data=Mathdata  ; 
 run;
 ```
-- deduplication
+### deduplication
 ```{r, engine="sas" , error=TRUE}
 /* Dedup, original data has 19 observations  */
 proc sort data = sashelp.class out =  dedup
@@ -249,7 +399,21 @@ proc print data= dedup;
 run;
 
 ```
-- select sub data set
+   
+`The second way`
+```{r, engine="sas" , error=TRUE}
+proc sort data=sashelp.class out=data_rank;  by height  ; run;
+
+data outdata dropdata;
+ set data_rank;
+ by height ;
+ if last.height   then output  outdata;
+else output dropdata; 
+run;
+proc print data=dropdata;run; 
+```
+
+### select sub data set
 ```{r,engine="sas", error=TRUE}
 data where;
 set sashelp.class;
@@ -262,7 +426,7 @@ run;
 ```
 
 
-- create macro using do loop statement 
+### create macro using do loop statement 
 ```{r,engine="sas",error=TRUE}
 /*create a macro to calcualte descriptive stats */
 %macro means(var_avg) ;
@@ -307,7 +471,16 @@ proc print data= masterresult2;
 run;
 
 ```
-- output intermediate tables
+### output intermediate tables
+```{r,engine="sas",error=TRUE}
+/*extract tables using ods trace*/
+ods trace on;
+proc freq data=sashelp.class  ;
+table  sex;
+run;
+ods trace off;
+```
+
 ```{r,engine="sas",error=TRUE}
 ods   listing close;
 ods trace on;
@@ -322,7 +495,43 @@ proc print data=ParameterEstimates;
 run;
 
 ```
-- merge data sets
+
+### creat a sequence number
+
+`creat a sequence number based on a variable by grouping`
+
+```{r,engine="sas",error=TRUE}
+
+/* grouped*/
+proc sort data=sashelp.class out=class ; by name; run; 
+data temp; set class; 
+	by name; 
+  	count + 1;
+	if first.name then count = 1; 
+run; 
+proc print data=temp (obs=3);run; 
+
+
+proc sort data=class out=class2 ; by height; run; 
+data class3;
+set class2;
+by height;
+retain count;
+if first.height then count=1;
+else count=count+1;
+run;
+proc print data=class3 (obs=3);run; 
+
+ /*nogrouped*/
+data new;
+ set class;
+ seqno = _n_;
+run;
+
+proc print data=new (obs=3);run; 
+```
+
+### merge data sets
 
 `right, left join`
 ```{r,engine="sas",error=TRUE}
@@ -397,6 +606,7 @@ run;
 data class_f;
 merge  sashelp.class class2;
 by name;
+/*if A and B;  */
 run;
 
 proc print data=class_f;
@@ -451,12 +661,17 @@ quit;
 proc print data=class_e;
 run;
 
+/*proc sql ;*/
+/*create table  arm as*/
+/*select * from arm*/
+/*where subject_id not in (select subject_id from ustwin);*/
+/*quit;*/	    
 ```
 
 
 
 
-- create table 1
+### create table 1
 ```{r , engine="sas" , error=TRUE}
   *** Load utility macros;
 %include "C:\Users\hed2\Downloads\mybook2\mybook2\sasmacro\create_table1.sas";
@@ -485,7 +700,7 @@ proc export data=Table1 replace label
 run;  
 
 ```
-- create table 1 without statistical test
+### create table 1 without statistical test
 ```{r , engine="sas" , error=TRUE}
  *** Load utility macros;
 %include "C:\Users\hed2\Downloads\mybook2\mybook2\sasmacro/Utility Macros_updated_NG.sas";
@@ -508,11 +723,465 @@ run;
 ```
 
 
-- perform a regression 
+### perform a regression 
 ```{r , engine="sas" , error=TRUE}
 proc glm data= sashelp.class;
 model height=age;
 Run;
+```
+
+
+## Using macro
+### Create a macro variable
+```{r , engine="sas" , error=TRUE}
+
+/*print mean of a variable to log in SAS*/
+proc sql noprint; 
+select  std(age) format=best32.
+   into :age_mean
+   from sashelp.class;
+quit;
+   
+%put Mean of age: &age_mean;
+%putlog Mean of age: &age_mean;
+```
+
+### Select variables names
+```{r , engine="sas" , error=TRUE}
+
+proc sql;
+     select name
+           into :vars separated by ' '
+            from dictionary.columns
+              where libname="SASHELP" and
+                memname="CLASS" and varnum=4;
+   ;
+quit;
+%put &vars.;
+```
+
+### Use iterative DO TO syntax to iterate a Specific Number  
+```{r , engine="sas" , error=TRUE}
+data do_to;
+   x=10;
+   y="yes";
+   do i=1 to 10;
+      x=x+1;
+      output;
+   end;
+run;
+proc print data=do_to;
+run;
+```
+
+`use while or until`
+```{r , engine="sas" , error=TRUE}
+
+data loan;
+   balance=1000;
+   payment=0;
+   do while (balance>0);
+      balance=balance-100;
+      payment=payment+1;
+      output;
+   end;
+run;
+proc print data=loan;
+run;
+```
+
+`do loop within a macro`
+```{r , engine="sas" , error=TRUE}
+
+%macro run_calculation(amt, t, r);
+    data customer_value;
+        i=&r./10.;
+        do n=0 to &t.;
+            S=&amt.*((1+i)*n - 1)/i;  /*Power operator */
+            output; /*output s*/
+        end;
+   file print;
+   putlog  s @@;
+   put  s @@;
+    run;
+proc print data=customer_value;
+run;
+%mend;
+
+%run_calculation(amt=100, t=10, r=7);
+```
+
+### PROC REPORT allows more flexibility in displaying the data 
+```{r , engine="sas" , error=TRUE}
+
+proc means data=sashelp.class;
+var _NUMERIC_;  /*_CHARACTER_*/
+output out=want mean= sum= max= /autoname;
+run;
+
+proc report data= want; /*not use output but dataset*/
+Column _FREQ_;
+Column Age_Mean;
+Column Age_Sum;
+Column Age_max;
+Define _FREQ_  /"The total number" display;
+Define Age_mean  /"Mean of age" display;
+Define Age_sum  /"Sum of age" display;
+Define Age_max  /"Max of age" display;
+Run;
+```
+
+### Create a macro to calculate descriptive stats and summarize tabels 
+```{r , engine="sas" , error=TRUE}
+
+%macro means(var_avg) ;
+
+/*calculate means*/
+proc means data=sashelp.class StackODSOutput n mean std  min p5 p95 max nmiss; 
+var  &var_avg;
+class sex;
+ods output summary=result2;
+run;
+
+/*append then output*/
+data masterresult2;                  * combine results;
+set masterresult2 result2;
+run;
+
+%mend means;
+
+/*use macro to merge all descriptive stats */
+data masterresult2 ;
+set _null_;
+run;
+
+%let vars= 
+age
+height
+weight
+;
+
+%macro model ;
+%do i=1 %to %sysfunc(countw(&vars));
+
+%let x=%scan(&vars,&i);
+ %means( &x )
+ 
+%end;
+%mend model;
+
+%model;
+
+proc print data= masterresult2;
+run;
+```
+
+<!--  /*Tableau */ -->
+<!-- /*https://sascrunch.com/members-area/*/ -->
+
+
+
+## Use SAS format
+
+### Creating labels for different values 
+```{r , engine="sas" , error=TRUE}
+
+PROC FORMAT;
+    VALUE LIKERT7_A
+	  1,2,3   = "Disagree"
+	  4       = "Neither Agree nor Disagree"
+	  5,6,7   = "Agree"
+RUN;
+
+PROC FORMAT;
+    VALUE INCOME
+	  LOW   -< 20000 = "Low"
+	  20000 -< 60000 = "Middle"
+	  60000 - HIGH   = "High";
+RUN;
+
+PROC FORMAT;
+    VALUE RACE
+       1     = "White"
+       2     = "Black"
+       OTHER = "Other";
+RUN;
+
+/*CREATING LABELS FOR CHARACTER VARIABLES*/
+/*assigning labels to variable values*/
+PROC FORMAT;
+    VALUE $GENDERLABEL
+	  "M"   = "Male"
+	  "F"   = "Female";
+RUN;
+
+
+/*Use defined format*/
+DATA sample;
+    SET sashelp.class;
+    FORMAT sex GENDERLABEL. ;
+RUN;
+
+proc freq data=sample;
+table sex;
+run;
+
+```
+
+### Storing farmats to a library- way 1
+```{r , engine="sas" , error=TRUE}
+
+LIBNAME format  "C:\Users\hed2\Downloads\code-storage\code\format";
+
+PROC FORMAT LIBRARY=format ;
+    VALUE $GENDER
+	  "M"   = "Male_new"
+	  "F"   = "Female_new";
+RUN;
+ 
+/*Use stored defined format way 1 */
+OPTIONS FMTSEARCH=(format);
+DATA sample;
+    SET sashelp.class;
+    FORMAT sex GENDER. ;
+RUN;
+
+proc freq data=sample;
+table sex;
+run;
+
+
+```
+
+### Use stored defined format- way 2 
+
+```{r , engine="sas" , error=TRUE}
+ 
+
+%INCLUDE 'C:\Users\hed2\Downloads\code-storage\code\format\format_test.sas';
+DATA sample;
+    SET sashelp.class;
+    FORMAT sex GENDERsex. ;
+RUN;
+
+proc freq data=sample;
+table sex;
+run;
+
+```
+
+### Use stored defined format- way 3
+
+`Add formats to existing formatlib; seperate creating labels, useing format and labeling variables.`
+```{r , engine="sas" , error=TRUE}
+ LIBNAME format  "C:\Users\hed2\Downloads\code-storage\code\format";
+
+PROC FORMAT LIBRARY=format ;
+    VALUE $GENDER
+	  "M"   = "Male_new"
+	  "F"   = "Female_new";
+RUN;
+
+	  
+/*add formats to existing formatlib*/
+PROC FORMAT LIBRARY=format ;
+  VALUE $gendersextwo
+	  "M"   = "Male_new2_two"
+	  "F"   = "Female_new2_two";
+RUN;
+	  
+/*use stored defined format way 3 */
+OPTIONS FMTSEARCH=(format);
+DATA sample;
+    SET sashelp.class;
+    FORMAT sex GENDERsextwo. ;
+ RUN;
+
+proc freq data=sample;
+table sex;
+run;
+
+```
+
+### Use stored defined format in batch- way 4 
+```{r , engine="sas" , error=TRUE}
+
+LIBNAME format  "C:\Users\hed2\Downloads\code-storage\code\format";
+
+PROC FORMAT LIBRARY=format ;
+    VALUE $GENDER
+	  "M"   = "Male_new"
+	  "F"   = "Female_new";
+RUN;
+
+
+/*use sas file to add format in batch*/
+OPTIONS FMTSEARCH=(format);
+DATA sample;
+    SET sashelp.class;
+%INCLUDE 'C:\Users\hed2\Downloads\code-storage\code\format\use_format.sas';
+RUN;
+
+proc freq data=sample;
+table sex;
+run;
+```
+
+### Modify format of the existing proc format 
+```{r, engine="sas" , error=TRUE}
+/*User-defined formats cannot be edited. to create a macro by myself ; or proc freq then use excel*/; 
+PROC FORMAT ;
+    VALUE $GENDER
+	  "M"   = "Male_new"
+	  "F"   = "Female_new";
+RUN;
+proc format;
+	  value $sex_f  "F"="Female_f" other=[5.1];	
+run;
+
+DATA sample;
+    SET sashelp.class;
+    FORMAT sex $sex_f. ;
+ RUN;
+
+proc freq data=sample;
+table sex;
+run;
+```
+
+### Transform missing to char then to numeric again
+```{r, engine="sas" , error=TRUE}
+PROC FORMAT ;
+    VALUE $num
+	  "M"   = 1
+	  "F"   = 2;
+RUN;
+
+DATA sample_2; 
+  SET sashelp.class;
+  sex_2 = input(put(sex ,num.),best.);  /*Converting variable types and keep*/
+RUN;
+proc freq data=sample_2;
+table sex_2;
+run;
+```
+
+### Output format of the existing format name by alphabet order 
+```{r, engine="sas" , error=TRUE}
+
+/*but we dont know the format name*/
+
+/*PROC FORMAT FMTLIB;*/
+PROC FORMAT ;
+    VALUE $GENDER
+	  "M"   = "Male_new"
+	  "F"   = "Female_new";
+RUN;
+
+proc format library = work.formats FMTLIB cntlout = cntlout;
+select $GENDER;
+run;
+```
+
+### A macro to copy the existing proc format
+```{r, engine="sas" , error=TRUE}
+%macro formatd(data, var);
+data temp;
+set &data;
+keep &var;
+run;
+
+/*original freq*/
+ods output  OneWayFreqs=sample_b  ;
+proc freq data=temp  ;
+table  &var /missing ;
+run;
+ods output close;
+ 
+/*delete format freq*/
+data sample2;
+set  temp;
+Format _all_;
+run;
+proc freq data=sample2   ;
+table  &var /missing out=sample_c ;
+run;
+
+/*select original variable code*/
+proc sql noprint;
+          select name into :firstvar_b from dictionary.columns where libname='WORK' and memname='SAMPLE_B'
+          and varnum=2;
+quit;
+data sample_b2;
+set sample_b;
+Keep &firstvar_b ;
+run;
+
+/*select original variable label*/
+proc sql noprint;
+          select name into :firstvar_c from dictionary.columns where libname='WORK' and memname='SAMPLE_C'
+          and varnum=1;
+quit;
+data sample_c2;
+set sample_c;
+Keep &firstvar_c  ;
+run;
+
+/*merge variable code and label*/
+data sample_bc;
+set sample_b2 (RENAME=(&firstvar_b=new_b));
+set sample_c2 (RENAME=(&firstvar_c=new_c));
+run;
+
+/*create format format and output*/
+data sample_bc;
+set sample_bc;
+Original_format = CATS(new_c,"=","'",new_b,"'");
+run;
+
+proc print data=sample_bc noobs;
+   var Original_format;
+run;
+
+/*data _null_;*/
+/*   set sample_bc ;*/
+/*   file print;*/
+/*   putlog Original_format @@;*/
+/*   put Original_format @@;*/
+/*run;*/
+
+%mend formatd;
+
+
+PROC FORMAT ;
+    VALUE $GENDER
+	  "M"   = "Male_new"
+	  "F"   = "Female_new";
+RUN;
+DATA sample;
+    SET sashelp.class;
+    FORMAT sex $GENDER. ;
+ RUN;
+
+%formatd(sample, sex   );
+```
+
+### A macro to view the list of variables
+```{r,engine='sas',error=TRUE}
+
+%macro varnames (dat);
+proc contents
+     data = &dat
+          noprint
+          out = data_info
+               (keep = name );
+run;
+proc print
+     data = data_info
+          noobs;
+run;
+%mend;
+%varnames (sashelp.class) 
 ```
 
 

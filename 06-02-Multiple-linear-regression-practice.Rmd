@@ -366,8 +366,10 @@ MAE <- MAE(testdata2$medv,predict(model_trasf_term,testdata2_pred))
 print(c(R_sq, RMSE, MAE))
 ```
 
-### To do
-- Models comparisons in further and adjusting the final model by a loop   
+## Variable selection  
+
+[see here](https://rpubs.com/Daniel_He/1044963)
+
  
 
 

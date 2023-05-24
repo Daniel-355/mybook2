@@ -1404,3 +1404,10 @@ theme(
     panel.spacing = unit(0.3, "inch") 
   )
 ```
+
+### How to setup subscripts or superscripts
+
+[see here](https://rpubs.com/Daniel_He/1041883)
+
+## How to create advanced plots
+[see here](https://rpubs.com/Daniel_He/941386)
