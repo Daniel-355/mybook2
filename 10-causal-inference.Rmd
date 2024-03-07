@@ -52,5 +52,7 @@
 ## Confounding and effect measure modification
 [see here](https://rpubs.com/Daniel_He/966236)
 
+## Causal inference and associated regression
+[see here](https://rpubs.com/Daniel_He/1136360)
 
 

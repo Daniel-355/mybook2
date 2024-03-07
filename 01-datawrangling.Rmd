@@ -775,7 +775,13 @@ irisifelse
 str(irisifelse)
 ```
  
+
+
 ## How to creat table 1 with test
 
 [see here](https://rpubs.com/Daniel_He/1041833)
 
+
+## Imputing Missing Data with MICE
+
+[see here](https://rpubs.com/Daniel_He/1140881)

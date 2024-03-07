@@ -322,3 +322,12 @@ abline(res, col='red')
 ## Combine estimates by pooling rules
 
 [see here](https://rpubs.com/Daniel_He/1040979)
+
+
+## Simulations and Bootstrapping
+
+[see here](https://rpubs.com/Daniel_He/1128098)
+
+
+
+

@@ -1,0 +1,10 @@
+
+# Epidemiolgy 
+
+## Introduction 
+
+[see here](https://rpubs.com/Daniel_He/1137221)
+
+## Bias analysis and control IN R
+
+[see here](https://rpubs.com/Daniel_He/1141615)
