@@ -180,3 +180,16 @@ mutate(Sepal.Length2 = ifelse(Sepal.Length < 6 , "level1", ifelse(Sepal.Length <
 
 table(irisifelse$Sepal.Length2)
 ```
+
+
+
+
+## Central Limit Theorem
+
+[see here](https://rpubs.com/Daniel_He/1144699)
+
+## Common statistical distribution
+
+[see here](https://rpubs.com/Daniel_He/1143768)
+
+
