@@ -8,7 +8,7 @@
   <meta name="description" content="<p>This is a minimal example of using the bookdown package to write a book.
 The HTML output format for this example is bookdown::gitbook,
 set in the _output.yml file.</p>" />
-  <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
 
   <meta property="og:title" content="9 SASmarkdown | My Little Handbook" />
   <meta property="og:type" content="book" />
@@ -29,7 +29,7 @@ set in the _output.yml file.</p>" />
 <meta name="author" content="Daniel He" />
 
 
-<meta name="date" content="2023-05-23" />
+<meta name="date" content="2024-03-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -126,6 +126,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -172,6 +176,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.2.4" data-path="data-wrangling.html"><a href="data-wrangling.html#recode-and-generate-new-variables-then-value-label"><i class="fa fa-check"></i><b>1.2.4</b> Recode and generate new variables, then value label</a></li>
 </ul></li>
 <li class="chapter" data-level="1.3" data-path="data-wrangling.html"><a href="data-wrangling.html#how-to-creat-table-1-with-test"><i class="fa fa-check"></i><b>1.3</b> How to creat table 1 with test</a></li>
+<li class="chapter" data-level="1.4" data-path="data-wrangling.html"><a href="data-wrangling.html#imputing-missing-data-with-mice"><i class="fa fa-check"></i><b>1.4</b> Imputing Missing Data with MICE</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="machine-learning.html"><a href="machine-learning.html"><i class="fa fa-check"></i><b>2</b> Machine learning</a>
 <ul>
@@ -317,6 +322,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.1.19" data-path="basic-statistics.html"><a href="basic-statistics.html#value-and-variable-label"><i class="fa fa-check"></i><b>5.1.19</b> Value and variable label</a></li>
 <li class="chapter" data-level="5.1.20" data-path="basic-statistics.html"><a href="basic-statistics.html#recode-a-variable"><i class="fa fa-check"></i><b>5.1.20</b> Recode a variable</a></li>
 </ul></li>
+<li class="chapter" data-level="5.2" data-path="basic-statistics.html"><a href="basic-statistics.html#central-limit-theorem"><i class="fa fa-check"></i><b>5.2</b> Central Limit Theorem</a></li>
+<li class="chapter" data-level="5.3" data-path="basic-statistics.html"><a href="basic-statistics.html#common-statistical-distribution"><i class="fa fa-check"></i><b>5.3</b> Common statistical distribution</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="statistical-models.html"><a href="statistical-models.html"><i class="fa fa-check"></i><b>6</b> Statistical models</a>
 <ul>
@@ -521,7 +528,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.2.20" data-path="probability.html"><a href="probability.html#multiple-random-variables-plots"><i class="fa fa-check"></i><b>7.2.20</b> Multiple random variables plots</a></li>
 <li class="chapter" data-level="7.2.21" data-path="probability.html"><a href="probability.html#generate-a-circle-using-simulated-random-dots"><i class="fa fa-check"></i><b>7.2.21</b> Generate a circle using simulated random dots</a></li>
 <li class="chapter" data-level="7.2.22" data-path="probability.html"><a href="probability.html#expectation"><i class="fa fa-check"></i><b>7.2.22</b> Expectation</a></li>
-<li class="chapter" data-level="7.2.23" data-path="probability.html"><a href="probability.html#central-limit-theorem"><i class="fa fa-check"></i><b>7.2.23</b> Central Limit Theorem</a></li>
+<li class="chapter" data-level="7.2.23" data-path="probability.html"><a href="probability.html#central-limit-theorem-1"><i class="fa fa-check"></i><b>7.2.23</b> Central Limit Theorem</a></li>
 <li class="chapter" data-level="7.2.24" data-path="probability.html"><a href="probability.html#law-of-large-numbers"><i class="fa fa-check"></i><b>7.2.24</b> Law of large numbers</a></li>
 <li class="chapter" data-level="7.2.25" data-path="probability.html"><a href="probability.html#empirical-distribution"><i class="fa fa-check"></i><b>7.2.25</b> Empirical distribution</a></li>
 <li class="chapter" data-level="7.2.26" data-path="probability.html"><a href="probability.html#maximum-likelihood-estimate"><i class="fa fa-check"></i><b>7.2.26</b> Maximum likelihood estimate</a></li>
@@ -542,6 +549,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.3" data-path="algorithms.html"><a href="algorithms.html#markov-chain-monte-carlo"><i class="fa fa-check"></i><b>8.3</b> Markov chain Monte Carlo</a></li>
 <li class="chapter" data-level="8.4" data-path="algorithms.html"><a href="algorithms.html#expectation-maximum"><i class="fa fa-check"></i><b>8.4</b> Expectation maximum</a></li>
 <li class="chapter" data-level="8.5" data-path="algorithms.html"><a href="algorithms.html#combine-estimates-by-pooling-rules"><i class="fa fa-check"></i><b>8.5</b> Combine estimates by pooling rules</a></li>
+<li class="chapter" data-level="8.6" data-path="algorithms.html"><a href="algorithms.html#simulations-and-bootstrapping"><i class="fa fa-check"></i><b>8.6</b> Simulations and Bootstrapping</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="sasmarkdown.html"><a href="sasmarkdown.html"><i class="fa fa-check"></i><b>9</b> SASmarkdown</a>
 <ul>
@@ -619,31 +627,64 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="10.5" data-path="causal-inference.html"><a href="causal-inference.html#instrumental-variable-regression"><i class="fa fa-check"></i><b>10.5</b> Instrumental variable regression</a></li>
 <li class="chapter" data-level="10.6" data-path="causal-inference.html"><a href="causal-inference.html#mediation-analysis"><i class="fa fa-check"></i><b>10.6</b> Mediation analysis</a></li>
 <li class="chapter" data-level="10.7" data-path="causal-inference.html"><a href="causal-inference.html#confounding-and-effect-measure-modification"><i class="fa fa-check"></i><b>10.7</b> Confounding and effect measure modification</a></li>
+<li class="chapter" data-level="10.8" data-path="causal-inference.html"><a href="causal-inference.html#causal-inference-and-associated-regression"><i class="fa fa-check"></i><b>10.8</b> Causal inference and associated regression</a></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="miscellaneous.html"><a href="miscellaneous.html"><i class="fa fa-check"></i><b>11</b> Miscellaneous</a>
+<li class="chapter" data-level="11" data-path="clinical-trial.html"><a href="clinical-trial.html"><i class="fa fa-check"></i><b>11</b> Clinical Trial</a>
 <ul>
-<li class="chapter" data-level="11.1" data-path="miscellaneous.html"><a href="miscellaneous.html#linear-algebra"><i class="fa fa-check"></i><b>11.1</b> Linear algebra</a>
+<li class="chapter" data-level="11.1" data-path="clinical-trial.html"><a href="clinical-trial.html#statistics-in-clinical-trial"><i class="fa fa-check"></i><b>11.1</b> Statistics in clinical trial</a>
 <ul>
-<li class="chapter" data-level="11.1.1" data-path="miscellaneous.html"><a href="miscellaneous.html#matrix-basics"><i class="fa fa-check"></i><b>11.1.1</b> Matrix basics</a></li>
-<li class="chapter" data-level="11.1.2" data-path="miscellaneous.html"><a href="miscellaneous.html#operations"><i class="fa fa-check"></i><b>11.1.2</b> Operations</a></li>
-<li class="chapter" data-level="11.1.3" data-path="miscellaneous.html"><a href="miscellaneous.html#advanced-operations"><i class="fa fa-check"></i><b>11.1.3</b> Advanced operations</a></li>
-<li class="chapter" data-level="11.1.4" data-path="miscellaneous.html"><a href="miscellaneous.html#solve-linear-equations"><i class="fa fa-check"></i><b>11.1.4</b> Solve linear equations</a></li>
-<li class="chapter" data-level="11.1.5" data-path="miscellaneous.html"><a href="miscellaneous.html#summary"><i class="fa fa-check"></i><b>11.1.5</b> Summary</a></li>
+<li class="chapter" data-level="11.1.1" data-path="clinical-trial.html"><a href="clinical-trial.html#sample-size-interim-data-reports-and-randomization-of-assignment"><i class="fa fa-check"></i><b>11.1.1</b> Sample size, interim data reports and randomization of assignment</a></li>
 </ul></li>
-<li class="chapter" data-level="11.2" data-path="miscellaneous.html"><a href="miscellaneous.html#calculus"><i class="fa fa-check"></i><b>11.2</b> Calculus</a>
-<ul>
-<li class="chapter" data-level="11.2.1" data-path="miscellaneous.html"><a href="miscellaneous.html#derivation-1"><i class="fa fa-check"></i><b>11.2.1</b> Derivation</a></li>
-<li class="chapter" data-level="11.2.2" data-path="miscellaneous.html"><a href="miscellaneous.html#integration"><i class="fa fa-check"></i><b>11.2.2</b> Integration</a></li>
 </ul></li>
-<li class="chapter" data-level="11.3" data-path="miscellaneous.html"><a href="miscellaneous.html#sample-size-calculation"><i class="fa fa-check"></i><b>11.3</b> Sample size calculation</a></li>
-<li class="chapter" data-level="11.4" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-evaluate-z-score"><i class="fa fa-check"></i><b>11.4</b> How to evaluate z score</a></li>
-<li class="chapter" data-level="11.5" data-path="miscellaneous.html"><a href="miscellaneous.html#mathmatic-coupling"><i class="fa fa-check"></i><b>11.5</b> Mathmatic coupling</a></li>
-<li class="chapter" data-level="11.6" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-create-a-bookdown"><i class="fa fa-check"></i><b>11.6</b> How to create a bookdown</a></li>
-<li class="chapter" data-level="11.7" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-create-a-blogdown"><i class="fa fa-check"></i><b>11.7</b> How to create a blogdown</a></li>
-<li class="chapter" data-level="11.8" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-install-tensorflow-and-keras"><i class="fa fa-check"></i><b>11.8</b> How to install tensorflow and keras</a></li>
-<li class="chapter" data-level="11.9" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-use-github-in-team"><i class="fa fa-check"></i><b>11.9</b> How to use github in team</a></li>
-<li class="chapter" data-level="11.10" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-insert-picture-indrectly-in-markdown"><i class="fa fa-check"></i><b>11.10</b> How to insert picture indrectly in markdown</a></li>
-<li class="chapter" data-level="11.11" data-path="miscellaneous.html"><a href="miscellaneous.html#r-cheatsheets"><i class="fa fa-check"></i><b>11.11</b> R cheatsheets</a></li>
+<li class="chapter" data-level="12" data-path="common-statistical-models.html"><a href="common-statistical-models.html"><i class="fa fa-check"></i><b>12</b> Common statistical models</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="common-statistical-models.html"><a href="common-statistical-models.html#survival-analysis"><i class="fa fa-check"></i><b>12.1</b> Survival analysis</a></li>
+<li class="chapter" data-level="12.2" data-path="common-statistical-models.html"><a href="common-statistical-models.html#logistical-regression"><i class="fa fa-check"></i><b>12.2</b> Logistical regression</a></li>
+<li class="chapter" data-level="12.3" data-path="common-statistical-models.html"><a href="common-statistical-models.html#poisson-regression"><i class="fa fa-check"></i><b>12.3</b> Poisson regression</a></li>
+<li class="chapter" data-level="12.4" data-path="common-statistical-models.html"><a href="common-statistical-models.html#quantile-regression"><i class="fa fa-check"></i><b>12.4</b> Quantile regression</a></li>
+<li class="chapter" data-level="12.5" data-path="common-statistical-models.html"><a href="common-statistical-models.html#principle-components-analysis"><i class="fa fa-check"></i><b>12.5</b> Principle components analysis</a></li>
+<li class="chapter" data-level="12.6" data-path="common-statistical-models.html"><a href="common-statistical-models.html#which-covariates-should-be-adjusted"><i class="fa fa-check"></i><b>12.6</b> Which covariates should be adjusted</a></li>
+<li class="chapter" data-level="12.7" data-path="common-statistical-models.html"><a href="common-statistical-models.html#variable-selection-1"><i class="fa fa-check"></i><b>12.7</b> Variable selection</a></li>
+<li class="chapter" data-level="12.8" data-path="common-statistical-models.html"><a href="common-statistical-models.html#fit-regression-model-with-a-fan-shaped-relation"><i class="fa fa-check"></i><b>12.8</b> Fit regression model with a fan-shaped relation</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="bayesian-statistics.html"><a href="bayesian-statistics.html"><i class="fa fa-check"></i><b>13</b> Bayesian statistics</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="bayesian-statistics.html"><a href="bayesian-statistics.html#bayesian-inference-in-r"><i class="fa fa-check"></i><b>13.1</b> Bayesian Inference in R</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="epidemiolgy.html"><a href="epidemiolgy.html"><i class="fa fa-check"></i><b>14</b> Epidemiolgy</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="epidemiolgy.html"><a href="epidemiolgy.html#introduction"><i class="fa fa-check"></i><b>14.1</b> Introduction</a></li>
+<li class="chapter" data-level="14.2" data-path="epidemiolgy.html"><a href="epidemiolgy.html#bias-analysis-and-control-in-r"><i class="fa fa-check"></i><b>14.2</b> Bias analysis and control IN R</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="bioinformation.html"><a href="bioinformation.html"><i class="fa fa-check"></i><b>15</b> Bioinformation</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="bioinformation.html"><a href="bioinformation.html#sequence-analysis"><i class="fa fa-check"></i><b>15.1</b> Sequence Analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="common-issues-in-statistics.html"><a href="common-issues-in-statistics.html"><i class="fa fa-check"></i><b>16</b> Common issues in Statistics</a></li>
+<li class="chapter" data-level="17" data-path="miscellaneous.html"><a href="miscellaneous.html"><i class="fa fa-check"></i><b>17</b> Miscellaneous</a>
+<ul>
+<li class="chapter" data-level="17.1" data-path="miscellaneous.html"><a href="miscellaneous.html#linear-algebra"><i class="fa fa-check"></i><b>17.1</b> Linear algebra</a>
+<ul>
+<li class="chapter" data-level="17.1.1" data-path="miscellaneous.html"><a href="miscellaneous.html#matrix-basics"><i class="fa fa-check"></i><b>17.1.1</b> Matrix basics</a></li>
+<li class="chapter" data-level="17.1.2" data-path="miscellaneous.html"><a href="miscellaneous.html#operations"><i class="fa fa-check"></i><b>17.1.2</b> Operations</a></li>
+<li class="chapter" data-level="17.1.3" data-path="miscellaneous.html"><a href="miscellaneous.html#advanced-operations"><i class="fa fa-check"></i><b>17.1.3</b> Advanced operations</a></li>
+<li class="chapter" data-level="17.1.4" data-path="miscellaneous.html"><a href="miscellaneous.html#solve-linear-equations"><i class="fa fa-check"></i><b>17.1.4</b> Solve linear equations</a></li>
+<li class="chapter" data-level="17.1.5" data-path="miscellaneous.html"><a href="miscellaneous.html#summary"><i class="fa fa-check"></i><b>17.1.5</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="17.2" data-path="miscellaneous.html"><a href="miscellaneous.html#calculus"><i class="fa fa-check"></i><b>17.2</b> Calculus</a>
+<ul>
+<li class="chapter" data-level="17.2.1" data-path="miscellaneous.html"><a href="miscellaneous.html#derivation-1"><i class="fa fa-check"></i><b>17.2.1</b> Derivation</a></li>
+<li class="chapter" data-level="17.2.2" data-path="miscellaneous.html"><a href="miscellaneous.html#integration"><i class="fa fa-check"></i><b>17.2.2</b> Integration</a></li>
+</ul></li>
+<li class="chapter" data-level="17.3" data-path="miscellaneous.html"><a href="miscellaneous.html#sample-size-calculation"><i class="fa fa-check"></i><b>17.3</b> Sample size calculation</a></li>
+<li class="chapter" data-level="17.4" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-evaluate-z-score"><i class="fa fa-check"></i><b>17.4</b> How to evaluate z score</a></li>
+<li class="chapter" data-level="17.5" data-path="miscellaneous.html"><a href="miscellaneous.html#mathmatic-coupling"><i class="fa fa-check"></i><b>17.5</b> Mathmatic coupling</a></li>
+<li class="chapter" data-level="17.6" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-create-a-bookdown"><i class="fa fa-check"></i><b>17.6</b> How to create a bookdown</a></li>
+<li class="chapter" data-level="17.7" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-create-a-blogdown"><i class="fa fa-check"></i><b>17.7</b> How to create a blogdown</a></li>
+<li class="chapter" data-level="17.8" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-install-tensorflow-and-keras"><i class="fa fa-check"></i><b>17.8</b> How to install tensorflow and keras</a></li>
+<li class="chapter" data-level="17.9" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-use-github-in-team"><i class="fa fa-check"></i><b>17.9</b> How to use github in team</a></li>
+<li class="chapter" data-level="17.10" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-insert-picture-indrectly-in-markdown"><i class="fa fa-check"></i><b>17.10</b> How to insert picture indrectly in markdown</a></li>
+<li class="chapter" data-level="17.11" data-path="miscellaneous.html"><a href="miscellaneous.html#r-cheatsheets"><i class="fa fa-check"></i><b>17.11</b> R cheatsheets</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -671,15 +712,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">9.1</span> How to install sasmarkdown<a href="sasmarkdown.html#how-to-install-sasmarkdown" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><a href="https://www.ssc.wisc.edu/~hemken/SASworkshops/Markdown/SASmdpackage.html">sasmarkdown</a></p>
 <p><code>Use an Engine</code></p>
-<div class="sourceCode" id="cb1284"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1284-1"><a href="sasmarkdown.html#cb1284-1" aria-hidden="true" tabindex="-1"></a><span class="co"># knitr::opts_chunk$set(echo = TRUE)</span></span>
-<span id="cb1284-2"><a href="sasmarkdown.html#cb1284-2" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(SASmarkdown)</span></code></pre></div>
+<div class="sourceCode" id="cb1290"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1290-1"><a href="sasmarkdown.html#cb1290-1" aria-hidden="true" tabindex="-1"></a><span class="co"># knitr::opts_chunk$set(echo = TRUE)</span></span>
+<span id="cb1290-2"><a href="sasmarkdown.html#cb1290-2" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(SASmarkdown)</span></code></pre></div>
 <pre><code>## Loading required package: SASmarkdown</code></pre>
 <pre><code>## SAS found at C:/Program Files/SASHome/SASFoundation/9.4/sas.exe</code></pre>
 <pre><code>## SAS engines are now ready to use.</code></pre>
-<div class="sourceCode" id="cb1288"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1288-1"><a href="sasmarkdown.html#cb1288-1" aria-hidden="true" tabindex="-1"></a>saspath <span class="ot">&lt;-</span> <span class="st">&quot;C:/Program Files/SASHome/SASFoundation/9.4/sas.exe&quot;</span></span>
-<span id="cb1288-2"><a href="sasmarkdown.html#cb1288-2" aria-hidden="true" tabindex="-1"></a>sasopts <span class="ot">&lt;-</span> <span class="st">&quot;-nosplash -ls 75&quot;</span></span>
-<span id="cb1288-3"><a href="sasmarkdown.html#cb1288-3" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">engine=</span><span class="st">&#39;sashtml&#39;</span>, <span class="at">engine.path=</span>saspath,</span>
-<span id="cb1288-4"><a href="sasmarkdown.html#cb1288-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">engine.opts=</span>sasopts, <span class="at">comment=</span><span class="st">&quot;&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1294"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1294-1"><a href="sasmarkdown.html#cb1294-1" aria-hidden="true" tabindex="-1"></a>saspath <span class="ot">&lt;-</span> <span class="st">&quot;C:/Program Files/SASHome/SASFoundation/9.4/sas.exe&quot;</span></span>
+<span id="cb1294-2"><a href="sasmarkdown.html#cb1294-2" aria-hidden="true" tabindex="-1"></a>sasopts <span class="ot">&lt;-</span> <span class="st">&quot;-nosplash -ls 75&quot;</span></span>
+<span id="cb1294-3"><a href="sasmarkdown.html#cb1294-3" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">engine=</span><span class="st">&#39;sashtml&#39;</span>, <span class="at">engine.path=</span>saspath,</span>
+<span id="cb1294-4"><a href="sasmarkdown.html#cb1294-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">engine.opts=</span>sasopts, <span class="at">comment=</span><span class="st">&quot;&quot;</span>)</span></code></pre></div>
 </div>
 <div id="common-statements" class="section level2 hasAnchor" number="9.2">
 <h2><span class="header-section-number">9.2</span> Common statements<a href="sasmarkdown.html#common-statements" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -790,8 +831,8 @@ run;
   Data Set Name        SASHELP.CLASS             Observations          19
   Member Type          DATA                      Variables             5 
   Engine               V9                        Indexes               0 
-  Created              09/06/2017 22:55:32       Observation Length    40
-  Last Modified        09/06/2017 22:55:32       Deleted Observations  0 
+  Created              09/06/2017 21:55:32       Observation Length    40
+  Last Modified        09/06/2017 21:55:32       Deleted Observations  0 
   Protection                                     Compressed            NO
   Data Set Type                                  Sorted                NO
   Label                Student Data                                      
@@ -1097,13 +1138,17 @@ run;</code></pre>
 <p><code>multiple variables</code></p>
 <pre class="sas"><code>2          /*rename*/
 3          data AAA;
+WARNING: The Base SAS Software product with which DATASTEP is associated 
+         will be expiring soon, and is currently in warning mode to 
+         indicate this upcoming expiration. Please run PROC SETINIT to 
+         obtain more information on your warning period.
 4           set sashelp.class;
 5          run;
 
 NOTE: There were 19 observations read from the data set SASHELP.CLASS.
 NOTE: The data set WORK.AAA has 19 observations and 5 variables.
 NOTE: DATA statement used (Total process time):
-      real time           0.01 seconds
+      real time           0.02 seconds
       cpu time            0.01 seconds
       
 
@@ -1117,8 +1162,8 @@ NOTE: DATA statement used (Total process time):
 13                   where libname = &#39;WORK&#39; and memname = &#39;AAA&#39;;
 14         quit;
 NOTE: PROCEDURE SQL used (Total process time):
-      real time           0.00 seconds
-      cpu time            0.01 seconds
+      real time           0.05 seconds
+      cpu time            0.03 seconds
       
 
 15         %put &amp;lis;
@@ -1136,8 +1181,8 @@ NOTE: Renaming variable Weight to Weight_new.
 
 NOTE: MODIFY was successful for WORK.AAA.DATA.
 NOTE: PROCEDURE DATASETS used (Total process time):
-      real time           0.02 seconds
-      cpu time            0.01 seconds
+      real time           0.04 seconds
+      cpu time            0.04 seconds
       
 
 21         
@@ -1249,8 +1294,8 @@ run;</code></pre>
 Data Set Name        WORK.ABC                      Observations          19
 Member Type          DATA                          Variables             6 
 Engine               V9                            Indexes               0 
-Created              05/23/2023 19:24:32           Observation Length    48
-Last Modified        05/23/2023 19:24:32           Deleted Observations  0 
+Created              03/07/2024 14:23:31           Observation Length    48
+Last Modified        03/07/2024 14:23:31           Deleted Observations  0 
 Protection                                         Compressed            NO
 Data Set Type                                      Sorted                NO
 Label                                                                      
@@ -1266,9 +1311,8 @@ Max Obs per Page            1361
 Obs in First Data Page      19                                             
 Number of Data Set Repairs  0                                              
 ExtendObsCounter            YES                                            
-Filename                    C:\Users\hed2\AppData\Local\Temp\1\SAS         
-                            Temporary                                      
-                            Files\_TD25212_HDW02234493_\abc.sas7bdat       
+Filename                    C:\Users\hed2\AppData\Local\Temp\SAS Temporary 
+                            Files\_TD28480_HDW02234493_\abc.sas7bdat       
 Release Created             9.0401M5                                       
 Host Created                X64_10PRO                                      
 Owner Name                  NIH\hed2                                       
@@ -1302,8 +1346,8 @@ run;
 Data Set Name        WORK.ABC                      Observations          19
 Member Type          DATA                          Variables             6 
 Engine               V9                            Indexes               0 
-Created              05/23/2023 19:24:32           Observation Length    48
-Last Modified        05/23/2023 19:24:32           Deleted Observations  0 
+Created              03/07/2024 14:23:32           Observation Length    48
+Last Modified        03/07/2024 14:23:32           Deleted Observations  0 
 Protection                                         Compressed            NO
 Data Set Type                                      Sorted                NO
 Label                                                                      
@@ -1319,9 +1363,8 @@ Max Obs per Page            1361
 Obs in First Data Page      19                                             
 Number of Data Set Repairs  0                                              
 ExtendObsCounter            YES                                            
-Filename                    C:\Users\hed2\AppData\Local\Temp\1\SAS         
-                            Temporary                                      
-                            Files\_TD4192_HDW02234493_\abc.sas7bdat        
+Filename                    C:\Users\hed2\AppData\Local\Temp\SAS Temporary 
+                            Files\_TD5704_HDW02234493_\abc.sas7bdat        
 Release Created             9.0401M5                                       
 Host Created                X64_10PRO                                      
 Owner Name                  NIH\hed2                                       
@@ -1377,16 +1420,16 @@ proc print data=ab (obs=10);
 run;</code></pre>
 <pre><code>       Obs    Name       Sex    Age    Height    Weight       num
 
-         1    Alfred      M      14     69.0      112.5     0.26541
-         2    Alice       F      13     56.5       84.0    -0.71603
-         3    Barbara     F      13     65.3       98.0    -0.67857
-         4    Carol       F      14     62.8      102.5    -1.40224
-         5    Henry       M      14     63.5      102.5     0.11245
-         6    James       M      12     57.3       83.0    -0.26773
-         7    Jane        F      12     59.8       84.5    -0.93113
-         8    Janet       F      15     62.5      112.5     0.94938
-         9    Jeffrey     M      13     62.5       84.0    -1.06378
-        10    John        M      12     59.0       99.5     0.01592</code></pre>
+         1    Alfred      M      14     69.0      112.5    -0.02030
+         2    Alice       F      13     56.5       84.0     1.07512
+         3    Barbara     F      13     65.3       98.0     1.33495
+         4    Carol       F      14     62.8      102.5    -0.03750
+         5    Henry       M      14     63.5      102.5     0.58348
+         6    James       M      12     57.3       83.0     0.05072
+         7    Jane        F      12     59.8       84.5    -0.49473
+         8    Janet       F      15     62.5      112.5     0.89532
+         9    Jeffrey     M      13     62.5       84.0    -0.38729
+        10    John        M      12     59.0       99.5    -1.04139</code></pre>
 </div>
 <div id="combine-two-texts" class="section level3 hasAnchor" number="9.2.15">
 <h3><span class="header-section-number">9.2.15</span> combine two texts<a href="sasmarkdown.html#combine-two-texts" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -1534,12 +1577,16 @@ run;</code></pre>
 18         
 19         /*use macro to merge all descriptive stats */
 20         data masterresult2 ;
+WARNING: The Base SAS Software product with which DATASTEP is associated 
+         will be expiring soon, and is currently in warning mode to 
+         indicate this upcoming expiration. Please run PROC SETINIT to 
+         obtain more information on your warning period.
 21         set _null_;
 22         run;
 
 NOTE: The data set WORK.MASTERRESULT2 has 0 observations and 0 variables.
 NOTE: DATA statement used (Total process time):
-      real time           0.01 seconds
+      real time           0.03 seconds
       cpu time            0.01 seconds
       
 
@@ -1564,15 +1611,15 @@ NOTE: The data set WORK.RESULT2 has 2 observations and 12 variables.
 NOTE: There were 19 observations read from the data set SASHELP.CLASS.
 NOTE: The PROCEDURE MEANS printed page 1.
 NOTE: PROCEDURE MEANS used (Total process time):
-      real time           0.03 seconds
-      cpu time            0.03 seconds
+      real time           0.18 seconds
+      cpu time            0.10 seconds
       
 
 NOTE: There were 0 observations read from the data set WORK.MASTERRESULT2.
 NOTE: There were 2 observations read from the data set WORK.RESULT2.
 NOTE: The data set WORK.MASTERRESULT2 has 2 observations and 12 variables.
 NOTE: DATA statement used (Total process time):
-      real time           0.00 seconds
+      real time           0.01 seconds
       cpu time            0.01 seconds
       
 
@@ -1580,7 +1627,7 @@ NOTE: The data set WORK.RESULT2 has 2 observations and 12 variables.
 NOTE: There were 19 observations read from the data set SASHELP.CLASS.
 NOTE: The PROCEDURE MEANS printed page 2.
 NOTE: PROCEDURE MEANS used (Total process time):
-      real time           0.01 seconds
+      real time           0.03 seconds
       cpu time            0.01 seconds
       
 
@@ -1590,16 +1637,16 @@ NOTE: There were 2 observations read from the data set WORK.MASTERRESULT2.
 NOTE: There were 2 observations read from the data set WORK.RESULT2.
 NOTE: The data set WORK.MASTERRESULT2 has 4 observations and 12 variables.
 NOTE: DATA statement used (Total process time):
-      real time           0.00 seconds
-      cpu time            0.00 seconds
+      real time           0.01 seconds
+      cpu time            0.01 seconds
       
 
 NOTE: The data set WORK.RESULT2 has 2 observations and 12 variables.
 NOTE: There were 19 observations read from the data set SASHELP.CLASS.
 NOTE: The PROCEDURE MEANS printed page 3.
 NOTE: PROCEDURE MEANS used (Total process time):
-      real time           0.01 seconds
-      cpu time            0.01 seconds
+      real time           0.03 seconds
+      cpu time            0.03 seconds
       
 
 WARNING: Multiple lengths were specified for the variable Variable by 
@@ -1608,7 +1655,7 @@ NOTE: There were 4 observations read from the data set WORK.MASTERRESULT2.
 NOTE: There were 2 observations read from the data set WORK.RESULT2.
 NOTE: The data set WORK.MASTERRESULT2 has 6 observations and 12 variables.
 NOTE: DATA statement used (Total process time):
-      real time           0.00 seconds
+      real time           0.01 seconds
       cpu time            0.01 seconds
       
 
@@ -1803,13 +1850,17 @@ proc print data=new (obs=3);run; </code></pre>
 <h3><span class="header-section-number">9.2.24</span> merge data sets<a href="sasmarkdown.html#merge-data-sets" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><code>right, left join</code></p>
 <pre class="sas"><code>2          data class2;
+WARNING: The Base SAS Software product with which DATASTEP is associated 
+         will be expiring soon, and is currently in warning mode to 
+         indicate this upcoming expiration. Please run PROC SETINIT to 
+         obtain more information on your warning period.
 3          input name $   score;
 4          datalines;
 
 NOTE: The data set WORK.CLASS2 has 3 observations and 2 variables.
 NOTE: DATA statement used (Total process time):
-      real time           0.01 seconds
-      cpu time            0.01 seconds
+      real time           0.02 seconds
+      cpu time            0.03 seconds
       
 
 8          ;
@@ -1826,8 +1877,8 @@ NOTE: Table WORK.CLASS_C created, with 19 rows and 6 columns.
 
 17         quit;
 NOTE: PROCEDURE SQL used (Total process time):
-      real time           0.01 seconds
-      cpu time            0.01 seconds
+      real time           0.03 seconds
+      cpu time            0.04 seconds
       
 
 18         
@@ -1837,8 +1888,8 @@ NOTE: PROCEDURE SQL used (Total process time):
 NOTE: There were 19 observations read from the data set WORK.CLASS_C.
 NOTE: The PROCEDURE PRINT printed page 1.
 NOTE: PROCEDURE PRINT used (Total process time):
-      real time           0.02 seconds
-      cpu time            0.03 seconds
+      real time           0.04 seconds
+      cpu time            0.04 seconds
       
 
 21          
@@ -1916,13 +1967,17 @@ NOTE: PROCEDURE PRINT used (Total process time):
           19                 .      M      15     66.5      112.0</code></pre>
 <p><code>full join</code></p>
 <pre class="sas"><code>2          data class2;
+WARNING: The Base SAS Software product with which DATASTEP is associated 
+         will be expiring soon, and is currently in warning mode to 
+         indicate this upcoming expiration. Please run PROC SETINIT to 
+         obtain more information on your warning period.
 3          input name $   score;
 4          datalines;
 
 NOTE: The data set WORK.CLASS2 has 3 observations and 2 variables.
 NOTE: DATA statement used (Total process time):
-      real time           0.01 seconds
-      cpu time            0.01 seconds
+      real time           0.04 seconds
+      cpu time            0.03 seconds
       
 
 8          ;
@@ -1939,8 +1994,8 @@ NOTE: Table WORK.CLASS_E created, with 20 rows and 6 columns.
 
 17         quit;
 NOTE: PROCEDURE SQL used (Total process time):
-      real time           0.01 seconds
-      cpu time            0.01 seconds
+      real time           0.04 seconds
+      cpu time            0.04 seconds
       
 
 18         
@@ -1950,8 +2005,8 @@ NOTE: PROCEDURE SQL used (Total process time):
 NOTE: There were 20 observations read from the data set WORK.CLASS_E.
 NOTE: The PROCEDURE PRINT printed page 1.
 NOTE: PROCEDURE PRINT used (Total process time):
-      real time           0.02 seconds
-      cpu time            0.03 seconds
+      real time           0.06 seconds
+      cpu time            0.04 seconds
       
 
 21         </code></pre>
@@ -2020,12 +2075,16 @@ run;
           20    William     M      15     66.5      112.0       . </code></pre>
 <p><code>inner join</code></p>
 <pre class="sas"><code>2          data class2;
+WARNING: The Base SAS Software product with which DATASTEP is associated 
+         will be expiring soon, and is currently in warning mode to 
+         indicate this upcoming expiration. Please run PROC SETINIT to 
+         obtain more information on your warning period.
 3          input name $   score;
 4          datalines;
 
 NOTE: The data set WORK.CLASS2 has 3 observations and 2 variables.
 NOTE: DATA statement used (Total process time):
-      real time           0.01 seconds
+      real time           0.02 seconds
       cpu time            0.01 seconds
       
 
@@ -2043,8 +2102,8 @@ NOTE: Table WORK.CLASS_E created, with 2 rows and 6 columns.
 
 17         quit;
 NOTE: PROCEDURE SQL used (Total process time):
-      real time           0.01 seconds
-      cpu time            0.01 seconds
+      real time           0.03 seconds
+      cpu time            0.03 seconds
       
 
 18         
@@ -2054,8 +2113,8 @@ NOTE: PROCEDURE SQL used (Total process time):
 NOTE: There were 2 observations read from the data set WORK.CLASS_E.
 NOTE: The PROCEDURE PRINT printed page 1.
 NOTE: PROCEDURE PRINT used (Total process time):
-      real time           0.02 seconds
-      cpu time            0.01 seconds
+      real time           0.03 seconds
+      cpu time            0.04 seconds
       
 
 21         </code></pre>
@@ -2065,13 +2124,17 @@ NOTE: PROCEDURE PRINT used (Total process time):
           2     Alice      F      13     56.5       84.0      89 </code></pre>
 <p><code>minus join</code></p>
 <pre class="sas"><code>2          data class2;
+WARNING: The Base SAS Software product with which DATASTEP is associated 
+         will be expiring soon, and is currently in warning mode to 
+         indicate this upcoming expiration. Please run PROC SETINIT to 
+         obtain more information on your warning period.
 3          input name $   score;
 4          datalines;
 
 NOTE: The data set WORK.CLASS2 has 3 observations and 2 variables.
 NOTE: DATA statement used (Total process time):
-      real time           0.01 seconds
-      cpu time            0.01 seconds
+      real time           0.03 seconds
+      cpu time            0.03 seconds
       
 
 8          ;
@@ -2089,8 +2152,8 @@ NOTE: Table WORK.CLASS_E created, with 17 rows and 6 columns.
 
 18         quit;
 NOTE: PROCEDURE SQL used (Total process time):
-      real time           0.01 seconds
-      cpu time            0.01 seconds
+      real time           0.03 seconds
+      cpu time            0.03 seconds
       
 
 19         
@@ -2100,8 +2163,8 @@ NOTE: PROCEDURE SQL used (Total process time):
 NOTE: There were 17 observations read from the data set WORK.CLASS_E.
 NOTE: The PROCEDURE PRINT printed page 1.
 NOTE: PROCEDURE PRINT used (Total process time):
-      real time           0.02 seconds
-      cpu time            0.01 seconds
+      real time           0.04 seconds
+      cpu time            0.03 seconds
       
 
 22         
@@ -2245,14 +2308,18 @@ Run;</code></pre>
 <h3><span class="header-section-number">9.3.1</span> Create a macro variable<a href="sasmarkdown.html#create-a-macro-variable" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <pre class="sas"><code>2          
 3          /*print mean of a variable to log in SAS*/
+WARNING: The Base SAS Software product with which SQL is associated will 
+         be expiring soon, and is currently in warning mode to indicate 
+         this upcoming expiration. Please run PROC SETINIT to obtain more 
+         information on your warning period.
 4          proc sql noprint;
 5          select  std(age) format=best32.
 6             into :age_mean
 7             from sashelp.class;
 8          quit;
 NOTE: PROCEDURE SQL used (Total process time):
-      real time           0.01 seconds
-      cpu time            0.01 seconds
+      real time           0.02 seconds
+      cpu time            0.03 seconds
       
 
 9          
@@ -2424,13 +2491,17 @@ Run;</code></pre>
 18         
 19         /*use macro to merge all descriptive stats */
 20         data masterresult2 ;
+WARNING: The Base SAS Software product with which DATASTEP is associated 
+         will be expiring soon, and is currently in warning mode to 
+         indicate this upcoming expiration. Please run PROC SETINIT to 
+         obtain more information on your warning period.
 21         set _null_;
 22         run;
 
 NOTE: The data set WORK.MASTERRESULT2 has 0 observations and 0 variables.
 NOTE: DATA statement used (Total process time):
-      real time           0.01 seconds
-      cpu time            0.00 seconds
+      real time           0.02 seconds
+      cpu time            0.03 seconds
       
 
 23         
@@ -2454,24 +2525,24 @@ NOTE: The data set WORK.RESULT2 has 2 observations and 12 variables.
 NOTE: There were 19 observations read from the data set SASHELP.CLASS.
 NOTE: The PROCEDURE MEANS printed page 1.
 NOTE: PROCEDURE MEANS used (Total process time):
-      real time           0.04 seconds
-      cpu time            0.04 seconds
+      real time           0.07 seconds
+      cpu time            0.07 seconds
       
 
 NOTE: There were 0 observations read from the data set WORK.MASTERRESULT2.
 NOTE: There were 2 observations read from the data set WORK.RESULT2.
 NOTE: The data set WORK.MASTERRESULT2 has 2 observations and 12 variables.
 NOTE: DATA statement used (Total process time):
-      real time           0.00 seconds
-      cpu time            0.00 seconds
+      real time           0.01 seconds
+      cpu time            0.01 seconds
       
 
 NOTE: The data set WORK.RESULT2 has 2 observations and 12 variables.
 NOTE: There were 19 observations read from the data set SASHELP.CLASS.
 NOTE: The PROCEDURE MEANS printed page 2.
 NOTE: PROCEDURE MEANS used (Total process time):
-      real time           0.01 seconds
-      cpu time            0.01 seconds
+      real time           0.02 seconds
+      cpu time            0.03 seconds
       
 
 WARNING: Multiple lengths were specified for the variable Variable by 
@@ -2480,7 +2551,7 @@ NOTE: There were 2 observations read from the data set WORK.MASTERRESULT2.
 NOTE: There were 2 observations read from the data set WORK.RESULT2.
 NOTE: The data set WORK.MASTERRESULT2 has 4 observations and 12 variables.
 NOTE: DATA statement used (Total process time):
-      real time           0.00 seconds
+      real time           0.01 seconds
       cpu time            0.00 seconds
       
 
@@ -2498,7 +2569,7 @@ NOTE: There were 4 observations read from the data set WORK.MASTERRESULT2.
 NOTE: There were 2 observations read from the data set WORK.RESULT2.
 NOTE: The data set WORK.MASTERRESULT2 has 6 observations and 12 variables.
 NOTE: DATA statement used (Total process time):
-      real time           0.00 seconds
+      real time           0.01 seconds
       cpu time            0.01 seconds
       
 
@@ -2855,7 +2926,7 @@ run;</code></pre>
 |--------------------------------------------------------------------------
 |
 |START           |END             |LABEL  (VER. V7|V8
-23MAY2023:19:24:51)|
+07MAR2024:14:24:10)|
 |----------------+----------------+----------------------------------------
 |
 |F               |F               |Female_new

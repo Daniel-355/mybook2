@@ -4,13 +4,13 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>11 Miscellaneous | My Little Handbook</title>
+  <title>17 Miscellaneous | My Little Handbook</title>
   <meta name="description" content="<p>This is a minimal example of using the bookdown package to write a book.
 The HTML output format for this example is bookdown::gitbook,
 set in the _output.yml file.</p>" />
-  <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="11 Miscellaneous | My Little Handbook" />
+  <meta property="og:title" content="17 Miscellaneous | My Little Handbook" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="<p>This is a minimal example of using the bookdown package to write a book.
@@ -19,7 +19,7 @@ set in the _output.yml file.</p>" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="11 Miscellaneous | My Little Handbook" />
+  <meta name="twitter:title" content="17 Miscellaneous | My Little Handbook" />
   
   <meta name="twitter:description" content="<p>This is a minimal example of using the bookdown package to write a book.
 The HTML output format for this example is bookdown::gitbook,
@@ -29,14 +29,14 @@ set in the _output.yml file.</p>" />
 <meta name="author" content="Daniel He" />
 
 
-<meta name="date" content="2023-05-23" />
+<meta name="date" content="2024-03-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="causal-inference.html"/>
+<link rel="prev" href="common-issues-in-statistics.html"/>
 
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -126,6 +126,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -172,6 +176,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.2.4" data-path="data-wrangling.html"><a href="data-wrangling.html#recode-and-generate-new-variables-then-value-label"><i class="fa fa-check"></i><b>1.2.4</b> Recode and generate new variables, then value label</a></li>
 </ul></li>
 <li class="chapter" data-level="1.3" data-path="data-wrangling.html"><a href="data-wrangling.html#how-to-creat-table-1-with-test"><i class="fa fa-check"></i><b>1.3</b> How to creat table 1 with test</a></li>
+<li class="chapter" data-level="1.4" data-path="data-wrangling.html"><a href="data-wrangling.html#imputing-missing-data-with-mice"><i class="fa fa-check"></i><b>1.4</b> Imputing Missing Data with MICE</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="machine-learning.html"><a href="machine-learning.html"><i class="fa fa-check"></i><b>2</b> Machine learning</a>
 <ul>
@@ -317,6 +322,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.1.19" data-path="basic-statistics.html"><a href="basic-statistics.html#value-and-variable-label"><i class="fa fa-check"></i><b>5.1.19</b> Value and variable label</a></li>
 <li class="chapter" data-level="5.1.20" data-path="basic-statistics.html"><a href="basic-statistics.html#recode-a-variable"><i class="fa fa-check"></i><b>5.1.20</b> Recode a variable</a></li>
 </ul></li>
+<li class="chapter" data-level="5.2" data-path="basic-statistics.html"><a href="basic-statistics.html#central-limit-theorem"><i class="fa fa-check"></i><b>5.2</b> Central Limit Theorem</a></li>
+<li class="chapter" data-level="5.3" data-path="basic-statistics.html"><a href="basic-statistics.html#common-statistical-distribution"><i class="fa fa-check"></i><b>5.3</b> Common statistical distribution</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="statistical-models.html"><a href="statistical-models.html"><i class="fa fa-check"></i><b>6</b> Statistical models</a>
 <ul>
@@ -521,7 +528,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.2.20" data-path="probability.html"><a href="probability.html#multiple-random-variables-plots"><i class="fa fa-check"></i><b>7.2.20</b> Multiple random variables plots</a></li>
 <li class="chapter" data-level="7.2.21" data-path="probability.html"><a href="probability.html#generate-a-circle-using-simulated-random-dots"><i class="fa fa-check"></i><b>7.2.21</b> Generate a circle using simulated random dots</a></li>
 <li class="chapter" data-level="7.2.22" data-path="probability.html"><a href="probability.html#expectation"><i class="fa fa-check"></i><b>7.2.22</b> Expectation</a></li>
-<li class="chapter" data-level="7.2.23" data-path="probability.html"><a href="probability.html#central-limit-theorem"><i class="fa fa-check"></i><b>7.2.23</b> Central Limit Theorem</a></li>
+<li class="chapter" data-level="7.2.23" data-path="probability.html"><a href="probability.html#central-limit-theorem-1"><i class="fa fa-check"></i><b>7.2.23</b> Central Limit Theorem</a></li>
 <li class="chapter" data-level="7.2.24" data-path="probability.html"><a href="probability.html#law-of-large-numbers"><i class="fa fa-check"></i><b>7.2.24</b> Law of large numbers</a></li>
 <li class="chapter" data-level="7.2.25" data-path="probability.html"><a href="probability.html#empirical-distribution"><i class="fa fa-check"></i><b>7.2.25</b> Empirical distribution</a></li>
 <li class="chapter" data-level="7.2.26" data-path="probability.html"><a href="probability.html#maximum-likelihood-estimate"><i class="fa fa-check"></i><b>7.2.26</b> Maximum likelihood estimate</a></li>
@@ -542,6 +549,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.3" data-path="algorithms.html"><a href="algorithms.html#markov-chain-monte-carlo"><i class="fa fa-check"></i><b>8.3</b> Markov chain Monte Carlo</a></li>
 <li class="chapter" data-level="8.4" data-path="algorithms.html"><a href="algorithms.html#expectation-maximum"><i class="fa fa-check"></i><b>8.4</b> Expectation maximum</a></li>
 <li class="chapter" data-level="8.5" data-path="algorithms.html"><a href="algorithms.html#combine-estimates-by-pooling-rules"><i class="fa fa-check"></i><b>8.5</b> Combine estimates by pooling rules</a></li>
+<li class="chapter" data-level="8.6" data-path="algorithms.html"><a href="algorithms.html#simulations-and-bootstrapping"><i class="fa fa-check"></i><b>8.6</b> Simulations and Bootstrapping</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="sasmarkdown.html"><a href="sasmarkdown.html"><i class="fa fa-check"></i><b>9</b> SASmarkdown</a>
 <ul>
@@ -619,31 +627,64 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="10.5" data-path="causal-inference.html"><a href="causal-inference.html#instrumental-variable-regression"><i class="fa fa-check"></i><b>10.5</b> Instrumental variable regression</a></li>
 <li class="chapter" data-level="10.6" data-path="causal-inference.html"><a href="causal-inference.html#mediation-analysis"><i class="fa fa-check"></i><b>10.6</b> Mediation analysis</a></li>
 <li class="chapter" data-level="10.7" data-path="causal-inference.html"><a href="causal-inference.html#confounding-and-effect-measure-modification"><i class="fa fa-check"></i><b>10.7</b> Confounding and effect measure modification</a></li>
+<li class="chapter" data-level="10.8" data-path="causal-inference.html"><a href="causal-inference.html#causal-inference-and-associated-regression"><i class="fa fa-check"></i><b>10.8</b> Causal inference and associated regression</a></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="miscellaneous.html"><a href="miscellaneous.html"><i class="fa fa-check"></i><b>11</b> Miscellaneous</a>
+<li class="chapter" data-level="11" data-path="clinical-trial.html"><a href="clinical-trial.html"><i class="fa fa-check"></i><b>11</b> Clinical Trial</a>
 <ul>
-<li class="chapter" data-level="11.1" data-path="miscellaneous.html"><a href="miscellaneous.html#linear-algebra"><i class="fa fa-check"></i><b>11.1</b> Linear algebra</a>
+<li class="chapter" data-level="11.1" data-path="clinical-trial.html"><a href="clinical-trial.html#statistics-in-clinical-trial"><i class="fa fa-check"></i><b>11.1</b> Statistics in clinical trial</a>
 <ul>
-<li class="chapter" data-level="11.1.1" data-path="miscellaneous.html"><a href="miscellaneous.html#matrix-basics"><i class="fa fa-check"></i><b>11.1.1</b> Matrix basics</a></li>
-<li class="chapter" data-level="11.1.2" data-path="miscellaneous.html"><a href="miscellaneous.html#operations"><i class="fa fa-check"></i><b>11.1.2</b> Operations</a></li>
-<li class="chapter" data-level="11.1.3" data-path="miscellaneous.html"><a href="miscellaneous.html#advanced-operations"><i class="fa fa-check"></i><b>11.1.3</b> Advanced operations</a></li>
-<li class="chapter" data-level="11.1.4" data-path="miscellaneous.html"><a href="miscellaneous.html#solve-linear-equations"><i class="fa fa-check"></i><b>11.1.4</b> Solve linear equations</a></li>
-<li class="chapter" data-level="11.1.5" data-path="miscellaneous.html"><a href="miscellaneous.html#summary"><i class="fa fa-check"></i><b>11.1.5</b> Summary</a></li>
+<li class="chapter" data-level="11.1.1" data-path="clinical-trial.html"><a href="clinical-trial.html#sample-size-interim-data-reports-and-randomization-of-assignment"><i class="fa fa-check"></i><b>11.1.1</b> Sample size, interim data reports and randomization of assignment</a></li>
 </ul></li>
-<li class="chapter" data-level="11.2" data-path="miscellaneous.html"><a href="miscellaneous.html#calculus"><i class="fa fa-check"></i><b>11.2</b> Calculus</a>
-<ul>
-<li class="chapter" data-level="11.2.1" data-path="miscellaneous.html"><a href="miscellaneous.html#derivation-1"><i class="fa fa-check"></i><b>11.2.1</b> Derivation</a></li>
-<li class="chapter" data-level="11.2.2" data-path="miscellaneous.html"><a href="miscellaneous.html#integration"><i class="fa fa-check"></i><b>11.2.2</b> Integration</a></li>
 </ul></li>
-<li class="chapter" data-level="11.3" data-path="miscellaneous.html"><a href="miscellaneous.html#sample-size-calculation"><i class="fa fa-check"></i><b>11.3</b> Sample size calculation</a></li>
-<li class="chapter" data-level="11.4" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-evaluate-z-score"><i class="fa fa-check"></i><b>11.4</b> How to evaluate z score</a></li>
-<li class="chapter" data-level="11.5" data-path="miscellaneous.html"><a href="miscellaneous.html#mathmatic-coupling"><i class="fa fa-check"></i><b>11.5</b> Mathmatic coupling</a></li>
-<li class="chapter" data-level="11.6" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-create-a-bookdown"><i class="fa fa-check"></i><b>11.6</b> How to create a bookdown</a></li>
-<li class="chapter" data-level="11.7" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-create-a-blogdown"><i class="fa fa-check"></i><b>11.7</b> How to create a blogdown</a></li>
-<li class="chapter" data-level="11.8" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-install-tensorflow-and-keras"><i class="fa fa-check"></i><b>11.8</b> How to install tensorflow and keras</a></li>
-<li class="chapter" data-level="11.9" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-use-github-in-team"><i class="fa fa-check"></i><b>11.9</b> How to use github in team</a></li>
-<li class="chapter" data-level="11.10" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-insert-picture-indrectly-in-markdown"><i class="fa fa-check"></i><b>11.10</b> How to insert picture indrectly in markdown</a></li>
-<li class="chapter" data-level="11.11" data-path="miscellaneous.html"><a href="miscellaneous.html#r-cheatsheets"><i class="fa fa-check"></i><b>11.11</b> R cheatsheets</a></li>
+<li class="chapter" data-level="12" data-path="common-statistical-models.html"><a href="common-statistical-models.html"><i class="fa fa-check"></i><b>12</b> Common statistical models</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="common-statistical-models.html"><a href="common-statistical-models.html#survival-analysis"><i class="fa fa-check"></i><b>12.1</b> Survival analysis</a></li>
+<li class="chapter" data-level="12.2" data-path="common-statistical-models.html"><a href="common-statistical-models.html#logistical-regression"><i class="fa fa-check"></i><b>12.2</b> Logistical regression</a></li>
+<li class="chapter" data-level="12.3" data-path="common-statistical-models.html"><a href="common-statistical-models.html#poisson-regression"><i class="fa fa-check"></i><b>12.3</b> Poisson regression</a></li>
+<li class="chapter" data-level="12.4" data-path="common-statistical-models.html"><a href="common-statistical-models.html#quantile-regression"><i class="fa fa-check"></i><b>12.4</b> Quantile regression</a></li>
+<li class="chapter" data-level="12.5" data-path="common-statistical-models.html"><a href="common-statistical-models.html#principle-components-analysis"><i class="fa fa-check"></i><b>12.5</b> Principle components analysis</a></li>
+<li class="chapter" data-level="12.6" data-path="common-statistical-models.html"><a href="common-statistical-models.html#which-covariates-should-be-adjusted"><i class="fa fa-check"></i><b>12.6</b> Which covariates should be adjusted</a></li>
+<li class="chapter" data-level="12.7" data-path="common-statistical-models.html"><a href="common-statistical-models.html#variable-selection-1"><i class="fa fa-check"></i><b>12.7</b> Variable selection</a></li>
+<li class="chapter" data-level="12.8" data-path="common-statistical-models.html"><a href="common-statistical-models.html#fit-regression-model-with-a-fan-shaped-relation"><i class="fa fa-check"></i><b>12.8</b> Fit regression model with a fan-shaped relation</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="bayesian-statistics.html"><a href="bayesian-statistics.html"><i class="fa fa-check"></i><b>13</b> Bayesian statistics</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="bayesian-statistics.html"><a href="bayesian-statistics.html#bayesian-inference-in-r"><i class="fa fa-check"></i><b>13.1</b> Bayesian Inference in R</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="epidemiolgy.html"><a href="epidemiolgy.html"><i class="fa fa-check"></i><b>14</b> Epidemiolgy</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="epidemiolgy.html"><a href="epidemiolgy.html#introduction"><i class="fa fa-check"></i><b>14.1</b> Introduction</a></li>
+<li class="chapter" data-level="14.2" data-path="epidemiolgy.html"><a href="epidemiolgy.html#bias-analysis-and-control-in-r"><i class="fa fa-check"></i><b>14.2</b> Bias analysis and control IN R</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="bioinformation.html"><a href="bioinformation.html"><i class="fa fa-check"></i><b>15</b> Bioinformation</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="bioinformation.html"><a href="bioinformation.html#sequence-analysis"><i class="fa fa-check"></i><b>15.1</b> Sequence Analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="common-issues-in-statistics.html"><a href="common-issues-in-statistics.html"><i class="fa fa-check"></i><b>16</b> Common issues in Statistics</a></li>
+<li class="chapter" data-level="17" data-path="miscellaneous.html"><a href="miscellaneous.html"><i class="fa fa-check"></i><b>17</b> Miscellaneous</a>
+<ul>
+<li class="chapter" data-level="17.1" data-path="miscellaneous.html"><a href="miscellaneous.html#linear-algebra"><i class="fa fa-check"></i><b>17.1</b> Linear algebra</a>
+<ul>
+<li class="chapter" data-level="17.1.1" data-path="miscellaneous.html"><a href="miscellaneous.html#matrix-basics"><i class="fa fa-check"></i><b>17.1.1</b> Matrix basics</a></li>
+<li class="chapter" data-level="17.1.2" data-path="miscellaneous.html"><a href="miscellaneous.html#operations"><i class="fa fa-check"></i><b>17.1.2</b> Operations</a></li>
+<li class="chapter" data-level="17.1.3" data-path="miscellaneous.html"><a href="miscellaneous.html#advanced-operations"><i class="fa fa-check"></i><b>17.1.3</b> Advanced operations</a></li>
+<li class="chapter" data-level="17.1.4" data-path="miscellaneous.html"><a href="miscellaneous.html#solve-linear-equations"><i class="fa fa-check"></i><b>17.1.4</b> Solve linear equations</a></li>
+<li class="chapter" data-level="17.1.5" data-path="miscellaneous.html"><a href="miscellaneous.html#summary"><i class="fa fa-check"></i><b>17.1.5</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="17.2" data-path="miscellaneous.html"><a href="miscellaneous.html#calculus"><i class="fa fa-check"></i><b>17.2</b> Calculus</a>
+<ul>
+<li class="chapter" data-level="17.2.1" data-path="miscellaneous.html"><a href="miscellaneous.html#derivation-1"><i class="fa fa-check"></i><b>17.2.1</b> Derivation</a></li>
+<li class="chapter" data-level="17.2.2" data-path="miscellaneous.html"><a href="miscellaneous.html#integration"><i class="fa fa-check"></i><b>17.2.2</b> Integration</a></li>
+</ul></li>
+<li class="chapter" data-level="17.3" data-path="miscellaneous.html"><a href="miscellaneous.html#sample-size-calculation"><i class="fa fa-check"></i><b>17.3</b> Sample size calculation</a></li>
+<li class="chapter" data-level="17.4" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-evaluate-z-score"><i class="fa fa-check"></i><b>17.4</b> How to evaluate z score</a></li>
+<li class="chapter" data-level="17.5" data-path="miscellaneous.html"><a href="miscellaneous.html#mathmatic-coupling"><i class="fa fa-check"></i><b>17.5</b> Mathmatic coupling</a></li>
+<li class="chapter" data-level="17.6" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-create-a-bookdown"><i class="fa fa-check"></i><b>17.6</b> How to create a bookdown</a></li>
+<li class="chapter" data-level="17.7" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-create-a-blogdown"><i class="fa fa-check"></i><b>17.7</b> How to create a blogdown</a></li>
+<li class="chapter" data-level="17.8" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-install-tensorflow-and-keras"><i class="fa fa-check"></i><b>17.8</b> How to install tensorflow and keras</a></li>
+<li class="chapter" data-level="17.9" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-use-github-in-team"><i class="fa fa-check"></i><b>17.9</b> How to use github in team</a></li>
+<li class="chapter" data-level="17.10" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-insert-picture-indrectly-in-markdown"><i class="fa fa-check"></i><b>17.10</b> How to insert picture indrectly in markdown</a></li>
+<li class="chapter" data-level="17.11" data-path="miscellaneous.html"><a href="miscellaneous.html#r-cheatsheets"><i class="fa fa-check"></i><b>17.11</b> R cheatsheets</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -665,18 +706,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="miscellaneous" class="section level1 hasAnchor" number="11">
-<h1><span class="header-section-number">11</span> Miscellaneous<a href="miscellaneous.html#miscellaneous" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="linear-algebra" class="section level2 hasAnchor" number="11.1">
-<h2><span class="header-section-number">11.1</span> Linear algebra<a href="miscellaneous.html#linear-algebra" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div id="matrix-basics" class="section level3 hasAnchor" number="11.1.1">
-<h3><span class="header-section-number">11.1.1</span> Matrix basics<a href="miscellaneous.html#matrix-basics" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="miscellaneous" class="section level1 hasAnchor" number="17">
+<h1><span class="header-section-number">17</span> Miscellaneous<a href="miscellaneous.html#miscellaneous" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="linear-algebra" class="section level2 hasAnchor" number="17.1">
+<h2><span class="header-section-number">17.1</span> Linear algebra<a href="miscellaneous.html#linear-algebra" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="matrix-basics" class="section level3 hasAnchor" number="17.1.1">
+<h3><span class="header-section-number">17.1.1</span> Matrix basics<a href="miscellaneous.html#matrix-basics" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li>dimensions of matrix</li>
 </ul>
-<div class="sourceCode" id="cb1403"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1403-1"><a href="miscellaneous.html#cb1403-1" aria-hidden="true" tabindex="-1"></a>   seed<span class="ot">=</span><span class="dv">123</span></span>
-<span id="cb1403-2"><a href="miscellaneous.html#cb1403-2" aria-hidden="true" tabindex="-1"></a>   X<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>,<span class="at">ncol=</span><span class="dv">3</span>,<span class="at">nrow=</span><span class="dv">4</span>)</span>
-<span id="cb1403-3"><a href="miscellaneous.html#cb1403-3" aria-hidden="true" tabindex="-1"></a>   X</span></code></pre></div>
+<div class="sourceCode" id="cb1409"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1409-1"><a href="miscellaneous.html#cb1409-1" aria-hidden="true" tabindex="-1"></a>   seed<span class="ot">=</span><span class="dv">123</span></span>
+<span id="cb1409-2"><a href="miscellaneous.html#cb1409-2" aria-hidden="true" tabindex="-1"></a>   X<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>,<span class="at">ncol=</span><span class="dv">3</span>,<span class="at">nrow=</span><span class="dv">4</span>)</span>
+<span id="cb1409-3"><a href="miscellaneous.html#cb1409-3" aria-hidden="true" tabindex="-1"></a>   X</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -701,17 +742,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb1404"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1404-1"><a href="miscellaneous.html#cb1404-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">dim</span>(X)</span></code></pre></div>
+<div class="sourceCode" id="cb1410"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1410-1"><a href="miscellaneous.html#cb1410-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">dim</span>(X)</span></code></pre></div>
 <pre><code>[1] 4 3</code></pre>
-<div class="sourceCode" id="cb1406"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1406-1"><a href="miscellaneous.html#cb1406-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">dim</span>(X)[<span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb1412"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1412-1"><a href="miscellaneous.html#cb1412-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">dim</span>(X)[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>[1] 4</code></pre>
-<div class="sourceCode" id="cb1408"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1408-1"><a href="miscellaneous.html#cb1408-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ncol</span>(X)</span></code></pre></div>
+<div class="sourceCode" id="cb1414"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1414-1"><a href="miscellaneous.html#cb1414-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ncol</span>(X)</span></code></pre></div>
 <pre><code>[1] 3</code></pre>
 <ul>
 <li>change dimensions of matrix</li>
 </ul>
-<div class="sourceCode" id="cb1410"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1410-1"><a href="miscellaneous.html#cb1410-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(X)<span class="ot">=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">6</span>)</span>
-<span id="cb1410-2"><a href="miscellaneous.html#cb1410-2" aria-hidden="true" tabindex="-1"></a>   X</span></code></pre></div>
+<div class="sourceCode" id="cb1416"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1416-1"><a href="miscellaneous.html#cb1416-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(X)<span class="ot">=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">6</span>)</span>
+<span id="cb1416-2"><a href="miscellaneous.html#cb1416-2" aria-hidden="true" tabindex="-1"></a>   X</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -735,10 +776,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>change names of matrix</li>
 </ul>
-<div class="sourceCode" id="cb1411"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1411-1"><a href="miscellaneous.html#cb1411-1" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>,<span class="at">nrow=</span><span class="dv">2</span>,<span class="at">ncol=</span><span class="dv">3</span>,<span class="at">byrow=</span><span class="cn">FALSE</span>)</span>
-<span id="cb1411-2"><a href="miscellaneous.html#cb1411-2" aria-hidden="true" tabindex="-1"></a>  b <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>,<span class="at">nrow=</span><span class="dv">3</span>,<span class="at">ncol=</span><span class="dv">2</span>,<span class="at">byrow=</span>T)</span>
-<span id="cb1411-3"><a href="miscellaneous.html#cb1411-3" aria-hidden="true" tabindex="-1"></a>  c <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>,<span class="at">nrow=</span><span class="dv">3</span>,<span class="at">ncol=</span><span class="dv">2</span>,<span class="at">byrow=</span>T,<span class="at">dimnames=</span><span class="fu">list</span>(<span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>),<span class="fu">c</span>(<span class="st">&quot;boy&quot;</span>,<span class="st">&quot;girl&quot;</span>)))</span>
-<span id="cb1411-4"><a href="miscellaneous.html#cb1411-4" aria-hidden="true" tabindex="-1"></a>  c</span></code></pre></div>
+<div class="sourceCode" id="cb1417"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1417-1"><a href="miscellaneous.html#cb1417-1" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>,<span class="at">nrow=</span><span class="dv">2</span>,<span class="at">ncol=</span><span class="dv">3</span>,<span class="at">byrow=</span><span class="cn">FALSE</span>)</span>
+<span id="cb1417-2"><a href="miscellaneous.html#cb1417-2" aria-hidden="true" tabindex="-1"></a>  b <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>,<span class="at">nrow=</span><span class="dv">3</span>,<span class="at">ncol=</span><span class="dv">2</span>,<span class="at">byrow=</span>T)</span>
+<span id="cb1417-3"><a href="miscellaneous.html#cb1417-3" aria-hidden="true" tabindex="-1"></a>  c <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>,<span class="at">nrow=</span><span class="dv">3</span>,<span class="at">ncol=</span><span class="dv">2</span>,<span class="at">byrow=</span>T,<span class="at">dimnames=</span><span class="fu">list</span>(<span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>),<span class="fu">c</span>(<span class="st">&quot;boy&quot;</span>,<span class="st">&quot;girl&quot;</span>)))</span>
+<span id="cb1417-4"><a href="miscellaneous.html#cb1417-4" aria-hidden="true" tabindex="-1"></a>  c</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -765,12 +806,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb1412"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1412-1"><a href="miscellaneous.html#cb1412-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">rownames</span>(c)</span></code></pre></div>
+<div class="sourceCode" id="cb1418"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1418-1"><a href="miscellaneous.html#cb1418-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">rownames</span>(c)</span></code></pre></div>
 <pre><code>[1] &quot;A&quot; &quot;B&quot; &quot;C&quot;</code></pre>
-<div class="sourceCode" id="cb1414"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1414-1"><a href="miscellaneous.html#cb1414-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">colnames</span>(c)</span></code></pre></div>
+<div class="sourceCode" id="cb1420"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1420-1"><a href="miscellaneous.html#cb1420-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">colnames</span>(c)</span></code></pre></div>
 <pre><code>[1] &quot;boy&quot;  &quot;girl&quot;</code></pre>
-<div class="sourceCode" id="cb1416"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1416-1"><a href="miscellaneous.html#cb1416-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">rownames</span>(c)<span class="ot">=</span><span class="fu">c</span>(<span class="st">&quot;E&quot;</span>,<span class="st">&quot;F&quot;</span>,<span class="st">&quot;G&quot;</span>)</span>
-<span id="cb1416-2"><a href="miscellaneous.html#cb1416-2" aria-hidden="true" tabindex="-1"></a>   c</span></code></pre></div>
+<div class="sourceCode" id="cb1422"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1422-1"><a href="miscellaneous.html#cb1422-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">rownames</span>(c)<span class="ot">=</span><span class="fu">c</span>(<span class="st">&quot;E&quot;</span>,<span class="st">&quot;F&quot;</span>,<span class="st">&quot;G&quot;</span>)</span>
+<span id="cb1422-2"><a href="miscellaneous.html#cb1422-2" aria-hidden="true" tabindex="-1"></a>   c</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -800,13 +841,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>replace elements of matrix</li>
 </ul>
-<div class="sourceCode" id="cb1417"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1417-1"><a href="miscellaneous.html#cb1417-1" aria-hidden="true" tabindex="-1"></a>   X<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>,<span class="at">nrow=</span><span class="dv">4</span>,<span class="at">ncol=</span><span class="dv">3</span>)</span>
-<span id="cb1417-2"><a href="miscellaneous.html#cb1417-2" aria-hidden="true" tabindex="-1"></a>   </span>
-<span id="cb1417-3"><a href="miscellaneous.html#cb1417-3" aria-hidden="true" tabindex="-1"></a>   X[<span class="dv">2</span>,<span class="dv">3</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb1423"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1423-1"><a href="miscellaneous.html#cb1423-1" aria-hidden="true" tabindex="-1"></a>   X<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>,<span class="at">nrow=</span><span class="dv">4</span>,<span class="at">ncol=</span><span class="dv">3</span>)</span>
+<span id="cb1423-2"><a href="miscellaneous.html#cb1423-2" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb1423-3"><a href="miscellaneous.html#cb1423-3" aria-hidden="true" tabindex="-1"></a>   X[<span class="dv">2</span>,<span class="dv">3</span>]</span></code></pre></div>
 <pre><code>[1] 10</code></pre>
-<div class="sourceCode" id="cb1419"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1419-1"><a href="miscellaneous.html#cb1419-1" aria-hidden="true" tabindex="-1"></a>   X[<span class="dv">2</span>,<span class="dv">3</span>]<span class="ot">=</span><span class="dv">1000</span></span>
-<span id="cb1419-2"><a href="miscellaneous.html#cb1419-2" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb1419-3"><a href="miscellaneous.html#cb1419-3" aria-hidden="true" tabindex="-1"></a>   X</span></code></pre></div>
+<div class="sourceCode" id="cb1425"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1425-1"><a href="miscellaneous.html#cb1425-1" aria-hidden="true" tabindex="-1"></a>   X[<span class="dv">2</span>,<span class="dv">3</span>]<span class="ot">=</span><span class="dv">1000</span></span>
+<span id="cb1425-2"><a href="miscellaneous.html#cb1425-2" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb1425-3"><a href="miscellaneous.html#cb1425-3" aria-hidden="true" tabindex="-1"></a>   X</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -834,11 +875,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>extract diagonal elements and replace them</li>
 </ul>
-<div class="sourceCode" id="cb1420"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1420-1"><a href="miscellaneous.html#cb1420-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">diag</span>(X)</span></code></pre></div>
+<div class="sourceCode" id="cb1426"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1426-1"><a href="miscellaneous.html#cb1426-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">diag</span>(X)</span></code></pre></div>
 <pre><code>[1]  1  6 11</code></pre>
-<div class="sourceCode" id="cb1422"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1422-1"><a href="miscellaneous.html#cb1422-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">diag</span>(X)<span class="ot">=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>)</span>
-<span id="cb1422-2"><a href="miscellaneous.html#cb1422-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1422-3"><a href="miscellaneous.html#cb1422-3" aria-hidden="true" tabindex="-1"></a>   X</span></code></pre></div>
+<div class="sourceCode" id="cb1428"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1428-1"><a href="miscellaneous.html#cb1428-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">diag</span>(X)<span class="ot">=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>)</span>
+<span id="cb1428-2"><a href="miscellaneous.html#cb1428-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1428-3"><a href="miscellaneous.html#cb1428-3" aria-hidden="true" tabindex="-1"></a>   X</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -866,7 +907,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>create diagonal identity matrix</li>
 </ul>
-<div class="sourceCode" id="cb1423"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1423-1"><a href="miscellaneous.html#cb1423-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">diag</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb1429"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1429-1"><a href="miscellaneous.html#cb1429-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">diag</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>))</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -886,7 +927,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb1424"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1424-1"><a href="miscellaneous.html#cb1424-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">diag</span>(<span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1430"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1430-1"><a href="miscellaneous.html#cb1430-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">diag</span>(<span class="dv">3</span>)</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -909,7 +950,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>extract lower/upper triangle elements</li>
 </ul>
-<div class="sourceCode" id="cb1425"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1425-1"><a href="miscellaneous.html#cb1425-1" aria-hidden="true" tabindex="-1"></a>  X</span></code></pre></div>
+<div class="sourceCode" id="cb1431"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1431-1"><a href="miscellaneous.html#cb1431-1" aria-hidden="true" tabindex="-1"></a>  X</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -934,15 +975,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb1426"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1426-1"><a href="miscellaneous.html#cb1426-1" aria-hidden="true" tabindex="-1"></a>  X[<span class="fu">lower.tri</span>(X)]</span></code></pre></div>
+<div class="sourceCode" id="cb1432"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1432-1"><a href="miscellaneous.html#cb1432-1" aria-hidden="true" tabindex="-1"></a>  X[<span class="fu">lower.tri</span>(X)]</span></code></pre></div>
 <pre><code>[1]  2  3  4  7  8 12</code></pre>
-<div class="sourceCode" id="cb1428"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1428-1"><a href="miscellaneous.html#cb1428-1" aria-hidden="true" tabindex="-1"></a>  X[<span class="fu">upper.tri</span>(X)]</span></code></pre></div>
+<div class="sourceCode" id="cb1434"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1434-1"><a href="miscellaneous.html#cb1434-1" aria-hidden="true" tabindex="-1"></a>  X[<span class="fu">upper.tri</span>(X)]</span></code></pre></div>
 <pre><code>[1]    5    9 1000</code></pre>
 <ul>
 <li>create lower/upper triangle matrix</li>
 </ul>
-<div class="sourceCode" id="cb1430"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1430-1"><a href="miscellaneous.html#cb1430-1" aria-hidden="true" tabindex="-1"></a>X[<span class="fu">lower.tri</span>(X)]<span class="ot">=</span><span class="dv">0</span></span>
-<span id="cb1430-2"><a href="miscellaneous.html#cb1430-2" aria-hidden="true" tabindex="-1"></a>X</span></code></pre></div>
+<div class="sourceCode" id="cb1436"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1436-1"><a href="miscellaneous.html#cb1436-1" aria-hidden="true" tabindex="-1"></a>X[<span class="fu">lower.tri</span>(X)]<span class="ot">=</span><span class="dv">0</span></span>
+<span id="cb1436-2"><a href="miscellaneous.html#cb1436-2" aria-hidden="true" tabindex="-1"></a>X</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -968,12 +1009,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tbody>
 </table>
 </div>
-<div id="operations" class="section level3 hasAnchor" number="11.1.2">
-<h3><span class="header-section-number">11.1.2</span> Operations<a href="miscellaneous.html#operations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="operations" class="section level3 hasAnchor" number="17.1.2">
+<h3><span class="header-section-number">17.1.2</span> Operations<a href="miscellaneous.html#operations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li>transform</li>
 </ul>
-<div class="sourceCode" id="cb1431"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1431-1"><a href="miscellaneous.html#cb1431-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">t</span>(X)</span></code></pre></div>
+<div class="sourceCode" id="cb1437"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1437-1"><a href="miscellaneous.html#cb1437-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">t</span>(X)</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -999,8 +1040,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>summary by row or column</li>
 </ul>
-<div class="sourceCode" id="cb1432"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1432-1"><a href="miscellaneous.html#cb1432-1" aria-hidden="true" tabindex="-1"></a>  A<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>,<span class="dv">3</span>,<span class="dv">4</span>)</span>
-<span id="cb1432-2"><a href="miscellaneous.html#cb1432-2" aria-hidden="true" tabindex="-1"></a>  A </span></code></pre></div>
+<div class="sourceCode" id="cb1438"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1438-1"><a href="miscellaneous.html#cb1438-1" aria-hidden="true" tabindex="-1"></a>  A<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>,<span class="dv">3</span>,<span class="dv">4</span>)</span>
+<span id="cb1438-2"><a href="miscellaneous.html#cb1438-2" aria-hidden="true" tabindex="-1"></a>  A </span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1023,22 +1064,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb1433"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1433-1"><a href="miscellaneous.html#cb1433-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowSums</span>(A)</span></code></pre></div>
+<div class="sourceCode" id="cb1439"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1439-1"><a href="miscellaneous.html#cb1439-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowSums</span>(A)</span></code></pre></div>
 <pre><code>[1] 22 26 30</code></pre>
-<div class="sourceCode" id="cb1435"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1435-1"><a href="miscellaneous.html#cb1435-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowMeans</span>(A)</span></code></pre></div>
+<div class="sourceCode" id="cb1441"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1441-1"><a href="miscellaneous.html#cb1441-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowMeans</span>(A)</span></code></pre></div>
 <pre><code>[1] 5.5 6.5 7.5</code></pre>
 <ul>
 <li>determinant of matrix</li>
 </ul>
-<div class="sourceCode" id="cb1437"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1437-1"><a href="miscellaneous.html#cb1437-1" aria-hidden="true" tabindex="-1"></a>  X<span class="ot">=</span><span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">9</span>),<span class="at">nrow=</span><span class="dv">3</span>,<span class="at">ncol=</span><span class="dv">3</span>)</span>
-<span id="cb1437-2"><a href="miscellaneous.html#cb1437-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">det</span>(X)</span></code></pre></div>
+<div class="sourceCode" id="cb1443"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1443-1"><a href="miscellaneous.html#cb1443-1" aria-hidden="true" tabindex="-1"></a>  X<span class="ot">=</span><span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">9</span>),<span class="at">nrow=</span><span class="dv">3</span>,<span class="at">ncol=</span><span class="dv">3</span>)</span>
+<span id="cb1443-2"><a href="miscellaneous.html#cb1443-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">det</span>(X)</span></code></pre></div>
 <pre><code>[1] 0.7165293</code></pre>
 <ul>
 <li>Addition</li>
 </ul>
-<div class="sourceCode" id="cb1439"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1439-1"><a href="miscellaneous.html#cb1439-1" aria-hidden="true" tabindex="-1"></a>  A<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>,<span class="at">nrow=</span><span class="dv">3</span>,<span class="at">ncol=</span><span class="dv">4</span>)</span>
-<span id="cb1439-2"><a href="miscellaneous.html#cb1439-2" aria-hidden="true" tabindex="-1"></a>  B<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>,<span class="at">nrow=</span><span class="dv">3</span>,<span class="at">ncol=</span><span class="dv">4</span>)</span>
-<span id="cb1439-3"><a href="miscellaneous.html#cb1439-3" aria-hidden="true" tabindex="-1"></a>  A<span class="sc">+</span>B <span class="co">#same dimensions (non-conformable arrays)</span></span></code></pre></div>
+<div class="sourceCode" id="cb1445"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1445-1"><a href="miscellaneous.html#cb1445-1" aria-hidden="true" tabindex="-1"></a>  A<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>,<span class="at">nrow=</span><span class="dv">3</span>,<span class="at">ncol=</span><span class="dv">4</span>)</span>
+<span id="cb1445-2"><a href="miscellaneous.html#cb1445-2" aria-hidden="true" tabindex="-1"></a>  B<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>,<span class="at">nrow=</span><span class="dv">3</span>,<span class="at">ncol=</span><span class="dv">4</span>)</span>
+<span id="cb1445-3"><a href="miscellaneous.html#cb1445-3" aria-hidden="true" tabindex="-1"></a>  A<span class="sc">+</span>B <span class="co">#same dimensions (non-conformable arrays)</span></span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1064,8 +1105,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>addition by scale</li>
 </ul>
-<div class="sourceCode" id="cb1440"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1440-1"><a href="miscellaneous.html#cb1440-1" aria-hidden="true" tabindex="-1"></a>A<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>,<span class="at">nrow=</span><span class="dv">3</span>,<span class="at">ncol=</span><span class="dv">4</span>)</span>
-<span id="cb1440-2"><a href="miscellaneous.html#cb1440-2" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">+</span>A</span></code></pre></div>
+<div class="sourceCode" id="cb1446"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1446-1"><a href="miscellaneous.html#cb1446-1" aria-hidden="true" tabindex="-1"></a>A<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>,<span class="at">nrow=</span><span class="dv">3</span>,<span class="at">ncol=</span><span class="dv">4</span>)</span>
+<span id="cb1446-2"><a href="miscellaneous.html#cb1446-2" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">+</span>A</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1091,8 +1132,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>multiple by scale</li>
 </ul>
-<div class="sourceCode" id="cb1441"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1441-1"><a href="miscellaneous.html#cb1441-1" aria-hidden="true" tabindex="-1"></a>A<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>,<span class="at">nrow=</span><span class="dv">3</span>,<span class="at">ncol=</span><span class="dv">4</span>)</span>
-<span id="cb1441-2"><a href="miscellaneous.html#cb1441-2" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">*</span>A</span></code></pre></div>
+<div class="sourceCode" id="cb1447"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1447-1"><a href="miscellaneous.html#cb1447-1" aria-hidden="true" tabindex="-1"></a>A<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>,<span class="at">nrow=</span><span class="dv">3</span>,<span class="at">ncol=</span><span class="dv">4</span>)</span>
+<span id="cb1447-2"><a href="miscellaneous.html#cb1447-2" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">*</span>A</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1118,11 +1159,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>dot multiple</li>
 </ul>
-<div class="sourceCode" id="cb1442"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1442-1"><a href="miscellaneous.html#cb1442-1" aria-hidden="true" tabindex="-1"></a>   A<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>,<span class="at">nrow=</span><span class="dv">2</span>,<span class="at">ncol=</span><span class="dv">4</span>)</span>
-<span id="cb1442-2"><a href="miscellaneous.html#cb1442-2" aria-hidden="true" tabindex="-1"></a>   </span>
-<span id="cb1442-3"><a href="miscellaneous.html#cb1442-3" aria-hidden="true" tabindex="-1"></a>   B<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>,<span class="at">nrow=</span><span class="dv">4</span>,<span class="at">ncol=</span><span class="dv">3</span>)</span>
-<span id="cb1442-4"><a href="miscellaneous.html#cb1442-4" aria-hidden="true" tabindex="-1"></a>   </span>
-<span id="cb1442-5"><a href="miscellaneous.html#cb1442-5" aria-hidden="true" tabindex="-1"></a>   A<span class="sc">%*%</span>B</span></code></pre></div>
+<div class="sourceCode" id="cb1448"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1448-1"><a href="miscellaneous.html#cb1448-1" aria-hidden="true" tabindex="-1"></a>   A<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>,<span class="at">nrow=</span><span class="dv">2</span>,<span class="at">ncol=</span><span class="dv">4</span>)</span>
+<span id="cb1448-2"><a href="miscellaneous.html#cb1448-2" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb1448-3"><a href="miscellaneous.html#cb1448-3" aria-hidden="true" tabindex="-1"></a>   B<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>,<span class="at">nrow=</span><span class="dv">4</span>,<span class="at">ncol=</span><span class="dv">3</span>)</span>
+<span id="cb1448-4"><a href="miscellaneous.html#cb1448-4" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb1448-5"><a href="miscellaneous.html#cb1448-5" aria-hidden="true" tabindex="-1"></a>   A<span class="sc">%*%</span>B</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1140,10 +1181,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>kronecker multiple</li>
 </ul>
-<div class="sourceCode" id="cb1443"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1443-1"><a href="miscellaneous.html#cb1443-1" aria-hidden="true" tabindex="-1"></a>   A<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">2</span>)</span>
-<span id="cb1443-2"><a href="miscellaneous.html#cb1443-2" aria-hidden="true" tabindex="-1"></a>   B<span class="ot">=</span><span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">1</span>,<span class="dv">4</span>),<span class="dv">2</span>,<span class="dv">2</span>)</span>
-<span id="cb1443-3"><a href="miscellaneous.html#cb1443-3" aria-hidden="true" tabindex="-1"></a>   </span>
-<span id="cb1443-4"><a href="miscellaneous.html#cb1443-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">kronecker</span>(A,B)</span></code></pre></div>
+<div class="sourceCode" id="cb1449"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1449-1"><a href="miscellaneous.html#cb1449-1" aria-hidden="true" tabindex="-1"></a>   A<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">2</span>)</span>
+<span id="cb1449-2"><a href="miscellaneous.html#cb1449-2" aria-hidden="true" tabindex="-1"></a>   B<span class="ot">=</span><span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">1</span>,<span class="dv">4</span>),<span class="dv">2</span>,<span class="dv">2</span>)</span>
+<span id="cb1449-3"><a href="miscellaneous.html#cb1449-3" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb1449-4"><a href="miscellaneous.html#cb1449-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">kronecker</span>(A,B)</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1176,8 +1217,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>inverse matrix</li>
 </ul>
 <p><code>must be square</code></p>
-<div class="sourceCode" id="cb1444"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1444-1"><a href="miscellaneous.html#cb1444-1" aria-hidden="true" tabindex="-1"></a>   A<span class="ot">=</span><span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">9</span>),<span class="at">nrow=</span><span class="dv">3</span>,<span class="at">ncol=</span><span class="dv">3</span>) </span>
-<span id="cb1444-2"><a href="miscellaneous.html#cb1444-2" aria-hidden="true" tabindex="-1"></a>   A</span></code></pre></div>
+<div class="sourceCode" id="cb1450"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1450-1"><a href="miscellaneous.html#cb1450-1" aria-hidden="true" tabindex="-1"></a>   A<span class="ot">=</span><span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">9</span>),<span class="at">nrow=</span><span class="dv">3</span>,<span class="at">ncol=</span><span class="dv">3</span>) </span>
+<span id="cb1450-2"><a href="miscellaneous.html#cb1450-2" aria-hidden="true" tabindex="-1"></a>   A</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1197,8 +1238,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb1445"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1445-1"><a href="miscellaneous.html#cb1445-1" aria-hidden="true" tabindex="-1"></a>   AI<span class="ot">=</span><span class="fu">solve</span>(A)</span>
-<span id="cb1445-2"><a href="miscellaneous.html#cb1445-2" aria-hidden="true" tabindex="-1"></a>   AI</span></code></pre></div>
+<div class="sourceCode" id="cb1451"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1451-1"><a href="miscellaneous.html#cb1451-1" aria-hidden="true" tabindex="-1"></a>   AI<span class="ot">=</span><span class="fu">solve</span>(A)</span>
+<span id="cb1451-2"><a href="miscellaneous.html#cb1451-2" aria-hidden="true" tabindex="-1"></a>   AI</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1218,8 +1259,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb1446"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1446-1"><a href="miscellaneous.html#cb1446-1" aria-hidden="true" tabindex="-1"></a>   <span class="co"># identity matrix    </span></span>
-<span id="cb1446-2"><a href="miscellaneous.html#cb1446-2" aria-hidden="true" tabindex="-1"></a>   (A<span class="sc">%*%</span>AI)</span></code></pre></div>
+<div class="sourceCode" id="cb1452"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1452-1"><a href="miscellaneous.html#cb1452-1" aria-hidden="true" tabindex="-1"></a>   <span class="co"># identity matrix    </span></span>
+<span id="cb1452-2"><a href="miscellaneous.html#cb1452-2" aria-hidden="true" tabindex="-1"></a>   (A<span class="sc">%*%</span>AI)</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1239,8 +1280,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb1447"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1447-1"><a href="miscellaneous.html#cb1447-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(matlib)</span>
-<span id="cb1447-2"><a href="miscellaneous.html#cb1447-2" aria-hidden="true" tabindex="-1"></a><span class="fu">inv</span>(A)</span></code></pre></div>
+<div class="sourceCode" id="cb1453"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1453-1"><a href="miscellaneous.html#cb1453-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(matlib)</span>
+<span id="cb1453-2"><a href="miscellaneous.html#cb1453-2" aria-hidden="true" tabindex="-1"></a><span class="fu">inv</span>(A)</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1264,10 +1305,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>generalized inverse
 <code>when it is not square</code></li>
 </ul>
-<div class="sourceCode" id="cb1448"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1448-1"><a href="miscellaneous.html#cb1448-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">library</span>(MASS)</span>
-<span id="cb1448-2"><a href="miscellaneous.html#cb1448-2" aria-hidden="true" tabindex="-1"></a>   A2<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>,<span class="at">nrow=</span><span class="dv">3</span>,<span class="at">ncol=</span><span class="dv">4</span>)</span>
-<span id="cb1448-3"><a href="miscellaneous.html#cb1448-3" aria-hidden="true" tabindex="-1"></a>   </span>
-<span id="cb1448-4"><a href="miscellaneous.html#cb1448-4" aria-hidden="true" tabindex="-1"></a>   A<span class="sc">%*%</span><span class="fu">ginv</span>(A)</span></code></pre></div>
+<div class="sourceCode" id="cb1454"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1454-1"><a href="miscellaneous.html#cb1454-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">library</span>(MASS)</span>
+<span id="cb1454-2"><a href="miscellaneous.html#cb1454-2" aria-hidden="true" tabindex="-1"></a>   A2<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>,<span class="at">nrow=</span><span class="dv">3</span>,<span class="at">ncol=</span><span class="dv">4</span>)</span>
+<span id="cb1454-3"><a href="miscellaneous.html#cb1454-3" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb1454-4"><a href="miscellaneous.html#cb1454-4" aria-hidden="true" tabindex="-1"></a>   A<span class="sc">%*%</span><span class="fu">ginv</span>(A)</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1287,7 +1328,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb1449"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1449-1"><a href="miscellaneous.html#cb1449-1" aria-hidden="true" tabindex="-1"></a>   A<span class="sc">%*%</span><span class="fu">ginv</span>(A)<span class="sc">%*%</span>A</span></code></pre></div>
+<div class="sourceCode" id="cb1455"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1455-1"><a href="miscellaneous.html#cb1455-1" aria-hidden="true" tabindex="-1"></a>   A<span class="sc">%*%</span><span class="fu">ginv</span>(A)<span class="sc">%*%</span>A</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1310,8 +1351,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>crossprod</li>
 </ul>
-<div class="sourceCode" id="cb1450"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1450-1"><a href="miscellaneous.html#cb1450-1" aria-hidden="true" tabindex="-1"></a>B<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>,<span class="at">nrow=</span><span class="dv">4</span>,<span class="at">ncol=</span><span class="dv">3</span>)</span>
-<span id="cb1450-2"><a href="miscellaneous.html#cb1450-2" aria-hidden="true" tabindex="-1"></a>B</span></code></pre></div>
+<div class="sourceCode" id="cb1456"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1456-1"><a href="miscellaneous.html#cb1456-1" aria-hidden="true" tabindex="-1"></a>B<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>,<span class="at">nrow=</span><span class="dv">4</span>,<span class="at">ncol=</span><span class="dv">3</span>)</span>
+<span id="cb1456-2"><a href="miscellaneous.html#cb1456-2" aria-hidden="true" tabindex="-1"></a>B</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1336,7 +1377,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb1451"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1451-1"><a href="miscellaneous.html#cb1451-1" aria-hidden="true" tabindex="-1"></a><span class="fu">crossprod</span>(B)</span></code></pre></div>
+<div class="sourceCode" id="cb1457"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1457-1"><a href="miscellaneous.html#cb1457-1" aria-hidden="true" tabindex="-1"></a><span class="fu">crossprod</span>(B)</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1356,7 +1397,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb1452"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1452-1"><a href="miscellaneous.html#cb1452-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t</span>(B)<span class="sc">%*%</span>B</span></code></pre></div>
+<div class="sourceCode" id="cb1458"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1458-1"><a href="miscellaneous.html#cb1458-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t</span>(B)<span class="sc">%*%</span>B</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1376,8 +1417,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb1453"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1453-1"><a href="miscellaneous.html#cb1453-1" aria-hidden="true" tabindex="-1"></a>   B<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>,<span class="at">nrow=</span><span class="dv">4</span>,<span class="at">ncol=</span><span class="dv">3</span>)</span>
-<span id="cb1453-2"><a href="miscellaneous.html#cb1453-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ginv</span>(B)</span></code></pre></div>
+<div class="sourceCode" id="cb1459"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1459-1"><a href="miscellaneous.html#cb1459-1" aria-hidden="true" tabindex="-1"></a>   B<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>,<span class="at">nrow=</span><span class="dv">4</span>,<span class="at">ncol=</span><span class="dv">3</span>)</span>
+<span id="cb1459-2"><a href="miscellaneous.html#cb1459-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ginv</span>(B)</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1400,7 +1441,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb1454"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1454-1"><a href="miscellaneous.html#cb1454-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ginv</span>(<span class="fu">crossprod</span>(B))</span></code></pre></div>
+<div class="sourceCode" id="cb1460"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1460-1"><a href="miscellaneous.html#cb1460-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ginv</span>(<span class="fu">crossprod</span>(B))</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1420,21 +1461,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb1455"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1455-1"><a href="miscellaneous.html#cb1455-1" aria-hidden="true" tabindex="-1"></a>   <span class="co"># solve(crossprod(B)) #is singular</span></span>
-<span id="cb1455-2"><a href="miscellaneous.html#cb1455-2" aria-hidden="true" tabindex="-1"></a>   <span class="co"># solve((B)) #is not square</span></span></code></pre></div>
+<div class="sourceCode" id="cb1461"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1461-1"><a href="miscellaneous.html#cb1461-1" aria-hidden="true" tabindex="-1"></a>   <span class="co"># solve(crossprod(B)) #is singular</span></span>
+<span id="cb1461-2"><a href="miscellaneous.html#cb1461-2" aria-hidden="true" tabindex="-1"></a>   <span class="co"># solve((B)) #is not square</span></span></code></pre></div>
 <ul>
 <li>eigen values (decomposition)
 <code>mxn matrix</code>
 <code>A=UΛU</code></li>
 </ul>
-<div class="sourceCode" id="cb1456"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1456-1"><a href="miscellaneous.html#cb1456-1" aria-hidden="true" tabindex="-1"></a>   A<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>,<span class="at">nrow=</span><span class="dv">3</span>,<span class="at">ncol=</span><span class="dv">3</span>)</span>
-<span id="cb1456-2"><a href="miscellaneous.html#cb1456-2" aria-hidden="true" tabindex="-1"></a>   </span>
-<span id="cb1456-3"><a href="miscellaneous.html#cb1456-3" aria-hidden="true" tabindex="-1"></a>   Aeigen<span class="ot">=</span><span class="fu">eigen</span>(A)</span>
-<span id="cb1456-4"><a href="miscellaneous.html#cb1456-4" aria-hidden="true" tabindex="-1"></a>   </span>
-<span id="cb1456-5"><a href="miscellaneous.html#cb1456-5" aria-hidden="true" tabindex="-1"></a>   Aeigen<span class="sc">$</span>values</span></code></pre></div>
+<div class="sourceCode" id="cb1462"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1462-1"><a href="miscellaneous.html#cb1462-1" aria-hidden="true" tabindex="-1"></a>   A<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>,<span class="at">nrow=</span><span class="dv">3</span>,<span class="at">ncol=</span><span class="dv">3</span>)</span>
+<span id="cb1462-2"><a href="miscellaneous.html#cb1462-2" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb1462-3"><a href="miscellaneous.html#cb1462-3" aria-hidden="true" tabindex="-1"></a>   Aeigen<span class="ot">=</span><span class="fu">eigen</span>(A)</span>
+<span id="cb1462-4"><a href="miscellaneous.html#cb1462-4" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb1462-5"><a href="miscellaneous.html#cb1462-5" aria-hidden="true" tabindex="-1"></a>   Aeigen<span class="sc">$</span>values</span></code></pre></div>
 <pre><code>[1]  1.611684e+01 -1.116844e+00 -5.700691e-16</code></pre>
-<div class="sourceCode" id="cb1458"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1458-1"><a href="miscellaneous.html#cb1458-1" aria-hidden="true" tabindex="-1"></a>   val <span class="ot">&lt;-</span> <span class="fu">diag</span>(Aeigen<span class="sc">$</span>values)</span>
-<span id="cb1458-2"><a href="miscellaneous.html#cb1458-2" aria-hidden="true" tabindex="-1"></a>   val</span></code></pre></div>
+<div class="sourceCode" id="cb1464"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1464-1"><a href="miscellaneous.html#cb1464-1" aria-hidden="true" tabindex="-1"></a>   val <span class="ot">&lt;-</span> <span class="fu">diag</span>(Aeigen<span class="sc">$</span>values)</span>
+<span id="cb1464-2"><a href="miscellaneous.html#cb1464-2" aria-hidden="true" tabindex="-1"></a>   val</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1457,7 +1498,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>eigen vectors</li>
 </ul>
-<div class="sourceCode" id="cb1459"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1459-1"><a href="miscellaneous.html#cb1459-1" aria-hidden="true" tabindex="-1"></a>Aeigen<span class="sc">$</span>vectors</span></code></pre></div>
+<div class="sourceCode" id="cb1465"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1465-1"><a href="miscellaneous.html#cb1465-1" aria-hidden="true" tabindex="-1"></a>Aeigen<span class="sc">$</span>vectors</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1477,7 +1518,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb1460"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1460-1"><a href="miscellaneous.html#cb1460-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">round</span>(Aeigen<span class="sc">$</span>vectors<span class="sc">%*%</span>val<span class="sc">%*%</span><span class="fu">t</span>(Aeigen<span class="sc">$</span>vectors))</span></code></pre></div>
+<div class="sourceCode" id="cb1466"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1466-1"><a href="miscellaneous.html#cb1466-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">round</span>(Aeigen<span class="sc">$</span>vectors<span class="sc">%*%</span>val<span class="sc">%*%</span><span class="fu">t</span>(Aeigen<span class="sc">$</span>vectors))</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1497,7 +1538,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb1461"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1461-1"><a href="miscellaneous.html#cb1461-1" aria-hidden="true" tabindex="-1"></a> A</span></code></pre></div>
+<div class="sourceCode" id="cb1467"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1467-1"><a href="miscellaneous.html#cb1467-1" aria-hidden="true" tabindex="-1"></a> A</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1518,15 +1559,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tbody>
 </table>
 </div>
-<div id="advanced-operations" class="section level3 hasAnchor" number="11.1.3">
-<h3><span class="header-section-number">11.1.3</span> Advanced operations<a href="miscellaneous.html#advanced-operations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="advanced-operations" class="section level3 hasAnchor" number="17.1.3">
+<h3><span class="header-section-number">17.1.3</span> Advanced operations<a href="miscellaneous.html#advanced-operations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li>Choleskey factor</li>
 </ul>
 <p><code>positive definite matrix (symmetric square), A=P’P</code></p>
 <p><code>covariance matrix is semi positive definite matrix</code></p>
-<div class="sourceCode" id="cb1462"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1462-1"><a href="miscellaneous.html#cb1462-1" aria-hidden="true" tabindex="-1"></a>   A<span class="ot">=</span><span class="fu">diag</span>(<span class="dv">3</span>)<span class="sc">+</span><span class="dv">1</span></span>
-<span id="cb1462-2"><a href="miscellaneous.html#cb1462-2" aria-hidden="true" tabindex="-1"></a>   A  </span></code></pre></div>
+<div class="sourceCode" id="cb1468"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1468-1"><a href="miscellaneous.html#cb1468-1" aria-hidden="true" tabindex="-1"></a>   A<span class="ot">=</span><span class="fu">diag</span>(<span class="dv">3</span>)<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb1468-2"><a href="miscellaneous.html#cb1468-2" aria-hidden="true" tabindex="-1"></a>   A  </span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1546,7 +1587,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb1463"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1463-1"><a href="miscellaneous.html#cb1463-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">chol</span>(A)</span></code></pre></div>
+<div class="sourceCode" id="cb1469"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1469-1"><a href="miscellaneous.html#cb1469-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">chol</span>(A)</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1566,7 +1607,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb1464"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1464-1"><a href="miscellaneous.html#cb1464-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">t</span>(<span class="fu">chol</span>(A))<span class="sc">%*%</span><span class="fu">chol</span>(A)</span></code></pre></div>
+<div class="sourceCode" id="cb1470"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1470-1"><a href="miscellaneous.html#cb1470-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">t</span>(<span class="fu">chol</span>(A))<span class="sc">%*%</span><span class="fu">chol</span>(A)</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1587,7 +1628,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tbody>
 </table>
 <p><code>inverse using Choleshey</code></p>
-<div class="sourceCode" id="cb1465"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1465-1"><a href="miscellaneous.html#cb1465-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chol2inv</span>(<span class="fu">chol</span>(A))</span></code></pre></div>
+<div class="sourceCode" id="cb1471"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1471-1"><a href="miscellaneous.html#cb1471-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chol2inv</span>(<span class="fu">chol</span>(A))</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1607,7 +1648,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb1466"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1466-1"><a href="miscellaneous.html#cb1466-1" aria-hidden="true" tabindex="-1"></a><span class="fu">inv</span>(A)</span></code></pre></div>
+<div class="sourceCode" id="cb1472"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1472-1"><a href="miscellaneous.html#cb1472-1" aria-hidden="true" tabindex="-1"></a><span class="fu">inv</span>(A)</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1632,11 +1673,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p><code>m×n matrix</code></p>
 <p><code>A=UDV</code></p>
-<div class="sourceCode" id="cb1467"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1467-1"><a href="miscellaneous.html#cb1467-1" aria-hidden="true" tabindex="-1"></a>   A<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">18</span>,<span class="dv">3</span>,<span class="dv">6</span>)</span>
-<span id="cb1467-2"><a href="miscellaneous.html#cb1467-2" aria-hidden="true" tabindex="-1"></a>   </span>
-<span id="cb1467-3"><a href="miscellaneous.html#cb1467-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">svd</span>(A)   <span class="sc">$</span>d</span></code></pre></div>
+<div class="sourceCode" id="cb1473"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1473-1"><a href="miscellaneous.html#cb1473-1" aria-hidden="true" tabindex="-1"></a>   A<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">18</span>,<span class="dv">3</span>,<span class="dv">6</span>)</span>
+<span id="cb1473-2"><a href="miscellaneous.html#cb1473-2" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb1473-3"><a href="miscellaneous.html#cb1473-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">svd</span>(A)   <span class="sc">$</span>d</span></code></pre></div>
 <pre><code>[1] 4.589453e+01 1.640705e+00 1.366522e-15</code></pre>
-<div class="sourceCode" id="cb1469"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1469-1"><a href="miscellaneous.html#cb1469-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">t</span>(<span class="fu">svd</span>(A)   <span class="sc">$</span>u)<span class="sc">%*%</span><span class="fu">svd</span>(A)   <span class="sc">$</span>u</span></code></pre></div>
+<div class="sourceCode" id="cb1475"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1475-1"><a href="miscellaneous.html#cb1475-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">t</span>(<span class="fu">svd</span>(A)   <span class="sc">$</span>u)<span class="sc">%*%</span><span class="fu">svd</span>(A)   <span class="sc">$</span>u</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1656,7 +1697,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb1470"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1470-1"><a href="miscellaneous.html#cb1470-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">t</span>(<span class="fu">svd</span>(A)   <span class="sc">$</span>v)<span class="sc">%*%</span><span class="fu">svd</span>(A)   <span class="sc">$</span>v</span></code></pre></div>
+<div class="sourceCode" id="cb1476"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1476-1"><a href="miscellaneous.html#cb1476-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">t</span>(<span class="fu">svd</span>(A)   <span class="sc">$</span>v)<span class="sc">%*%</span><span class="fu">svd</span>(A)   <span class="sc">$</span>v</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1676,7 +1717,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb1471"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1471-1"><a href="miscellaneous.html#cb1471-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">svd</span>(A)   <span class="sc">$</span>u <span class="sc">%*%</span><span class="fu">diag</span>(<span class="fu">svd</span>(A)   <span class="sc">$</span>d)<span class="sc">%*%</span> <span class="fu">t</span>(<span class="fu">svd</span>(A)   <span class="sc">$</span>v)</span></code></pre></div>
+<div class="sourceCode" id="cb1477"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1477-1"><a href="miscellaneous.html#cb1477-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">svd</span>(A)   <span class="sc">$</span>u <span class="sc">%*%</span><span class="fu">diag</span>(<span class="fu">svd</span>(A)   <span class="sc">$</span>d)<span class="sc">%*%</span> <span class="fu">t</span>(<span class="fu">svd</span>(A)   <span class="sc">$</span>v)</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1705,7 +1746,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb1472"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1472-1"><a href="miscellaneous.html#cb1472-1" aria-hidden="true" tabindex="-1"></a>   A</span></code></pre></div>
+<div class="sourceCode" id="cb1478"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1478-1"><a href="miscellaneous.html#cb1478-1" aria-hidden="true" tabindex="-1"></a>   A</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1739,8 +1780,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p><code>m×n matrix</code></p>
 <p><code>A=QR，where Q’Q=I, Q is orthogonal matrix</code></p>
-<div class="sourceCode" id="cb1473"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1473-1"><a href="miscellaneous.html#cb1473-1" aria-hidden="true" tabindex="-1"></a>   A<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>,<span class="dv">4</span>,<span class="dv">3</span>)</span>
-<span id="cb1473-2"><a href="miscellaneous.html#cb1473-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">qr</span>(A)</span></code></pre></div>
+<div class="sourceCode" id="cb1479"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1479-1"><a href="miscellaneous.html#cb1479-1" aria-hidden="true" tabindex="-1"></a>   A<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>,<span class="dv">4</span>,<span class="dv">3</span>)</span>
+<span id="cb1479-2"><a href="miscellaneous.html#cb1479-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">qr</span>(A)</span></code></pre></div>
 <pre><code>$qr
            [,1]        [,2]          [,3]
 [1,] -5.4772256 -12.7801930 -2.008316e+01
@@ -1759,7 +1800,7 @@ $pivot
 
 attr(,&quot;class&quot;)
 [1] &quot;qr&quot;</code></pre>
-<div class="sourceCode" id="cb1475"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1475-1"><a href="miscellaneous.html#cb1475-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qr.Q</span>(<span class="fu">qr</span>(A))</span></code></pre></div>
+<div class="sourceCode" id="cb1481"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1481-1"><a href="miscellaneous.html#cb1481-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qr.Q</span>(<span class="fu">qr</span>(A))</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1784,7 +1825,7 @@ attr(,&quot;class&quot;)
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb1476"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1476-1"><a href="miscellaneous.html#cb1476-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qr.R</span>(<span class="fu">qr</span>(A))</span></code></pre></div>
+<div class="sourceCode" id="cb1482"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1482-1"><a href="miscellaneous.html#cb1482-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qr.R</span>(<span class="fu">qr</span>(A))</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1805,10 +1846,10 @@ attr(,&quot;class&quot;)
 </tbody>
 </table>
 </div>
-<div id="solve-linear-equations" class="section level3 hasAnchor" number="11.1.4">
-<h3><span class="header-section-number">11.1.4</span> Solve linear equations<a href="miscellaneous.html#solve-linear-equations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb1477"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1477-1"><a href="miscellaneous.html#cb1477-1" aria-hidden="true" tabindex="-1"></a>   X<span class="ot">=</span><span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>  ,<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">0</span>),<span class="at">ncol=</span><span class="dv">3</span>,<span class="at">nrow=</span><span class="dv">3</span>)</span>
-<span id="cb1477-2"><a href="miscellaneous.html#cb1477-2" aria-hidden="true" tabindex="-1"></a>   X</span></code></pre></div>
+<div id="solve-linear-equations" class="section level3 hasAnchor" number="17.1.4">
+<h3><span class="header-section-number">17.1.4</span> Solve linear equations<a href="miscellaneous.html#solve-linear-equations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb1483"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1483-1"><a href="miscellaneous.html#cb1483-1" aria-hidden="true" tabindex="-1"></a>   X<span class="ot">=</span><span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>  ,<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">0</span>),<span class="at">ncol=</span><span class="dv">3</span>,<span class="at">nrow=</span><span class="dv">3</span>)</span>
+<span id="cb1483-2"><a href="miscellaneous.html#cb1483-2" aria-hidden="true" tabindex="-1"></a>   X</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -1828,25 +1869,25 @@ attr(,&quot;class&quot;)
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb1478"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1478-1"><a href="miscellaneous.html#cb1478-1" aria-hidden="true" tabindex="-1"></a>   b<span class="ot">=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">3</span></span>
-<span id="cb1478-2"><a href="miscellaneous.html#cb1478-2" aria-hidden="true" tabindex="-1"></a>   b</span></code></pre></div>
+<div class="sourceCode" id="cb1484"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1484-1"><a href="miscellaneous.html#cb1484-1" aria-hidden="true" tabindex="-1"></a>   b<span class="ot">=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">3</span></span>
+<span id="cb1484-2"><a href="miscellaneous.html#cb1484-2" aria-hidden="true" tabindex="-1"></a>   b</span></code></pre></div>
 <pre><code>[1] 1 2 3</code></pre>
-<div class="sourceCode" id="cb1480"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1480-1"><a href="miscellaneous.html#cb1480-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">solve</span>(X,b) <span class="co"># whether it is singular</span></span></code></pre></div>
+<div class="sourceCode" id="cb1486"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1486-1"><a href="miscellaneous.html#cb1486-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">solve</span>(X,b) <span class="co"># whether it is singular</span></span></code></pre></div>
 <pre><code>[1]  1.0  1.0 -0.5</code></pre>
 </div>
-<div id="summary" class="section level3 hasAnchor" number="11.1.5">
-<h3><span class="header-section-number">11.1.5</span> Summary<a href="miscellaneous.html#summary" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="summary" class="section level3 hasAnchor" number="17.1.5">
+<h3><span class="header-section-number">17.1.5</span> Summary<a href="miscellaneous.html#summary" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li><p>Eigen values (values and vectors, UΛU), singular values (s v “" d), and QR (orthogonal and upper triangle, QR) for any matrix.</p></li>
 <li><p>Choleskey (P’ P, lower and upper triangle) factor for positive definite matrix (cov matrix is semi).</p></li>
 </ul>
 </div>
 </div>
-<div id="calculus" class="section level2 hasAnchor" number="11.2">
-<h2><span class="header-section-number">11.2</span> Calculus<a href="miscellaneous.html#calculus" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div id="derivation-1" class="section level3 hasAnchor" number="11.2.1">
-<h3><span class="header-section-number">11.2.1</span> Derivation<a href="miscellaneous.html#derivation-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb1482"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1482-1"><a href="miscellaneous.html#cb1482-1" aria-hidden="true" tabindex="-1"></a>dx <span class="ot">&lt;-</span> <span class="fu">deriv</span>(y <span class="sc">~</span> x<span class="sc">^</span><span class="dv">3</span>, <span class="st">&quot;x&quot;</span>); dx</span></code></pre></div>
+<div id="calculus" class="section level2 hasAnchor" number="17.2">
+<h2><span class="header-section-number">17.2</span> Calculus<a href="miscellaneous.html#calculus" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="derivation-1" class="section level3 hasAnchor" number="17.2.1">
+<h3><span class="header-section-number">17.2.1</span> Derivation<a href="miscellaneous.html#derivation-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb1488"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1488-1"><a href="miscellaneous.html#cb1488-1" aria-hidden="true" tabindex="-1"></a>dx <span class="ot">&lt;-</span> <span class="fu">deriv</span>(y <span class="sc">~</span> x<span class="sc">^</span><span class="dv">3</span>, <span class="st">&quot;x&quot;</span>); dx</span></code></pre></div>
 <pre><code>expression({
     .value &lt;- x^3
     .grad &lt;- array(0, c(length(.value), 1L), list(NULL, c(&quot;x&quot;)))
@@ -1854,173 +1895,173 @@ attr(,&quot;class&quot;)
     attr(.value, &quot;gradient&quot;) &lt;- .grad
     .value
 })</code></pre>
-<div class="sourceCode" id="cb1484"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1484-1"><a href="miscellaneous.html#cb1484-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mode</span>(dx)</span></code></pre></div>
+<div class="sourceCode" id="cb1490"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1490-1"><a href="miscellaneous.html#cb1490-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mode</span>(dx)</span></code></pre></div>
 <pre><code>[1] &quot;expression&quot;</code></pre>
-<div class="sourceCode" id="cb1486"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1486-1"><a href="miscellaneous.html#cb1486-1" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span><span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>   </span>
-<span id="cb1486-2"><a href="miscellaneous.html#cb1486-2" aria-hidden="true" tabindex="-1"></a><span class="fu">eval</span>(dx)</span></code></pre></div>
+<div class="sourceCode" id="cb1492"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1492-1"><a href="miscellaneous.html#cb1492-1" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span><span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>   </span>
+<span id="cb1492-2"><a href="miscellaneous.html#cb1492-2" aria-hidden="true" tabindex="-1"></a><span class="fu">eval</span>(dx)</span></code></pre></div>
 <pre><code>[1] 1 8
 attr(,&quot;gradient&quot;)
       x
 [1,]  3
 [2,] 12</code></pre>
-<div class="sourceCode" id="cb1488"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1488-1"><a href="miscellaneous.html#cb1488-1" aria-hidden="true" tabindex="-1"></a>dx <span class="ot">&lt;-</span> <span class="fu">deriv</span>(y <span class="sc">~</span> <span class="fu">sin</span>(x), <span class="st">&quot;x&quot;</span>, <span class="at">func=</span> <span class="cn">TRUE</span>) ;  </span>
-<span id="cb1488-2"><a href="miscellaneous.html#cb1488-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mode</span>(dx)</span></code></pre></div>
+<div class="sourceCode" id="cb1494"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1494-1"><a href="miscellaneous.html#cb1494-1" aria-hidden="true" tabindex="-1"></a>dx <span class="ot">&lt;-</span> <span class="fu">deriv</span>(y <span class="sc">~</span> <span class="fu">sin</span>(x), <span class="st">&quot;x&quot;</span>, <span class="at">func=</span> <span class="cn">TRUE</span>) ;  </span>
+<span id="cb1494-2"><a href="miscellaneous.html#cb1494-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mode</span>(dx)</span></code></pre></div>
 <pre><code>[1] &quot;function&quot;</code></pre>
-<div class="sourceCode" id="cb1490"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1490-1"><a href="miscellaneous.html#cb1490-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dx</span>(<span class="fu">c</span>(pi,<span class="dv">4</span><span class="sc">*</span>pi))  </span></code></pre></div>
+<div class="sourceCode" id="cb1496"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1496-1"><a href="miscellaneous.html#cb1496-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dx</span>(<span class="fu">c</span>(pi,<span class="dv">4</span><span class="sc">*</span>pi))  </span></code></pre></div>
 <pre><code>[1]  1.224606e-16 -4.898425e-16
 attr(,&quot;gradient&quot;)
       x
 [1,] -1
 [2,]  1</code></pre>
-<div class="sourceCode" id="cb1492"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1492-1"><a href="miscellaneous.html#cb1492-1" aria-hidden="true" tabindex="-1"></a>a<span class="ot">&lt;-</span><span class="dv">2</span>                </span>
-<span id="cb1492-2"><a href="miscellaneous.html#cb1492-2" aria-hidden="true" tabindex="-1"></a>dx<span class="ot">&lt;-</span><span class="fu">deriv</span>(y<span class="sc">~</span>a<span class="sc">*</span><span class="fu">cos</span>(a<span class="sc">*</span>x),<span class="st">&quot;x&quot;</span>,<span class="at">func =</span> <span class="cn">TRUE</span>)    </span>
-<span id="cb1492-3"><a href="miscellaneous.html#cb1492-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dx</span>(pi<span class="sc">/</span><span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1498"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1498-1"><a href="miscellaneous.html#cb1498-1" aria-hidden="true" tabindex="-1"></a>a<span class="ot">&lt;-</span><span class="dv">2</span>                </span>
+<span id="cb1498-2"><a href="miscellaneous.html#cb1498-2" aria-hidden="true" tabindex="-1"></a>dx<span class="ot">&lt;-</span><span class="fu">deriv</span>(y<span class="sc">~</span>a<span class="sc">*</span><span class="fu">cos</span>(a<span class="sc">*</span>x),<span class="st">&quot;x&quot;</span>,<span class="at">func =</span> <span class="cn">TRUE</span>)    </span>
+<span id="cb1498-3"><a href="miscellaneous.html#cb1498-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dx</span>(pi<span class="sc">/</span><span class="dv">3</span>)</span></code></pre></div>
 <pre><code>[1] -1
 attr(,&quot;gradient&quot;)
              x
 [1,] -3.464102</code></pre>
-<div class="sourceCode" id="cb1494"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1494-1"><a href="miscellaneous.html#cb1494-1" aria-hidden="true" tabindex="-1"></a>fxy <span class="ot">=</span> <span class="fu">expression</span>(<span class="dv">2</span><span class="sc">*</span>x<span class="sc">^</span><span class="dv">2</span><span class="sc">+</span>y<span class="sc">+</span><span class="dv">3</span><span class="sc">*</span>x<span class="sc">*</span>y<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb1494-2"><a href="miscellaneous.html#cb1494-2" aria-hidden="true" tabindex="-1"></a>dxy <span class="ot">=</span> <span class="fu">deriv</span>(fxy, <span class="fu">c</span>(<span class="st">&quot;x&quot;</span>, <span class="st">&quot;y&quot;</span>), <span class="at">func =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1494-3"><a href="miscellaneous.html#cb1494-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dxy</span>(<span class="dv">1</span>,<span class="dv">2</span>)  </span></code></pre></div>
+<div class="sourceCode" id="cb1500"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1500-1"><a href="miscellaneous.html#cb1500-1" aria-hidden="true" tabindex="-1"></a>fxy <span class="ot">=</span> <span class="fu">expression</span>(<span class="dv">2</span><span class="sc">*</span>x<span class="sc">^</span><span class="dv">2</span><span class="sc">+</span>y<span class="sc">+</span><span class="dv">3</span><span class="sc">*</span>x<span class="sc">*</span>y<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb1500-2"><a href="miscellaneous.html#cb1500-2" aria-hidden="true" tabindex="-1"></a>dxy <span class="ot">=</span> <span class="fu">deriv</span>(fxy, <span class="fu">c</span>(<span class="st">&quot;x&quot;</span>, <span class="st">&quot;y&quot;</span>), <span class="at">func =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1500-3"><a href="miscellaneous.html#cb1500-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dxy</span>(<span class="dv">1</span>,<span class="dv">2</span>)  </span></code></pre></div>
 <pre><code>[1] 16
 attr(,&quot;gradient&quot;)
       x  y
 [1,] 16 13</code></pre>
 </div>
-<div id="integration" class="section level3 hasAnchor" number="11.2.2">
-<h3><span class="header-section-number">11.2.2</span> Integration<a href="miscellaneous.html#integration" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb1496"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1496-1"><a href="miscellaneous.html#cb1496-1" aria-hidden="true" tabindex="-1"></a><span class="fu">integrate</span>(dnorm, <span class="sc">-</span><span class="fl">1.96</span>, <span class="fl">1.96</span>)</span></code></pre></div>
+<div id="integration" class="section level3 hasAnchor" number="17.2.2">
+<h3><span class="header-section-number">17.2.2</span> Integration<a href="miscellaneous.html#integration" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb1502"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1502-1"><a href="miscellaneous.html#cb1502-1" aria-hidden="true" tabindex="-1"></a><span class="fu">integrate</span>(dnorm, <span class="sc">-</span><span class="fl">1.96</span>, <span class="fl">1.96</span>)</span></code></pre></div>
 <pre><code>0.9500042 with absolute error &lt; 0.00000000001</code></pre>
-<div class="sourceCode" id="cb1498"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1498-1"><a href="miscellaneous.html#cb1498-1" aria-hidden="true" tabindex="-1"></a><span class="fu">integrate</span>(dnorm, <span class="sc">-</span><span class="cn">Inf</span>, <span class="cn">Inf</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1504"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1504-1"><a href="miscellaneous.html#cb1504-1" aria-hidden="true" tabindex="-1"></a><span class="fu">integrate</span>(dnorm, <span class="sc">-</span><span class="cn">Inf</span>, <span class="cn">Inf</span>)</span></code></pre></div>
 <pre><code>1 with absolute error &lt; 0.000094</code></pre>
-<div class="sourceCode" id="cb1500"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1500-1"><a href="miscellaneous.html#cb1500-1" aria-hidden="true" tabindex="-1"></a>integrand <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {<span class="dv">1</span><span class="sc">/</span>((x<span class="sc">+</span><span class="dv">1</span>)<span class="sc">*</span><span class="fu">sqrt</span>(x))}</span>
-<span id="cb1500-2"><a href="miscellaneous.html#cb1500-2" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb1500-3"><a href="miscellaneous.html#cb1500-3" aria-hidden="true" tabindex="-1"></a><span class="fu">integrate</span>(integrand, <span class="at">lower =</span> <span class="dv">0</span>, <span class="at">upper =</span> <span class="cn">Inf</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1506"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1506-1"><a href="miscellaneous.html#cb1506-1" aria-hidden="true" tabindex="-1"></a>integrand <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {<span class="dv">1</span><span class="sc">/</span>((x<span class="sc">+</span><span class="dv">1</span>)<span class="sc">*</span><span class="fu">sqrt</span>(x))}</span>
+<span id="cb1506-2"><a href="miscellaneous.html#cb1506-2" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb1506-3"><a href="miscellaneous.html#cb1506-3" aria-hidden="true" tabindex="-1"></a><span class="fu">integrate</span>(integrand, <span class="at">lower =</span> <span class="dv">0</span>, <span class="at">upper =</span> <span class="cn">Inf</span>)</span></code></pre></div>
 <pre><code>3.141593 with absolute error &lt; 0.000027</code></pre>
-<div class="sourceCode" id="cb1502"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1502-1"><a href="miscellaneous.html#cb1502-1" aria-hidden="true" tabindex="-1"></a> integrand <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {<span class="fu">sin</span>(x)}</span>
-<span id="cb1502-2"><a href="miscellaneous.html#cb1502-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">integrate</span>(integrand, <span class="at">lower =</span> <span class="dv">0</span>, <span class="at">upper =</span> pi<span class="sc">/</span><span class="dv">2</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb1508"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1508-1"><a href="miscellaneous.html#cb1508-1" aria-hidden="true" tabindex="-1"></a> integrand <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {<span class="fu">sin</span>(x)}</span>
+<span id="cb1508-2"><a href="miscellaneous.html#cb1508-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">integrate</span>(integrand, <span class="at">lower =</span> <span class="dv">0</span>, <span class="at">upper =</span> pi<span class="sc">/</span><span class="dv">2</span>) </span></code></pre></div>
 <pre><code>1 with absolute error &lt; 0.000000000000011</code></pre>
 </div>
 </div>
-<div id="sample-size-calculation" class="section level2 hasAnchor" number="11.3">
-<h2><span class="header-section-number">11.3</span> Sample size calculation<a href="miscellaneous.html#sample-size-calculation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb1504"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1504-1"><a href="miscellaneous.html#cb1504-1" aria-hidden="true" tabindex="-1"></a><span class="co">#given proportion </span></span>
-<span id="cb1504-2"><a href="miscellaneous.html#cb1504-2" aria-hidden="true" tabindex="-1"></a>px3<span class="ot">=</span><span class="fl">0.11</span></span>
-<span id="cb1504-3"><a href="miscellaneous.html#cb1504-3" aria-hidden="true" tabindex="-1"></a>px4<span class="ot">=</span><span class="fl">0.07</span></span>
-<span id="cb1504-4"><a href="miscellaneous.html#cb1504-4" aria-hidden="true" tabindex="-1"></a>px5<span class="ot">=</span><span class="fl">0.08</span></span>
-<span id="cb1504-5"><a href="miscellaneous.html#cb1504-5" aria-hidden="true" tabindex="-1"></a>px6<span class="ot">=</span><span class="fl">0.06</span></span>
-<span id="cb1504-6"><a href="miscellaneous.html#cb1504-6" aria-hidden="true" tabindex="-1"></a>px7<span class="ot">=</span><span class="fl">0.05</span></span>
-<span id="cb1504-7"><a href="miscellaneous.html#cb1504-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1504-8"><a href="miscellaneous.html#cb1504-8" aria-hidden="true" tabindex="-1"></a><span class="do">###################</span></span>
-<span id="cb1504-9"><a href="miscellaneous.html#cb1504-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1504-10"><a href="miscellaneous.html#cb1504-10" aria-hidden="true" tabindex="-1"></a>  Outcome0 <span class="ot">=</span> <span class="cn">NULL</span></span>
-<span id="cb1504-11"><a href="miscellaneous.html#cb1504-11" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1504-12"><a href="miscellaneous.html#cb1504-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (t <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">350</span>, <span class="dv">600</span>, <span class="at">by=</span><span class="dv">2</span>)){  <span class="co"># change the possible sample size graudally from 400 to 700.  </span></span>
-<span id="cb1504-13"><a href="miscellaneous.html#cb1504-13" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1504-14"><a href="miscellaneous.html#cb1504-14" aria-hidden="true" tabindex="-1"></a>    n<span class="ot">=</span>t</span>
-<span id="cb1504-15"><a href="miscellaneous.html#cb1504-15" aria-hidden="true" tabindex="-1"></a>    count<span class="ot">=</span><span class="dv">0</span></span>
-<span id="cb1504-16"><a href="miscellaneous.html#cb1504-16" aria-hidden="true" tabindex="-1"></a>    M<span class="ot">=</span><span class="dv">500</span>   <span class="co"># times of simulation</span></span>
-<span id="cb1504-17"><a href="miscellaneous.html#cb1504-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>M){</span>
-<span id="cb1504-18"><a href="miscellaneous.html#cb1504-18" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb1504-19"><a href="miscellaneous.html#cb1504-19" aria-hidden="true" tabindex="-1"></a>      <span class="co"># for a given sample size (400), for the first simulation,</span></span>
-<span id="cb1504-20"><a href="miscellaneous.html#cb1504-20" aria-hidden="true" tabindex="-1"></a>      <span class="co"># we use rbinom function simulate the contingencey table as below with above given proportions,</span></span>
-<span id="cb1504-21"><a href="miscellaneous.html#cb1504-21" aria-hidden="true" tabindex="-1"></a>      <span class="co"># and calculate the p value by using Chi square test for the simulation</span></span>
-<span id="cb1504-22"><a href="miscellaneous.html#cb1504-22" aria-hidden="true" tabindex="-1"></a>      x3<span class="ot">=</span><span class="fu">rbinom</span>(<span class="dv">1</span>,n,px3)</span>
-<span id="cb1504-23"><a href="miscellaneous.html#cb1504-23" aria-hidden="true" tabindex="-1"></a>      x4<span class="ot">=</span><span class="fu">rbinom</span>(<span class="dv">1</span>,n,px4)</span>
-<span id="cb1504-24"><a href="miscellaneous.html#cb1504-24" aria-hidden="true" tabindex="-1"></a>      x5<span class="ot">=</span><span class="fu">rbinom</span>(<span class="dv">1</span>,n,px5)</span>
-<span id="cb1504-25"><a href="miscellaneous.html#cb1504-25" aria-hidden="true" tabindex="-1"></a>      x6<span class="ot">=</span><span class="fu">rbinom</span>(<span class="dv">1</span>,n,px6)</span>
-<span id="cb1504-26"><a href="miscellaneous.html#cb1504-26" aria-hidden="true" tabindex="-1"></a>      x7<span class="ot">=</span><span class="fu">rbinom</span>(<span class="dv">1</span>,n,px7)</span>
-<span id="cb1504-27"><a href="miscellaneous.html#cb1504-27" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb1504-28"><a href="miscellaneous.html#cb1504-28" aria-hidden="true" tabindex="-1"></a>      data<span class="ot">=</span><span class="fu">matrix</span>(<span class="fu">c</span>(x3,n<span class="sc">-</span>x3,x4,n<span class="sc">-</span>x4,x5,n<span class="sc">-</span>x5,x6,n<span class="sc">-</span>x6,x7,n<span class="sc">-</span>x7 ),<span class="at">ncol=</span><span class="dv">2</span>,<span class="at">byrow=</span>T)   </span>
-<span id="cb1504-29"><a href="miscellaneous.html#cb1504-29" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb1504-30"><a href="miscellaneous.html#cb1504-30" aria-hidden="true" tabindex="-1"></a>      <span class="co"># if the p value of this simulation is less than 0.05, it means we get the significant result for the given this sample size this time. it means we detected the difference in this simulation experiment when the difference is true. </span></span>
-<span id="cb1504-31"><a href="miscellaneous.html#cb1504-31" aria-hidden="true" tabindex="-1"></a>      pv<span class="ot">=</span><span class="fu">prop.test</span>(data)<span class="sc">$</span>p.value      </span>
-<span id="cb1504-32"><a href="miscellaneous.html#cb1504-32" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb1504-33"><a href="miscellaneous.html#cb1504-33" aria-hidden="true" tabindex="-1"></a>      count<span class="ot">=</span><span class="fu">as.numeric</span>(pv<span class="sc">&lt;</span><span class="fl">0.05</span>)<span class="sc">+</span>count  <span class="co">#sum of pv&lt;0.05</span></span>
-<span id="cb1504-34"><a href="miscellaneous.html#cb1504-34" aria-hidden="true" tabindex="-1"></a>    }  <span class="co">#end loop of p value </span></span>
-<span id="cb1504-35"><a href="miscellaneous.html#cb1504-35" aria-hidden="true" tabindex="-1"></a>    power0<span class="ot">=</span>count<span class="sc">/</span>M </span>
-<span id="cb1504-36"><a href="miscellaneous.html#cb1504-36" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1504-37"><a href="miscellaneous.html#cb1504-37" aria-hidden="true" tabindex="-1"></a>    temp <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">size=</span>t,<span class="at">power=</span>power0)</span>
-<span id="cb1504-38"><a href="miscellaneous.html#cb1504-38" aria-hidden="true" tabindex="-1"></a>    Outcome0 <span class="ot">=</span>  <span class="fu">rbind</span>(Outcome0, temp)</span>
-<span id="cb1504-39"><a href="miscellaneous.html#cb1504-39" aria-hidden="true" tabindex="-1"></a>  }  <span class="co">#end loop of power from different sample size</span></span>
-<span id="cb1504-40"><a href="miscellaneous.html#cb1504-40" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1504-41"><a href="miscellaneous.html#cb1504-41" aria-hidden="true" tabindex="-1"></a>  <span class="co"># generate a new variable named &quot;power_loess&quot; by loess method because the curve of sample size and power is not enough smooth</span></span>
-<span id="cb1504-42"><a href="miscellaneous.html#cb1504-42" aria-hidden="true" tabindex="-1"></a>  power_loess <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">predict</span>(<span class="fu">loess</span>(Outcome0<span class="sc">$</span>power <span class="sc">~</span> Outcome0<span class="sc">$</span>size,<span class="at">data=</span>Outcome0,<span class="at">span=</span><span class="fl">0.6</span>)),<span class="dv">3</span>)</span>
-<span id="cb1504-43"><a href="miscellaneous.html#cb1504-43" aria-hidden="true" tabindex="-1"></a>  Outcome0 <span class="ot">=</span>  <span class="fu">data.frame</span>(Outcome0, power_loess)</span>
-<span id="cb1504-44"><a href="miscellaneous.html#cb1504-44" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1504-45"><a href="miscellaneous.html#cb1504-45" aria-hidden="true" tabindex="-1"></a>  <span class="co"># plot a line chart of the power and sample size, and smooth the curve by loess method</span></span>
-<span id="cb1504-46"><a href="miscellaneous.html#cb1504-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span> (Outcome0<span class="sc">$</span>size, Outcome0<span class="sc">$</span>power,<span class="at">type =</span> <span class="st">&quot;n&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Power&quot;</span>,<span class="at">xlab=</span><span class="st">&quot;Sample size&quot;</span>,</span>
-<span id="cb1504-47"><a href="miscellaneous.html#cb1504-47" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;Power analysis for GDM&quot;</span>))) </span>
-<span id="cb1504-48"><a href="miscellaneous.html#cb1504-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abline</span>(<span class="at">h=</span><span class="fl">0.9</span>,<span class="at">col=</span><span class="st">&#39;red&#39;</span>,<span class="at">lwd=</span><span class="dv">2</span>,<span class="at">lty=</span><span class="dv">2</span>)</span>
-<span id="cb1504-49"><a href="miscellaneous.html#cb1504-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abline</span>(<span class="at">h=</span><span class="fl">0.85</span>, <span class="at">col=</span><span class="st">&#39;red&#39;</span>,<span class="at">lwd=</span><span class="dv">2</span>,<span class="at">lty=</span><span class="dv">2</span>)</span>
-<span id="cb1504-50"><a href="miscellaneous.html#cb1504-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abline</span>(<span class="at">h=</span><span class="fl">0.8</span>,<span class="at">col=</span><span class="st">&#39;red&#39;</span>,<span class="at">lwd=</span><span class="dv">2</span>,<span class="at">lty=</span><span class="dv">2</span>)</span>
-<span id="cb1504-51"><a href="miscellaneous.html#cb1504-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(Outcome0<span class="sc">$</span>size,power_loess,<span class="at">col=</span><span class="st">&quot;blue&quot;</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
+<div id="sample-size-calculation" class="section level2 hasAnchor" number="17.3">
+<h2><span class="header-section-number">17.3</span> Sample size calculation<a href="miscellaneous.html#sample-size-calculation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb1510"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1510-1"><a href="miscellaneous.html#cb1510-1" aria-hidden="true" tabindex="-1"></a><span class="co">#given proportion </span></span>
+<span id="cb1510-2"><a href="miscellaneous.html#cb1510-2" aria-hidden="true" tabindex="-1"></a>px3<span class="ot">=</span><span class="fl">0.11</span></span>
+<span id="cb1510-3"><a href="miscellaneous.html#cb1510-3" aria-hidden="true" tabindex="-1"></a>px4<span class="ot">=</span><span class="fl">0.07</span></span>
+<span id="cb1510-4"><a href="miscellaneous.html#cb1510-4" aria-hidden="true" tabindex="-1"></a>px5<span class="ot">=</span><span class="fl">0.08</span></span>
+<span id="cb1510-5"><a href="miscellaneous.html#cb1510-5" aria-hidden="true" tabindex="-1"></a>px6<span class="ot">=</span><span class="fl">0.06</span></span>
+<span id="cb1510-6"><a href="miscellaneous.html#cb1510-6" aria-hidden="true" tabindex="-1"></a>px7<span class="ot">=</span><span class="fl">0.05</span></span>
+<span id="cb1510-7"><a href="miscellaneous.html#cb1510-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1510-8"><a href="miscellaneous.html#cb1510-8" aria-hidden="true" tabindex="-1"></a><span class="do">###################</span></span>
+<span id="cb1510-9"><a href="miscellaneous.html#cb1510-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1510-10"><a href="miscellaneous.html#cb1510-10" aria-hidden="true" tabindex="-1"></a>  Outcome0 <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb1510-11"><a href="miscellaneous.html#cb1510-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1510-12"><a href="miscellaneous.html#cb1510-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (t <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">350</span>, <span class="dv">600</span>, <span class="at">by=</span><span class="dv">2</span>)){  <span class="co"># change the possible sample size graudally from 400 to 700.  </span></span>
+<span id="cb1510-13"><a href="miscellaneous.html#cb1510-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1510-14"><a href="miscellaneous.html#cb1510-14" aria-hidden="true" tabindex="-1"></a>    n<span class="ot">=</span>t</span>
+<span id="cb1510-15"><a href="miscellaneous.html#cb1510-15" aria-hidden="true" tabindex="-1"></a>    count<span class="ot">=</span><span class="dv">0</span></span>
+<span id="cb1510-16"><a href="miscellaneous.html#cb1510-16" aria-hidden="true" tabindex="-1"></a>    M<span class="ot">=</span><span class="dv">500</span>   <span class="co"># times of simulation</span></span>
+<span id="cb1510-17"><a href="miscellaneous.html#cb1510-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>M){</span>
+<span id="cb1510-18"><a href="miscellaneous.html#cb1510-18" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb1510-19"><a href="miscellaneous.html#cb1510-19" aria-hidden="true" tabindex="-1"></a>      <span class="co"># for a given sample size (400), for the first simulation,</span></span>
+<span id="cb1510-20"><a href="miscellaneous.html#cb1510-20" aria-hidden="true" tabindex="-1"></a>      <span class="co"># we use rbinom function simulate the contingencey table as below with above given proportions,</span></span>
+<span id="cb1510-21"><a href="miscellaneous.html#cb1510-21" aria-hidden="true" tabindex="-1"></a>      <span class="co"># and calculate the p value by using Chi square test for the simulation</span></span>
+<span id="cb1510-22"><a href="miscellaneous.html#cb1510-22" aria-hidden="true" tabindex="-1"></a>      x3<span class="ot">=</span><span class="fu">rbinom</span>(<span class="dv">1</span>,n,px3)</span>
+<span id="cb1510-23"><a href="miscellaneous.html#cb1510-23" aria-hidden="true" tabindex="-1"></a>      x4<span class="ot">=</span><span class="fu">rbinom</span>(<span class="dv">1</span>,n,px4)</span>
+<span id="cb1510-24"><a href="miscellaneous.html#cb1510-24" aria-hidden="true" tabindex="-1"></a>      x5<span class="ot">=</span><span class="fu">rbinom</span>(<span class="dv">1</span>,n,px5)</span>
+<span id="cb1510-25"><a href="miscellaneous.html#cb1510-25" aria-hidden="true" tabindex="-1"></a>      x6<span class="ot">=</span><span class="fu">rbinom</span>(<span class="dv">1</span>,n,px6)</span>
+<span id="cb1510-26"><a href="miscellaneous.html#cb1510-26" aria-hidden="true" tabindex="-1"></a>      x7<span class="ot">=</span><span class="fu">rbinom</span>(<span class="dv">1</span>,n,px7)</span>
+<span id="cb1510-27"><a href="miscellaneous.html#cb1510-27" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb1510-28"><a href="miscellaneous.html#cb1510-28" aria-hidden="true" tabindex="-1"></a>      data<span class="ot">=</span><span class="fu">matrix</span>(<span class="fu">c</span>(x3,n<span class="sc">-</span>x3,x4,n<span class="sc">-</span>x4,x5,n<span class="sc">-</span>x5,x6,n<span class="sc">-</span>x6,x7,n<span class="sc">-</span>x7 ),<span class="at">ncol=</span><span class="dv">2</span>,<span class="at">byrow=</span>T)   </span>
+<span id="cb1510-29"><a href="miscellaneous.html#cb1510-29" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb1510-30"><a href="miscellaneous.html#cb1510-30" aria-hidden="true" tabindex="-1"></a>      <span class="co"># if the p value of this simulation is less than 0.05, it means we get the significant result for the given this sample size this time. it means we detected the difference in this simulation experiment when the difference is true. </span></span>
+<span id="cb1510-31"><a href="miscellaneous.html#cb1510-31" aria-hidden="true" tabindex="-1"></a>      pv<span class="ot">=</span><span class="fu">prop.test</span>(data)<span class="sc">$</span>p.value      </span>
+<span id="cb1510-32"><a href="miscellaneous.html#cb1510-32" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb1510-33"><a href="miscellaneous.html#cb1510-33" aria-hidden="true" tabindex="-1"></a>      count<span class="ot">=</span><span class="fu">as.numeric</span>(pv<span class="sc">&lt;</span><span class="fl">0.05</span>)<span class="sc">+</span>count  <span class="co">#sum of pv&lt;0.05</span></span>
+<span id="cb1510-34"><a href="miscellaneous.html#cb1510-34" aria-hidden="true" tabindex="-1"></a>    }  <span class="co">#end loop of p value </span></span>
+<span id="cb1510-35"><a href="miscellaneous.html#cb1510-35" aria-hidden="true" tabindex="-1"></a>    power0<span class="ot">=</span>count<span class="sc">/</span>M </span>
+<span id="cb1510-36"><a href="miscellaneous.html#cb1510-36" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1510-37"><a href="miscellaneous.html#cb1510-37" aria-hidden="true" tabindex="-1"></a>    temp <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">size=</span>t,<span class="at">power=</span>power0)</span>
+<span id="cb1510-38"><a href="miscellaneous.html#cb1510-38" aria-hidden="true" tabindex="-1"></a>    Outcome0 <span class="ot">=</span>  <span class="fu">rbind</span>(Outcome0, temp)</span>
+<span id="cb1510-39"><a href="miscellaneous.html#cb1510-39" aria-hidden="true" tabindex="-1"></a>  }  <span class="co">#end loop of power from different sample size</span></span>
+<span id="cb1510-40"><a href="miscellaneous.html#cb1510-40" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1510-41"><a href="miscellaneous.html#cb1510-41" aria-hidden="true" tabindex="-1"></a>  <span class="co"># generate a new variable named &quot;power_loess&quot; by loess method because the curve of sample size and power is not enough smooth</span></span>
+<span id="cb1510-42"><a href="miscellaneous.html#cb1510-42" aria-hidden="true" tabindex="-1"></a>  power_loess <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">predict</span>(<span class="fu">loess</span>(Outcome0<span class="sc">$</span>power <span class="sc">~</span> Outcome0<span class="sc">$</span>size,<span class="at">data=</span>Outcome0,<span class="at">span=</span><span class="fl">0.6</span>)),<span class="dv">3</span>)</span>
+<span id="cb1510-43"><a href="miscellaneous.html#cb1510-43" aria-hidden="true" tabindex="-1"></a>  Outcome0 <span class="ot">=</span>  <span class="fu">data.frame</span>(Outcome0, power_loess)</span>
+<span id="cb1510-44"><a href="miscellaneous.html#cb1510-44" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1510-45"><a href="miscellaneous.html#cb1510-45" aria-hidden="true" tabindex="-1"></a>  <span class="co"># plot a line chart of the power and sample size, and smooth the curve by loess method</span></span>
+<span id="cb1510-46"><a href="miscellaneous.html#cb1510-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span> (Outcome0<span class="sc">$</span>size, Outcome0<span class="sc">$</span>power,<span class="at">type =</span> <span class="st">&quot;n&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Power&quot;</span>,<span class="at">xlab=</span><span class="st">&quot;Sample size&quot;</span>,</span>
+<span id="cb1510-47"><a href="miscellaneous.html#cb1510-47" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;Power analysis for GDM&quot;</span>))) </span>
+<span id="cb1510-48"><a href="miscellaneous.html#cb1510-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abline</span>(<span class="at">h=</span><span class="fl">0.9</span>,<span class="at">col=</span><span class="st">&#39;red&#39;</span>,<span class="at">lwd=</span><span class="dv">2</span>,<span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb1510-49"><a href="miscellaneous.html#cb1510-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abline</span>(<span class="at">h=</span><span class="fl">0.85</span>, <span class="at">col=</span><span class="st">&#39;red&#39;</span>,<span class="at">lwd=</span><span class="dv">2</span>,<span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb1510-50"><a href="miscellaneous.html#cb1510-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abline</span>(<span class="at">h=</span><span class="fl">0.8</span>,<span class="at">col=</span><span class="st">&#39;red&#39;</span>,<span class="at">lwd=</span><span class="dv">2</span>,<span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb1510-51"><a href="miscellaneous.html#cb1510-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(Outcome0<span class="sc">$</span>size,power_loess,<span class="at">col=</span><span class="st">&quot;blue&quot;</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-669-1.png" width="672" /></p>
 </div>
-<div id="how-to-evaluate-z-score" class="section level2 hasAnchor" number="11.4">
-<h2><span class="header-section-number">11.4</span> How to evaluate z score<a href="miscellaneous.html#how-to-evaluate-z-score" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="how-to-evaluate-z-score" class="section level2 hasAnchor" number="17.4">
+<h2><span class="header-section-number">17.4</span> How to evaluate z score<a href="miscellaneous.html#how-to-evaluate-z-score" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
 <li>Call the parameter estimates file</li>
 </ul>
-<div class="sourceCode" id="cb1505"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1505-1"><a href="miscellaneous.html#cb1505-1" aria-hidden="true" tabindex="-1"></a>PE<span class="ot">=</span> <span class="fu">matrix</span>(PE,<span class="at">nrow=</span><span class="dv">5</span>,<span class="at">byrow =</span> T)</span>
-<span id="cb1505-2"><a href="miscellaneous.html#cb1505-2" aria-hidden="true" tabindex="-1"></a>    index<span class="ot">=</span> Ultra<span class="dv">-3</span>;  </span>
-<span id="cb1505-3"><a href="miscellaneous.html#cb1505-3" aria-hidden="true" tabindex="-1"></a>    info<span class="ot">=</span> PE[index,]</span>
-<span id="cb1505-4"><a href="miscellaneous.html#cb1505-4" aria-hidden="true" tabindex="-1"></a>    fcoef<span class="ot">=</span>info[<span class="dv">3</span><span class="sc">:</span><span class="dv">9</span>]; sigma<span class="ot">=</span>info[<span class="dv">10</span>];Sigmab<span class="ot">=</span> <span class="fu">matrix</span>(info[<span class="dv">11</span><span class="sc">:</span><span class="dv">26</span>],<span class="dv">4</span>,<span class="dv">4</span>);Zeta<span class="ot">=</span>info[<span class="dv">27</span><span class="sc">:</span><span class="dv">29</span>];varfixed<span class="ot">=</span> <span class="fu">matrix</span>(info[<span class="dv">30</span><span class="sc">:</span><span class="dv">78</span>],<span class="dv">7</span>,<span class="dv">7</span>) </span>
-<span id="cb1505-5"><a href="miscellaneous.html#cb1505-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">#abstract specific parameters to calculate mean and SD   </span></span></code></pre></div>
+<div class="sourceCode" id="cb1511"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1511-1"><a href="miscellaneous.html#cb1511-1" aria-hidden="true" tabindex="-1"></a>PE<span class="ot">=</span> <span class="fu">matrix</span>(PE,<span class="at">nrow=</span><span class="dv">5</span>,<span class="at">byrow =</span> T)</span>
+<span id="cb1511-2"><a href="miscellaneous.html#cb1511-2" aria-hidden="true" tabindex="-1"></a>    index<span class="ot">=</span> Ultra<span class="dv">-3</span>;  </span>
+<span id="cb1511-3"><a href="miscellaneous.html#cb1511-3" aria-hidden="true" tabindex="-1"></a>    info<span class="ot">=</span> PE[index,]</span>
+<span id="cb1511-4"><a href="miscellaneous.html#cb1511-4" aria-hidden="true" tabindex="-1"></a>    fcoef<span class="ot">=</span>info[<span class="dv">3</span><span class="sc">:</span><span class="dv">9</span>]; sigma<span class="ot">=</span>info[<span class="dv">10</span>];Sigmab<span class="ot">=</span> <span class="fu">matrix</span>(info[<span class="dv">11</span><span class="sc">:</span><span class="dv">26</span>],<span class="dv">4</span>,<span class="dv">4</span>);Zeta<span class="ot">=</span>info[<span class="dv">27</span><span class="sc">:</span><span class="dv">29</span>];varfixed<span class="ot">=</span> <span class="fu">matrix</span>(info[<span class="dv">30</span><span class="sc">:</span><span class="dv">78</span>],<span class="dv">7</span>,<span class="dv">7</span>) </span>
+<span id="cb1511-5"><a href="miscellaneous.html#cb1511-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">#abstract specific parameters to calculate mean and SD   </span></span></code></pre></div>
 <ul>
 <li>calculate mean and std</li>
 </ul>
 <p><code>Set a value,like 28.29</code></p>
-<div class="sourceCode" id="cb1506"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1506-1"><a href="miscellaneous.html#cb1506-1" aria-hidden="true" tabindex="-1"></a>i <span class="ot">=</span> <span class="fl">28.29</span>        </span>
-<span id="cb1506-2"><a href="miscellaneous.html#cb1506-2" aria-hidden="true" tabindex="-1"></a>    int <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb1506-3"><a href="miscellaneous.html#cb1506-3" aria-hidden="true" tabindex="-1"></a>    t1 <span class="ot">&lt;-</span> i</span>
-<span id="cb1506-4"><a href="miscellaneous.html#cb1506-4" aria-hidden="true" tabindex="-1"></a>    t2 <span class="ot">&lt;-</span> i<span class="sc">**</span><span class="dv">2</span></span>
-<span id="cb1506-5"><a href="miscellaneous.html#cb1506-5" aria-hidden="true" tabindex="-1"></a>    t3 <span class="ot">&lt;-</span> i<span class="sc">**</span><span class="dv">3</span></span>
-<span id="cb1506-6"><a href="miscellaneous.html#cb1506-6" aria-hidden="true" tabindex="-1"></a>    tt1 <span class="ot">&lt;-</span> (i <span class="sc">-</span> Zeta[<span class="dv">1</span>])<span class="sc">**</span><span class="dv">3</span> <span class="sc">*</span> (i <span class="sc">&gt;</span> Zeta[<span class="dv">1</span>])</span>
-<span id="cb1506-7"><a href="miscellaneous.html#cb1506-7" aria-hidden="true" tabindex="-1"></a>    tt2 <span class="ot">&lt;-</span> (i <span class="sc">-</span> Zeta[<span class="dv">2</span>])<span class="sc">**</span><span class="dv">3</span> <span class="sc">*</span> (i <span class="sc">&gt;</span> Zeta[<span class="dv">2</span>])</span>
-<span id="cb1506-8"><a href="miscellaneous.html#cb1506-8" aria-hidden="true" tabindex="-1"></a>    tt3 <span class="ot">&lt;-</span> (i <span class="sc">-</span> Zeta[<span class="dv">3</span>])<span class="sc">**</span><span class="dv">3</span> <span class="sc">*</span> (i <span class="sc">&gt;</span> Zeta[<span class="dv">3</span>])</span>
-<span id="cb1506-9"><a href="miscellaneous.html#cb1506-9" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1506-10"><a href="miscellaneous.html#cb1506-10" aria-hidden="true" tabindex="-1"></a>    Fxxi <span class="ot">=</span> <span class="fu">cbind</span>(int, t1, t2, t3, tt1, tt2, tt3)</span>
-<span id="cb1506-11"><a href="miscellaneous.html#cb1506-11" aria-hidden="true" tabindex="-1"></a>    Rxxi <span class="ot">=</span> <span class="fu">cbind</span>(int, t1, t2, t3)</span>
-<span id="cb1506-12"><a href="miscellaneous.html#cb1506-12" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1506-13"><a href="miscellaneous.html#cb1506-13" aria-hidden="true" tabindex="-1"></a>    mean <span class="ot">&lt;-</span> Fxxi<span class="sc">%*%</span>fcoef    </span>
-<span id="cb1506-14"><a href="miscellaneous.html#cb1506-14" aria-hidden="true" tabindex="-1"></a>    var <span class="ot">&lt;-</span> sigma<span class="sc">**</span><span class="dv">2</span> <span class="sc">+</span> Rxxi<span class="sc">%*%</span>Sigmab<span class="sc">%*%</span><span class="fu">t</span>(Rxxi) <span class="sc">+</span> Fxxi<span class="sc">%*%</span>varfixed<span class="sc">%*%</span><span class="fu">t</span>(Fxxi) </span>
-<span id="cb1506-15"><a href="miscellaneous.html#cb1506-15" aria-hidden="true" tabindex="-1"></a>    std <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(var) </span></code></pre></div>
+<div class="sourceCode" id="cb1512"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1512-1"><a href="miscellaneous.html#cb1512-1" aria-hidden="true" tabindex="-1"></a>i <span class="ot">=</span> <span class="fl">28.29</span>        </span>
+<span id="cb1512-2"><a href="miscellaneous.html#cb1512-2" aria-hidden="true" tabindex="-1"></a>    int <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb1512-3"><a href="miscellaneous.html#cb1512-3" aria-hidden="true" tabindex="-1"></a>    t1 <span class="ot">&lt;-</span> i</span>
+<span id="cb1512-4"><a href="miscellaneous.html#cb1512-4" aria-hidden="true" tabindex="-1"></a>    t2 <span class="ot">&lt;-</span> i<span class="sc">**</span><span class="dv">2</span></span>
+<span id="cb1512-5"><a href="miscellaneous.html#cb1512-5" aria-hidden="true" tabindex="-1"></a>    t3 <span class="ot">&lt;-</span> i<span class="sc">**</span><span class="dv">3</span></span>
+<span id="cb1512-6"><a href="miscellaneous.html#cb1512-6" aria-hidden="true" tabindex="-1"></a>    tt1 <span class="ot">&lt;-</span> (i <span class="sc">-</span> Zeta[<span class="dv">1</span>])<span class="sc">**</span><span class="dv">3</span> <span class="sc">*</span> (i <span class="sc">&gt;</span> Zeta[<span class="dv">1</span>])</span>
+<span id="cb1512-7"><a href="miscellaneous.html#cb1512-7" aria-hidden="true" tabindex="-1"></a>    tt2 <span class="ot">&lt;-</span> (i <span class="sc">-</span> Zeta[<span class="dv">2</span>])<span class="sc">**</span><span class="dv">3</span> <span class="sc">*</span> (i <span class="sc">&gt;</span> Zeta[<span class="dv">2</span>])</span>
+<span id="cb1512-8"><a href="miscellaneous.html#cb1512-8" aria-hidden="true" tabindex="-1"></a>    tt3 <span class="ot">&lt;-</span> (i <span class="sc">-</span> Zeta[<span class="dv">3</span>])<span class="sc">**</span><span class="dv">3</span> <span class="sc">*</span> (i <span class="sc">&gt;</span> Zeta[<span class="dv">3</span>])</span>
+<span id="cb1512-9"><a href="miscellaneous.html#cb1512-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1512-10"><a href="miscellaneous.html#cb1512-10" aria-hidden="true" tabindex="-1"></a>    Fxxi <span class="ot">=</span> <span class="fu">cbind</span>(int, t1, t2, t3, tt1, tt2, tt3)</span>
+<span id="cb1512-11"><a href="miscellaneous.html#cb1512-11" aria-hidden="true" tabindex="-1"></a>    Rxxi <span class="ot">=</span> <span class="fu">cbind</span>(int, t1, t2, t3)</span>
+<span id="cb1512-12"><a href="miscellaneous.html#cb1512-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1512-13"><a href="miscellaneous.html#cb1512-13" aria-hidden="true" tabindex="-1"></a>    mean <span class="ot">&lt;-</span> Fxxi<span class="sc">%*%</span>fcoef    </span>
+<span id="cb1512-14"><a href="miscellaneous.html#cb1512-14" aria-hidden="true" tabindex="-1"></a>    var <span class="ot">&lt;-</span> sigma<span class="sc">**</span><span class="dv">2</span> <span class="sc">+</span> Rxxi<span class="sc">%*%</span>Sigmab<span class="sc">%*%</span><span class="fu">t</span>(Rxxi) <span class="sc">+</span> Fxxi<span class="sc">%*%</span>varfixed<span class="sc">%*%</span><span class="fu">t</span>(Fxxi) </span>
+<span id="cb1512-15"><a href="miscellaneous.html#cb1512-15" aria-hidden="true" tabindex="-1"></a>    std <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(var) </span></code></pre></div>
 <ul>
 <li>Output the calculated mean</li>
 </ul>
-<div class="sourceCode" id="cb1507"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1507-1"><a href="miscellaneous.html#cb1507-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Actual Mean=&quot;</span>,<span class="fu">exp</span>(mean))      </span></code></pre></div>
+<div class="sourceCode" id="cb1513"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1513-1"><a href="miscellaneous.html#cb1513-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Actual Mean=&quot;</span>,<span class="fu">exp</span>(mean))      </span></code></pre></div>
 <pre><code>Actual Mean= 9.358071</code></pre>
 <ul>
 <li>Calculate Z score</li>
 </ul>
-<div class="sourceCode" id="cb1509"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1509-1"><a href="miscellaneous.html#cb1509-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Z score=&quot;</span>,((<span class="fu">log</span>(<span class="dv">289</span> ))<span class="sc">-</span>(mean))<span class="sc">/</span>std)      </span></code></pre></div>
+<div class="sourceCode" id="cb1515"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1515-1"><a href="miscellaneous.html#cb1515-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Z score=&quot;</span>,((<span class="fu">log</span>(<span class="dv">289</span> ))<span class="sc">-</span>(mean))<span class="sc">/</span>std)      </span></code></pre></div>
 <pre><code>Z score= 0.4419324</code></pre>
 <ul>
 <li>Result checking</li>
 </ul>
-<div class="sourceCode" id="cb1511"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1511-1"><a href="miscellaneous.html#cb1511-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pnorm</span>(<span class="fl">0.4465193</span>, <span class="at">mean=</span><span class="dv">0</span>, <span class="at">sd=</span><span class="dv">1</span>)     </span></code></pre></div>
+<div class="sourceCode" id="cb1517"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1517-1"><a href="miscellaneous.html#cb1517-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pnorm</span>(<span class="fl">0.4465193</span>, <span class="at">mean=</span><span class="dv">0</span>, <span class="at">sd=</span><span class="dv">1</span>)     </span></code></pre></div>
 <pre><code>[1] 0.6723889</code></pre>
 </div>
-<div id="mathmatic-coupling" class="section level2 hasAnchor" number="11.5">
-<h2><span class="header-section-number">11.5</span> Mathmatic coupling<a href="miscellaneous.html#mathmatic-coupling" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="mathmatic-coupling" class="section level2 hasAnchor" number="17.5">
+<h2><span class="header-section-number">17.5</span> Mathmatic coupling<a href="miscellaneous.html#mathmatic-coupling" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><code>It makes sig into non sig</code></p>
-<div class="sourceCode" id="cb1513"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1513-1"><a href="miscellaneous.html#cb1513-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)   <span class="co"># Random seed</span></span>
-<span id="cb1513-2"><a href="miscellaneous.html#cb1513-2" aria-hidden="true" tabindex="-1"></a>x1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>)  <span class="co">#Normal IVs</span></span>
-<span id="cb1513-3"><a href="miscellaneous.html#cb1513-3" aria-hidden="true" tabindex="-1"></a>x2 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>)</span>
-<span id="cb1513-4"><a href="miscellaneous.html#cb1513-4" aria-hidden="true" tabindex="-1"></a>x3 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>)</span>
-<span id="cb1513-5"><a href="miscellaneous.html#cb1513-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1513-6"><a href="miscellaneous.html#cb1513-6" aria-hidden="true" tabindex="-1"></a>yraw <span class="ot">&lt;-</span> x1 <span class="sc">+</span> x2 <span class="sc">+</span> x3 <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>,<span class="dv">0</span>, <span class="dv">10</span>)</span>
-<span id="cb1513-7"><a href="miscellaneous.html#cb1513-7" aria-hidden="true" tabindex="-1"></a>y1to9  <span class="ot">&lt;-</span> (yraw <span class="sc">+</span> <span class="sc">-</span><span class="dv">1</span><span class="sc">*</span><span class="fu">min</span>(yraw)  <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb1513-8"><a href="miscellaneous.html#cb1513-8" aria-hidden="true" tabindex="-1"></a>y1to9  <span class="ot">&lt;-</span> <span class="fu">trunc</span>(y1to9<span class="sc">*</span>(<span class="dv">9</span><span class="sc">/</span>(<span class="fu">max</span>(y1to9))))  <span class="co">#Create a Y variable that goes 1 to 9       </span></span>
-<span id="cb1513-9"><a href="miscellaneous.html#cb1513-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1513-10"><a href="miscellaneous.html#cb1513-10" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb1513-11"><a href="miscellaneous.html#cb1513-11" aria-hidden="true" tabindex="-1"></a>cuty <span class="ot">&lt;-</span> <span class="fu">cut</span>(y1to9,<span class="dv">5</span>)</span>
-<span id="cb1513-12"><a href="miscellaneous.html#cb1513-12" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cuty)</span></code></pre></div>
+<div class="sourceCode" id="cb1519"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1519-1"><a href="miscellaneous.html#cb1519-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)   <span class="co"># Random seed</span></span>
+<span id="cb1519-2"><a href="miscellaneous.html#cb1519-2" aria-hidden="true" tabindex="-1"></a>x1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>)  <span class="co">#Normal IVs</span></span>
+<span id="cb1519-3"><a href="miscellaneous.html#cb1519-3" aria-hidden="true" tabindex="-1"></a>x2 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>)</span>
+<span id="cb1519-4"><a href="miscellaneous.html#cb1519-4" aria-hidden="true" tabindex="-1"></a>x3 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>)</span>
+<span id="cb1519-5"><a href="miscellaneous.html#cb1519-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1519-6"><a href="miscellaneous.html#cb1519-6" aria-hidden="true" tabindex="-1"></a>yraw <span class="ot">&lt;-</span> x1 <span class="sc">+</span> x2 <span class="sc">+</span> x3 <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>,<span class="dv">0</span>, <span class="dv">10</span>)</span>
+<span id="cb1519-7"><a href="miscellaneous.html#cb1519-7" aria-hidden="true" tabindex="-1"></a>y1to9  <span class="ot">&lt;-</span> (yraw <span class="sc">+</span> <span class="sc">-</span><span class="dv">1</span><span class="sc">*</span><span class="fu">min</span>(yraw)  <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb1519-8"><a href="miscellaneous.html#cb1519-8" aria-hidden="true" tabindex="-1"></a>y1to9  <span class="ot">&lt;-</span> <span class="fu">trunc</span>(y1to9<span class="sc">*</span>(<span class="dv">9</span><span class="sc">/</span>(<span class="fu">max</span>(y1to9))))  <span class="co">#Create a Y variable that goes 1 to 9       </span></span>
+<span id="cb1519-9"><a href="miscellaneous.html#cb1519-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1519-10"><a href="miscellaneous.html#cb1519-10" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb1519-11"><a href="miscellaneous.html#cb1519-11" aria-hidden="true" tabindex="-1"></a>cuty <span class="ot">&lt;-</span> <span class="fu">cut</span>(y1to9,<span class="dv">5</span>)</span>
+<span id="cb1519-12"><a href="miscellaneous.html#cb1519-12" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cuty)</span></code></pre></div>
 <pre><code>[1] (1.8,3.6] (3.6,5.4] (3.6,5.4] (5.4,7.2] (5.4,7.2] (1.8,3.6]
 Levels: (-0.009,1.8] (1.8,3.6] (3.6,5.4] (5.4,7.2] (7.2,9.01]</code></pre>
-<div class="sourceCode" id="cb1515"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1515-1"><a href="miscellaneous.html#cb1515-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y1to9<span class="sc">~</span>x1 <span class="sc">+</span> x2 <span class="sc">+</span> x3)  <span class="co"># Regular model</span></span>
-<span id="cb1515-2"><a href="miscellaneous.html#cb1515-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1)  <span class="co">#Gives sensible values</span></span></code></pre></div>
+<div class="sourceCode" id="cb1521"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1521-1"><a href="miscellaneous.html#cb1521-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y1to9<span class="sc">~</span>x1 <span class="sc">+</span> x2 <span class="sc">+</span> x3)  <span class="co"># Regular model</span></span>
+<span id="cb1521-2"><a href="miscellaneous.html#cb1521-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1)  <span class="co">#Gives sensible values</span></span></code></pre></div>
 <pre><code>
 Call:
 lm(formula = y1to9 ~ x1 + x2 + x3)
@@ -2041,8 +2082,8 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 Residual standard error: 1.412 on 996 degrees of freedom
 Multiple R-squared:  0.02715,   Adjusted R-squared:  0.02422 
 F-statistic: 9.265 on 3 and 996 DF,  p-value: 0.000004786</code></pre>
-<div class="sourceCode" id="cb1517"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1517-1"><a href="miscellaneous.html#cb1517-1" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y1to9<span class="sc">~</span>x1 <span class="sc">+</span> x2 <span class="sc">+</span> x3 <span class="sc">+</span> cuty)  <span class="co"># Adding the cut of y</span></span>
-<span id="cb1517-2"><a href="miscellaneous.html#cb1517-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model2)  <span class="co">#X1, x2, x3 not sig; R^2 is 0.75</span></span></code></pre></div>
+<div class="sourceCode" id="cb1523"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1523-1"><a href="miscellaneous.html#cb1523-1" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y1to9<span class="sc">~</span>x1 <span class="sc">+</span> x2 <span class="sc">+</span> x3 <span class="sc">+</span> cuty)  <span class="co"># Adding the cut of y</span></span>
+<span id="cb1523-2"><a href="miscellaneous.html#cb1523-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model2)  <span class="co">#X1, x2, x3 not sig; R^2 is 0.75</span></span></code></pre></div>
 <pre><code>
 Call:
 lm(formula = y1to9 ~ x1 + x2 + x3 + cuty)
@@ -2067,18 +2108,18 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 Residual standard error: 0.4821 on 992 degrees of freedom
 Multiple R-squared:  0.8871,    Adjusted R-squared:  0.8863 
 F-statistic:  1113 on 7 and 992 DF,  p-value: &lt; 2.2e-16</code></pre>
-<div class="sourceCode" id="cb1519"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1519-1"><a href="miscellaneous.html#cb1519-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(cuty, y1to9)</span>
-<span id="cb1519-2"><a href="miscellaneous.html#cb1519-2" aria-hidden="true" tabindex="-1"></a><span class="co"># it causes the coefficient of x1 is 1; others equal 0.</span></span>
-<span id="cb1519-3"><a href="miscellaneous.html#cb1519-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1519-4"><a href="miscellaneous.html#cb1519-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df, </span>
-<span id="cb1519-5"><a href="miscellaneous.html#cb1519-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="fu">as.numeric</span>(cuty), y1to9)) <span class="sc">+</span> </span>
-<span id="cb1519-6"><a href="miscellaneous.html#cb1519-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb1519-7"><a href="miscellaneous.html#cb1519-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>( <span class="at">method =</span> <span class="st">&quot;lm&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1525"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1525-1"><a href="miscellaneous.html#cb1525-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(cuty, y1to9)</span>
+<span id="cb1525-2"><a href="miscellaneous.html#cb1525-2" aria-hidden="true" tabindex="-1"></a><span class="co"># it causes the coefficient of x1 is 1; others equal 0.</span></span>
+<span id="cb1525-3"><a href="miscellaneous.html#cb1525-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1525-4"><a href="miscellaneous.html#cb1525-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df, </span>
+<span id="cb1525-5"><a href="miscellaneous.html#cb1525-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="fu">as.numeric</span>(cuty), y1to9)) <span class="sc">+</span> </span>
+<span id="cb1525-6"><a href="miscellaneous.html#cb1525-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb1525-7"><a href="miscellaneous.html#cb1525-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>( <span class="at">method =</span> <span class="st">&quot;lm&quot;</span>)</span></code></pre></div>
 <pre><code>`geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
 <p><img src="_main_files/figure-html/unnamed-chunk-678-1.png" width="672" /></p>
 </div>
-<div id="how-to-create-a-bookdown" class="section level2 hasAnchor" number="11.6">
-<h2><span class="header-section-number">11.6</span> How to create a bookdown<a href="miscellaneous.html#how-to-create-a-bookdown" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="how-to-create-a-bookdown" class="section level2 hasAnchor" number="17.6">
+<h2><span class="header-section-number">17.6</span> How to create a bookdown<a href="miscellaneous.html#how-to-create-a-bookdown" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
 <li>create a github rep</li>
 <li>create a new project using version control whit Git and SVN<br />
@@ -2104,8 +2145,8 @@ F-statistic:  1113 on 7 and 992 DF,  p-value: &lt; 2.2e-16</code></pre>
 <li>open netlify using github account then deploy the rep from github</li>
 <li>change your website</li>
 </ul>
-<div id="how-to-git-up-a-project-into-github" class="section level4 hasAnchor" number="11.6.0.1">
-<h4><span class="header-section-number">11.6.0.1</span> How to git up a project into github<a href="miscellaneous.html#how-to-git-up-a-project-into-github" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="how-to-git-up-a-project-into-github" class="section level4 hasAnchor" number="17.6.0.1">
+<h4><span class="header-section-number">17.6.0.1</span> How to git up a project into github<a href="miscellaneous.html#how-to-git-up-a-project-into-github" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p><code>see youtube tutorial</code></p>
 <ul>
 <li><p>hit tools- version control- project setup</p></li>
@@ -2121,15 +2162,15 @@ F-statistic:  1113 on 7 and 992 DF,  p-value: &lt; 2.2e-16</code></pre>
 </ul></li>
 </ul>
 </div>
-<div id="how-to-git-down-a-project-into-your-pc" class="section level4 hasAnchor" number="11.6.0.2">
-<h4><span class="header-section-number">11.6.0.2</span> How to git down a project into your pc<a href="miscellaneous.html#how-to-git-down-a-project-into-your-pc" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="how-to-git-down-a-project-into-your-pc" class="section level4 hasAnchor" number="17.6.0.2">
+<h4><span class="header-section-number">17.6.0.2</span> How to git down a project into your pc<a href="miscellaneous.html#how-to-git-down-a-project-into-your-pc" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <ul>
 <li>create a new project by using version control</li>
 <li>then pull</li>
 </ul>
 </div>
-<div id="how-to-return-previous-version-in-github" class="section level4 hasAnchor" number="11.6.0.3">
-<h4><span class="header-section-number">11.6.0.3</span> How to return previous version in github<a href="miscellaneous.html#how-to-return-previous-version-in-github" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="how-to-return-previous-version-in-github" class="section level4 hasAnchor" number="17.6.0.3">
+<h4><span class="header-section-number">17.6.0.3</span> How to return previous version in github<a href="miscellaneous.html#how-to-return-previous-version-in-github" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p><code>one of ways</code></p>
 <ul>
 <li>download then copy and substitute all documents in previous folder</li>
@@ -2137,15 +2178,15 @@ F-statistic:  1113 on 7 and 992 DF,  p-value: &lt; 2.2e-16</code></pre>
 </ul>
 </div>
 </div>
-<div id="how-to-create-a-blogdown" class="section level2 hasAnchor" number="11.7">
-<h2><span class="header-section-number">11.7</span> How to create a blogdown<a href="miscellaneous.html#how-to-create-a-blogdown" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="how-to-create-a-blogdown" class="section level2 hasAnchor" number="17.7">
+<h2><span class="header-section-number">17.7</span> How to create a blogdown<a href="miscellaneous.html#how-to-create-a-blogdown" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><code>it is a little more compliaced to create a blogdown than to create a book because you need to config more parameters.like index file</code></p>
 <ul>
 <li>see youtube <a href="https://www.youtube.com/watch?v=BHpkLJieXPE">tutorial</a> and see my <a href="https://danielhe.netlify.app/post/how-to-create-a-blog/">blog</a></li>
 </ul>
 </div>
-<div id="how-to-install-tensorflow-and-keras" class="section level2 hasAnchor" number="11.8">
-<h2><span class="header-section-number">11.8</span> How to install tensorflow and keras<a href="miscellaneous.html#how-to-install-tensorflow-and-keras" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="how-to-install-tensorflow-and-keras" class="section level2 hasAnchor" number="17.8">
+<h2><span class="header-section-number">17.8</span> How to install tensorflow and keras<a href="miscellaneous.html#how-to-install-tensorflow-and-keras" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><code>see youtube</code> <a href="https://www.youtube.com/watch?v=cIUg11mAmK4">tutorial</a></p>
 <ul>
 <li><p>Install TensorFlow from rstudio github.</p>
@@ -2170,8 +2211,8 @@ F-statistic:  1113 on 7 and 992 DF,  p-value: &lt; 2.2e-16</code></pre>
 </ul></li>
 </ul>
 </div>
-<div id="how-to-use-github-in-team" class="section level2 hasAnchor" number="11.9">
-<h2><span class="header-section-number">11.9</span> How to use github in team<a href="miscellaneous.html#how-to-use-github-in-team" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="how-to-use-github-in-team" class="section level2 hasAnchor" number="17.9">
+<h2><span class="header-section-number">17.9</span> How to use github in team<a href="miscellaneous.html#how-to-use-github-in-team" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
 <li><p>clone main</p>
 <ul>
@@ -2240,12 +2281,12 @@ F-statistic:  1113 on 7 and 992 DF,  p-value: &lt; 2.2e-16</code></pre>
 </ul></li>
 </ul>
 </div>
-<div id="how-to-insert-picture-indrectly-in-markdown" class="section level2 hasAnchor" number="11.10">
-<h2><span class="header-section-number">11.10</span> How to insert picture indrectly in markdown<a href="miscellaneous.html#how-to-insert-picture-indrectly-in-markdown" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb1521"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1521-1"><a href="miscellaneous.html#cb1521-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rstudioapi) </span>
-<span id="cb1521-2"><a href="miscellaneous.html#cb1521-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rmarkdown)</span>
-<span id="cb1521-3"><a href="miscellaneous.html#cb1521-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1521-4"><a href="miscellaneous.html#cb1521-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(imageclipr)</span></code></pre></div>
+<div id="how-to-insert-picture-indrectly-in-markdown" class="section level2 hasAnchor" number="17.10">
+<h2><span class="header-section-number">17.10</span> How to insert picture indrectly in markdown<a href="miscellaneous.html#how-to-insert-picture-indrectly-in-markdown" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb1527"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1527-1"><a href="miscellaneous.html#cb1527-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rstudioapi) </span>
+<span id="cb1527-2"><a href="miscellaneous.html#cb1527-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rmarkdown)</span>
+<span id="cb1527-3"><a href="miscellaneous.html#cb1527-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1527-4"><a href="miscellaneous.html#cb1527-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(imageclipr)</span></code></pre></div>
 <pre><code>
 Attaching package: &#39;imageclipr&#39;</code></pre>
 <pre><code>The following object is masked from &#39;package:plotly&#39;:
@@ -2253,8 +2294,8 @@ Attaching package: &#39;imageclipr&#39;</code></pre>
     config</code></pre>
 <p>[link] (<a href="https://github.com/Toniiiio/imageclipr" class="uri">https://github.com/Toniiiio/imageclipr</a>)</p>
 </div>
-<div id="r-cheatsheets" class="section level2 hasAnchor" number="11.11">
-<h2><span class="header-section-number">11.11</span> R cheatsheets<a href="miscellaneous.html#r-cheatsheets" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="r-cheatsheets" class="section level2 hasAnchor" number="17.11">
+<h2><span class="header-section-number">17.11</span> R cheatsheets<a href="miscellaneous.html#r-cheatsheets" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><a href="https://github.com/rstudio/cheatsheets">cheatsheets</a></p>
 
 </div>
@@ -2264,7 +2305,7 @@ Attaching package: &#39;imageclipr&#39;</code></pre>
           </div>
         </div>
       </div>
-<a href="causal-inference.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="common-issues-in-statistics.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
     </div>
   </div>
