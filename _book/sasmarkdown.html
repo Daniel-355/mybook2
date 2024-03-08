@@ -29,7 +29,7 @@ set in the _output.yml file.</p>" />
 <meta name="author" content="Daniel He" />
 
 
-<meta name="date" content="2024-03-07" />
+<meta name="date" content="2024-03-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -1162,7 +1162,7 @@ NOTE: DATA statement used (Total process time):
 13                   where libname = &#39;WORK&#39; and memname = &#39;AAA&#39;;
 14         quit;
 NOTE: PROCEDURE SQL used (Total process time):
-      real time           0.05 seconds
+      real time           0.01 seconds
       cpu time            0.03 seconds
       
 
@@ -1182,7 +1182,7 @@ NOTE: Renaming variable Weight to Weight_new.
 NOTE: MODIFY was successful for WORK.AAA.DATA.
 NOTE: PROCEDURE DATASETS used (Total process time):
       real time           0.04 seconds
-      cpu time            0.04 seconds
+      cpu time            0.03 seconds
       
 
 21         
@@ -1193,7 +1193,7 @@ NOTE: There were 2 observations read from the data set WORK.AAA.
 NOTE: The PROCEDURE PRINT printed page 1.
 NOTE: PROCEDURE PRINT used (Total process time):
       real time           0.00 seconds
-      cpu time            0.01 seconds
+      cpu time            0.00 seconds
       
 
 24         
@@ -1294,8 +1294,8 @@ run;</code></pre>
 Data Set Name        WORK.ABC                      Observations          19
 Member Type          DATA                          Variables             6 
 Engine               V9                            Indexes               0 
-Created              03/07/2024 14:23:31           Observation Length    48
-Last Modified        03/07/2024 14:23:31           Deleted Observations  0 
+Created              03/08/2024 09:19:15           Observation Length    48
+Last Modified        03/08/2024 09:19:15           Deleted Observations  0 
 Protection                                         Compressed            NO
 Data Set Type                                      Sorted                NO
 Label                                                                      
@@ -1312,7 +1312,7 @@ Obs in First Data Page      19
 Number of Data Set Repairs  0                                              
 ExtendObsCounter            YES                                            
 Filename                    C:\Users\hed2\AppData\Local\Temp\SAS Temporary 
-                            Files\_TD28480_HDW02234493_\abc.sas7bdat       
+                            Files\_TD8664_HDW02234493_\abc.sas7bdat        
 Release Created             9.0401M5                                       
 Host Created                X64_10PRO                                      
 Owner Name                  NIH\hed2                                       
@@ -1346,8 +1346,8 @@ run;
 Data Set Name        WORK.ABC                      Observations          19
 Member Type          DATA                          Variables             6 
 Engine               V9                            Indexes               0 
-Created              03/07/2024 14:23:32           Observation Length    48
-Last Modified        03/07/2024 14:23:32           Deleted Observations  0 
+Created              03/08/2024 09:19:16           Observation Length    48
+Last Modified        03/08/2024 09:19:16           Deleted Observations  0 
 Protection                                         Compressed            NO
 Data Set Type                                      Sorted                NO
 Label                                                                      
@@ -1364,7 +1364,7 @@ Obs in First Data Page      19
 Number of Data Set Repairs  0                                              
 ExtendObsCounter            YES                                            
 Filename                    C:\Users\hed2\AppData\Local\Temp\SAS Temporary 
-                            Files\_TD5704_HDW02234493_\abc.sas7bdat        
+                            Files\_TD12728_HDW02234493_\abc.sas7bdat       
 Release Created             9.0401M5                                       
 Host Created                X64_10PRO                                      
 Owner Name                  NIH\hed2                                       
@@ -1420,16 +1420,16 @@ proc print data=ab (obs=10);
 run;</code></pre>
 <pre><code>       Obs    Name       Sex    Age    Height    Weight       num
 
-         1    Alfred      M      14     69.0      112.5    -0.02030
-         2    Alice       F      13     56.5       84.0     1.07512
-         3    Barbara     F      13     65.3       98.0     1.33495
-         4    Carol       F      14     62.8      102.5    -0.03750
-         5    Henry       M      14     63.5      102.5     0.58348
-         6    James       M      12     57.3       83.0     0.05072
-         7    Jane        F      12     59.8       84.5    -0.49473
-         8    Janet       F      15     62.5      112.5     0.89532
-         9    Jeffrey     M      13     62.5       84.0    -0.38729
-        10    John        M      12     59.0       99.5    -1.04139</code></pre>
+         1    Alfred      M      14     69.0      112.5     1.27381
+         2    Alice       F      13     56.5       84.0    -2.17950
+         3    Barbara     F      13     65.3       98.0    -0.98711
+         4    Carol       F      14     62.8      102.5     0.75090
+         5    Henry       M      14     63.5      102.5    -0.85480
+         6    James       M      12     57.3       83.0    -0.33265
+         7    Jane        F      12     59.8       84.5     0.16315
+         8    Janet       F      15     62.5      112.5    -0.34409
+         9    Jeffrey     M      13     62.5       84.0    -0.24306
+        10    John        M      12     59.0       99.5    -2.13833</code></pre>
 </div>
 <div id="combine-two-texts" class="section level3 hasAnchor" number="9.2.15">
 <h3><span class="header-section-number">9.2.15</span> combine two texts<a href="sasmarkdown.html#combine-two-texts" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -1586,7 +1586,7 @@ WARNING: The Base SAS Software product with which DATASTEP is associated
 
 NOTE: The data set WORK.MASTERRESULT2 has 0 observations and 0 variables.
 NOTE: DATA statement used (Total process time):
-      real time           0.03 seconds
+      real time           0.02 seconds
       cpu time            0.01 seconds
       
 
@@ -1611,8 +1611,8 @@ NOTE: The data set WORK.RESULT2 has 2 observations and 12 variables.
 NOTE: There were 19 observations read from the data set SASHELP.CLASS.
 NOTE: The PROCEDURE MEANS printed page 1.
 NOTE: PROCEDURE MEANS used (Total process time):
-      real time           0.18 seconds
-      cpu time            0.10 seconds
+      real time           0.07 seconds
+      cpu time            0.07 seconds
       
 
 NOTE: There were 0 observations read from the data set WORK.MASTERRESULT2.
@@ -1627,8 +1627,8 @@ NOTE: The data set WORK.RESULT2 has 2 observations and 12 variables.
 NOTE: There were 19 observations read from the data set SASHELP.CLASS.
 NOTE: The PROCEDURE MEANS printed page 2.
 NOTE: PROCEDURE MEANS used (Total process time):
-      real time           0.03 seconds
-      cpu time            0.01 seconds
+      real time           0.02 seconds
+      cpu time            0.03 seconds
       
 
 WARNING: Multiple lengths were specified for the variable Variable by 
@@ -1645,7 +1645,7 @@ NOTE: The data set WORK.RESULT2 has 2 observations and 12 variables.
 NOTE: There were 19 observations read from the data set SASHELP.CLASS.
 NOTE: The PROCEDURE MEANS printed page 3.
 NOTE: PROCEDURE MEANS used (Total process time):
-      real time           0.03 seconds
+      real time           0.02 seconds
       cpu time            0.03 seconds
       
 
@@ -1656,7 +1656,7 @@ NOTE: There were 2 observations read from the data set WORK.RESULT2.
 NOTE: The data set WORK.MASTERRESULT2 has 6 observations and 12 variables.
 NOTE: DATA statement used (Total process time):
       real time           0.01 seconds
-      cpu time            0.01 seconds
+      cpu time            0.00 seconds
       
 
 40         
@@ -1860,7 +1860,7 @@ WARNING: The Base SAS Software product with which DATASTEP is associated
 NOTE: The data set WORK.CLASS2 has 3 observations and 2 variables.
 NOTE: DATA statement used (Total process time):
       real time           0.02 seconds
-      cpu time            0.03 seconds
+      cpu time            0.01 seconds
       
 
 8          ;
@@ -1878,7 +1878,7 @@ NOTE: Table WORK.CLASS_C created, with 19 rows and 6 columns.
 17         quit;
 NOTE: PROCEDURE SQL used (Total process time):
       real time           0.03 seconds
-      cpu time            0.04 seconds
+      cpu time            0.03 seconds
       
 
 18         
@@ -1904,8 +1904,8 @@ NOTE: Table WORK.CLASS_D created, with 19 rows and 6 columns.
 
 28         quit;
 NOTE: PROCEDURE SQL used (Total process time):
-      real time           0.01 seconds
-      cpu time            0.01 seconds
+      real time           0.02 seconds
+      cpu time            0.03 seconds
       
 
 29         
@@ -1976,8 +1976,8 @@ WARNING: The Base SAS Software product with which DATASTEP is associated
 
 NOTE: The data set WORK.CLASS2 has 3 observations and 2 variables.
 NOTE: DATA statement used (Total process time):
-      real time           0.04 seconds
-      cpu time            0.03 seconds
+      real time           0.02 seconds
+      cpu time            0.01 seconds
       
 
 8          ;
@@ -1994,8 +1994,8 @@ NOTE: Table WORK.CLASS_E created, with 20 rows and 6 columns.
 
 17         quit;
 NOTE: PROCEDURE SQL used (Total process time):
-      real time           0.04 seconds
-      cpu time            0.04 seconds
+      real time           0.03 seconds
+      cpu time            0.03 seconds
       
 
 18         
@@ -2005,7 +2005,7 @@ NOTE: PROCEDURE SQL used (Total process time):
 NOTE: There were 20 observations read from the data set WORK.CLASS_E.
 NOTE: The PROCEDURE PRINT printed page 1.
 NOTE: PROCEDURE PRINT used (Total process time):
-      real time           0.06 seconds
+      real time           0.04 seconds
       cpu time            0.04 seconds
       
 
@@ -2085,7 +2085,7 @@ WARNING: The Base SAS Software product with which DATASTEP is associated
 NOTE: The data set WORK.CLASS2 has 3 observations and 2 variables.
 NOTE: DATA statement used (Total process time):
       real time           0.02 seconds
-      cpu time            0.01 seconds
+      cpu time            0.03 seconds
       
 
 8          ;
@@ -2102,7 +2102,7 @@ NOTE: Table WORK.CLASS_E created, with 2 rows and 6 columns.
 
 17         quit;
 NOTE: PROCEDURE SQL used (Total process time):
-      real time           0.03 seconds
+      real time           0.04 seconds
       cpu time            0.03 seconds
       
 
@@ -2113,7 +2113,7 @@ NOTE: PROCEDURE SQL used (Total process time):
 NOTE: There were 2 observations read from the data set WORK.CLASS_E.
 NOTE: The PROCEDURE PRINT printed page 1.
 NOTE: PROCEDURE PRINT used (Total process time):
-      real time           0.03 seconds
+      real time           0.05 seconds
       cpu time            0.04 seconds
       
 
@@ -2133,7 +2133,7 @@ WARNING: The Base SAS Software product with which DATASTEP is associated
 
 NOTE: The data set WORK.CLASS2 has 3 observations and 2 variables.
 NOTE: DATA statement used (Total process time):
-      real time           0.03 seconds
+      real time           0.02 seconds
       cpu time            0.03 seconds
       
 
@@ -2163,8 +2163,8 @@ NOTE: PROCEDURE SQL used (Total process time):
 NOTE: There were 17 observations read from the data set WORK.CLASS_E.
 NOTE: The PROCEDURE PRINT printed page 1.
 NOTE: PROCEDURE PRINT used (Total process time):
-      real time           0.04 seconds
-      cpu time            0.03 seconds
+      real time           0.05 seconds
+      cpu time            0.06 seconds
       
 
 22         
@@ -2525,8 +2525,8 @@ NOTE: The data set WORK.RESULT2 has 2 observations and 12 variables.
 NOTE: There were 19 observations read from the data set SASHELP.CLASS.
 NOTE: The PROCEDURE MEANS printed page 1.
 NOTE: PROCEDURE MEANS used (Total process time):
-      real time           0.07 seconds
-      cpu time            0.07 seconds
+      real time           0.08 seconds
+      cpu time            0.09 seconds
       
 
 NOTE: There were 0 observations read from the data set WORK.MASTERRESULT2.
@@ -2542,7 +2542,7 @@ NOTE: There were 19 observations read from the data set SASHELP.CLASS.
 NOTE: The PROCEDURE MEANS printed page 2.
 NOTE: PROCEDURE MEANS used (Total process time):
       real time           0.02 seconds
-      cpu time            0.03 seconds
+      cpu time            0.01 seconds
       
 
 WARNING: Multiple lengths were specified for the variable Variable by 
@@ -2559,8 +2559,8 @@ NOTE: The data set WORK.RESULT2 has 2 observations and 12 variables.
 NOTE: There were 19 observations read from the data set SASHELP.CLASS.
 NOTE: The PROCEDURE MEANS printed page 3.
 NOTE: PROCEDURE MEANS used (Total process time):
-      real time           0.01 seconds
-      cpu time            0.01 seconds
+      real time           0.02 seconds
+      cpu time            0.03 seconds
       
 
 WARNING: Multiple lengths were specified for the variable Variable by 
@@ -2581,7 +2581,7 @@ NOTE: There were 6 observations read from the data set WORK.MASTERRESULT2.
 NOTE: The PROCEDURE PRINT printed page 4.
 NOTE: PROCEDURE PRINT used (Total process time):
       real time           0.00 seconds
-      cpu time            0.00 seconds
+      cpu time            0.01 seconds
       </code></pre>
 <pre><code>                            The MEANS Procedure
 
@@ -2926,7 +2926,7 @@ run;</code></pre>
 |--------------------------------------------------------------------------
 |
 |START           |END             |LABEL  (VER. V7|V8
-07MAR2024:14:24:10)|
+08MAR2024:09:19:51)|
 |----------------+----------------+----------------------------------------
 |
 |F               |F               |Female_new
