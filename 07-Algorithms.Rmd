@@ -317,7 +317,7 @@ abline(res, col='red')
 [see here](https://rpubs.com/Daniel_He/1040697)
 
 ## Expectation maximum
-[see here](https://rpubs.com/Daniel_He/1040673)
+[see here](https://rpubs.com/Daniel_He/1216822)
 
 ## Combine estimates by pooling rules
 
