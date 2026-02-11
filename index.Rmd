@@ -1,5 +1,5 @@
 --- 
-title: "My Little Handbook"
+title: "Biostatistics Handbook"
 author: "Daniel He"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
