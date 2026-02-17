@@ -1,0 +1,648 @@
+
+ 
+## Simple linear regression
+
+### Linear regeression assumptions
+There are four principal assumptions:
+
+- linearity of the relationship between dependent and independent variables.
+
+- statistical independence of the errors with y variable.
+
+- homoscedasticity (constant variance) of the errors for all x.
+
+- normality of the error distribution.
+
+`if independent assumption violated, the estimated standard errors tend to underestimate the true standard error. P value associated thus is lower.`
+
+`only the prediction errors need to be normally distributed. but with extremely asymmetric or long-tailed, it may be hard to fit them (x and y) into a linear model whose errors will be normally distributed.`
+
+### Population regression function
+Regression is to estimate and/or predict the population mean (expectation) of dependent variable (yi) by a known or a set value of explanatory variables (xi). Population regression line (PRL) is the trajectory of the conditional expectation value given Xi.
+ 
+$$
+E(Y|X_i)=f(X_i)=\beta_1+\beta_2X_i
+$$
+`This is an unknown but fixed value (can be estimated). `
+
+<!-- - SRF, Sample regression function -->
+<!-- $$ -->
+<!-- \hat{Y_i}=f(X_i)=\hat{\beta}_1+\hat{\beta}_2X_i -->
+<!-- $$ -->
+
+###  Population regression model  
+the errors $u_i=y_i-\hat{y}_i$ have equal variance 
+$$
+Y_i=\beta_1+\beta_2X_i+u_i
+$$
+
+###  Sample regression model 
+
+(using hat to indicate sample)
+$$
+Y_i=\hat{\beta}_1+\hat{\beta}_2X_i+e_i
+$$
+
+since  
+$$
+u_i  \sim N(0,\sigma^2)
+$$
+or 
+$$
+e_i  \sim N(0,\hat{\sigma} ^2)
+$$ 
+and
+
+`i.i.d., independent identically distribution, 
+the probability distributions are all the same and variables are independent of each other.`
+
+$$
+\begin{align}
+u_i \sim i.i.d \ N(0,\sigma^2)  
+\end{align}
+$$
+
+then 
+
+$$
+\begin{align}
+Y_i- \beta_1+\beta_2X_i (\hat{Y_i}) &\sim i.i.d \ N(0,\sigma^2)\\
+\end{align}
+$$
+
+thence, to minimize Q $\sum{(Y_i-\hat{Y}_i)^2}$ to solve b0 and b1. 
+
+$$
+\begin{align}
+Min(Q) &=\sum{(Y_i-\hat{Y}_i)^2}\\
+&=\sum{\left ( Y_i-(\hat{\beta}_1+\hat{\beta}_2X_i) \right )^2}\\
+       &=f(\hat{\beta}_1,\hat{\beta}_2) 
+\end{align}
+$$
+
+### Solve $\hat{\beta_1},\hat{\beta_2}$ and variance 
+
+$$
+\begin{align}
+  \begin{split}
+  \hat{\beta}_2 &=\frac{\sum{x_iy_i}}{\sum{x_i^2}}\\
+  \hat{\beta_1} &=\bar{Y}_i-\hat{\beta}_2\bar{X}_i
+  \end{split} \\
+var(\hat{\beta}_2) =\sigma_{\hat{\beta}_2}^2&=\frac{1}{\sum{x_i^2}}\cdot\sigma^2&&\text{} \\
+var(\hat{\beta}_1) =\sigma_{\hat{\beta}_1}^2 &=\frac{\sum{X_i^2}}{n\sum{x_i^2}}\cdot\sigma^2 
+\end{align}
+$$
+
+### Calculate the variance $\hat{\sigma}^2$ of error $e_i$ 
+
+(for sample)
+
+$$
+\begin{align}
+  \hat{Y}_i &=\hat{\beta}_1+\hat{\beta}_2X_i  \\
+  e_i &=Y_i-\hat{Y}_i  \\
+  \hat{\sigma}^2 &=\frac{\sum{e_i^2}}{n-1}=\frac{\sum{(Y_i-\hat{Y}_i)^2}}{n-1}  
+\end{align}
+$$
+
+### Sum of squares decomposition 
+$$
+\begin{align}
+(Y_i-\bar{Y_i})  &= (\hat{Y_i}-\bar{Y_i}) +(Y_i-\hat{Y_i})  \\
+\sum{y_i^2} &= \sum{\hat{y_i}^2} +\sum{e_i^2}  \\ 
+TSS&=ESS+RSS  
+\end{align}
+$$
+
+### Coefficient of determination $R^2$ and goodness of fit
+$$
+\begin{align}
+r^2 &=\frac{ESS}{TSS}=\frac{\sum{(\hat{Y_i}-\bar{Y})^2}}{\sum{(Y_i-\bar{Y})^2}}\\
+    &=1-\frac{RSS}{TSS}=1-\frac{\sum{(Y_i-\hat{Y_i})^2}}{\sum{(Y_i-\bar{Y})^2}}
+\end{align}
+$$
+ 
+
+<!-- $$ -->
+<!-- \begin{align} -->
+
+<!-- r_{X_i,Y_i}&=\frac{Cov(X_i,Y_i)}{S_{X_i}\cdot S_{Y_i}} -->
+<!-- = \frac{\sum{(X_i-\bar{X})(Y_i-\bar{Y})}}{\sqrt{\sum{(X_i-\bar{X}})^2\sum{(Y_i-\bar{Y})^2}}} -->
+<!--  \\ -->
+<!-- (r_{X_i,Y_i})^2 &\simeq r^2   -->
+<!-- \end{align} -->
+<!-- $$ -->
+
+### Test of regression coefficients
+since  
+$$
+\begin{align}
+\hat{\beta_2} &\sim N(\beta_2,\sigma^2_{\hat{\beta_2}})  \\
+\hat{\beta_1} &\sim N(\beta_1,\sigma^2_{\hat{\beta_1}})  
+\end{align}
+$$
+
+and 
+$$
+\begin{align}
+S_{\hat{\beta}_2} &=\sqrt{\frac{1}{\sum{x_i^2}}}\cdot\hat{\sigma} 
+ \\
+S_{\hat{\beta}_1} &=\sqrt{\frac{\sum{X_i^2}}{n\sum{x_i^2}}}\cdot\hat{\sigma}
+\end{align}
+$$
+
+therefore  
+$$
+\begin{align}
+t_{\hat{\beta_2}}^{\ast}&=\frac{\hat{\beta_2}-\beta_2}{S_{\hat{\beta_2}}}
+=\frac{\hat{\beta_2}}{S_{\hat{\beta_2}}}
+=\frac{\hat{\beta_2}}{\sqrt{\frac{1}{\sum{x_i^2}}}\cdot\hat{\sigma}}
+\sim t(n-2)
+  \\ 
+t_{\hat{\beta_1}}^{\ast}&=\frac{\hat{\beta_1}-\beta_1}{S_{\hat{\beta_1}}}
+=\frac{\hat{\beta_1}}{S_{\hat{\beta_1}}}
+=\frac{\hat{\beta_1}}{\sqrt{\frac{\sum{X_i^2}}{n\sum{x_i^2}}}\cdot\hat{\sigma}}
+\sim t(n-2)
+\end{align}
+$$
+
+### Statistical test of model 
+since
+$$
+\begin{align}
+Y_i&\sim i.i.d \ N(\beta_1+\beta_2X_i,\sigma^2)\\
+\end{align}
+$$
+and   
+$$
+\begin{align}
+ESS&=\sum{(\hat{Y_i}-\bar{Y})^2} \sim \chi^2(df_{ESS})  \\
+RSS&=\sum{(Y_i-\hat{Y_i})^2} \sim \chi^2(df_{RSS})  
+\end{align}
+$$
+
+<!-- $$ -->
+<!-- \begin{align} -->
+<!-- F^{\ast}&=\frac{ESS/df_{ESS}}{RSS/df_{RSS}}=\frac{MSS_{ESS}}{MSS_{RSS}}  \\ -->
+<!--         &=\frac{\sum{(\hat{Y_i}-\bar{Y})^2}/df_{ESS}}{\sum{(Y_i-\hat{Y_i})^2}/df_{RSS}} \\ -->
+<!--         &\sim F(df_{ESS},df_{RSS}) -->
+<!-- \end{align} -->
+<!-- $$ -->
+
+therefore 
+$$
+\begin{align}
+F^{\ast}&=\frac{ESS/df_{ESS}}{RSS/df_{RSS}}=\frac{MSS_{ESS}}{MSS_{RSS}}\\
+        &=\frac{\sum{(\hat{Y_i}-\bar{Y})^2}/df_{ESS}}{\sum{(Y_i-\hat{Y_i})^2}/df_{RSS}} \\
+        &=\frac{\hat{\beta_2}^2\sum{x_i^2}}{\sum{e_i^2}/{(n-2)}}\\
+        &=\frac{\hat{\beta_2}^2\sum{x_i^2}}{\hat{\sigma}^2}
+\end{align}
+$$
+
+### Mean prediction
+
+since 
+
+$$
+\begin{align}
+\mu_{\hat{Y}_0}&=E(\hat{Y}_0)\\
+&=E(\hat{\beta}_1+\hat{\beta}_2X_0)\\
+&=\beta_1+\beta_2X_0\\
+&=E(Y|X_0)
+\end{align}
+$$
+and 
+$$
+\begin{align}
+var(\hat{Y}_0)&=\sigma^2_{\hat{Y}_0}\\
+&=E(\hat{\beta}_1+\hat{\beta}_2X_0)\\
+&=\sigma^2 \left( \frac{1}{n}+ \frac{(X_0-\bar{X})^2}{\sum{x_i^2}} \right)
+\end{align}
+$$
+therefore
+$$
+\begin{align}
+\hat{Y}_0& \sim N(\mu_{\hat{Y}_0},\sigma^2_{\hat{Y}_0})\\
+\hat{Y}_0& \sim N \left(E(Y|X_0), \sigma^2 \left( \frac{1}{n}+ \frac{(X_0-\bar{X})^2}{\sum{x_i^2}} \right) \right)
+\end{align}
+$$
+
+then `construct t statistic` to estimate CI
+$$
+\begin{align}
+t_{\hat{Y}_0}& =\frac{\hat{Y}_0-E(Y|X_0)}{S_{\hat{Y}_0}} \sim t(n-2) 
+\end{align}
+$$
+
+$$
+\begin{align}
+\hat{Y}_0-t_{1-\alpha/2}(n-2) \cdot S_{\hat{Y}_0} \leq E(Y|X_0) \leq \hat{Y}_0+t_{1-\alpha/2}(n-2) \cdot S_{\hat{Y}_0}
+\end{align}
+$$
+
+### Individual prediction
+since  
+
+$$
+\begin{align}
+(Y_0-\hat{Y}_0)& \sim N \left(\mu_{(Y_0-\hat{Y}_0)},\sigma^2_{(Y_0-\hat{Y}_0)} \right)\\
+(Y_0-\hat{Y}_0)& \sim N \left(0, \sigma^2 \left(1+ \frac{1}{n}+ \frac{(X_0-\bar{X})^2}{\sum{x_i^2}} \right) \right)
+\end{align}
+$$
+
+and `Construct t statistic`
+$$
+\begin{align}
+t_{\hat{Y}_0}& =\frac{\hat{Y}_0-E(Y|X_0)}{S_{\hat{Y}_0}} \sim t(n-2)
+\end{align}
+$$
+
+and 
+$$
+\begin{align}
+S_{\hat{Y}_0}& = \sqrt{\hat{\sigma}^2 \left( \frac{1}{n}+ \frac{(X_0-\bar{X})^2}{\sum{x_i^2}} \right)}
+\end{align}
+$$
+therefore 
+
+$$
+\begin{align}
+\hat{Y}_0-t_{1-\alpha/2}(n-2) \cdot S_{\hat{Y}_0} \leq E(Y|X_0) \leq \hat{Y}_0+t_{1-\alpha/2}(n-2) \cdot S_{\hat{Y}_0}
+\end{align}
+$$
+ 
+`it is harder to predict your weight based on your age than to predict the mean weight of people who are your age. so, the interval of individual prediction is wider than those of mean prediction.`
+
+
+
+
+
+
+
+
+
+## Multiple linear regression
+### Matrix format
+
+$$
+\begin{align}
+Y_i&=\beta_1+\beta_2X_{2i}+\beta_3X_{3i}+\cdots+\beta_kX_{ki}+u_i 
+&& \
+\end{align}
+$$
+
+$$
+\begin{equation}
+  \begin{bmatrix}
+  Y_1 \\  Y_2 \\  \cdots \\  Y_n \\
+  \end{bmatrix}  =
+  \begin{bmatrix}
+  1 &  X_{21} & X_{31} & \cdots &  X_{k1} \\
+  1 &  X_{22} & X_{32} & \cdots &  X_{k2} \\
+  \cdots &  \cdots & \cdots & \cdots &  \cdots \\
+  1 &  X_{2n} & X_{3n} & \cdots &  X_{kn}
+  \end{bmatrix}
+  \begin{bmatrix}
+  \beta_1 \\  \beta_2 \\  \vdots \\  \beta_k \\
+  \end{bmatrix}+
+  \begin{bmatrix}
+  u_1 \\  u_2 \\  \vdots \\  u_n \\
+  \end{bmatrix}
+\end{equation}
+$$
+
+$$
+\begin{alignat}{4}
+\mathbf{y} &= &\mathbf{X}&\mathbf{\beta}&+&\mathbf{u}
+ \\
+(n \times 1) &  &{(n \times k)} &{(k \times 1)}&+&{(n \times 1)}
+\end{alignat}
+$$
+
+### Variance covariance matrix of random errors
+
+<!-- $$ -->
+<!-- \begin{align} -->
+<!-- var-cov(\mathbf{u})&=E(\mathbf{uu'})\\ -->
+<!-- &=E -->
+<!--   \begin{bmatrix} -->
+<!--   u_1\\  u_2\\ \vdots \\ u_n -->
+<!--   \end{bmatrix} -->
+<!--   \begin{bmatrix} -->
+<!--   u_1 &  u_2& \cdots & u_n -->
+<!--   \end{bmatrix}\\ -->
+<!-- &=E -->
+<!--   \begin{bmatrix} -->
+<!--   u_1^2 & u_1u_2  &\cdots &u_1u_n\\ -->
+<!--   u_2u_1 & u_2^2  &\cdots &u_2u_n\\ -->
+<!--   \vdots & \vdots &\vdots &\vdots \\ -->
+<!--   u_nu_1 & u_nu_2  &\cdots &u_n^2\\ -->
+<!--   \end{bmatrix}\\ -->
+<!-- &= -->
+<!--   \begin{bmatrix} -->
+<!--   E(u_1^2) & E(u_1u_2)  &\cdots &E(u_1u_n)\\ -->
+<!--   E(u_2u_1) & E(u_2^2)  &\cdots &E(u_2u_n)\\ -->
+<!--   \vdots & \vdots &\vdots &\vdots \\ -->
+<!--   E(u_nu_1) &E(u_nu_2)  &\cdots &E(u_n^2)\\ -->
+<!--   \end{bmatrix}\\ -->
+<!-- \end{align} -->
+<!-- $$ -->
+
+because 
+$$
+\mathbf{u} \sim N(\mathbf{0},\sigma^2\mathbf{I})\text{    population}\\
+\mathbf{e} \sim N(\mathbf{0},\sigma^2\mathbf{I})\text{    sample}\
+$$
+
+therefore
+$$
+\begin{align}
+var-cov(\mathbf{u})&=E(\mathbf{uu'})\\
+&=
+  \begin{bmatrix}
+  \sigma_1^2 & \sigma_{12}^2  &\cdots &\sigma_{1n}^2\\
+  \sigma_{21}^2 & \sigma_2^2  &\cdots &\sigma_{2n}^2\\
+  \vdots & \vdots &\vdots &\vdots \\
+  \sigma_{n1}^2 & \sigma_{n2}^2  &\cdots &\sigma_n^2\\
+  \end{bmatrix}  
+  && \leftarrow (E{(u_i)}=0)\\
+&=
+  \begin{bmatrix}
+  \sigma^2 & \sigma_{12}^2  &\cdots &\sigma_{1n}^2\\
+  \sigma_{21}^2 & \sigma^2  &\cdots &\sigma_{2n}^2\\
+  \vdots & \vdots &\vdots &\vdots \\
+  \sigma_{n1}^2 & \sigma_{n2}^2  &\cdots &\sigma^2\\
+  \end{bmatrix} 
+  && \leftarrow (var{(u_i)}=\sigma^2)\\
+&=
+  \begin{bmatrix}
+  \sigma^2 & 0  &\cdots &0\\
+  0 & \sigma^2  &\cdots &0\\
+  \vdots & \vdots &\vdots &\vdots \\
+  0 & 0  &\cdots &\sigma^2\\
+  \end{bmatrix}
+  && \leftarrow (cov{(u_i,u_j)}=0,i \neq j)\\
+&=\sigma^2
+  \begin{bmatrix}
+  1 & 0  &\cdots &0\\
+  0 & 1  &\cdots &0\\
+  \vdots & \vdots &\vdots &\vdots \\
+  0 & 0  &\cdots &1\\
+  \end{bmatrix}\\
+&=\sigma^2\mathbf{I}
+\end{align}
+$$
+
+### Minimize Q, $\sum{(y-\hat{y})^2}$
+$$
+\begin{align}
+Q&=\sum{e_i^2}\\
+&=\mathbf{e'e}\\
+&=\mathbf{(y-X\hat{\beta})'(y-X\hat{\beta})}\\
+&=\mathbf{y'y-2\hat{\beta}'X'y+\hat{\beta}'X'X\hat{\beta}} 
+\end{align}
+$$
+
+### Solve $\hat{\beta}$ by derivation
+(population=sample)
+
+$$
+\begin{align}
+\frac{\partial Q}{\partial \mathbf{\hat{\beta}}}&=0\\
+\frac{\partial(\mathbf{y'y-2\hat{\beta}'X'y+\hat{\beta}'X'X\hat{\beta}})}{\partial \mathbf{\hat{\beta}}}&=0\\
+-2\mathbf{X'y}+2\mathbf{X'X\hat{\beta}}&=0\\
+-\mathbf{X'y}+\mathbf{X'X\hat{\beta}}&=0\\
+\mathbf{X'X\hat{\beta}} &=\mathbf{X'y}
+\end{align}
+$$
+$$
+\begin{align}
+\mathbf{\hat{\beta}} &=\mathbf{(X'X)^{-1}X'y} 
+\end{align}
+$$
+
+### Solve $\hat{\sigma_\beta}^2$  
+
+$$
+\begin{align}
+var-cov(\mathbf{\hat{\beta}})
+&=\mathbf{E\left( \left(\hat{\beta}-E(\hat{\beta}) \right) \left( \hat{\beta}-E(\hat{\beta}) \right )' \right)}\\
+&=\mathbf{E\left( \left(\hat{\beta}-{\beta} \right) \left( \hat{\beta}-\beta \right )' \right)} \\
+&=\mathbf{E\left( \left((X'X)^{-1}X'u \right) \left( (X'X)^{-1}X'u \right )' \right)} \\
+&=\mathbf{E\left( (X'X)^{-1}X'uu'X(X'X)^{-1}  \right)} \\
+&= \mathbf{(X'X)^{-1}X'E(uu')X(X'X)^{-1}}   \\
+&= \mathbf{(X'X)^{-1}X'}\sigma^2\mathbf{IX(X'X)^{-1}}   \\
+&= \sigma^2\mathbf{(X'X)^{-1}X'X(X'X)^{-1}}   \\
+&= \sigma^2\mathbf{(X'X)^{-1}}   \\
+\end{align}
+$$
+
+### Solve $S^2(\mathbf{\hat{\beta}})$ 
+
+(for sample)
+
+where 
+$$
+\begin{align}
+\hat{\sigma}^2&=\frac{\sum{e_i^2}}{n-k}=\frac{\mathbf{e'e}}{n-k} \\
+E(\hat{\sigma}^2)&=\sigma^2
+\end{align}
+$$
+
+therefore
+$$
+\begin{align}
+S^2_{ij}(\mathbf{\hat{\beta}})
+&= \hat{\sigma}^2\mathbf{(X'X)^{-1}}   \\
+&= \frac{\mathbf{e'e}}{n-k}\mathbf{(X'X)^{-1}}   \\
+\end{align}
+$$
+`which is variance-covariance of coefficients`
+
+### Sum of squares decomposition (matrix format)
+
+$$
+\begin{align}
+TSS&=\mathbf{y'y}-n\bar{Y}^2 \\
+RSS&=\mathbf{ee'}=\mathbf{yy'-\hat{\beta}'X'y} \\
+ESS&=\mathbf{\hat{\beta}'X'y}-n\bar{Y}^2 
+\end{align}
+$$
+
+### Determination coefficient $R^2$ and goodness of fit
+$$
+\begin{align}
+R^2&=\frac{ESS}{TSS}\\
+&=\frac{\mathbf{\hat{\beta}'X'y}-n\bar{Y}^2}{\mathbf{y'y}-n\bar{Y}^2}
+\end{align}
+$$
+
+### Test of regression coefficients 
+
+because 
+$$
+\begin{align}
+\mathbf{u}&\sim N(\mathbf{0},\sigma^2\mathbf{I})  \\
+\mathbf{\hat{\beta}} &\sim N\left(\mathbf{\beta},\sigma^2\mathbf{X'X}^{-1} \right)   \\
+\end{align}
+$$
+therefore 
+
+`(for all coefficients test, vector, see above` $S_{\hat{\beta}}^2$ `)`
+$$
+\begin{align}
+\mathbf{t_{\hat{\beta}}}&=\mathbf{\frac{\hat{\beta}-\beta}{S_{\hat{\beta}}}} 
+\sim \mathbf{t(n-k)}
+\end{align}
+$$
+
+`(for individual coefficient test)`
+$$
+\begin{align}
+\mathbf{t_{\hat{\beta}}^{\ast}}&=\frac{\mathbf{\hat{\beta}}}{\mathbf{\sqrt{S^2_{ij}(\hat{\beta}_{kk})}}} 
+\end{align}
+$$
+where 
+$$
+S^2_{ij}(\hat{\beta}_{kk})=[s^2_{\hat{\beta}_1},s^2_{\hat{\beta}_2},\cdots,s^2_{\hat{\beta}_k}]'
+$$
+
+`they are on diagonal line of the matrix of` $S^2(\mathbf{\hat{\beta}})$ 
+
+### Test of model
+unrestricted model
+$$
+\begin{align}
+u_i &\sim i.i.d \ N(0,\sigma^2)\\
+Y_i&\sim i.i.d \ N(\beta_1+\beta_2X_i+\cdots+\beta_kX_i,\sigma^2)\\
+RSS_U&=\sum{(Y_i-\hat{Y_i})^2} \sim \chi^2(n-k) \\
+\end{align}
+$$
+restricted model
+$$
+\begin{align}
+u_i &\sim i.i.d \ N(0,\sigma^2)\\
+Y_i&\sim i.i.d \ N(\beta_1,\sigma^2)\\
+RSS_R&=\sum{(Y_i-\hat{Y_i})^2} \sim \chi^2(n-1) \\
+\end{align}
+$$
+F test
+$$
+\begin{align}
+F^{\ast}&=\frac{(RSS_R-RSS_U)/(k-1)}{RSS_U/(n-k)} \\
+        &=\frac{ESS_U/df_{ESS_U}}{RSS_U/df_{RSS_U}} \\
+        &\sim F(df_{ESS_U},df_{RSS_U})
+\end{align}
+$$
+
+$$
+\begin{align}
+F^{\ast}&=\frac{ESS_U/df_{ESS_U}}{RSS_U/df_{RSS_U}} 
+=\frac{\left(\mathbf{\hat{\beta}'X'y}-n\bar{Y}^2  \right)/{(k-1)}}{\left(\mathbf{yy'-\hat{\beta}'X'y}\right)/{(n-k)}}
+\end{align}
+$$
+
+
+### Mean prediction
+since 
+$$
+\begin{align}
+E(\hat{Y}_0)&=E\mathbf{(X_0\hat{\beta})}=\mathbf{X_0\beta}=E\mathbf{(Y_0)}\\
+var(\hat{Y}_0)&=E\mathbf{(X_0\hat{\beta}-X_0\beta)}^2\\
+              &=E\mathbf{\left( X_0(\hat{\beta}-\beta)(\hat{\beta}-\beta)'X_0' \right)}\\
+              &=E\mathbf{X_0\left( (\hat{\beta}-\beta)(\hat{\beta}-\beta)' \right)X_0'}\\
+              &=\sigma^2\mathbf{X_0\left( X'X \right)^{-1}X_0'}\\
+\end{align}
+$$
+and 
+$$
+\begin{align}
+\hat{Y}_0& \sim N(\mu_{\hat{Y}_0},\sigma^2_{\hat{Y}_0})\\
+\hat{Y}_0& \sim N\left(E(Y_0|X_0), \sigma^2\mathbf{X_0(X'X)^{-1}X_0'}\right)
+\end{align}
+$$
+`construct t statistic`
+$$
+\begin{align}
+t_{\hat{Y}_0}& =\frac{\hat{Y}_0-E(Y|X_0)}{S_{\hat{Y}_0}} 
+&\sim t(n-k) 
+\end{align}
+$$
+
+therefore 
+$$
+\begin{align}
+\hat{Y}_0-t_{1-\alpha/2}(n-2) \cdot S_{\hat{Y}_0} \leq E(Y|X_0) \leq \hat{Y}_0+t_{1-\alpha/2}(n-2) \cdot S_{\hat{Y}_0}
+\end{align}
+$$
+
+where 
+$$
+\begin{align}
+\mathbf{S_{\hat{Y}_0}}
+&=\sqrt{\hat{\sigma}^2X_0(X'X)^{-1}X_0'} \\
+\hat{\sigma}^2&=\frac{\mathbf{ee'}}{(n-k)} 
+\end{align}
+$$
+
+### Individual prediction
+since 
+$$
+\begin{align}
+e_0&=Y_0-\hat{Y}_0
+\end{align}
+$$
+
+and 
+$$
+\begin{align}
+E(e_0)&=E(Y_0-\hat{Y}_0)\\
+      &=E(\mathbf{X_0\beta}+u_0-\mathbf{X_0\hat{\beta}})\\
+      &=E\left(u_0-\mathbf{X_0 (\hat{\beta}- \beta)} \right)\\
+      &=E\left(u_0-\mathbf{X_0 (X'X)^{-1}X'u} \right)\\
+      &=0
+\end{align}
+$$
+
+  
+$$
+\begin{align}
+var(e_0)&=E(Y_0-\hat{Y}_0)^2\\
+        &=E(e_0^2)\\
+        &=E\left(u_0-\mathbf{X_0 (X'X)^{-1}X'u} \right)^2\\
+        &=\sigma^2\left( 1+ \mathbf{X_0(X'X)^{-1}X_0'}\right)
+\end{align}
+$$
+
+and  
+$$
+\begin{align}
+e_0& \sim N(\mu_{e_0},\sigma^2_{e_0})\\
+e_0& \sim N\left(0, \sigma^2\left(1+\mathbf{X_0(X'X)^{-1}X_0'}\right)\right)
+\end{align}
+$$
+
+`construct a t statistic `
+$$
+\begin{align}
+t_{e_0}& =\frac{\hat{Y}_0-Y_0}{S_{e_0}} 
+\sim t(n-k) 
+\end{align}
+$$
+
+
+therefore 
+$$
+\begin{align}
+\hat{Y}_0-t_{1-\alpha/2}(n-2) \cdot S_{Y_0-\hat{Y}_0} \leq (Y_0|X_0) \leq \hat{Y}_0+t_{1-\alpha/2}(n-2) \cdot S_{Y_0-\hat{Y}_0}
+\end{align}
+$$
+
+where 
+$$
+\begin{align}
+S_{Y_0-\hat{Y}_0}=S_{e_0}
+&=\sqrt{\hat{\sigma}^2 \left( 1+X_0(X'X)^{-1}X_0' \right) } \\
+\hat{\sigma}^2&=\frac{\mathbf{ee'}}{(n-k)} 
+\end{align}
+$$

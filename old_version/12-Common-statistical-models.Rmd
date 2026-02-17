@@ -1,0 +1,37 @@
+
+# Common statistical models
+
+## Survival analysis
+
+[see here](https://rpubs.com/Daniel_He/1135804)
+
+## Logistical regression
+
+[see here](https://rpubs.com/Daniel_He/1143953)
+
+## Poisson regression
+
+[see here](https://rpubs.com/Daniel_He/1143956)
+
+## Quantile regression
+[see here](https://rpubs.com/Daniel_He/1144578)
+
+
+## Principle components analysis
+[see here](https://rpubs.com/Daniel_He/1114648)
+
+
+
+
+
+<!-- put at last -->
+## Which covariates should be adjusted
+[see here](https://rpubs.com/Daniel_He/1042290)
+
+## Variable selection
+[see here](https://rpubs.com/Daniel_He/1044963)
+
+
+## Fit regression model with a fan-shaped relation
+[see here](https://rpubs.com/Daniel_He/1106265)
+

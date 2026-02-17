@@ -1,11 +1,27 @@
- 
 # Miscellaneous
 
+This chapter collects a set of “tools of the trade” that show up repeatedly in statistical practice:  
+**linear algebra**, **calculus**, and a few **practical workflows** (sample size simulation, z-score evaluation, and reproducible reporting with bookdown/blogdown).
+
+The intention is not to present a rigorous proof-based treatment, but to provide a working reference with short explanations and runnable code.
+
+---
 
 ## Linear algebra
 
+Linear algebra is the language of most modern statistical modeling. Regression, mixed models, PCA, and many optimization algorithms are built on matrix representations:
+
+- data are organized as matrices (design matrices),
+- parameters are vectors,
+- sums of squares become quadratic forms,
+- estimation becomes solving linear systems or matrix decompositions.
+
 ### Matrix basics
-- dimensions of matrix
+
+#### Dimensions of a matrix
+
+A matrix has **two dimensions**: number of rows and number of columns. In R, `dim()` returns both.
+
 ```{r setup, include=FALSE,engine='R'}
 knitr::opts_chunk$set( engine='R')
 ```
@@ -20,18 +36,39 @@ knitr::opts_chunk$set( engine='R')
 
    ncol(X)
 ```
-- change dimensions of matrix 
+
+Key ideas:
+- `dim(X)` returns `(nrow, ncol)`.
+- `dim(X)[1]` extracts the number of rows.
+- `ncol(X)` is a convenience function for columns.
+
+---
+
+#### Change dimensions of a matrix
+
+In R, you can reshape a matrix by changing its `dim`. This **does not change the values**, only how they are arranged (by column, because R stores matrices column-wise).
+
 ```{r}
 dim(X)=c(2,6)
    X
 ```
-- change names of matrix 
+
+This is essentially a “reshape” of the underlying vector `1:12`.
+
+---
+
+#### Change names of a matrix
+
+Row and column names improve readability and reduce mistakes, especially when matrices represent parameters or covariance structures.
+
 ```{r}
   a <- matrix(1:6,nrow=2,ncol=3,byrow=FALSE)
   b <- matrix(1:6,nrow=3,ncol=2,byrow=T)
   c <- matrix(1:6,nrow=3,ncol=2,byrow=T,dimnames=list(c("A","B","C"),c("boy","girl")))
   c
 ```
+
+Now we can extract and modify the names:
 
 ```{r}
    rownames(c)
@@ -40,7 +77,13 @@ dim(X)=c(2,6)
    rownames(c)=c("E","F","G")
    c
 ```
-- replace elements of matrix
+
+---
+
+#### Replace elements of a matrix
+
+Indexing uses `[row, col]`. Once you can index, you can update values.
+
 ```{r}
    X=matrix(1:12,nrow=4,ncol=3)
    
@@ -49,38 +92,77 @@ dim(X)=c(2,6)
       
    X
 ```
-- extract diagonal elements and replace them 
+
+---
+
+#### Extract diagonal elements and replace them
+
+The diagonal is often special: identity matrices, variances, and many decompositions depend on it.
+
 ```{r}
    diag(X)
    diag(X)=c(0,0,1)
 
    X
 ```
-- create diagonal identity matrix 
+
+---
+
+#### Create diagonal and identity matrices
+
+- `diag(c(...))` creates a diagonal matrix with those values.
+- `diag(k)` creates a `k × k` identity matrix.
+
 ```{r}
   diag(c(1,2,3))
    
   diag(3)
 ```
-- extract lower/upper triangle elements 
+
+---
+
+#### Extract lower/upper triangle elements
+
+The lower and upper triangles are used heavily in covariance and triangular decompositions.
+
 ```{r}
   X
   X[lower.tri(X)]
    
   X[upper.tri(X)]
 ```
-- create lower/upper triangle matrix 
+
+---
+
+#### Create lower/upper triangle matrices
+
+A common operation is to “zero out” part of a matrix.
+
 ```{r}
 X[lower.tri(X)]=0
 X
 ```
+
+This is useful for constructing triangular matrices or simplifying display.
+
+---
+
 ### Operations
-- transform 
+
+#### Transpose
+
+The transpose swaps rows and columns. Many matrix formulas (e.g., normal equations) require transpose.
+
 ```{r}
  t(X)
 ```
 
-- summary by row or column 
+---
+
+#### Row/column summaries
+
+Row sums and means are common in data transformations and checking intermediate quantities.
+
 ```{r}
   A=matrix(1:12,3,4)
   A 
@@ -88,30 +170,61 @@ X
    
   rowMeans(A)
 ```
-- determinant of matrix 
+
+---
+
+#### Determinant
+
+The determinant summarizes properties of a square matrix:
+- If `det(A)=0`, the matrix is singular (not invertible).
+- Determinants also appear in multivariate normal likelihoods via `|Σ|`.
+
 ```{r}
   X=matrix(rnorm(9),nrow=3,ncol=3)
   det(X)
 ```
-- Addition
+
+---
+
+#### Addition
+
+Matrix addition requires the **same dimensions**.
+
 ```{r}
   A=matrix(1:12,nrow=3,ncol=4)
   B=matrix(1:12,nrow=3,ncol=4)
   A+B #same dimensions (non-conformable arrays)
 ```
-- addition by scale
+
+---
+
+#### Addition by a scalar
+
+Adding a scalar shifts all entries.
+
 ```{r}
 A=matrix(1:12,nrow=3,ncol=4)
 2+A
 ```
 
+---
 
-- multiple by scale
+#### Multiply by a scalar
+
+Scalar multiplication rescales all entries.
+
 ```{r}
 A=matrix(1:12,nrow=3,ncol=4)
 2*A
 ```
-- dot multiple  
+
+---
+
+#### Matrix multiplication (dot product)
+
+Matrix multiplication requires conformable dimensions:
+- if `A` is `m×k`, `B` must be `k×n`.
+
 ```{r}
    A=matrix(1:12,nrow=2,ncol=4)
    
@@ -119,16 +232,26 @@ A=matrix(1:12,nrow=3,ncol=4)
    
    A%*%B
 ```
-- kronecker multiple 
+
+---
+
+#### Kronecker product
+
+The Kronecker product appears in block matrix constructions and covariance modeling (e.g., separable covariance).
+
 ```{r}
    A=matrix(1:4,2,2)
    B=matrix(rep(1,4),2,2)
    
    kronecker(A,B)
 ```
-- inverse matrix 
 
-`must be square`
+---
+
+#### Inverse matrix
+
+A matrix must be **square** and **non-singular** to have an inverse. Inverse matrices appear in closed-form least squares and covariance transformations.
+
 ```{r}
    A=matrix(rnorm(9),nrow=3,ncol=3) 
    A
@@ -138,12 +261,19 @@ A=matrix(1:12,nrow=3,ncol=4)
    (A%*%AI)
 ```
 
+The `matlib` package provides a more explicit `inv()`.
+
 ```{r}
 library(matlib)
 inv(A)
 ```
-- generalized inverse
-`when it is not square`
+
+---
+
+#### Generalized inverse
+
+When a matrix is not square (or is singular), we can use a **generalized inverse** (Moore–Penrose pseudoinverse). This is common in least squares with rank deficiency.
+
 ```{r}
    library(MASS)
    A2=matrix(1:12,nrow=3,ncol=4)
@@ -151,7 +281,15 @@ inv(A)
    A%*%ginv(A)
    A%*%ginv(A)%*%A
 ```
-- crossprod
+
+The product `A %*% ginv(A) %*% A` is a projection-like operation: it maps back into the column space of `A`.
+
+---
+
+#### `crossprod`
+
+`crossprod(B)` computes `t(B) %*% B` efficiently and with better numerical stability.
+
 ```{r}
 B=matrix(1:12,nrow=4,ncol=3)
 B
@@ -159,6 +297,7 @@ crossprod(B)
 t(B)%*%B
 ```
 
+Generalized inverse utilities with `crossprod`:
 
 ```{r}
    B=matrix(1:12,nrow=4,ncol=3)
@@ -168,9 +307,24 @@ t(B)%*%B
    # solve((B)) #is not square
 ```
 
-- eigen values (decomposition) 
-`mxn matrix`
-`A=UΛU` 
+---
+
+### Eigen decomposition
+
+Eigen decomposition is defined for square matrices. It is central in:
+- PCA and spectral methods,
+- diagonalizing symmetric matrices,
+- understanding quadratic forms and covariance matrices.
+
+For an `m×m` matrix `A`, eigen decomposition takes the form:
+- values: eigenvalues (`Λ`)
+- vectors: eigenvectors (`U`)
+
+In many texts: `A = U Λ U^{-1}`.  
+For symmetric matrices, `U` is orthogonal and `U^{-1} = U'`, giving `A = U Λ U'`.
+
+#### Eigen values
+
 ```{r}
    A=matrix(1:9,nrow=3,ncol=3)
    
@@ -181,43 +335,70 @@ t(B)%*%B
    val <- diag(Aeigen$values)
    val
 ```
-- eigen vectors
+
+---
+
+#### Eigen vectors
+
 ```{r}
 Aeigen$vectors
 ```
 
+We can reconstruct `A` (approximately) using eigenvectors and eigenvalues:
 
 ```{r}
  round(Aeigen$vectors%*%val%*%t(Aeigen$vectors))
  A
 ```
+
+Small discrepancies may occur due to rounding and floating-point arithmetic.
+
+---
+
 ### Advanced operations
-- Choleskey factor
 
-`positive definite matrix (symmetric square), A=P’P`
+#### Cholesky factorization
 
-`covariance matrix is semi positive definite matrix`
+Cholesky factorization applies to **symmetric positive definite** matrices:
+- `A = R'R` (or sometimes `A = LL'` depending on convention),
+- `chol(A)` returns an upper triangular factor by default.
+
+Covariance matrices are typically positive semidefinite; in practice, estimated covariance matrices are often treated as positive definite (or adjusted to be so).
+
 ```{r}
    A=diag(3)+1
    A  
    chol(A)
 ```
 
+Check the reconstruction:
+
 ```{r}
    t(chol(A))%*%chol(A)
 ```
-`inverse using Choleshey`
+
+Compute inverse via Cholesky:
+
 ```{r}
 chol2inv(chol(A))
 inv(A)
 ```
 
- 
-- singular value (svd) decomposition 
+Using Cholesky is often numerically preferable to directly calling `solve()` for symmetric positive definite matrices.
 
-`m×n matrix`
+---
 
-`A=UDV`
+#### Singular value decomposition (SVD)
+
+SVD works for **any** `m×n` matrix and is among the most robust matrix decompositions.
+
+`A = U D V'`
+
+- `U`: orthogonal (`m×m` or `m×r`)
+- `D`: diagonal singular values (`r×r`)
+- `V`: orthogonal (`n×n` or `n×r`)
+- `r`: rank (number of non-zero singular values)
+
 ```{r}
    A=matrix(1:18,3,6)
    
@@ -227,33 +408,51 @@ inv(A)
    
 ```
 
+Reconstruction:
+
 ```{r}
    svd(A)   $u %*%diag(svd(A)   $d)%*% t(svd(A)   $v)
    A
 ```
 
-- QR decomposition
+SVD is widely used for:
+- pseudoinverse,
+- PCA (via centered data matrix),
+- numerical stability in least squares.
 
-`m×n matrix`
+---
 
-`A=QR，where Q’Q=I, Q is orthogonal matrix` 
+#### QR decomposition
+
+QR is another general decomposition for `m×n` matrices:
+
+`A = Q R`
+
+- `Q`: orthogonal (`Q'Q = I`)
+- `R`: upper triangular
+
+QR is essential for numerically stable least squares.
+
 ```{r}
    A=matrix(1:12,4,3)
    qr(A)
 ```
 
-
+Extract the components:
 
 ```{r}
 qr.Q(qr(A))
 ```
+
 ```{r}
 qr.R(qr(A))
 ```
 
-
+---
 
 ### Solve linear equations
+
+Many estimation problems reduce to solving `Xβ = b`.
 
 ```{r}
    X=matrix(c(2, 2, 2, 0, 1, 1  ,2, 2, 0),ncol=3,nrow=3)
@@ -263,24 +462,51 @@ qr.R(qr(A))
    solve(X,b) # whether it is singular
 ```
 
+If `X` is singular, `solve()` fails. In practice, that is a signal to use:
+- `qr.solve()` (least squares),
+- `ginv()` (pseudoinverse),
+- or to investigate collinearity/rank deficiency.
+
+---
+
 ### Summary
-- Eigen values (values and vectors, UΛU), singular values (s v "\" d), and QR (orthogonal and upper triangle, QR) for any matrix.
 
-- Choleskey (P’ P, lower and upper triangle) factor for positive definite matrix (cov matrix is semi). 
+A useful mental map:
 
-## Calculus 
+- **Eigen decomposition**: square matrices; reveals directions of stretching/compression.  
+- **SVD**: works for any matrix; most robust; basis of pseudoinverse and PCA.  
+- **QR**: stable for regression/least squares.  
+- **Cholesky**: fastest for symmetric positive definite matrices (especially covariance matrices).
+
+---
+
+## Calculus
+
+Calculus enters statistical practice in:
+- optimization (derivatives/gradients),
+- likelihood theory,
+- computing integrals for probabilities and expectations.
+
 ### Derivation
+
+R’s `deriv()` can symbolically differentiate simple expressions.
+
 ```{r}
 dx <- deriv(y ~ x^3, "x"); dx
 mode(dx)
 x<-1:2   
 eval(dx)
 ```
+
+We can also request a function output:
+
 ```{r}
 dx <- deriv(y ~ sin(x), "x", func= TRUE) ;  
 mode(dx)
 dx(c(pi,4*pi))  
 ```
+
+And include constants:
 
 ```{r}
 a<-2                
@@ -289,37 +515,55 @@ dx(pi/3)
    
 ```
 
+Partial derivatives:
+
 ```{r}
 fxy = expression(2*x^2+y+3*x*y^2)
 dxy = deriv(fxy, c("x", "y"), func = TRUE)
 dxy(1,2)  
 ```
 
+In modeling, this kind of derivative structure is the foundation for gradients and Hessians used by optimizers.
+
+---
+
 ### Integration
+
+Many probabilities are integrals of density functions.
+
 ```{r}
 integrate(dnorm, -1.96, 1.96)
  
 integrate(dnorm, -Inf, Inf)
 ```
+
+Improper integrals (infinite bounds) are supported:
+
 ```{r}
 integrand <- function(x) {1/((x+1)*sqrt(x))}
  
 integrate(integrand, lower = 0, upper = Inf)
 ```
 
+Trigonometric integrals:
+
 ```{r}
  integrand <- function(x) {sin(x)}
  integrate(integrand, lower = 0, upper = pi/2) 
 ```
 
+---
 
+## Sample size calculation (simulation-based power)
 
+In complex designs, analytic power formulas may not be available or may be hard to trust. Simulation is often more transparent:
 
+- Specify the data-generating process under the alternative,
+- simulate many trials,
+- apply the intended analysis method,
+- estimate power as the proportion of significant results.
 
-
-
-
-## Sample size calculation
+Your code implements exactly this idea: for each candidate sample size `t`, simulate `M` trials and record whether `prop.test()` gives `p < 0.05`.
 
 ```{r}
 #given proportion 
@@ -375,15 +619,31 @@ px7=0.05
   lines(Outcome0$size,power_loess,col="blue",lwd=2)
 ```
 
+A practical interpretation of the plot:
+- The horizontal lines at 0.8 / 0.85 / 0.9 help you read off the required sample size range.
+- The loess smoothing stabilizes Monte Carlo noise from finite `M`.
 
-## How to evaluate z score
+---
 
+## How to evaluate a z score
 
+This section demonstrates a common pattern in applied modeling:
 
-- Call the parameter estimates file 
+1) load parameter estimates (here stored in a vector `PE`),  
+2) extract the right “row” of estimates for a particular scenario (`Ultra`),  
+3) compute mean and variance at a specific time/value `i`,  
+4) compute a z-score comparing an observed value to the model-implied distribution.
+
+### Call the parameter estimates file
+
+You define which scenario to use:
+
 ```{r,echo=FALSE}
    Ultra= 5   
 ```
+
+Then you load a long parameter vector. Conceptually, this is like reading from a saved model object, but stored explicitly as numeric values.
+
 ```{r,echo=FALSE}
    PE=c(4,4,1.5582531352 ,1.55295994459852E-01,1.5508530833948259E-02,-2.5583555549355855E-04,3.5590358554438349E-04,-1.5594549815954538E-04,1.558858859455E-04,4.5551808410545388E-02,1.5532582058058819E-02,-2.5525309589508032E-05,-4.5543803255145135E-05,-9.5589509580845285E-08,-2.5525309589508032E-05,8.5584325231922115E-05,5.5585824824850422E-08,-2.5504154898583410E-09,-4.5543803255145135E-05,5.5585824824850422E-08,5.5580285119152818E-09,-2.5555515445182843E-11,-9.5589509580845285E-08,-2.5504154898583410E-09,-2.5555515445182843E-11,2.5591845253880851E-12,1.5590E+01,2.558290E+01,3.554290E+01,1.5518803828219292E-01,-2.5508253202815509E-02,1.5519591958352832E-03,-2.5524090909539828E-05,2.5558280832550283E-05,-9.5513118208015104E-05,1.5534312010843458E-05,-2.5508253202815509E-02,3.55591539959515E-03,-2.5512285241015309E-04,3.5598258012054254E-05,-4.5588824093829525E-05,1.5558248231134944E-05,-2.5551059932834348E-05,1.5519591958352832E-03,-2.5512285241015309E-04,1.5522245335112982E-05,-2.5529525953855588E-08,2.5588320358931258E-08,-1.55895958918045E-08,1.5552832350435804E-08,-2.5524090909539828E-05,3.5598258012054254E-05,-2.5529525953855588E-08,4.5531819923158805E-09,-5.5523835838549189E-09,1.5595522821258240E-09,-3.5503059580103212E-09,2.5558280832550283E-05,-4.5588824093829525E-05,2.5588320358931258E-08,-5.5523835838549189E-09,5.5545381289538380E-09,-2.5588488058515819E-09,4.5558515289855411E-09,-9.5513118208015104E-05,1.5558248231134944E-05,-1.55895958918045E-08,1.5595522821258240E-09,-2.5588488058515819E-09,2.5559030480128950E-09,-5.5582809248938548E-09,1.5534312010843458E-05,-2.5551059932834348E-05,1.5552832350435804E-08,-3.5503059580103212E-09,4.5558515289855411E-09,-5.5582809248938548E-09,2.5553518554985598E-08,
          4,5,-5.5515881082401889E-01,5.5533454321103184E-01,-2.55505888115552E-02,3.5582452345835115E-04,-2.55548848839258E-04,-1.5552391023910595E-04,1.5534829554943185E-04,3.55055851541325E-02,1.55121343221019E-02,-3.5508381382599433E-04,-5.5539858559038550E-05,1.5545583599559314E-08,-3.5508381382599433E-04,1.5501858484988589E-05,1.55522510835055E-08,-4.5528322238435851E-09,-5.5539858559038550E-05,1.55522510835055E-08,3.5555055340551320E-09,-9.5514493584480498E-11,1.5545583599559314E-08,-4.5528322238435851E-09,-9.5514493584480498E-11,2.5554195953929850E-12,1.5590E+01,2.558290E+01,3.554395E+01,5.55483850504493E-02,-1.5514448451445958E-02,5.5555948515989155E-04,-1.5522803825081248E-05,1.5545981822884824E-05,-4.5558945444380989E-05,5.5589433298325089E-05,-1.5514448451445958E-02,2.5502454245905304E-03,-1.5515181448885844E-04,2.5518558081155813E-05,-2.5559845825204542E-05,8.55554298838501E-08,-1.5525089458518895E-05,5.5555948515989155E-04,-1.5515181448885844E-04,5.5558522588855394E-05,-1.5525129445988131E-08,1.5549950314895035E-08,-5.5509589012119581E-08,8.5551888828813989E-08,-1.5522803825081248E-05,2.5518558081155813E-05,-1.5525129445988131E-08,2.5534885144889143E-09,-2.5582391451414041E-09,9.5588850590595044E-10,-1.55582598123554E-09,1.5545981822884824E-05,-2.5559845825204542E-05,1.5549950314895035E-08,-2.5582391451414041E-09,3.5544813928525402E-09,-1.5535595294305235E-09,2.5525085889115598E-09,-4.5558945444380989E-05,8.55554298838501E-08,-5.5509589012119581E-08,9.5588850590595044E-10,-1.5535595294305235E-09,1.55151198830188E-09,-2.5598588520289153E-09,5.5589433298325089E-05,-1.5525089458518895E-05,8.5551888828813989E-08,-1.55582598123554E-09,2.5525085889115598E-09,-2.5598588520289153E-09,1.5518825329893180E-08,
@@ -393,6 +653,8 @@ px7=0.05
     )
 ```
 
+Next, you reshape `PE` into rows and then select the relevant row using `Ultra`.
+
 ```{r}
 PE= matrix(PE,nrow=5,byrow = T)
     index= Ultra-3;  
@@ -401,10 +663,26 @@ PE= matrix(PE,nrow=5,byrow = T)
     #abstract specific parameters to calculate mean and SD   
 ```
 
-- calculate mean and std   
+Interpretation of the objects you create:
+- `fcoef`: fixed-effect coefficients for a spline-like mean function (7 terms).
+- `sigma`: residual SD (or residual scale parameter, depending on model).
+- `Sigmab`: random-effect covariance matrix (4×4), used with `Rxxi`.
+- `Zeta`: knot locations for truncated power spline terms.
+- `varfixed`: covariance matrix of fixed effects (7×7) used for uncertainty in the mean function.
 
-` Set a value,like 28.29`
-    
+This decomposition matches how mixed models often separate:
+- residual variance,
+- random effect variance,
+- and uncertainty of estimated fixed effects.
+
+---
+
+### Calculate mean and standard deviation at a specific value
+
+You set `i = 28.29` and build two design vectors:
+- `Fxxi`: 7 columns (fixed effects, including spline terms),
+- `Rxxi`: 4 columns (random effects).
+
 ```{r}
 i = 28.29        
     int <- 1
@@ -422,28 +700,53 @@ i = 28.29
     var <- sigma**2 + Rxxi%*%Sigmab%*%t(Rxxi) + Fxxi%*%varfixed%*%t(Fxxi) 
     std <- sqrt(var) 
 ```
-    
 
-- Output the calculated mean  
-    
+What the variance formula is doing:
+- `sigma^2`: measurement noise / residual variance.
+- `Rxxi Σ_b Rxxi'`: variance contributed by random effects at point `i`.
+- `Fxxi Var(β) Fxxi'`: uncertainty from estimating fixed effects (mean curve uncertainty).
+
+---
+
+### Output the calculated mean (on exp scale)
+
+The model seems to operate on the log scale, so `exp(mean)` returns the mean on the original scale.
+
 ```{r}
 cat("Actual Mean=",exp(mean))      
 ```
- 
-- Calculate Z score 
-    
+
+---
+
+### Calculate z score
+
+You compare an observed value (here `289`) to the modeled mean and standard deviation on the log scale:
+
 ```{r}
 cat("Z score=",((log(289 ))-(mean))/std)      
 ```
-    
-- Result checking 
-    
+
+This is the standard “(observed − expected) / SD” idea.
+
+---
+
+### Result checking
+
+Convert the z score to a probability using the standard normal CDF:
+
 ```{r}
 pnorm(0.4465193, mean=0, sd=1)     
 ```
 
-## Mathmatic coupling
-`It makes sig into non sig` 
+This returns `P(Z ≤ 0.4465)` under a standard normal assumption.
+
+---
+
+## Mathematical coupling
+
+This is a classic example of “leakage”: you create a feature (`cuty`) derived from the outcome and then include it as a predictor.  
+Because `cuty` is essentially a coarsened version of `y1to9`, it explains a large fraction of the variation and can make the genuine predictors look nonsignificant.
+
 ```{r}
 set.seed(1234)   # Random seed
 x1 <- rnorm(1000)  #Normal IVs
@@ -466,6 +769,8 @@ model2 <- lm(y1to9~x1 + x2 + x3 + cuty)  # Adding the cut of y
 summary(model2)  #X1, x2, x3 not sig; R^2 is 0.75
 ```
 
+The plot illustrates why: `cuty` is nearly a deterministic summary of the response.
+
 ```{r}
 df <- data.frame(cuty, y1to9)
 # it causes the coefficient of x1 is 1; others equal 0.
@@ -476,215 +781,137 @@ ggplot(data = df,
   geom_smooth( method = "lm")
 ```
 
+Practical takeaway:
+- Never include variables derived from the outcome as predictors (unless your modeling framework explicitly accounts for it, such as certain joint models or measurement models).
+- This problem is common in ML workflows too (target leakage).
 
- 
-## How to create a bookdown  
-- create a github rep
-- create a new project using version control whit Git and SVN  
-- create a directory in p drive  
+---
 
-***
+## How to create a bookdown
 
-- create a new project using bookdown  
-- install bookdown package in R
-- delete and add markdown document in this bookdown project (bookdown rank chapters according to the names of markdown documents, it is necessary to put a charpter in one markdown)
-- modified some places to config it as customized [profile](https://www.youtube.com/watch?v=ZYfzNzxdkYQ)
+Bookdown is a workflow for writing a multi-chapter book using R Markdown. The main benefits are:
+- consistent formatting across chapters,
+- automatic cross-references and numbering,
+- easy publishing via GitHub + Netlify (or other hosting).
 
-- built to see the html version
+Your steps outline a typical production path:
 
-***
-
-- hit git then select all updated documents
+- create a GitHub repository
+- create a new RStudio project using version control
+- create and organize `.Rmd` chapter files (chapter order determined by filenames)
+- configure theme and output options (often via `_bookdown.yml` and `_output.yml`)
+- build locally
 - commit and push
+- deploy on Netlify, then map to your website
 
-***
+Because bookdown chapters are file-based, naming conventions matter (e.g., `01-intro.Rmd`, `02-methods.Rmd`, ...).
 
-- open netlify using github account then deploy the rep from github
-- change your website
+---
 
-#### How to git up a project into github
-`see youtube tutorial `
+### How to git up a project into GitHub
 
-- hit tools- version control- project setup 
+Your notes reflect the standard flow:
 
-- git- commit
+- initialize version control in RStudio
+- create an empty GitHub repo (no README if you want to push your existing structure cleanly)
+- connect local → remote, commit, push
 
-- create a new rep in github, do not select readme.
+---
 
-- copy three code...
+### How to git down a project into your PC
 
-  - in terminal window, enter
-  
-  - git
-  
-  - git
-  
-  - git     
-  
-  - push
-  
-#### How to git down a project into your pc
-- create a new project by using version control 
-- then pull
+Cloning a repo is the reproducible way to move projects across machines:
+- create project from version control
+- paste the repo URL
+- pull and work locally
 
-#### How to return previous version in github
-`one of ways`
+---
 
-- download then copy and substitute all documents in previous folder 
-- then git up
+### How to return to a previous version
+
+Downloading and copying works, but in professional workflows you typically:
+- use git tags/releases,
+- or `git checkout <commit>` / `git revert`,
+- then commit the rollback.
+
+Your “download then replace” approach is simple and safe for non-technical users, especially if you want to avoid dealing with git history commands.
+
+---
 
 ## How to create a blogdown
-`it is a little more compliaced to create a blogdown than to create a book because you need to config more parameters.like index file`
 
-- see youtube [tutorial](https://www.youtube.com/watch?v=BHpkLJieXPE) and see my [blog](https://danielhe.netlify.app/post/how-to-create-a-blog/) 
+Blogdown is more configuration-heavy than bookdown because websites require:
+- theme configuration,
+- content organization (posts, pages),
+- an index page,
+- and often Hugo theme settings.
 
+You already listed a tutorial and your own blog post as references:
 
- 
+- tutorial: https://www.youtube.com/watch?v=BHpkLJieXPE  
+- your post: https://danielhe.netlify.app/post/how-to-create-a-blog/
+
+---
+
 ## How to install tensorflow and keras
-`see youtube` [tutorial](https://www.youtube.com/watch?v=cIUg11mAmK4)  
 
-- Install TensorFlow from rstudio github.
+Your steps reflect the classic RStudio workflow:
+- install R packages (`tensorflow`, `keras`, `reticulate`)
+- install miniconda
+- create/manage a Python environment
+- install TensorFlow/Keras into that environment
 
-  - library(usethis)
+The key operational points:
+- `reticulate::install_miniconda()` sets up Python.
+- `install_tensorflow()` / `install_keras()` install Python dependencies.
 
-  - library(devtools)
+You included a YouTube tutorial link:
+https://www.youtube.com/watch?v=cIUg11mAmK4
 
-  - `options(download.file.method = "wininet") #if need`
+---
 
-  - devtools::install_github("rstudio/tensorflow",force = T)
+## How to use GitHub in a team
 
-  - library(tensorflow)
+Your checklist covers the core collaboration pattern:
 
-  - library(reticulate)
+- clone the repository
+- configure username/email
+- create a branch per feature or task
+- commit and push to that branch
+- open a pull request
+- merge after review
+- pull main regularly
 
-  - `options(download.file.method = "auto") #if need`
+And a set of practical “misc” commands for cleanup and recovery:
+- delete branches,
+- check status,
+- merge,
+- manage remotes,
+- use reflog/reset/revert cautiously,
+- reinitialize or remove `.git` when needed.
 
-  - reticulate::install_miniconda(force = TRUE)
+This is the same workflow used by most industry teams.
 
-  - install_tensorflow()
+---
 
-- Install Keras from rstudio github.
+## How to insert a picture indirectly in markdown
 
-  - devtools::install_github("rstudio/keras")
+This chunk loads tooling for clipboard-based image insertion.
 
-    `Execute the below`
- 
-  - library(keras) 
-
-    `restart r studio`
- 
-  - install_keras() 
-
-
-## How to use github in team
-- clone main 
-
-  * $ git config --global user.name "Daniel"
-
-
-  * $ git config --global user.email "daniel@gmail.com"
-
-
-  * $ git clone https://xx
-
-
-  * $ pwd
-
-
-  * $ cd xx/
-
-- create branch
-
-  * $ git branch 
-
-  * $ git branch hello
- 
-  * $ git checkout
-
-  * $ git checkout hello
-  
-  * (git checkout -b hello)
-
-- push to branch
-
-  * $ git add -A
- 
-  * $ git commit -m "branch"
- 
-  * $ git push -u origin hello
- 
-
-- merge main then pull request
- 
-  * wb- compare and pull request (click here github)
-
-  * wb- merge pull request
-  
-  * wb- comfirm merge
-
-  * wb- Pull request successfully merged and closed
- 
- 
-
-- pull all and push all  
-
-  * git pull origin master
- 
-  * git add -A
- 
-  * git commit -m "newbranch"
- 
-  * git push  
- 
-  * ls  
-
-  * wb- contribute- compare  
-  * wb- create new pull  
-  * wb- create new request  
-  * wb- merge pull request  
-  * wb- comfirm merge  
-  * wb- Pull request successfully merged and closed  
-
- 
-
-
-- miscellanies
- 
-  - git checkout master
-  
-  - git branch -D xxx
- 
-  - git status <: modified>
- 
-  - git merge newbranch
-
-  - git push origin master
- 
-  - get remote -v
-  - git remote rm xxxxx
-  - cd "C:\project"
-  - cd notes/
-  - mkdir projects
- 
-  - git reflog
-  - git reset or git revert 
- 
-  - git init <add .git>
-  - rm -rf .git <remove .git>
-
-## How to insert picture indrectly in markdown
 ```{r,warning=F}
 library(rstudioapi) 
 library(rmarkdown)
 
-library(imageclipr)
+# library(imageclipr)
 ```
- 
 
-[link] (https://github.com/Toniiiio/imageclipr) 
+You included the project link:
+[link] (https://github.com/Toniiiio/imageclipr)
+
+---
 
 ## R cheatsheets
+
+RStudio cheatsheets are practical, compact references for common packages (dplyr, ggplot2, tidyr, rmarkdown, etc.):
+
 [cheatsheets](https://github.com/rstudio/cheatsheets)
-
-
- 

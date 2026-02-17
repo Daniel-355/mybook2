@@ -1,9 +1,11 @@
 
-# Clinical Trial
+# Clinical Trial 
 
 ## Statistics in clinical trial
  
 ### Sample size, interim data reports and randomization of assignment
 
 [see here](https://rpubs.com/Daniel_He/1140968)
+
+[see here](https://biostatclinicaltrial.netlify.app/)
 

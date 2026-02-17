@@ -1,5 +1,5 @@
 
-# Causal inference 
+# Causal inference
 
 ## Causal inference introduction
  

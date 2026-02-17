@@ -15,13 +15,62 @@ link-citations: yes
 github-repo: rstudio/bookdown-demo
 ---
 
-# About {-}
 
-This is my first book.    
+# Preface {-}
 
-**First of all, sincerely thanks where thanks are due.**
+This book is a **practice-oriented handbook in biostatistics**, written for readers who want to apply statistical methods to real data rather than focus solely on mathematical derivations.
 
-![“In God we Trust, all others bring data”. ](.\skywheel.jpg)
+In modern biomedical, epidemiological, and clinical research, data are increasingly complex, high-dimensional, and imperfect. Real-world datasets often contain missing values, measurement errors, and intricate correlation structures. As a result, biostatisticians and data analysts must go beyond theoretical knowledge and develop the ability to implement methods correctly, interpret results responsibly, and communicate findings clearly. This book is written to address these practical challenges.
+
+A practice-first approach to biostatistics
+
+The central philosophy of this book is to bridge **statistical theory and applied data analysis**. Statistics is treated not as an abstract mathematical discipline, but as a set of tools designed to answer scientific questions.
+
+The book primarily uses **R** as the computational platform, with selected chapters incorporating **SAS** where it remains widely used in practice. Topics are motivated by common analytical tasks encountered in biomedical research, including:
+
+- data wrangling, aggregation, and restructuring  
+- descriptive statistics and data visualization  
+- construction of publication-ready summary tables (e.g., Table 1)  
+- handling missing data using principled approaches  
+- model selection, estimation, and interpretation  
+- integration of machine learning and deep learning methods  
+- statistical reasoning in causal inference and clinical trials  
+
+Statistical theory is introduced only to the extent necessary to support correct application, clarify assumptions, and guide interpretation.
+
+Organization of the book
+
+The chapters are organized to reflect a realistic data analysis workflow:
+
+- **Data Wrangling and Visualization** introduce essential tools for preparing, summarizing, and exploring data.
+- **Basic Statistics, Probability, and Algorithms** provide the foundational concepts required to understand statistical methods.
+- **Statistical Models** form the core of the book, with extensive coverage of linear regression, mixed-effects models, spline regression, and practical inference.
+- **Machine Learning and Deep Learning** emphasize workflow, intuition, and implementation rather than black-box usage.
+- **Causal Inference and Clinical Trials** focus on estimation targets, bias control, and scientific interpretation.
+- **Bayesian Statistics, Epidemiology, and Bioinformatics** offer focused introductions for specialized applications.
+- **Miscellaneous Topics** address common practical issues such as simulation, sample size calculation, linear algebra, reproducible reporting, and collaborative tools.
+
+Each chapter is designed to be readable on its own and useful as a long-term reference.
+
+Intended audience
+
+This book is intended for:
+
+- students in biostatistics, statistics, or related disciplines  
+- clinical researchers and epidemiologists working with real data  
+- data scientists in biomedical and health-related fields  
+- practitioners seeking a practical reference rather than a purely theoretical text  
+
+A basic background in statistics and familiarity with R are helpful, but the book emphasizes applied understanding over formal prerequisites.
+
+Scope and philosophy
+
+This book does not aim to be an exhaustive theoretical treatise. Instead, it is meant to serve as a **working handbook** for applied statistical analysis. In real research settings, data limitations, study design constraints, and practical considerations often matter more than elegant formulas.
+
+By emphasizing implementation, interpretation, and reproducibility, this book aims to help readers apply statistical methods thoughtfully, rigorously, and responsibly in real-world biomedical research.
+
+
+![“In God we Trust, all others bring data and a statistician who believes in God.”](.\skywheel.jpg)
  
 
 ```{r include=FALSE}

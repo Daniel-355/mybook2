@@ -1,0 +1,380 @@
+
+## Multiple linear regression practice
+    
+```{r, message=FALSE}
+library(car)
+library(MASS)
+library(psych)
+```
+ 
+### Loading and describing data
+```{r}
+
+data(Boston)
+data_ori <- Boston
+describe(data_ori)
+
+```
+```{r}
+summary(data_ori)
+```
+
+### Create table 1
+```{r, message=FALSE}
+library(boot) 
+library(table1)
+table1(~ . , data=data_ori)
+```
+
+### Missingness checking
+```{r,message=FALSE}
+
+library(mice)
+md.pattern(data_ori)
+```
+### Exploratory data analysis    
+
+-correlation matrix 
+```{r}
+library(psych)
+pairs.panels(data_ori)
+
+```
+
+- histogram
+```{r}
+library(DataExplorer)
+plot_histogram(data_ori)
+```
+
+
+
+### Transformations 
+- transformation (based on the following rule) then histogram
+```{r,message=FALSE}
+library(tidyverse)
+data_trans = data_ori %>%  mutate(age= sqrt(max(age)+1-age),
+                         black= log10(max(black)+1-black),
+                         crim= log10(crim),
+                         dis= sqrt(dis)   )
+plot_histogram(data_trans)
+# pairs.panels(data2)
+```
+
+! [How to transform data for normality.](https://www.statisticssolutions.com/wp-content/uploads/2018/12/b2.png)
+
+
+- check linearity between `y and x`
+```{r}
+attach(data_trans)
+plot(medv, rm)
+plot(medv,lstat)
+plot(medv,age)
+
+plot(medv, black)
+plot(medv,crim)
+ 
+```
+ 
+### Data imputation  and normalization
+#### For original"data"
+- compiling knnimpute model (see machine learning section)
+```{r,message=F}
+library(caret)
+# Create the knn imputation model on the training data
+y=data_ori$medv
+preProcess_missingdata_model <- preProcess(data_ori , method='knnImpute')
+preProcess_missingdata_model
+```
+- check missingness
+```{r}
+# Use the imputation model to predict the values of missing data points
+library(RANN)  # required for knnInpute
+data_ori  <- predict(preProcess_missingdata_model, newdata = data_ori )
+anyNA(data_ori )
+data_ori$medv <- y
+```
+
+#### For transformed "data2"
+- compiling knnimpute model (see machine learning section)
+```{r,message=F}
+library(caret)
+y2=data_trans$medv
+# Create the knn imputation model on the training data
+preProcess_missingdata_model2 <- preProcess(data_trans , method='knnImpute')
+preProcess_missingdata_model2
+```
+- check missingness
+```{r}
+# Use the imputation model to predict the values of missing data points
+library(RANN)  # required for knnInpute
+data_trans  <- predict(preProcess_missingdata_model2, newdata = data_trans )
+anyNA(data_trans )
+data_trans$medv <- y2
+```
+
+### Generate dummy variables
+- also can do using `as.factor` function for predictors `x`
+
+### Spliting data into trainning data and test data 
+- by using `caret` package (test data for external validation)
+
+```{r}
+# Create the training and test datasets
+set.seed(123)
+# for original data 
+# Step 1: Get row numbers for the training data
+trainRowNumbers <- createDataPartition(data_ori$medv, p=0.8, list=FALSE)
+
+# Step 2: Create the training  dataset
+data  <- data_ori[trainRowNumbers,]
+
+# Step 3: Create the test dataset
+testdata  <- data_ori[-trainRowNumbers,]
+
+# for transformed data
+# Step 1: Get row numbers for the training data
+trainRowNumbers2 <- createDataPartition(data_trans$medv, p=0.8, list=FALSE)
+
+# Step 2: Create the training  dataset
+data2 <- data_trans[trainRowNumbers2,]
+
+# Step 3: Create the test dataset
+testdata2 <- data_trans[-trainRowNumbers2,]
+``` 
+ 
+### Step regression
+```{r}
+model_o = lm(  medv ~.  , data=data2)
+step(model_o,direction = "both")
+
+# summary(step(model_o,direction = "both"))
+```
+### Create a model after selecting variables
+```{r}
+model_trasf <- lm(formula = medv ~ zn + chas + nox + rm + dis + rad + tax + 
+    ptratio + lstat, data = data2)
+summary(model_trasf)
+```
+### Multicollinearity checking
+```{r}
+vif(model_trasf)
+```
+### Plot model to check assumptions
+```{r}
+plot(model_trasf)
+```
+
+- histogram of residuals
+```{r}
+resid<- model_trasf$residuals
+hist(resid)
+```
+
+- F test of model
+```{r}
+anova(model_trasf)
+```
+
+- coefficients 
+```{r}
+coef(summary(model_trasf))
+```
+- confidence interval
+```{r}
+confint(model_trasf)
+```
+
+### Add polynomial of quadratic term
+- `rm and lstat` 
+```{r}
+model_trasf_poly <- lm(formula = medv ~ zn + chas + nox +  I(rm^2) + dis + rad + tax + 
+    ptratio +   I(lstat^2), data = data2)
+summary(model_trasf_poly)
+```
+### Add interaction terms
+- `rm and lstat` 
+- R2 >0.7 indicates a good fit of the model 
+```{r}
+model_trasf_term <- lm(formula = medv ~ zn + chas + nox +  (rm*  lstat) + dis + rad + tax + 
+    ptratio  , data = data2)
+summary(model_trasf_term)
+```
+
+```{r}
+plot(model_trasf_term)
+```
+
+### Robust regression
+```{r}
+robust_model_term <- rlm(medv ~ zn + chas + nox +  (rm*  lstat) + dis + rad + tax + 
+    ptratio  , data = data2)
+summary(robust_model_term)
+```
+
+### Create a model before transforming data
+```{r}
+model_trasf_orig <- lm(formula = medv ~ zn + chas + nox + rm + dis + rad + tax + 
+    ptratio + lstat, data = data)
+summary(model_trasf_orig)
+```
+
+- non nest models comparisons 
+```{r}
+AIC(model_trasf,model_trasf_orig)
+
+```
+
+### K-fold cross validation
+- to make sure which model is better
+```{r,message=FALSE}
+# install.packages("DAAG")
+library(DAAG)
+ 
+set.seed(123)
+model_trasf_term_cv <- glm( medv ~ zn + chas + nox +  (rm*  lstat) + dis + rad + tax + 
+    ptratio  , data = data2)
+cv.err  <- cv.glm(data2, model_trasf_term_cv, K = 10)$delta
+cv.err 
+```
+
+
+### Nonnest models comparisons
+```{r}
+AIC(model_trasf_term,model_trasf,model_trasf_orig,model_trasf_poly)
+# interaction, transformation, original, polynomial by order (`data` has been normalized but not `data2`)
+```
+
+- plot the final model and check the model assumption  
+
+`posterior predictive check, 
+linearity, 
+homogeneity of variance, 
+influential points, 
+colinearity, and 
+normality of residuals` 
+```{r}
+# install.packages("performance")
+library(performance)
+check_model(model_trasf_term)
+ 
+```
+
+### Create forest plot for coefficients 
+ 
+```{r}
+library(sjPlot) 
+plot_model(model_trasf_term, show.values = TRUE, value.offset = 0.4) 
+```
+
+
+### Relative Importance
+
+- provides measures of relative importance
+```{r, message=FALSE}
+library(relaimpo)
+# calc.relimp(fit,type=c("lmg","last","first","pratt"),
+#    rela=TRUE)
+# Bootstrap Measures of Relative Importance (1000 samples)
+boot <- boot.relimp(model_trasf_term, b = 10, type =c("lmg" ), rank = TRUE,
+                    # type =c("lmg","last","first","pratt")
+  diff = TRUE, rela = TRUE)
+booteval.relimp(boot) # print result
+plot(booteval.relimp(boot,sort=TRUE)) # plot result
+```
+
+
+
+
+### Model prediction 
+- prediction `ci` and mean `ci`
+```{r}
+library(dplyr)
+data_pred <-   dplyr::select(data2 , zn , chas , nox , rm , dis , rad , tax , 
+    ptratio , lstat)
+data_pred[1:10,]
+```
+
+```{r}
+predy <- predict(model_trasf_term, data_pred[1:10,], interval="predict")
+predy
+```
+```{r}
+confy <- predict(model_trasf_term, data_pred[1:10,], interval="confidence")
+confy
+
+```
+
+- `ci` width (the lower and upper bonds)
+```{r}
+confy %*% c(0, -1, 1)
+predy %*% c(0, -1, 1)
+```
+
+- plot the differences of predictions and actual values
+```{r}
+plot(data2$medv,predict(model_trasf_term) )
+fit <- lm(predict(model_trasf_term)~data2$medv)
+abline(fit)
+```
+
+- compute y hat and confidence interval 
+```{r}
+data_ci <-  dplyr::select(data2, zn ,chas ,tax , medv)
+model_ci <- lm(formula = medv ~ zn + chas +tax , data = data_ci)
+summary(model_ci)
+```
+
+`compute y hat and compare with y predict and actual y`
+```{r}
+XCI <- data.frame(intercept=1, data_ci[,1:3])
+comp_y <- as.matrix(XCI)%*%as.numeric(model_ci$coefficients)
+
+head(cbind(comp_y,predict(model_ci, XCI), data_ci[,4]))
+```
+
+`compute ci`
+```{r}
+library(matlib)
+var.yhat <- sigma(model_ci)**2* as.matrix(XCI[1 ,]) %*% inv(t(as.matrix(XCI)) %*% as.matrix (XCI))%*%t(as.matrix(XCI[1 ,]))
+# var.yhat
+cbind(
+(predict(model_ci, XCI[1 ,])-1.96 * sqrt(var.yhat)),
+(predict(model_ci, XCI[1 ,]) ),
+(predict(model_ci, XCI[1 ,])+1.96 * sqrt(var.yhat))
+)
+
+predict(model_ci, XCI[1 ,], interval="confidence")
+```
+
+
+$$
+E(\hat{Y}_0)=\sigma^2\mathbf{X_0\left( X'X\right)^{-1}X_0'}
+$$
+
+### External data validation 
+- this is not ture external validation (just for demonstration)
+- Split the data randomly into a training set and a test set by using `caret` package.
+```{r}
+library(caret)
+testdata2_pred <-   dplyr::select(testdata2, zn , chas , nox , rm , dis , rad , tax , 
+    ptratio , lstat)
+
+R_sq <- R2(testdata2$medv,predict(model_trasf_term,testdata2_pred))
+RMSE <- RMSE(testdata2$medv,predict(model_trasf_term,testdata2_pred))
+MAE <- MAE(testdata2$medv,predict(model_trasf_term,testdata2_pred))
+print(c(R_sq, RMSE, MAE))
+```
+
+## Variable selection  
+
+[see here](https://rpubs.com/Daniel_He/1044963)
+
+ 
+
+
+
+
+
+
+ 

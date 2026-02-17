@@ -1,36 +1,163 @@
-
-
 ## Linear mixed model practice
 
+This section walks through a practical progression from **ordinary regression** to **mixed-effects modeling**, using two datasets:
+
+1) `lmm.data`: a continuous outcome example (`extro`) with predictors (`open`, `agree`, `social`) and grouping variables (`school`, `class`).  
+2) `nurse`: a multilevel stress dataset with hospital/ward clustering.
+
+The overall learning objectives are:
+
+- Understand *why* we move from OLS/GLM to LMM (correlated observations within clusters).
+- Learn the difference between treating a grouping variable as a **fixed effect** vs a **random effect**.
+- Practice specifying nested random effects, random slopes, and comparing models.
+- Extract model components (fixed effects, random effects, fitted values, residuals).
+- Apply common mixed-model diagnostics and post-hoc summaries.
+- Use ICC to quantify clustering strength.
+
+Throughout, we keep the R code intact and focus on interpretation, reasoning, and “what to look for”.
+
+---
+
 ### Loading data and library
+
+We begin with `lme4` for fitting mixed models using `lmer()`, and `arm` for convenient display output. The dataset is read from a URL and inspected.
+
+Conceptually, when you see `school` and `class` in the same dataset, you should immediately ask:
+
+- Are observations within the same school/class likely correlated?
+- Is `class` nested within `school`, or can the same class label appear in multiple schools?
+
+Those questions guide whether you use `(1|school)`, `(1|class)`, or nested terms like `(1|school/class)`.
+
+```{r}
+# --- Linear Mixed Model (LMM) Data Simulation ---
+set.seed(42)
+
+# 1. Define Data Structure
+n_schools <- 6
+n_classes_per_school <- 4
+n_students_per_class <- 50
+total_n <- n_schools * n_classes_per_school * n_students_per_class # Total: 1200 observations
+
+# 2. Generate Hierarchical IDs
+# School level (Level 3)
+school_ids <- rep(paste0("School_", 1:n_schools), 
+                  each = n_classes_per_school * n_students_per_class)
+
+# Class level (Level 2) - Nested within schools
+class_ids  <- rep(rep(letters[1:n_classes_per_school], 
+                      each = n_students_per_class), times = n_schools)
+
+# Individual student level (Level 1)
+student_ids <- 1:total_n
+
+# 3. Generate Predictors (Fixed Effects)
+# Simulating psychological assessment scores using Normal Distribution
+open   <- rnorm(total_n, mean = 50, sd = 10) # Openness
+agree  <- rnorm(total_n, mean = 50, sd = 10) # Agreeableness
+social <- rnorm(total_n, mean = 50, sd = 10) # Social Engagement
+
+# 4. Generate Random Effects
+# Intercept deviations for schools and classes (Random Intercepts)
+school_effects <- rep(rnorm(n_schools, mean = 0, sd = 5), 
+                      each = n_classes_per_school * n_students_per_class)
+
+class_effects  <- rep(rnorm(n_schools * n_classes_per_school, mean = 0, sd = 3), 
+                      each = n_students_per_class)
+
+# 5. Generate Dependent Variable (Outcome: Extroversion)
+# Equation: extro = intercept + coefficients * predictors + random_effects + error
+error <- rnorm(total_n, mean = 0, sd = 2) # Residual error
+
+extro <- 30 + (0.5 * open) + (0.3 * agree) + (0.2 * social) + 
+         school_effects + class_effects + error
+
+# 6. Combine into Data Frame
+lmm_data_sim <- data.frame(
+  id = student_ids,
+  extro = extro,
+  open = open,
+  agree = agree,
+  social = social,
+  class = class_ids,
+  school = school_ids
+)
+
+# Preview the first few rows
+head(lmm_data_sim)
+```
+
+
 ```{r}
 library(lme4) # load library
 library(arm) # convenience functions for regression in R
-lmm.data <- read.table("http://bayes.acs.unt.edu:8083/BayesContent/class/Jon/R_SC/Module9/lmm.data.txt",
-                       header=TRUE, sep=",", na.strings="NA", dec=".", strip.white=TRUE)
+lmm.data <- lmm_data_sim
+  # read.table("http://jaredknowles.com/s/lmm.data.txt", 
+  #                      header=TRUE, sep=",", na.strings="NA", dec=".", strip.white=TRUE) 
 #summary(lmm.data)
 head(lmm.data)
 ```
 
-### General linear regression
+---
+
+### General linear regression (OLS)
+
+This is the baseline model that assumes:
+
+- all observations are independent,
+- a single residual variance applies to all observations,
+- no clustering correlation exists.
+
+Even if this model fits numerically, it can give misleading standard errors when data are clustered.
+
 ```{r}
 OLSexamp <- lm(extro ~ open + agree + social, data = lmm.data)
 display(OLSexamp)
 ```
-### Generalized linear regression 
+
+**What to look at here**
+- Which predictors appear associated with `extro`?
+- Do the effect sizes seem plausible?
+- This model provides a baseline for later comparison.
+
+---
+
+### Generalized linear regression (GLM)
+
+Here you fit `glm()` with the same formula. Since no `family=` argument is specified, it defaults to **Gaussian**, meaning it is essentially equivalent to `lm()` for continuous outcomes (up to minor implementation differences).
+
+This step is mainly a bridge to show “we can also use the GLM framework,” but the independence assumption is still the same.
+
 ```{r}
 MLexamp <- glm(extro ~ open + agree + social, data=lmm.data)
 display(MLexamp)
 ```
 
- 
-### Varying intercept by adding a stratum variable as fixed effect (glm)
+---
+
+### Varying intercept by adding a stratum variable as fixed effect (GLM)
+
+Now we include `class` as a fixed effect. This means:
+
+- each class gets its own intercept shift,
+- we estimate a separate parameter for each class (minus a reference level).
+
+This approach can work well when the number of classes is small and you only care about those specific classes.  
+But when there are many classes, fixed effects can become parameter-heavy and reduce generalizability.
+
 ```{r}
 MLexamp.2 <- glm(extro ~ open + agree + social + class, data=lmm.data )
 display(MLexamp.2)
 ```
-### Comparisions of models
-- add class as fixed effect
+
+---
+
+### Comparisons of models (fixed effect approach)
+
+Comparing AIC between the model without and with class fixed effects gives a first signal: does adding class improve fit enough to justify the extra parameters?
+
+The `anova(..., test="F")` here compares nested Gaussian models.
+
 ```{r}
 AIC(MLexamp)
 AIC(MLexamp.2)
@@ -39,7 +166,19 @@ AIC(MLexamp.2)
 ```{r}
 anova(MLexamp, MLexamp.2, test="F")
 ```
-### Adding class and school as fixed effects (glm)
+
+**Interpretation guide**
+- If adding `class` meaningfully improves fit, it suggests there is between-class variability (i.e., intercepts differ by class).
+- But fixed effects do not explicitly model correlation; they just soak up mean differences.
+
+---
+
+### Adding class and school as fixed effects (GLM)
+
+This expands the fixed-effect stratification by adding the interaction `school:class`, which is effectively a **separate intercept for each school-by-class combination**.
+
+This can become even more parameter-heavy, but it mimics what a nested random intercept structure is trying to capture—except without shrinkage and without a variance-component interpretation.
+
 ```{r}
 MLexamp.4 <- glm(extro ~ open + agree + social + school:class, data=lmm.data )
 display(MLexamp.4)
@@ -54,7 +193,21 @@ AIC(MLexamp.4)
 anova(MLexamp, MLexamp.4, test="F")
 ```
 
-### Considering different slopes by stratum (glm)
+**Practical warning**
+- Fixed-effect stratification can overfit when many groups exist, especially with small group sizes.
+- Mixed models typically handle this more gracefully via partial pooling.
+
+---
+
+### Considering different slopes by stratum (GLM)
+
+Here you fit separate regression models within each `(school, class)` stratum. This is a “fully stratified” approach:
+
+- each group gets its own intercept and its own slopes for `open`, `agree`, `social`.
+
+This is useful for exploration: it shows whether slopes vary meaningfully across groups.  
+But it creates many separate models and makes it hard to summarize results.
+
 ```{r}
 require(plyr)
 
@@ -76,40 +229,110 @@ AIC(MLexamp)
 # AIC(strat2)
 # AIC(strat24)
 ```
-`how to combine these models?` 
+
+`how to combine these models?`
+
+From a modeling standpoint, this question motivates mixed models:
+
+- If intercepts vary across groups → random intercept.
+- If slopes vary across groups → random slope(s).
+- Mixed models combine evidence across groups through shrinkage, instead of fitting each group completely separately.
+
+So “combining these models” typically means *moving to a hierarchical model* where group-to-group differences are random effects rather than separate fixed models.
+
+---
 
 ### Varying intercept with LMM
-- add class as random effect
+
+Now we switch to a true mixed-effects model.  
+Adding `(1|class)` says: “each class has its own intercept deviation.”
+
+This is a direct way to model within-class correlation:
+- observations within the same class share the same random intercept.
+
 ```{r}
 MLexamp.6 <- lmer(extro ~ open + agree + social + (1|class), data=lmm.data)
 display(MLexamp.6)
 ```
+
+**How to interpret**
+- Fixed effects (`open`, `agree`, `social`) are population-average.
+- The random intercept variance tells you how much extroversion differs across classes after adjusting for covariates.
+
+#### Compare fixed-effect `class` vs random-effect `class`
+
+You compare AIC of:
+- `MLexamp.2` (class fixed effects)
+- `MLexamp.6` (class random intercept)
+
+Lower AIC suggests better tradeoff of fit vs complexity.
 
 ```{r}
 AIC(MLexamp.2)
 AIC(MLexamp.6)
 ```
 
-- add class and school as random effects
+---
+
+### Add class and school as random effects
+
+This specifies two crossed random intercepts:
+
+- `(1|school)` allows schools to differ in baseline `extro`
+- `(1|class)` allows classes to differ as well
+
+This is appropriate if `class` is not strictly nested in `school` *in coding*, or if there are shared class labels across schools.
+
 ```{r}
 MLexamp.7 <- lmer(extro ~ open + agree + social + (1|school) + (1|class), data=lmm.data)
 display(MLexamp.7)
 ```
 
+---
 
-- fit nested terms `school/class`
+### Nested terms: `school/class`
+
+This explicitly encodes nesting:
+
+- `(1|school/class)` expands to `(1|school) + (1|school:class)`
+
+Meaning:
+- school random intercept, plus
+- class-within-school random intercept.
+
+This is usually the right structure when each class belongs to only one school.
+
 ```{r}
 MLexamp.8 <- lmer(extro ~ open + agree + social + (1|school/class), data=lmm.data)
 display(MLexamp.8)
 ```
 
-
+---
 
 ### Varying slope with LMM
+
+Random slopes allow the effect of a predictor (here `open`) to vary across clusters.
+
+`(1+open|school/class)` means:
+- random intercept and random slope of `open` at the `school:class` level,
+- plus the corresponding variance and covariance between intercept and slope.
+
+This answers a deeper scientific question:
+- does “openness” relate to extroversion differently across different classes/schools?
+
 ```{r}
 MLexamp.9 <- lmer(extro ~ open + agree + social + (1+open|school/class), data=lmm.data)
 display(MLexamp.9)
 ```
+
+#### Compare AIC across candidate structures
+
+This is a practical model selection exercise:
+
+- `MLexamp.4` uses **fixed** school:class intercepts
+- `MLexamp.7` uses **random** school and class intercepts (separate)
+- `MLexamp.8` uses **nested random intercepts**
+- `MLexamp.9` adds **random slope** of `open`
 
 ```{r}
 AIC(MLexamp.4) #using the interaction of class and school as fixed effect
@@ -118,14 +341,38 @@ AIC(MLexamp.8) #using nested term of class and school as random intercepts
 AIC(MLexamp.9) #adding open as random slope based on MLexamp.8
 ```
 
-### Summary the model 8 
+**Interpretation guide**
+- If random effects variances are near zero and AIC does not improve, random effects may not be needed.
+- If AIC improves substantially when adding nesting or random slopes, clustering and/or slope heterogeneity is likely important.
+
+---
+
+### Summarize model 8
+
+`summary()` provides:
+
+- fixed effects estimates and standard errors,
+- random effects variance components (school and class-within-school),
+- residual variance,
+- fit criteria.
+
 ```{r}
 summary(MLexamp.8)
 ```
-`in random effect variances, the nested effect of class within the higher level variable and the random effect of the higher level variable. If all the percentages for each random effect (each part/ the total) are very small, then the random effects are not present and linear mixed modeling is not appropriate.`
 
+Your note is exactly the applied takeaway:
 
-- testing random effect
+If the variance components for random effects are extremely small relative to the total variance, then there is little clustering signal; LMM may not be necessary.  
+But be careful: “small” depends on outcome scale and study design—often it is better to quantify via ICC (later section).
+
+---
+
+### Testing random effects (LRT logic)
+
+Testing random effects is subtle because variance parameters lie on the boundary (they cannot be negative). This breaks standard chi-square asymptotics.
+
+Your code demonstrates a conservative mixture-chi-square approach by hand.
+
 ```{r}
 # W2 will have to build the test statistic by hand because we cannot rely on asymptotics
 L_Model= logLik(MLexamp.8)[1]
@@ -138,58 +385,104 @@ LRT_statistic=-2*(L_Model1-L_Model)
 0.5*pchisq(LRT_statistic,df=2,lower.tail = F)+0.5*pchisq(LRT_statistic,df=1,lower.tail = F)
 ```
 
-- plot a x and y by grouping variables 
+Practical guidance:
+- Use LRT for nested random effects cautiously.
+- In real applied work, AIC/BIC + stability + diagnostics are often used together rather than relying only on a p-value.
+
+---
+
+### Visualizing grouping structure
+
+A grouped line plot helps you “see” whether the relationship between `open` and `extro` differs by school:
+
+- parallel-ish lines suggest varying intercepts,
+- different slopes suggest random slopes may be needed.
+
 ```{r}
 library(ggplot2)
 ggplot(lmm.data,aes(x= open,y=extro  ,group=school,color= school))+geom_line() 
 ```
 
-- Plot of Residuals by grouping variables
+---
+
+### Residual checks by grouping variables
+
+These plots help detect whether certain schools or classes have systematically different residual behavior (e.g., variance differences, outliers, patterning).
+
 ```{r}
 plot(MLexamp.8, school~resid(.))
 plot(MLexamp.8, class~resid(.))
 ```
 
-- Plot Residuals by explanatory variables 
+---
+
+### Residuals vs explanatory variables
+
+A common check for:
+- nonlinearity,
+- heteroscedasticity (variance changes with predictor level),
+- outliers.
+
 ```{r}
 plot(MLexamp.8, resid(.)~open)
 # plot(MLexamp.8,resid(.,type="p")~fitted(.) | BMIGRP_fm002)
 ```
 
-- QQ plot of residuals
+---
+
+### Normality checks
+
+#### QQ plot of residuals
+
+Residual normality is not always critical for point estimation, but it matters more for small-sample inference and extreme prediction intervals.
+
 ```{r}
 qqnorm(resid(MLexamp.8)  )
 ```
 
-- Random effect coefficients normality 
+#### Random effect coefficients normality
+
+Random effects are assumed normal in standard LMMs.  
+A QQ plot of estimated random intercepts (or slopes) checks whether this seems reasonable.
+
 ```{r}
 test= ((ranef(MLexamp.8)[1])[["class:school"]])
 qqnorm ((test$`(Intercept)`) )
 ```
 
+---
 
 ### Extracting elements (parameters)
-- fixed effect coefficients
+
+These are the standard extraction tools:
+
+- `fixef()`: fixed effects \(\hat{\beta}\)
+- `ranef()`: random effects \(\hat{u}\)
+- `coef()`: conditional coefficients (fixed + random), i.e., group-specific coefficients
+
 ```{r}
 fixef(MLexamp.8) 
 ```
-- random effect coefficients
 ```{r}
 ranef(MLexamp.8) 
 ```
-
-
-- total coefficients for model (random + fixed)
 ```{r}
 coef(MLexamp.8)
 ```
-- predicted values based on the model 
+
+---
+
+### Fitted values and residuals
+
+Fitted values (`fitted`) represent the model’s conditional mean, which includes group-level random effects.  
+Residuals represent the within-group deviations not explained by the model.
+
 ```{r}
 yhat <- fitted(MLexamp.8)
 head(yhat)
 summary(yhat) 
 ```
-- residuals of model 
+
 ```{r}
 residuals <- resid(MLexamp.8)
 head(residuals)
@@ -197,8 +490,13 @@ summary(residuals)
 hist(residuals,50) 
 ```
 
-<!-- issues -->
-- Fitted lines (less variation)
+---
+
+### Fitted lines by group
+
+This plot visualizes model-implied trajectories by school.  
+Because fitted values in a random-intercept model contain partial pooling, you often see *less variation* than raw group means—this is expected and is one of the main benefits of mixed models.
+
 ```{r}
 lmm.data$Fitted=predict(MLexamp.8)
 # subjects=unique(lmm.data$school) #Taking the identifiers and saving it
@@ -207,21 +505,105 @@ lmm.data$Fitted=predict(MLexamp.8)
 ggplot(lmm.data    ,aes(x=open ,y=Fitted,group=school,color=school ) )+geom_line(se=F)
 ```
 
+---
 
-### Model diagnostics 
-#### Residuals normality  
+### Model diagnostics (second dataset: Nurses)
+
+This section shows how the same mixed model ideas apply in a more realistic hierarchical structure: hospital/ward.
+
+#### Loading `nurse` data
+
+You read an SPSS dataset from GitHub and fit a nested random intercept model.
+
+Important conceptual point: if the outcome is truly ordinal, a Gaussian LMM is an approximation.  
+For ordinal outcomes, you would typically consider an ordinal mixed model (e.g., cumulative logit mixed model).  
+But as you note, this is for demonstration of diagnostics.
+
+```{r}
+# --- Data Simulation ---
+library(dplyr)
+
+set.seed(2026)
+
+# --- 1. Define Hierarchical Structure ---
+n_hospitals <- 5           # Number of hospitals (Level 3)
+n_wards_per_hosp <- 10     # Wards per hospital (Total 50 wards)
+n_nurses_per_ward <- 15    # Nurses per ward (Total 750 nurses)
+total_n <- n_hospitals * n_wards_per_hosp * n_nurses_per_ward
+
+# --- 2. Generate Hierarchical IDs ---
+hospital <- rep(1:n_hospitals, each = n_wards_per_hosp * n_nurses_per_ward)
+ward     <- rep(1:(n_hospitals * n_wards_per_hosp), each = n_nurses_per_ward)
+nurse_id <- 1:total_n
+
+# --- 3. Generate Predictors (Fixed Effects) ---
+# experien: Nurse work experience in years (ranging 1-25)
+experien <- runif(total_n, 1, 25)
+
+# wardtype: Type of ward (0 = General, 1 = Special/ICU) - Level 2 variable
+# First generate types for each ward, then broadcast to individual nurses
+unique_ward_types <- rbinom(n_hospitals * n_wards_per_hosp, 1, 0.4)
+wardtype <- rep(unique_ward_types, each = n_nurses_per_ward)
+
+# expcon: Experience control/interaction term (binary experimental condition)
+expcon <- rbinom(total_n, 1, 0.5)
+
+# --- 4. Define Random Effects (Intercept Deviations) ---
+# Hospital-level random intercepts (u_h) - Variance at Level 3
+u_h <- rep(rnorm(n_hospitals, 0, 0.8), each = n_wards_per_hosp * n_nurses_per_ward)
+
+# Ward-level random intercepts (u_w) - Variance at Level 2
+u_w <- rep(rnorm(n_hospitals * n_wards_per_hosp, 0, 1.2), each = n_nurses_per_ward)
+
+# --- 5. Generate Dependent Variable: stress ---
+# Model Equation: 
+# stress = intercept + 0.5*wardtype - 0.1*experien + 0.3*expcon + Random Effects + Residual Error
+intercept <- 5.0
+beta_wardtype <- 0.5
+beta_experien <- -0.1
+beta_expcon <- 0.3
+error <- rnorm(total_n, 0, 1.0) # Residual error (Level 1 variance)
+
+stress <- intercept + (beta_wardtype * wardtype) + (beta_experien * experien) + 
+          (beta_expcon * expcon) + u_h + u_w + error
+
+# --- 6. Assemble into Data Frame ---
+nurses_sim_data <- data.frame(
+  nurse_id = nurse_id,
+  hospital = as.factor(hospital),
+  ward = as.factor(ward),
+  wardtype = as.factor(wardtype),
+  experien = experien,
+  expcon = expcon,
+  stress = stress
+)
+
+# Display the first few rows of the simulated dataset
+head(nurses_sim_data)
+```
+
+
 ```{r}
 library(haven)
-nurse <- read_sav(file="https://github.com/MultiLevelAnalysis/Datasets-third-edition-Multilevel-book/blob/master/chapter%202/Nurses/SPSS/Nurses.sav?raw=true")
+nurse <- nurses_sim_data
+  # read_sav(file="https://github.com/MultiLevelAnalysis/Datasets-third-edition-Multilevel-book/blob/master/chapter%202/Nurses/SPSS/Nurses.sav?raw=true")
 ```
 
 ```{r}
 MLexamp.18 <- lmer(stress ~ experien+ wardtype+ expcon  + (1|hospital/ward), data=nurse)
 summary(MLexamp.18)
 ```
+
 *`outcome is ordinal variable`*
 
-`residual vs. fitted values `
+---
+
+#### Residual normality: residual vs fitted, QQ plot
+
+You compute residuals and inspect:
+- scale-location style behavior via \(\sqrt{|residual|}\) vs fitted,
+- normality via QQ plot.
+
 ```{r}
 lmerresid <- resid(MLexamp.18)
 par(mfrow = c(1,2))
@@ -230,8 +612,20 @@ qqnorm(lmerresid)
 qqline(lmerresid)
 ```
 
-#### Checking for variance homogeneity
-`residual vs. explanatory variables `
+Interpretation guide:
+- A strong trend in residual spread vs fitted suggests heteroscedasticity.
+- Strong deviation from the QQ line suggests heavy tails or skewness.
+
+---
+
+#### Checking variance homogeneity
+
+Residuals plotted against predictors can reveal:
+- differing variance across categories (`wardtype`, `expcon`),
+- nonlinear patterns (`experien`).
+
+Your plotting uses color palettes for readability.
+
 ```{r,warning=F}
 par(mfrow = c(2,2))
 plot(lmerresid ~ fitted(MLexamp.18))
@@ -241,8 +635,17 @@ with(nurse, plot(lmerresid ~ expcon , col = rainbow(5)))
 # with(lmm.data, plot(lmerresid ~ class, col = rainbow(5)))
 ```
 
-#### Influence points
-`Cook’s distance`
+---
+
+#### Influence points (Cook’s distance)
+
+Influence in mixed models can be assessed using tools like `influence.ME`.  
+Cook’s distance highlights observations that disproportionately change fixed effects.
+
+In clustered data, influential points can be:
+- a single extreme observation,
+- or an entire cluster with unusual behavior.
+
 ```{r,warning=F}
 library(influence.ME)
 lmer3.infl <- influence(MLexamp.18, obs = TRUE)
@@ -250,26 +653,47 @@ par(mfrow = c(1,1))
 plot(cooks.distance(lmer3.infl), type = "p", pch = 20)
 ```
 
-#### Random effect normality 
+---
+
+#### Random effect normality
+
+A QQ plot of the estimated random intercepts checks whether the random effects distribution is approximately normal.
+
 ```{r}
 par(mfrow = c(1,3))
 qqnorm(ranef(MLexamp.18)$`ward:hospital`$`(Intercept)`)
 
 ```
 
+(If the QQ plot shows strong asymmetry or heavy tails, consider whether the random effects distribution assumption is reasonable, or whether model specification is missing covariates.)
+
+---
+
 #### Post hoc analysis
-`ci: sd of random effect coeffcient `
+
+`confint()` can provide confidence intervals for variance parameters (and fixed effects depending on settings).  
+You request parameters `1:4`, which typically corresponds to variance components and fixed effects depending on the model and method.
+
 ```{r}
 confint(MLexamp.18, parm = 1:4, oldNames = FALSE)
 ```
-`lsmeans (ideally means) plot` 
+
+##### Estimated marginal means (lsmeans / emmeans)
+
+`emmeans` produces adjusted means (marginal means) for categorical predictors, averaged over other covariates.
+
+The interaction plot helps interpret whether the effect of `expcon` differs by `wardtype` (effect modification).
+
 ```{r}
 mylsmeans <- emmeans::emmeans(MLexamp.18, c("wardtype", "expcon" ))
 sum_mylsmeans <- summary(mylsmeans)
 with(sum_mylsmeans, interaction.plot(wardtype , expcon ,emmean, col = 2:4))
 ```
 
-`paired lsmeans`
+##### Pairwise comparisons
+
+Pairwise differences provide estimated contrasts; plotting SE and estimates is a quick way to see magnitude and uncertainty.
+
 ```{r}
 sum_difflsmeans <- summary(pairs(mylsmeans))
 head(sum_difflsmeans)
@@ -278,37 +702,42 @@ barplot(sum_difflsmeans$SE)
 barplot(sum_difflsmeans$estimate)
 ```
 
-A `plot` function 
+##### One-stop diagnostic plot
+
+`performance::check_model()` is a convenient diagnostic suite for mixed models (residuals, QQ, collinearity, etc.).
+
 ```{r}
 performance::check_model(MLexamp.18)
 ```
 
-#### Intra class correlation
+---
 
-It allows us to assess whether or not the random effect is present in the data.
+### Intra class correlation (ICC)
+
+ICC quantifies the proportion of outcome variance attributable to clustering.  
+It is often the fastest way to decide whether mixed modeling is warranted.
+
+
+Your code fits the null model and prints the summary, from which you can compute ICC.
+
 ```{r}
  lmm.null <- lmer(extro ~ 1 + (1|school), data = lmm.data)
  summary(lmm.null) 
 ```
-`indicates that 93.07% (95.8720 / 103.0119 
-) of the variance in 'extro' can be "explained" by school group membership. `
 
+Your interpretation statement is exactly the right reading:
+a large ICC means that group membership (school) accounts for a large portion of variance in `extro`, strongly supporting the need for random effects.
 
-### Notice
-- Back transformed expected values (lsmeans) not ci
-- Box-Cox transformations 
+---
 
+#### Notice / practical reminders
 
+- **Back-transforming expected values**: if you transform the outcome, marginal means should be interpreted on the transformed scale unless explicitly back-transformed.
+- **Box–Cox** transformations can help stabilize variance and improve normality when residual diagnostics show strong deviations.
+- Mixed model choice should balance:
+  - scientific interpretability,
+  - diagnostics,
+  - parsimony (AIC/BIC),
+  - and validation where possible.
 
-
-
-
-
-
-
-
-
-
-
-
-
+This section now gives a complete “from OLS to LMM” practical pipeline: build, compare, diagnose, interpret, and quantify clustering (ICC).

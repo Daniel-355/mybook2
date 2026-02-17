@@ -2,22 +2,34 @@
 
 <!-- ========================= -->
 ## How to do data wrangling  
-We will use `tidyverse` package to work with data.  
+Data wrangling is the process of turning raw data into an analysis-ready dataset. In practice, this includes (1) selecting the right observations and variables, (2) creating or transforming variables, (3) cleaning and standardizing values, and (4) reshaping the dataset into the structure required by downstream analyses and reporting.  
+
+In this chapter, we use functions from the `tidyverse` (mainly `dplyr` and `tidyr`) because they provide a consistent grammar for data manipulation. The goal here is not only to learn syntax, but also to understand common patterns that appear repeatedly in real projects.  
+
+We will use the built-in `iris` dataset for simple examples, and then create small simulated datasets (e.g., `drug_trial`, `babies`, `blood_pressure`) to demonstrate typical workflows.
 
 ### Load data and package
+Before doing any wrangling, it is good practice to quickly inspect the dataset. Looking at the first few rows helps confirm variable names, data types, and whether the values look reasonable.  
 ```{r}
 head (iris)
 ```
+
+Load the `tidyverse` package. This automatically loads common packages for wrangling and visualization, including `dplyr`, `tidyr`, `tibble`, and `ggplot2`.  
 ```{r}
 library(tidyverse)
 ```
+
 ### Select certain rows
+Row selection is typically used to (1) create analysis populations, (2) subset by treatment, time window, or eligibility criteria, or (3) debug issues using a small subset.  
+
+The `filter()` function keeps rows that satisfy a condition. Here, we select only the `setosa` species.  
 ```{r}
 setosa <- filter(iris, Species == 'setosa')
 setosa
 ```
 
-`filter the first 5 rows`
+`filter the first 5 rows`  
+When you need a small subset for quick checking, you can take the first few rows. `slice()` selects rows by position rather than by condition.  
 ```{r}
 iris %>% 
   slice(1:5)
@@ -25,20 +37,26 @@ iris %>%
 
 
 ### Select certain columns
+Selecting columns is useful for (1) focusing on variables needed for an analysis, (2) reducing clutter when printing tables, and (3) preparing a dataset before joining or reshaping.  
+
+`select()` keeps only specified variables.  
 ```{r}
 select(iris, Sepal.Length, Species)
 ```
 
+You can also exclude variables using a minus sign. This is helpful when you want to drop only a few variables while keeping most columns.  
 ```{r}
 select(iris, -Sepal.Length, -Species)
 ```
 
-`reorder the variables`
+`reorder the variables`  
+Reordering columns is often done for reporting or for readability (e.g., keep key identifiers first). `everything()` selects all remaining variables in their current order.  
 ```{r}
   iris %>% select(Species, everything()) %>% 
   print()
 ```
 
+You can also select a range of variables using the order they appear in the dataset. This is a quick way to take a contiguous block of variables.  
 ```{r}
 # using the direction of vector
   iris %>% select(Species:Sepal.Length ) %>% 
@@ -46,29 +64,43 @@ select(iris, -Sepal.Length, -Species)
 ```
 
 ### Rename variables
+Renaming variables improves clarity and standardization, especially when variable names will be used in tables, plots, or models. A common practice is to use consistent naming conventions (e.g., snake_case) and avoid special characters.  
+
+`rename()` changes variable names explicitly.  
 ```{r}
 rename(iris,  Sepal_Width= Sepal.Width,  Sepal_Length= Sepal.Length )
 ```
 
+`rename_with()` applies a function to multiple variable names. For example, converting to lowercase can help standardize variable names when merging datasets from different sources.  
 ```{r}
 iris %>% 
   rename_with(tolower) %>% head()
 ```
 
 ### Sorting in ascending or descending order  
-- put a minus in front of a variable for descending order
+Sorting is commonly used for (1) identifying extreme values, (2) reviewing data quality, and (3) preparing ordered outputs for tables.  
+
+- put a minus in front of a variable for descending order  
+Here we sort by `Petal.Length` ascending, and within that, by `Petal.Width` descending.  
 ```{r}
 arrange(iris, Petal.Length, -Petal.Width)
  
 ```
+
 ### Transform variables
+Creating new variables is one of the most common wrangling tasks. Typical use cases include unit conversion, categorization, deriving endpoints, and creating analysis flags.  
+
+`mutate()` creates new variables (or overwrites existing variables). Here, we create a new variable and also rescale an existing variable.  
 ```{r}
 mutate(iris,  newvar= Sepal.Width*10, Petal.Length=Petal.Length/100  )
 
 # use mutate and ifelse to categorize the varible
 ```
 
-`rep, sample` 
+`rep, sample`  
+In practice, you often need to test code before real study data are available. Simulated toy datasets are useful for prototyping pipelines, checking assumptions, and training new team members.  
+
+The following example creates a simple longitudinal dataset with three records per subject (`year = 0, 1, 2`). We also simulate a treatment assignment and a binary adverse event (`se_headache`).  
 ```{r}
 set.seed(123)
 
@@ -94,13 +126,20 @@ drug_trial <- tibble(
 head(drug_trial)
 ```
 
+A quick check with `head()` helps confirm the dataset structure and that variables were created as expected.  
 ```{r}
 # 
 drug_trial %>%
   mutate(complete = c(1))
 ```
 
-`factor is just for factor (labeling the value; while `rename` labeling the variable) and recode is for different types whose outcome depends on the right side of the equation sign. factor can change the reference group. `.
+`factor is just for factor (labeling the value; while `rename` labeling the variable) and recode is for different types whose outcome depends on the right side of the equation sign. factor can change the reference group. `  
+This is an important concept in statistical work:  
+- `rename()` changes the *variable name* (column name).  
+- `factor()` changes the *data type* and attaches *value labels* to categories. Factors also have an ordering of levels, which can affect summaries and regression reference categories.  
+- `recode()` maps old values to new values (useful for harmonizing coding across sources, or mapping numeric codes to analytic codes).  
+
+Below we (1) create labeled factors for the headache indicator, (2) create a reversed reference order to demonstrate how factor level order changes the reference group, and (3) create a recoded numeric variable.  
 ```{r}
 drug_trial=drug_trial %>% 
   mutate(mi_f = factor(se_headache , c(0, 1), c("No", "Yes")))%>%  
@@ -115,13 +154,19 @@ table (drug_trial$mi_f)
 table (drug_trial$mi_f_reverse)
 ```
 
+Row-wise operations apply calculations to each row independently. This is helpful when you need to combine multiple columns within a row (e.g., “any adverse event occurred”, “max lab value within row”, etc.).  
+However, for most group-level summaries (e.g., by subject), `group_by()` is usually more efficient and more common.  
 ```{r}
 drug_trial %>% 
   rowwise() %>% 
   mutate(any_se_year = sum(se_headache, year) > 0)
 ```
 
-`what is the difference of rowwise and group_by`
+`what is the difference of rowwise and group_by`  
+- `group_by(id)` means operations are performed within each subject group. This is typically used for subject-level summaries, longitudinal flags, and group totals.  
+- `rowwise()` means operations are performed for each row. This is best when combining multiple variables across columns within the same row.  
+
+In the examples below, compare what happens when you compute `sum(se_headache, year)` under different grouping structures.  
 ```{r}
 drug_trial %>%  group_by(id) %>% 
   mutate(any_se_year = sum(se_headache, year)  )
@@ -134,14 +179,17 @@ drug_trial %>%
   mutate(any_se_year = sum(se_headache, year)  )
 ```
 
-`starts_with and end_with`
+`starts_with and end_with`  
+Selector helpers such as `starts_with()` are useful when working with datasets that have many related variables with consistent naming patterns (e.g., adverse event indicators, lab variables, visit-level measurements).  
 ```{r}
 drug_trial_sub <- drug_trial %>% 
   select(id, year, starts_with("se")) %>% 
   print()
 ```
 
-`keep all combination levels even 0 times`
+`keep all combination levels even 0 times`  
+When summarizing counts for categorical combinations, you sometimes want to display categories even if the count is zero. This is particularly important in reporting (e.g., safety tables, disposition tables).  
+Here, `.drop = FALSE` keeps all factor combinations in the grouped output.  
 ```{r}
 drug_trial %>% 
   filter(year == 0) %>% 
@@ -149,7 +197,9 @@ drug_trial %>%
   group_by(drug, se_headache, .drop = FALSE) %>% 
   summarise(n = n())
 ```
-`group_by`
+
+`group_by`  
+A very common pattern is: filter to the analytic dataset, group by a key variable (e.g., treatment), then summarize.  
 ```{r}
 drug_trial %>% 
   filter(!is.na(age)) %>% 
@@ -160,6 +210,8 @@ drug_trial %>%
 
 
 ### Working with pipes %>% 
+The pipe operator `%>%` is used to chain steps in a readable sequence. This style matches how we typically describe data processing: “filter, then transform, then select, then sort.”  
+In practice, pipes help build reproducible and auditable wrangling pipelines.  
 ```{r}
 iris %>% 
   filter(Species=="setosa") %>% 
@@ -167,15 +219,21 @@ iris %>%
   select (-Sepal.Width, -Petal.Width) %>% 
   arrange(-Sepal.Length, newvar)
 ```
-### Pivot wider (long to wide)  
-- If no unique identifier row in each group **doesn't work**   
 
+### Pivot wider (long to wide)  
+Reshaping data is common in longitudinal analysis and reporting.  
+- Long format (one row per subject-visit) is common for modeling and plotting.  
+- Wide format (one row per subject, with multiple columns for repeated measures) is sometimes required for specific reporting formats or certain algorithms.  
+
+- If no unique identifier row in each group **doesn't work**   
+Pivoting wider requires a unique key for each output row. If the key is not unique, values can collide and pivoting may fail or require aggregation.  
 ```{r}
 iris %>%
 pivot_wider(  names_from=Species, values_from= c(Sepal.Length))
 ```
-- Create a unique identifier row for each name and then use pivot_wider 
 
+- Create a unique identifier row for each name and then use pivot_wider  
+Here we create a row number within each `Species` group, which becomes part of the unique key.  
 ```{r}
 widedata <- iris %>%
   # create groups then assign unique identifier row number in each group
@@ -185,15 +243,23 @@ pivot_wider(names_from=Species, values_from= c(Petal.Length,Sepal.Length,Petal.W
 widedata
 ```
 
+This is a smaller example, pivoting only a subset of variables.  
 ```{r}
 iris %>%
   group_by(Species) %>%
   mutate(row = row_number()) %>%
 pivot_wider( names_from=Species, values_from= c(Petal.Length, Petal.Width))
 ```
-### Pivot longer (wide to long)   
 
-why long format? there are many analytic techniques that require our data to be in this format, like plotting.
+### Pivot longer (wide to long)   
+why long format? there are many analytic techniques that require our data to be in this format, like plotting.  
+In clinical trial and observational research, long format is often the default because it supports:  
+- longitudinal models (e.g., MMRM, mixed models)  
+- visit-based summaries  
+- plotting repeated measures over time  
+- tidy workflows where “one observation per row” is preferred  
+
+The next example converts selected wide columns into a long structure.  
 ```{r}
 longdata = pivot_longer(widedata, -
                           c(  "row"   ,                  "Petal.Length_setosa" ,    "Petal.Length_versicolor",
@@ -204,6 +270,7 @@ longdata
 ```
 
 
+The following `babies` dataset is a simple example of repeated measurements stored in wide format (e.g., `weight_3`, `weight_6`). This naming pattern is common in real datasets: variable name + underscore + timepoint.  
 ```{r}
 babies <- tibble(
   id       = 1001:1008,
@@ -216,7 +283,8 @@ babies <- tibble(
   print()
 ```
 
-`select which cols`
+`select which cols`  
+`pivot_longer()` converts multiple columns into key-value pairs. Here, we reshape all columns that start with `"weight"`.  
 ```{r}
 babies %>% 
   pivot_longer(
@@ -227,7 +295,8 @@ babies %>%
   )
 ```
 
-`using names_prefix argument`
+`using names_prefix argument`  
+`names_prefix` removes a fixed prefix from the variable names. This is useful to keep only the meaningful portion (e.g., the timepoint).  
 
 “it is a regular expression used to remove matching text from the start of each variable name.”
 ```{r}
@@ -240,9 +309,8 @@ babies %>%
 ```
 
 
-
-
-`using default argument`
+`using default argument`  
+If you do not specify `names_to` or `values_to`, `pivot_longer()` uses defaults. This is convenient for quick exploration, but in practice you usually want explicit names for clarity.  
 ```{r}
 babies %>% 
   pivot_longer(
@@ -250,6 +318,7 @@ babies %>%
   )
 ```
 
+This extended example includes both weight and length measured at multiple timepoints. We will demonstrate how to reshape multiple measurement types in one step.  
 ```{r}
 set.seed(123)
 babies <- tibble(
@@ -266,7 +335,11 @@ babies <- tibble(
 ) %>% 
   print()
 ```
-- pivoting multiple sets of cols
+
+- pivoting multiple sets of cols  
+When variable names contain multiple components (e.g., `weight_3`), you can split them into separate columns using `names_sep`.  
+Using `.value` is a powerful technique: it tells `pivot_longer()` to create a separate output column for each measurement type (e.g., weight and length).  
+This format is especially helpful for longitudinal plotting and modeling where you want one row per subject-month.  
 ```{r}
 babies %>% 
   pivot_longer(
@@ -276,6 +349,7 @@ babies %>%
   )
 ```
 
+This alternative example reshapes into a simpler long format with one value column. This is useful when you want a single measurement (e.g., weight only).  
 ```{r}
 babies %>% 
   pivot_longer(
@@ -286,7 +360,8 @@ babies %>%
   print()
 ```
 
-`using names_sep and .value argument `
+`using names_sep and .value argument`  
+Here we keep both parts of the name as separate columns: `measure` and `months`. This creates a “tidy” dataset with one value column and a measure identifier.  
 ```{r}
 babies %>% 
   pivot_longer(
@@ -296,8 +371,8 @@ babies %>%
   ) 
 ```
 
-`.value tells pivot_longer() to create a new column for each unique character string that is in front of the underscore`
-
+`.value tells pivot_longer() to create a new column for each unique character string that is in front of the underscore`  
+This is often the most practical output when you have multiple repeated-measure variables collected at the same timepoints.  
 ```{r}
 babies %>% 
   pivot_longer(
@@ -307,8 +382,7 @@ babies %>%
   )  
 ```
 
- 
-
+Swapping the order changes the interpretation of the split name pieces. This example is mainly to show that the mapping is positional.  
 ```{r}
 babies %>% 
   pivot_longer(
@@ -319,10 +393,11 @@ babies %>%
 ```
 
 
+- Pivot wider again (long to wide)  
+After processing data in long format (e.g., computing summaries by month), you may want to convert back to wide format for reporting.  
 
-- Pivot wider again (long to wide)
-
-`pivoting to multiple sets of cols`
+`pivoting to multiple sets of cols`  
+This demonstrates a common workflow: wide → long (for analysis) → wide (for reporting).  
 ```{r}
 babies %>% 
   pivot_longer(
@@ -333,22 +408,33 @@ babies %>%
   pivot_wider( names_from=months, values_from= c(weight, length ))
 ```
 
+This example pivots the previously created `longdata` object back to wide.  
 ```{r}
 pivot_wider(longdata, names_from=Sepal.Width, values_from= c(Sepal.Width.value))
 
 ```
+
 ### Separate columns       
+Separating columns is useful when a single string variable contains multiple components. In practice, this appears in fields like codes (e.g., lab test codes), composite identifiers, or delimited values.  
+Here we split `Species` into three parts using `"o"` as the separator. This is a toy example to demonstrate the function.  
 ```{r}
 separate(iris, Species, into = c("integer","decimal","third"), sep="o")
 
 ```
+
 ### Recode/relabel data    
+Recoding is commonly used to standardize categories, shorten labels, or map source system codes to analysis-friendly values.  
 ```{r}
 mutate(iris, Species2 = recode(Species, "setosa"="seto", "versicolor"="versi"))
 ```
 
 ### deduplication
-#### Complete duplicate row
+Duplicate rows can occur due to data entry issues, merges that unintentionally replicate records, or repeated extracts.  
+A typical cleaning step is to either remove duplicates or flag them for review.
+
+#### Complete duplicate row  
+Complete duplicates are rows that match across all variables.  
+`distinct()` keeps only unique rows.  
 ```{r}
 df <- tribble(
   ~id, ~day, ~x,
@@ -370,13 +456,15 @@ df %>%
   distinct()
 ```
 
-`mark duplication`
+`mark duplication`  
+The `duplicated()` function identifies whether each row has appeared previously. This is useful when you want to keep the full dataset but flag duplicates for investigation.  
 ```{r}
 df %>% 
   mutate(dup = duplicated(df)) 
   
 ```
 
+This approach creates a row counter within identical rows and flags the second and later occurrences as duplicates.  
 ```{r}
 df %>% 
   group_by_all() %>% 
@@ -386,12 +474,15 @@ df %>%
   )
 ```
 
-#### Partial duplicate rows
+#### Partial duplicate rows  
+Sometimes duplication is defined only by a key (e.g., subject + visit), not by all columns.  
+Here we keep only the first record for each `id, day` pair and keep all columns (`.keep_all = TRUE`).  
 ```{r}
 df %>% 
   distinct(id, day, .keep_all = TRUE)
 ```
 
+Another way is to explicitly count duplicates within the key groups. This is useful if you want to decide how to handle duplicates (e.g., keep latest, average, or review manually).  
 ```{r}
 df %>% 
   group_by(id, day) %>% 
@@ -401,7 +492,8 @@ df %>%
   )
 ```
 
-`select duplicates`
+`select duplicates`  
+This returns only the rows that are duplicated (including both the first and later occurrences).  
 ```{r}
 df %>% 
   mutate(dup = duplicated(.) | duplicated(., fromLast = TRUE)) %>% 
@@ -409,7 +501,14 @@ df %>%
 ```
 
 ### Combine data sets  
-- prepare data sets 
+Combining datasets is a core step in analysis workflows. Common scenarios include:  
+- merging demographics with outcomes  
+- attaching treatment assignment to longitudinal records  
+- linking subject-level and visit-level datasets  
+
+Below we demonstrate common join types in `dplyr`. The key concept is to be explicit about which table is the “left” table and which key variables define a match.
+
+- prepare data sets  
 ```{r}
 data1 <- data.frame(ID = 1:4,                       
                     X1 = c("a1", "a2","a3", "a4"),
@@ -418,65 +517,81 @@ data2 <- data.frame(ID = 2:5,
                     X2 = c("b1", "b2","b3", "b4"),
                     stringsAsFactors = FALSE)
 ```
-- inner join   
+
+- inner join  
+Keeps only IDs that appear in both datasets.  
 ```{r}
 inner_join(data1, data2, by = "ID")    
 ```
-- left join   
 
-`there is not ID 1 in data2, thence, x2 is missing. `
+- left join  
+Keeps all rows from `data1` and attaches matches from `data2`. Unmatched rows get missing values for `data2` variables.  
+`there is not ID 1 in data2, thence, x2 is missing.`  
 ```{r}
 left_join(data1, data2, by = "ID")   
 ```
 
-`differing key col names`
+`differing key col names`  
+When key columns have different names across datasets, you can map them with `by = c("left_key"="right_key")`.  
 ```{r}
 left_join(data1, data2, by = c("ID"="ID"))  
 ```
 
 `One-to-many relationship` has the same statement  
+When the right table has multiple rows per key, the join will expand rows in the left table accordingly. This is expected but should be checked carefully in real analyses.  
 ```{r}
 left_join(data1, data2, by = c("ID" ))  
 ```
 
-`multiple data frames`
+`multiple data frames`  
+You can chain joins to attach multiple datasets step by step. In practice, verify keys and row counts after each join.  
 ```{r}
 data1 %>% 
   left_join(data2, by = "ID") %>% 
   left_join(data2, by = "ID")
 ```
 
-`multiple key values`
+`multiple key values`  
+In many clinical datasets, joins use multiple keys such as subject ID and visit number.  
 ```{r}
 
 # demographics %>%  
 #   left_join(ultra, by = c("id", "visit"))
 ```
 
-- right join   
+- right join  
+Keeps all rows from the right table. This is less common in practice, because most workflows start from a primary “analysis dataset” on the left.  
 ```{r}
 right_join(data1, data2, by = "ID")  
 ```
-- full join   
+
+- full join  
+Keeps all rows from both tables. This is useful for reconciliation or when building a master key list.  
 ```{r}
 full_join(data1, data2, by = "ID") 
 ```
-- keep cases of left data table without in right data table 
+
+- keep cases of left data table without in right data table  
+`anti_join()` is useful for checking which keys did not match, which is a common QC step after merges.  
 ```{r}
 anti_join(data1, data2, by = "ID")  
 ```
-- keep cases of left data table in right data table 
+
+- keep cases of left data table in right data table  
+`semi_join()` keeps rows from the left table that have a match in the right table, without bringing in right-table columns.  
 ```{r}
 semi_join(data1, data2, by = "ID")  
 ```
+
 - multiple full join  
+This demonstrates that joins can be chained. In practice, consider whether repeated joins are intended and check for row multiplication.  
 ```{r}
 full_join(data1, data2, by = "ID") %>%              
   full_join(., data2, by = "ID") 
 ```
 
- 
-- append two data tables by using join and merge       
+- append two data tables by using join and merge  
+Base R `merge()` is still commonly seen in legacy code. `all = TRUE` corresponds to a full join.  
 ```{r}
 data_frame1 <- data.frame(col1 = c(6:8),
                          col2 = letters[1:3],
@@ -491,15 +606,19 @@ data_frame_merge <- merge(data_frame1, data_frame2,
 print (data_frame_merge)
 ```
 
+This is the tidyverse equivalent of the merge above.  
 ```{r}
 full_join(data_frame1,data_frame2, by=c("col1"),)
 ```
 
-- adding rows using `bind_ function`
+- adding rows using `bind_ function`  
+Row-binding is used when two datasets have the same meaning (same variable definitions) and you want to stack them.  
+In practice, this is common when appending data from multiple sites, multiple batches, or multiple extracts.
 
-rbind **doesn't work** 
+rbind **doesn't work**  
+Base R `rbind()` requires the same column names and order.  
 
-`bind_ function conbines the data frames `based on column names`; having our columns in a different order isn’t a problem.` 
+`bind_ function conbines the data frames `based on column names`; having our columns in a different order isn’t a problem.`  
 ```{r}
 df1 <- data.frame(col1 = LETTERS[1:6],
                   col2a = c(5:10),
@@ -514,7 +633,8 @@ df1 %>%
   bind_rows(df2)
 ```
 
-`rename the differing cols`
+`rename the differing cols`  
+Before binding rows, make sure variable names represent the same concept. Here we align names so that columns stack correctly.  
 ```{r}
 df1 %>% 
   bind_rows(df2 %>% 
@@ -522,8 +642,8 @@ df1 %>%
           col3a=col3b)  )
 ```
 
-
-combining more than 2 data frames 
+combining more than 2 data frames  
+You can bind multiple datasets at once. In practice, you may bind a list of datasets after validating that they share the same structure.  
 ```{r}
 df1 %>% 
   bind_rows(df2,df2)
@@ -532,50 +652,66 @@ df1 %>%
 
 
 ### Working with character strings
+Character string cleaning is common in real datasets: names, sites, lab test labels, free-text fields, and coded fields may contain inconsistent capitalization, extra spaces, or punctuation.  
+The `stringr` package provides consistent and vectorized string operations, which fit naturally in `dplyr` pipelines.  
 ```{r}
 library(stringr)  
 library(readxl)
 ```
-- Look at the values   
+
+- Look at the values  
+A good first step is to inspect the raw values and identify patterns (e.g., trailing commas, mixed case, inconsistent coding).  
 ```{r}
-ehr <- read_excel("C:\\Users\\hed2\\Downloads\\mybook2\\mybook2/excel.xlsx")
+ehr <- read_excel("C:\\Users\\hed2\\Downloads\\others\\mybook2\\mybook2/excel.xlsx")
 ehr %>% 
   arrange(sex) %>% 
   pull(sex)
 ```
-- Coerce to lowercase
+
+- Coerce to lowercase  
+Standardizing case helps reduce duplication (e.g., `"Male"` vs `"MALE"`).  
 ```{r}
 ehr %>% 
   arrange(sex) %>% 
   pull(sex) %>% 
   str_to_lower()
 ```
-- Coerce to upper case
+
+- Coerce to upper case  
+Uppercase is sometimes used for code lists or standardized labels.  
 ```{r}
 ehr %>% 
   arrange(sex) %>% 
   pull(sex) %>% 
   str_to_upper()
 ```
-- Title case
+
+- Title case  
+Title case improves readability for display fields such as names.  
 ```{r}
 ehr %>% 
   arrange(sex) %>% 
   pull(sex) %>% 
   str_to_title()
 ```
-- Sentence case
+
+- Sentence case  
+Sentence case is useful for free text or display labels.  
 ```{r}
 ehr %>% 
   arrange(sex) %>% 
   pull(sex) %>% 
   str_to_sentence()
 ```
-- Trim white space from the beginning and end 
+
+- Trim white space from the beginning and end  
+Extra spaces are very common and can break joins or comparisons if not removed.  
 ```{r}
 str_trim("Ryan Edwards  ")
 ```
-- Remove the comma
+
+- Remove the comma  
+This shows a simple string replacement.  
 ```{r}
 str_replace(
   string      = "weston fox,", 
@@ -584,26 +720,29 @@ str_replace(
 )
 ```
 
+Applying the replacement to a dataset column is a typical cleaning step.  
 ```{r}
 ehr %>% 
   mutate(sex = str_replace(sex, ",", ""))
 ```
 
-- Separate values into component parts 
+- Separate values into component parts  
+Regular expressions allow flexible extraction of patterns within strings. This is powerful for cleaning IDs, parsing codes, or extracting components from composite variables.  
 
-regular express, `^\\w+ look for one or more consecutive word characters at the start of the character string and extract them.`
-
+regular express, `^\\w+ look for one or more consecutive word characters at the start of the character string and extract them.`  
 ```{r}
 str_extract("zariah hernandez", "^\\w+")
 str_extract("zariah hernandez", "\\w+$")
 ```
 
+`str_match()` returns captured groups based on parentheses in the pattern. This is useful when you need to parse structured expressions.  
 ```{r}
 stringr::str_match("mean(weight_3)", "(\\()(\\w+)(\\_)(\\d+)(\\))")
 ```
 
-- Detect a special string to category
-`index a special string`
+- Detect a special string to category  
+`str_detect()` returns TRUE/FALSE based on whether the pattern is present. This is commonly used to create indicator variables.  
+`index a special string`  
 ```{r}
 ehr %>% 
   mutate(
@@ -614,7 +753,7 @@ ehr %>%
   mutate(man_dummy = as.numeric(man))
 ```
 
-
+This is a similar example using `ifelse()` to create a numeric dummy variable. In practice, `if_else()` is preferred because it is stricter about types, but both patterns are frequently seen.  
 ```{r}
 ehr %>% 
   mutate(
@@ -623,8 +762,10 @@ ehr %>%
 ```
 
 ### Conditional operations
+Conditional logic is used to define categories, flags, and derived endpoints. In clinical and observational data, this is often required for defining analysis populations, endpoint derivations, or clinical classifications.
 
-- Testing multiple conditions simultaneously
+- Testing multiple conditions simultaneously  
+Here we construct a toy blood pressure dataset and classify observations based on systolic and diastolic thresholds.  
 ```{r}
 blood_pressure <- tibble(
   id     = 1:10,
@@ -634,12 +775,14 @@ blood_pressure <- tibble(
   print()
 ```
 
+`if_else()` is a tidyverse version of `ifelse()` and is often preferred for clearer type handling.  
 ```{r}
 blood_pressure %>% 
   mutate(bp = if_else(sysbp < 120 & diasbp < 80, "Normal", "Not Normal"))
 ```
 
-- Using case_when function
+- Using case_when function  
+`case_when()` is the standard approach for multiple mutually exclusive conditions. It improves readability compared with nested `if_else()` statements.  
 ```{r}
 blood_pressure %>% 
   mutate(
@@ -652,7 +795,8 @@ blood_pressure %>%
   )
 ```
  
-- Recoding variables
+- Recoding variables  
+Sometimes you want a numeric coding for modeling, and a labeled factor for interpretability in tables. Here we create both in one step.  
 ```{r}
 blood_pressure %>% 
   mutate(
@@ -671,9 +815,11 @@ blood_pressure %>%
   )
 ```
 
-- Recoding missing
+- Recoding missing  
+Missing values are common in real datasets. A typical step is to recode special numeric values (e.g., 7, 9, 99) to missing.  
 
-`using NA_real instead of NA.`
+`using NA_real instead of NA.`  
+`NA_real_` ensures the result stays numeric (double). This avoids unintended type conversion.  
 ```{r}
 demographics <- tibble(
     race     = c(1, 2, 1, 4, 7, 1, 2, 9, 1, 3),
@@ -689,7 +835,8 @@ demographics %>%
 ```
 
 
-`check whether or not `
+`check whether or not `  
+Missing values can propagate through logical checks. This pattern shows one way to replace missing logical values with FALSE.  
 ```{r}
 blood_pressure %>% 
   mutate(
@@ -702,15 +849,20 @@ blood_pressure %>%
 <!-- ======================= -->
 
 ## How to do aggregation/ summarization
+Aggregation is used to produce summary statistics for reporting and exploratory analysis. Typical examples include baseline summaries by treatment, counts by category, and descriptive statistics by subgroup.
+
 ### Summarization after grouping
+We use `group_by()` to define groups, then `summarise()` (or `summarize()`) to compute summary statistics within each group.  
 ```{r echo=TRUE,  message=FALSE}
 library(tidyverse)
 ```
 
+This chunk is hidden but ensures the package is available for the following code blocks in some knitted settings.  
 ```{r echo=TRUE,  include=FALSE}
 library(tidyverse)
 ```
 
+This example calculates the mean Sepal.Length for each species, then sorts from highest to lowest.  
 ```{r}
 iris %>% 
   group_by(Species) %>% 
@@ -718,6 +870,7 @@ iris %>%
   arrange(-Support)                         # sort
 ```
 
+This example shows how to compute multiple summary statistics at once. Creating intermediate metrics (like `diff`) is useful for quick comparisons across groups.  
 ```{r}
 iris %>% 
   group_by(Species) %>% 
@@ -727,6 +880,7 @@ summarize(mean_s = mean(Sepal.Width),
   arrange(-diff) 
 ```
 
+This example adds sample size (`n`) and standard deviation (`sd`). These are standard descriptive summaries for continuous variables.  
 ```{r}
 iris %>% 
   group_by(Species) %>% 
@@ -734,7 +888,9 @@ summarize(n = n(),
             meas_p = mean(Petal.Length), 
             sd = sd(Petal.Length))  
 ```
+
 ### Summarization with upgroup
+If you have grouped data but want overall summaries across all rows, you can remove the grouping structure using `ungroup()`.  
 ```{r}
 iris %>% 
   ungroup( ) %>% 
@@ -742,7 +898,9 @@ summarize(n = n(),
             meas_p = mean(Petal.Length), 
             sd = sd(Petal.Length))  
 ```
+
 ### Mutate new variables after grouping
+`mutate()` after `group_by()` adds group-level summaries back to each row. This is useful when you want both row-level values and group-level context in the same dataset (e.g., for plotting or QC checks).  
 ```{r}
 iris %>% 
   group_by(Species) %>% 
@@ -751,7 +909,10 @@ mutate(n = n(),
             sd = sd(Petal.Length))  
 ```
 
-
+This example demonstrates:  
+- computing group-level summaries with missing handling (`na.rm = T`), and  
+- then summarizing again to produce one row per group.  
+In practice, this pattern appears in QC workflows and layered summary derivations.  
 ```{r}
 iris %>% 
   group_by(Species) %>% 
@@ -764,6 +925,8 @@ mutate(n = n(),
 ```
 
 ### Recode and generate new variables, then value label
+This is a common pattern: create a derived variable with conditional logic, then attach labels for interpretability.  
+Here, we set one category to missing and then relabel remaining categories using a factor.  
 ```{r}
 irisifelse <- iris %>% 
 mutate(Species2 = ifelse(Species == "setosa", NA, Species))
@@ -771,6 +934,8 @@ mutate(Species2 = ifelse(Species == "setosa", NA, Species))
 irisifelse$Species2 <- factor(irisifelse$Species2,labels = c( "versi","virg"))
 irisifelse
 ```
+
+Always check structure after transformations, especially when factors and missing values are involved.  
 ```{r}
 str(irisifelse)
 ```
@@ -778,10 +943,14 @@ str(irisifelse)
 
 
 ## How to creat table 1 with test
+In clinical trial reporting, “Table 1” typically refers to baseline characteristics (e.g., age, sex, race, key labs) summarized by treatment group. This often includes statistical tests (or standardized differences) to describe balance between groups.  
+The link below provides a full example workflow.  
 
 [see here](https://rpubs.com/Daniel_He/1041833)
 
 
 ## Imputing Missing Data with MICE
+Missing data are common in clinical and observational studies. Multiple imputation (e.g., using MICE) is a practical approach under missing-at-random assumptions, and it allows uncertainty due to missingness to be propagated into final inference.  
+The link below provides an example implementation.  
 
 [see here](https://rpubs.com/Daniel_He/1140881)

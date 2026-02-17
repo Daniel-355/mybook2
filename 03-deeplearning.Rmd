@@ -1,464 +1,762 @@
+
 # Deep learning
 
-<!-- ========================  -->
-## Deep neural network
-```{r, include=FALSE}
-suppressMessages(library(readr))
-suppressMessages(library(keras))
-suppressMessages(library(DT))
-```
-### Load data  
+Deep learning is a subset of machine learning that uses neural networks with multiple layers (“deep” architectures). Compared with many classical ML models, deep learning can capture complex nonlinear relationships and can be especially powerful for unstructured data such as images and text. In practice, the deep learning workflow still follows the same discipline as standard ML:
 
-```{r}
-# load the Pima Indians dataset from the mlbench dataset
-library(mlbench)
-data(PimaIndiansDiabetes) 
-# rename dataset to have shorter name because lazy
-diabetes <- PimaIndiansDiabetes
+1) define the prediction target and the feature set,  
+2) split data into training and test sets,  
+3) preprocess features (scaling, encoding, reshaping),  
+4) build and compile a model,  
+5) train the model and monitor overfitting,  
+6) evaluate on the test set, and  
+7) review predictions and performance metrics.
 
-data.set <- diabetes
-  # datatable(data.set[sample(nrow(data.set),
-  #                         replace = FALSE,
-  #                         size = 0.005 * nrow(data.set)), ])
-```
+In this chapter, we demonstrate deep neural networks for:
+- **binary classification** (Pima Indians Diabetes),
+- **regression** (Boston housing),
+- **image classification using a convolutional neural network (CNN)** (MNIST).
 
-```{r}
-summary(data.set)
-```
-### Process data and variable
-```{r}
-data.set$diabetes <- as.numeric(data.set$diabetes)
-data.set$diabetes=data.set$diabetes-1
-head(data.set$diabetes)
-```
+We use the `keras` package in R, which provides a user-friendly interface to define and train neural networks.
 
-```{r}
- 
-head(data.set)
-str(data.set)
- 
-```
+For more details, please read [here](https://rpubs.com/Daniel_He/1397034). 
 
-- transform dataframe into matrix
-```{r}
-# Cast dataframe as a matrix
-data.set <- as.matrix(data.set)
+<!-- ## Deep neural network -->
 
-# Remove column names
-dimnames(data.set) = NULL
-```
+<!-- Before modeling, we load the core packages.   -->
+<!-- - `readr`: data I/O (not heavily used here but commonly needed in practice)   -->
+<!-- - `keras`: deep learning framework interface   -->
+<!-- - `DT`: interactive tables for quick viewing (useful in exploratory steps)   -->
+<!-- We also suppress messages to keep the knitted output clean and readable.   -->
+<!-- ```{r, include=FALSE} -->
+<!-- suppressMessages(library(readr)) -->
+<!-- suppressMessages(library(keras)) -->
+<!-- suppressMessages(library(DT)) -->
+<!-- ``` -->
 
-```{r}
-head(data.set)
+<!-- ### Load data -->
+<!-- We start with the same Pima Indians Diabetes dataset used in the machine learning chapter. This dataset is small, tabular, and appropriate for demonstrating a basic dense neural network for classification. -->
 
-```
+<!-- Important note: neural networks are data-hungry. For small datasets, deep learning may not outperform classical ML. However, the workflow is still valuable to learn.   -->
+<!-- ```{r} -->
+<!-- library(reticulate) -->
+<!-- k_utils <- import("keras.utils")  -->
+<!-- # load the Pima Indians dataset from the mlbench dataset -->
+<!-- library(mlbench) -->
+<!-- data(PimaIndiansDiabetes) -->
+<!-- # rename dataset to have shorter name because lazy -->
+<!-- diabetes <- PimaIndiansDiabetes -->
 
-### Split data into training and test datasets
-- including `xtrain ytrian xtest ytest`
-```{r}
-# Split for train and test data
-set.seed(100)
-indx <- sample(2,
-               nrow(data.set),
-               replace = TRUE,
-               prob = c(0.8, 0.2)) # Makes index with values 1 and 2
-```
+<!-- data.set <- diabetes -->
+<!--   # datatable(data.set[sample(nrow(data.set), -->
+<!--   #                         replace = FALSE, -->
+<!--   #                         size = 0.005 * nrow(data.set)), ]) -->
+<!-- ``` -->
 
-```{r}
-# Select only the feature variables
-# Take rows with index = 1
-x_train <- data.set[indx == 1, 1:8]
-x_test <- data.set[indx == 2, 1:8]
-```
+<!-- A quick summary helps confirm variable types and detect obvious issues. For example, you may want to check if any predictors have implausible zeros or missingness patterns (common in clinical measurements).   -->
+<!-- ```{r} -->
+<!-- summary(data.set) -->
+<!-- ``` -->
 
-```{r}
-# Feature Scaling
-x_train <- scale(x_train )
-x_test <- scale(x_test )
+<!-- ### Process data and variable -->
+<!-- Keras typically expects numeric matrices for the input features and numeric/factor outcomes that are compatible with the chosen loss function. -->
 
-```
+<!-- Here we convert the outcome `diabetes` into numeric and then shift it to 0/1.   -->
+<!-- This step is common because many neural network outputs (especially with one-hot encoding) assume classes start at 0.   -->
+<!-- ```{r} -->
+<!-- data.set$diabetes <- as.numeric(data.set$diabetes) -->
+<!-- data.set$diabetes=data.set$diabetes-1 -->
+<!-- head(data.set$diabetes) -->
+<!-- ``` -->
 
-```{r}
-y_test_actual <- data.set[indx == 2, 9]
-```
+<!-- We check the dataset again to confirm that the outcome and predictors are in the expected format and that the structure matches what the model will consume.   -->
+<!-- ```{r} -->
 
-- transform target as on-hot-coding format
-```{r}
-# Using similar indices to correspond to the training and test set
-y_train <- to_categorical(data.set[indx == 1, 9])
-y_test <- to_categorical(data.set[indx == 2, 9])
-head(y_train)
-head(data.set[indx == 1, 9],20)
-```
-- dimension of four splitting data sets
-```{r}
-dim(x_train)
-dim(y_train)
-dim(x_test)
-dim(y_test)
-```
-### Creating neural network model 
-#### construction of model
-- the output layer contains 3 levels
-```{r}
-# Creating the model
-model <- keras_model_sequential()
+<!-- head(data.set) -->
+<!-- str(data.set) -->
 
-model %>% 
-  layer_dense(name = "DeepLayer1",
-              units = 10,
-              activation = "relu",
-              input_shape = c(8)) %>% 
-  # input 4 features
-  layer_dense(name = "DeepLayer2",
-              units = 10,
-              activation = "relu") %>% 
-  
-  layer_dense(name = "OutputLayer",
-              units = 2,
-              activation = "softmax")
-  # output 4 categories using one-hot-coding
-summary(model)
-```
-#### Compiling the model
-```{r}
-# Compiling the model
-model %>% compile(loss = "categorical_crossentropy",
-                  optimizer = "adam",
-                  metrics = c("accuracy"))
-```
-#### Fitting the data and plot
-```{r}
-history <- model %>% 
-  fit(x_train,
-      y_train,
-      
-      # adjusting number of epoch
-      epoch = 60,
-      
-      # adjusting number of batch size
-      batch_size = 64,
-      validation_split = 0.15,
-      verbose = 2)
-```
-```{r}
-plot(history)
-```
+<!-- ``` -->
 
-### Evaluation 
-#### Output loss and accuracy
-using `xtest` and `ytest` data sets to evaluate the built model directly
-```{r}
-model %>% 
-  evaluate(x_test,
-           y_test)
-```
-#### Output the predicted classes and confusion matrix
-```{r}
-pred <- model %>% 
-  predict(x_test) %>% k_argmax() %>% k_get_value()
-head(pred)
+<!-- - transform dataframe into matrix   -->
+<!-- Keras models in R commonly use matrix inputs. We therefore cast the dataframe to a matrix and remove `dimnames` for a clean numeric structure.   -->
+<!-- In applied projects, keeping names can be useful for tracking columns, but removing them is fine for demonstration.   -->
+<!-- ```{r} -->
+<!-- # Cast dataframe as a matrix -->
+<!-- data.set <- as.matrix(data.set) -->
 
-table(Predicted = pred,
-      Actual = y_test_actual)
-```
-#### Output the predicted values
-```{r}
-prob <- model %>% 
-  predict(x_test) %>% k_get_value()
-head(prob)
-```
-#### Comparison between `prob, pred, and ytest` 
-```{r}
-comparison <- cbind(prob ,
-      pred ,
-      y_test_actual )
-head(comparison)
-```
+<!-- # Remove column names -->
+<!-- dimnames(data.set) = NULL -->
+<!-- ``` -->
 
+<!-- We view the matrix head to confirm that numeric conversion and ordering look correct.   -->
+<!-- ```{r} -->
+<!-- head(data.set) -->
 
-<!-- ==================== -->
+<!-- ``` -->
 
-## Deep neural networks for regression
+<!-- ### Split data into training and test datasets -->
+<!-- - including `xtrain ytrian xtest ytest`   -->
+<!-- We create a random index that assigns each row to training (1) or test (2) with probabilities 0.8/0.2. -->
 
-### Loading packages and data sets
-```{r library import, message=FALSE, warning=FALSE}
-library(readr)
-library(keras)
-library(plotly)
-```
+<!-- Practical note: this split is a simple random split. For small datasets, results can vary depending on the split. In more formal analyses, you may repeat splits or use cross-validation.   -->
+<!-- ```{r} -->
+<!-- # Split for train and test data -->
+<!-- set.seed(100) -->
+<!-- indx <- sample(2, -->
+<!--                nrow(data.set), -->
+<!--                replace = TRUE, -->
+<!--                prob = c(0.8, 0.2)) # Makes index with values 1 and 2 -->
+<!-- ``` -->
 
-```{r}
-data("Boston", package = "MASS")
-data.set <- Boston
-```
+<!-- We define the predictor matrices (`x_train`, `x_test`) by selecting the first 8 columns as features.   -->
+<!-- ```{r} -->
+<!-- # Select only the feature variables -->
+<!-- # Take rows with index = 1 -->
+<!-- x_train <- data.set[indx == 1, 1:8] -->
+<!-- x_test <- data.set[indx == 2, 1:8] -->
+<!-- ``` -->
 
-```{r dimensions of the dataset}
-dim(data.set)
-```
-### Convert dataframe to matrix without dimnames
-```{r}
-library(DT)
- 
-# Cast dataframe as a matrix
-data.set <- as.matrix(data.set)
-# Remove column names
-dimnames(data.set) = NULL
-head(data.set)
-```
-```{r summary of target variable}
-summary(data.set[, 14])
-```
+<!-- Feature scaling is usually necessary for dense neural networks on tabular data. Scaling improves numerical stability and helps gradient-based optimization converge faster.   -->
+<!-- Here we use `scale()` (standardization) on training and test features.   -->
+<!-- ```{r} -->
+<!-- # Feature Scaling -->
+<!-- x_train <- scale(x_train ) -->
+<!-- train_center <- attr(x_train, "scaled:center") # the mean of each column in the training set -->
+<!-- train_scale  <- attr(x_train, "scaled:scale")  # the standard deviation of each column in the training set -->
+<!-- x_test <- scale(x_test, center = train_center, scale = train_scale) -->
 
+<!-- ``` -->
 
-```{r target variable histogram, fig.cap="<b>Fig 1</b> Histogram of the target variable"}
- hist( data.set[, 14])
-                 
-```
-### Spiting training and test data
-```{r create index for splitting}
-# Split for train and test data
-set.seed(123)
-indx <- sample(2,
-               nrow(data.set),
-               replace = TRUE,
-               prob = c(0.75, 0.25)) # Makes index with values 1 and 2
-```
+<!-- We store the true test labels in their original 0/1 numeric form for later evaluation.   -->
+<!-- ```{r} -->
+<!-- y_test_actual <- data.set[indx == 2, 9] -->
+<!-- ``` -->
 
-```{r splitting the data}
-x_train <- data.set[indx == 1, 1:13]
-x_test <- data.set[indx == 2, 1:13]
-y_train <- data.set[indx == 1, 14]
-y_test <- data.set[indx == 2, 14]
-```
+<!-- - transform target as on-hot-coding format   -->
+<!-- Many classification networks use a softmax output layer and categorical cross-entropy loss, which expects the target in one-hot encoded form.   -->
+<!-- `to_categorical()` converts the class label (0/1) into a two-column indicator matrix.   -->
+<!-- ```{r} -->
+<!-- # Using similar indices to correspond to the training and test set -->
+<!-- k_utils <- import("keras.utils") -->
 
-### Normalizing `xtrain` and `xtest` data
-```{r normalizing the train data}
-x_train <- scale(x_train)
-x_test <- scale(x_test)
-```
+<!-- y_train <- k_utils$to_categorical(data.set[indx == 1, 9]) -->
+<!-- y_test <- k_utils$to_categorical(data.set[indx == 2, 9]) -->
+<!-- head(y_train) -->
+<!-- head(data.set[indx == 1, 9],20) -->
+<!-- ``` -->
 
-### Creating the model
-```{r model}
-model <- keras_model_sequential() %>% 
-  layer_dense(units = 25,
-              activation = "relu",
-              input_shape = c(13)) %>% 
-  layer_dropout(0.2) %>% 
-  layer_dense(units = 25,
-              activation = "relu") %>% 
-  layer_dropout(0.2) %>% 
-  layer_dense(units = 25,
-              activation = "relu") %>% 
-  layer_dropout(0.2) %>% 
-  layer_dense(units = 1)
-```
+<!-- - dimension of four splitting data sets   -->
+<!-- Always check dimensions before training. The number of rows in `x_train` must match `y_train`, and similarly for the test set.   -->
+<!-- ```{r} -->
+<!-- dim(x_train) -->
+<!-- dim(y_train) -->
+<!-- dim(x_test) -->
+<!-- dim(y_test) -->
+<!-- ``` -->
 
-```{r}
-model %>% summary()
- 
-```
-```{r}
-model %>% get_config()
-```
-### Compiling the model
-```{r compiling the model}
-model %>% compile(loss = "mse",
-                  optimizer = optimizer_rmsprop(),
-                  metrics = c("mean_absolute_error"))
-```
+<!-- ### Creating neural network model -->
+<!-- A dense (fully-connected) neural network is the baseline architecture for tabular data.   -->
+<!-- Conceptually: -->
+<!-- - the input layer receives the 8 standardized predictors, -->
+<!-- - hidden layers apply nonlinear transformations (ReLU), -->
+<!-- - the output layer produces class probabilities via softmax. -->
 
-### Fitting the model
-```{r fit the model, message=FALSE, warning=FALSE}
-history <- model %>% 
-  fit(x_train,
-      y_train,
-      epoch = 100,
-      batch_size = 64,
-      validation_split = 0.1,
-      callbacks = c(callback_early_stopping(monitor = "val_mean_absolute_error",
-                                            patience = 5)),
-      verbose = 2)
-```
-```{r}
-c(loss, mae) %<-% (model %>% evaluate(x_test, y_test, verbose = 0))
-paste0("Mean absolute error on test set: ", sprintf("%.2f", mae))
-```
-### Plot the training process
-```{r}
-plot(history)
-```
-### Calculating the predicted values on test data 
-```{r}
-pred2 <- model %>% 
-  predict(x_test) %>% k_get_value()
+<!-- #### construction of model -->
+<!-- - the output layer contains 3 levels   -->
+<!-- (Practical note: In this dataset the output is binary, so the code uses `units = 2`. The text here is interpreted as “output layer contains multiple levels/classes.”)   -->
+<!-- ```{r} -->
+<!-- # 1. Initialize the model -->
+<!-- model <- keras_model_sequential() -->
 
-head(cbind(pred2,y_test))
-```
-- calculating `mean absolute error and root mean square error` and ploting 
-```{r}
+<!-- # 2. Explicitly add layers (use $add to avoid positional-argument ambiguity in Keras 3 when using pipes) -->
+<!-- model$add(layer_input(shape = c(8))) # 8 corresponds to your input_shape -->
 
-error <- y_test-pred2
-head(error)
-rmse <- sqrt(mean(error)^2)
-rmse
-```
-```{r}
-plot(error)
-```
+<!-- model$add(layer_dense( -->
+<!--   units = 10,  -->
+<!--   activation = "relu",  -->
+<!--   name = "DeepLayer1" -->
+<!-- )) -->
 
+<!-- model$add(layer_dense( -->
+<!--   units = 10,  -->
+<!--   activation = "relu",  -->
+<!--   name = "DeepLayer2" -->
+<!-- )) -->
 
-<!-- ======================== -->
-## Convolutional neural netwrok
-### Import library
-```{r Import libraries}
-library(keras)
-```
+<!-- model$add(layer_dense( -->
+<!--   units = 2,  -->
+<!--   activation = "softmax",  -->
+<!--   name = "OutputLayer" -->
+<!-- )) -->
 
-### Importing the data
-```{r Importing the data from the web}
-mnist <- dataset_mnist()
-```
-- mnist is list; it contains `trainx, trainy, testx, testy` 
-```{r}
-class(mnist)
-```
-- the dim of "mnist$train$x" is 60000   28   28
-```{r}
-# head(mnist)
-```
-### preparing the data
-- randomly sampling 1000 cases for training and 100 for testing 
-```{r}
-set.seed(123)
-index <- sample(nrow(mnist$train$x), 1000)
-x_train <- mnist$train$x[index,,]
-y_train <- (mnist$train$y[index])
+<!-- # 3. View model structure -->
+<!-- model$summary() -->
+<!-- ``` -->
 
-index <- sample(nrow(mnist$test$x), 100)
-x_test <- mnist$test$x[index,,]
-y_test <- (mnist$test$y[index])
-```
-- dim of four data sets
-```{r Dimensions  }
-dim(x_train)
-dim(y_train)
-dim(x_test)
-dim(y_test)
-```
-#### Generate tensors
-- each image is 28*28 pixel size; pass these values to computer
-```{r Setting dimensions}
-img_rows <- 28
-img_cols <- 28
-```
+<!-- #### Compiling the model -->
+<!-- Compiling sets the loss function, optimizer, and evaluation metrics.   -->
+<!-- - `categorical_crossentropy`: appropriate for multi-class (including binary with one-hot) classification   -->
+<!-- - `adam`: a widely used optimizer that works well in many practical settings   -->
+<!-- - `accuracy`: a basic metric; for imbalanced datasets, consider sensitivity/specificity or AUC in addition.   -->
+<!-- ```{r} -->
+<!-- # Compiling the model -->
+<!-- model$compile( -->
+<!--   loss = "categorical_crossentropy", -->
+<!--   optimizer = "adam", -->
+<!--   metrics = list("accuracy") # In Keras 3, using list() is recommended for Python-side compatibility -->
+<!-- ) -->
+<!-- ``` -->
 
-- using `array_reshape()` function to transform `list` data into tensors 
-```{r Redefine dimensions to include channel}
-x_train <- array_reshape(x_train,
-                         c(nrow(x_train),
-                           img_rows,
-                           img_cols, 1))
-x_test <- array_reshape(x_test,
-                        c(nrow(x_test),
-                          img_rows,
-                          img_cols, 1))
-input_shape <- c(img_rows,
-                 img_cols, 1)
-```
+<!-- #### Fitting the data and plot -->
+<!-- Training is performed using mini-batch gradient descent. Key training parameters: -->
+<!-- - `epoch`: number of passes through the training data   -->
+<!-- - `batch_size`: number of samples per gradient update   -->
+<!-- - `validation_split`: portion of training data held out to monitor validation performance   -->
 
-- this below is tensor data
-```{r New dimensions}
-dim(x_train)
-```
-#### Normalization and one-hot-encoded (dummy)
-- training (features) data is rescaled by dividing the maxmimum to be normalized 
-```{r Transform the brightness values}
-x_train <- x_train / 255
-x_test <- x_test / 255
-```
- 
-- converse targets into one-hot-encoded (dummy) type using `to_categorical()` function  
-```{r One-hot encoding of target variable}
-num_classes = 10
-y_train <- to_categorical(y_train, num_classes)
-y_test <- to_categorical(y_test, num_classes)
-```
+<!-- Validation monitoring is essential: if training accuracy keeps improving but validation accuracy stagnates or declines, the model is likely overfitting.   -->
+<!-- ```{r} -->
+<!-- # Train the model. Note the argument is 'epochs' (plural) and must be integer. -->
+<!-- history <- model$fit( -->
+<!--   x = as.matrix(x_train),  -->
+<!--   y = y_train, -->
+<!--   epochs = as.integer(60),  -->
+<!--   batch_size = as.integer(64), -->
+<!--   validation_split = 0.15, -->
+<!--   verbose = 2 -->
+<!-- ) -->
+<!-- ``` -->
 
-```{r}
-y_train[1,]
-```
+<!-- Plotting training history helps diagnose convergence and overfitting. Typically you look at: -->
+<!-- - training vs validation loss curves, -->
+<!-- - training vs validation accuracy curves.   -->
+<!-- ```{r} -->
+<!-- # Extract metrics from the Python History object for R plotting -->
+<!-- metrics_df <- as.data.frame(history$history) -->
 
-### Creating the model
+<!-- metrics_df$epoch <- 1:nrow(metrics_df) -->
 
-```{r Creating the CNN}
-model <- keras_model_sequential() %>%
-  layer_conv_2d(filters = 32,
-                kernel_size = c(3,3),
-                activation = 'relu',
-                input_shape = input_shape) %>% 
-  
-  layer_conv_2d(filters = 64,
-                kernel_size = c(3,3),
-                activation = 'relu') %>% 
-  
-  layer_max_pooling_2d(pool_size = c(2, 2)) %>% 
-  
-  layer_dropout(rate = 0.25) %>% 
-  
-  layer_flatten() %>% 
-  layer_dense(units = 128,
-              activation = 'relu') %>% 
-  
-  layer_dropout(rate = 0.5) %>% 
-  layer_dense(units = num_classes,
-              activation = 'softmax')
-```
-- summary of model
-```{r}
-model %>% summary()
-```
-#### compiling
-- loss function is `categorical crossentropy`; the gradient descent will be optimized by adadelta; 
-```{r Compiling the model}
-model %>% compile(
-  loss = loss_categorical_crossentropy,
-  optimizer = optimizer_adadelta(),
-  metrics = c('accuracy')
-)
-```
+<!-- par(mfrow = c(1, 2)) -->
+<!-- # Plot Loss curves -->
+<!-- plot(metrics_df$epoch, metrics_df$loss, type = "l", col = "blue", main = "Loss", xlab = "Epoch") -->
+<!-- lines(metrics_df$epoch, metrics_df$val_loss, col = "red") -->
 
-### Training
+<!-- # Plot Accuracy curves -->
+<!-- plot(metrics_df$epoch, metrics_df$accuracy, type = "l", col = "blue", main = "Accuracy", xlab = "Epoch") -->
+<!-- lines(metrics_df$epoch, metrics_df$val_accuracy, col = "red") -->
 
-```{r Training the model,message=T,include=T,echo=TRUE}
-batch_size <- 128
-epochs <- 10
+<!-- ``` -->
 
-# Train model
-history <- model %>% fit(
-  x_train, y_train,
-  batch_size = batch_size,
-  epochs = epochs,
-  validation_split = 0.2
-)
-```
-```{r}
-plot(history)
-```
+<!-- ### Evaluation -->
 
-### Evaluating the accuracy
-```{r Evaluating the model}
-score <- model %>% evaluate(x_test,
-                            y_test)
-score
-```
+<!-- #### Output loss and accuracy -->
+<!-- using `xtest` and `ytest` data sets to evaluate the built model directly   -->
+<!-- Evaluation on the test set provides a final, unbiased estimate of model performance (under the chosen split).   -->
+<!-- The output includes the loss and accuracy.   -->
+<!-- ```{r} -->
+<!-- model$evaluate(as.matrix(x_test), y_test) -->
+<!-- # - accuracy: 0.7924528 - loss: 0.4190769  -->
+<!-- ``` -->
+
+<!-- #### Output the predicted classes and confusion matrix -->
+<!-- Here we generate predicted class labels. The model outputs class probabilities; we select the class with the highest probability using `k_argmax()`.   -->
+
+<!-- The confusion table compares predicted classes with actual test labels. In binary classification: -->
+<!-- - diagonal counts are correct predictions, -->
+<!-- - off-diagonal counts are misclassifications.   -->
+<!-- ```{r} -->
+<!-- # Predict probabilities for the test set -->
+<!-- prob_preds <- model$predict(as.matrix(x_test)) -->
+
+<!-- # Convert probabilities to class labels using argmax -->
+<!-- pred <- apply(prob_preds, 1, which.max) - 1 -->
+
+<!-- # Compute the confusion matrix -->
+<!-- library(caret) -->
+<!-- confusionMatrix(reference = as.factor(y_test_actual), data = as.factor(pred )) -->
+<!-- ``` -->
+
+<!-- #### Output the predicted values -->
+<!-- For many applied use cases, predicted probabilities are more informative than predicted labels (especially if you plan to choose a custom probability threshold).   -->
+<!-- This block prints the first few rows of predicted probabilities for the two classes.   -->
+<!-- ```{r} -->
+<!-- head(prob_preds) -->
+<!-- ``` -->
+
+<!-- #### Comparison between `prob, pred, and ytest` -->
+<!-- This combined view is helpful for model debugging: -->
+<!-- - `prob`: predicted probabilities for each class   -->
+<!-- - `pred`: predicted class label (argmax)   -->
+<!-- - `y_test_actual`: true class label   -->
+
+<!-- In practice, you may also compute calibration plots or ROC curves when probability quality matters.   -->
+<!-- ```{r} -->
+<!-- comparison <- cbind(prob_preds ,pred, y_test_actual ) -->
+<!-- head(comparison) -->
+<!-- ``` -->
 
 
 
 
+<!-- ## Deep neural networks for regression -->
+
+<!-- Neural networks can also model continuous outcomes. In regression settings: -->
+<!-- - the output layer typically has `units = 1` and no activation (linear output), -->
+<!-- - loss functions commonly include MSE, -->
+<!-- - evaluation metrics often include MAE and RMSE. -->
+
+<!-- We demonstrate regression using the Boston housing dataset (`MASS::Boston`). -->
+
+<!-- ### Loading packages and data sets -->
+<!-- We load required libraries and then load the dataset.   -->
+<!-- `plotly` is included for interactive plotting (although the core training plot uses base plotting via `plot(history)`).   -->
+<!-- ```{r library import, message=FALSE, warning=FALSE} -->
+<!-- library(readr) -->
+<!-- library(keras) -->
+<!-- library(plotly) -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- data("Boston", package = "MASS") -->
+<!-- data.set <- Boston -->
+<!-- ``` -->
+
+<!-- We inspect dataset dimensions. This helps confirm the number of predictors and the target column index.   -->
+<!-- ```{r dimensions of the dataset} -->
+<!-- dim(data.set) -->
+<!-- ``` -->
+
+<!-- ### Convert dataframe to matrix without dimnames -->
+<!-- As above, we convert to matrix and remove dimnames for Keras input compatibility.   -->
+<!-- ```{r} -->
+<!-- library(DT) -->
+
+<!-- # Cast dataframe as a matrix -->
+<!-- data.set <- as.matrix(data.set) -->
+<!-- # Remove column names -->
+<!-- dimnames(data.set) = NULL -->
+<!-- head(data.set) -->
+<!-- ``` -->
+
+<!-- The target variable is in column 14 (`medv` in the Boston dataset). We summarize it to understand the outcome range and distribution.   -->
+<!-- ```{r summary of target variable} -->
+<!-- summary(data.set[, 14]) -->
+<!-- ``` -->
+
+<!-- A histogram provides a quick view of distribution shape (skewness, outliers, multimodality).   -->
+<!-- ```{r target variable histogram, fig.cap="<b>Fig 1</b> Histogram of the target variable"} -->
+<!--  hist( data.set[, 14]) -->
+
+<!-- ``` -->
+
+<!-- ### Spiting training and test data -->
+<!-- We split the dataset into training and test sets. The split ratio here is 75/25.   -->
+<!-- ```{r create index for splitting} -->
+<!-- # Split for train and test data -->
+<!-- set.seed(123) -->
+<!-- indx <- sample(2, -->
+<!--                nrow(data.set), -->
+<!--                replace = TRUE, -->
+<!--                prob = c(0.75, 0.25)) # Makes index with values 1 and 2 -->
+<!-- ``` -->
+
+<!-- We separate predictors (first 13 columns) and outcome (14th column).   -->
+<!-- ```{r splitting the data} -->
+<!-- x_train <- data.set[indx == 1, 1:13] -->
+<!-- x_test <- data.set[indx == 2, 1:13] -->
+<!-- y_train <- data.set[indx == 1, 14] -->
+<!-- y_test <- data.set[indx == 2, 14] -->
+<!-- ``` -->
+
+<!-- ### Normalizing `xtrain` and `xtest` data -->
+<!-- Neural networks benefit from standardized inputs. This typically improves training stability and reduces the chance that a few large-scale predictors dominate gradient updates.   -->
+<!-- ```{r normalizing the train data} -->
+<!-- x_train <- scale(x_train) -->
+<!-- train_center <- attr(x_train, "scaled:center") # the mean of each column in the training set -->
+<!-- train_scale  <- attr(x_train, "scaled:scale")  # the standard deviation of each column in the training set -->
+<!-- x_test <- scale(x_test, center = train_center, scale = train_scale) -->
+<!-- ``` -->
+
+<!-- ### Creating the model -->
+<!-- This network uses multiple dense layers with dropout.   -->
+<!-- - Dense layers learn nonlinear transformations.   -->
+<!-- - Dropout randomly zeros some activations during training, which reduces overfitting and acts as regularization.   -->
+
+<!-- For tabular regression, this architecture is a common practical baseline.   -->
+<!-- ```{r model} -->
+<!-- # Regression model for Boston Housing -->
+<!-- model_reg <- keras_model_sequential() -->
+<!-- model_reg$add(layer_input(shape = c(13))) -->
+<!-- model_reg$add(layer_dense(units = 25, activation = "relu")) -->
+<!-- model_reg$add(layer_dropout(rate =0.2)) -->
+<!-- model_reg$add(layer_dense(units = 1)) -->
+<!-- ``` -->
+
+<!-- We print the model summary to verify layer shapes and parameter counts.   -->
+<!-- ```{r} -->
+<!-- model_reg $ summary() -->
+
+<!-- ``` -->
+
+<!-- Printing configuration is sometimes useful for documenting architecture in reports or debugging.   -->
+<!-- ```{r} -->
+<!-- model_reg $ get_config() -->
+<!-- ``` -->
+
+<!-- ### Compiling the model -->
+<!-- For regression: -->
+<!-- - loss: MSE (`"mse"`)   -->
+<!-- - optimizer: RMSprop is commonly used for regression tasks and works well in many settings   -->
+<!-- - metric: MAE is often easier to interpret in the same unit as the outcome.   -->
+<!-- ```{r compiling the model} -->
+<!-- model_reg$compile( -->
+<!--   loss = "mse", -->
+<!--   optimizer = "rmsprop", -->
+<!--   metrics = list("mean_absolute_error") -->
+<!-- ) -->
+<!-- ``` -->
+
+<!-- ### Fitting the model -->
+<!-- We train the model with early stopping. Early stopping monitors validation MAE and stops training if no improvement is observed for several epochs. This is an effective and simple overfitting control strategy.   -->
+<!-- ```{r fit the model, message=FALSE, warning=FALSE} -->
+<!-- history_reg <- model_reg$fit( -->
+<!--   x = as.matrix(x_train),  -->
+<!--   y = as.matrix(y_train), -->
+<!--   epochs = as.integer(100), -->
+<!--   batch_size = as.integer(64), -->
+<!--   validation_split = 0.1, -->
+<!--   verbose = 2 -->
+<!-- ) -->
+<!-- ``` -->
+
+<!-- After training, we evaluate on the test set and print MAE. MAE is directly interpretable: it is the average absolute prediction error.   -->
+<!-- ```{r} -->
+<!-- # Evaluate the model on the test set -->
+<!-- # [Correction]: Ensure x_test_reg and y_test_reg are passed as matrices -->
+<!-- evaluation <- model_reg$evaluate( -->
+<!--   x = as.matrix(x_test),  -->
+<!--   y = as.matrix(y_test), -->
+<!--   verbose = 0 -->
+<!-- ) -->
+
+<!-- # Extract Loss (MSE) and MAE -->
+<!-- # Keras 3 returns a named list or vector depending on the backend -->
+<!-- loss <- evaluation[[1]] -->
+<!-- mae  <- evaluation[[2]] -->
+
+<!-- cat("Test Set Mean Squared Error (Loss):", loss, "\n") -->
+<!-- cat("Test Set Mean Absolute Error (MAE):", mae, "\n") -->
+<!-- ``` -->
+
+<!-- ### Plot the training process -->
+<!-- Training curves help diagnose: -->
+<!-- - convergence (loss decreases smoothly), -->
+<!-- - overfitting (validation loss stops improving while training loss continues to improve), -->
+<!-- - underfitting (both losses remain high).   -->
+<!-- ```{r} -->
+<!-- # [Edit]: Convert the Python training history to an R data frame -->
+<!-- h_df <- as.data.frame(history_reg$history) -->
+<!-- h_df$epoch <- 1:nrow(h_df) -->
+
+<!-- # Set a two-panel layout (Loss and MAE) -->
+<!-- par(mfrow = c(1, 2)) -->
+
+<!-- # Plot Loss (MSE) -->
+<!-- plot(h_df$epoch, h_df$loss, type = "l", col = "blue",  -->
+<!--      main = "Model Loss (MSE)", xlab = "Epoch", ylab = "Loss") -->
+<!-- lines(h_df$epoch, h_df$val_loss, col = "red") -->
+<!-- legend("topright", legend = c("Train", "Val"), col = c("blue", "red"), lty = 1) -->
+
+<!-- # Plot MAE -->
+<!-- plot(h_df$epoch, h_df$mean_absolute_error, type = "l", col = "blue",  -->
+<!--      main = "Model MAE", xlab = "Epoch", ylab = "Error") -->
+<!-- lines(h_df$epoch, h_df$val_mean_absolute_error, col = "red") -->
+<!-- legend("topright", legend = c("Train", "Val"), col = c("blue", "red"), lty = 1) -->
+<!-- ``` -->
+
+<!-- ### Calculating the predicted values on test data -->
+<!-- We predict on test features and compare predictions with observed values.   -->
+<!-- A quick head view helps confirm shape and reasonableness.   -->
+<!-- ```{r} -->
+<!-- # Generate predictions -->
+<!-- predictions <- model_reg$predict(as.matrix(x_test)) -->
+
+<!-- head(cbind(predictions,y_test)) -->
+<!-- ``` -->
+
+<!-- - calculating `mean absolute error and root mean square error` and ploting   -->
+<!-- We compute prediction error and a simple RMSE-like quantity. In standard regression, RMSE is computed as `sqrt(mean(error^2))`. Here the code follows the same structure used in earlier chapters.   -->
+<!-- Plotting error can show whether errors are centered around 0 and whether there are extreme outliers.   -->
+<!-- ```{r} -->
+
+<!-- error <- y_test-predictions -->
+<!-- head(error) -->
+<!-- rmse <- sqrt(mean(error^2)) -->
+<!-- rmse -->
+<!-- plot(error) -->
+<!-- ``` -->
+<!-- ```{r} -->
+<!-- # Create a comparison plot -->
+<!-- plot(y_test, predictions,  -->
+<!--      main = "Actual vs. Predicted House Prices", -->
+<!--      xlab = "Actual Value ($1000s)",  -->
+<!--      ylab = "Predicted Value ($1000s)", -->
+<!--      pch = 19, col = adjustcolor("blue", alpha.f = 0.5)) -->
+
+<!-- # Add a 45-degree line (Perfect prediction line) -->
+<!-- abline(0, 1, col = "red", lwd = 2) -->
+<!-- ``` -->
 
 
 
+<!-- ## Convolutional neural netwrok -->
+
+<!-- Convolutional neural networks (CNNs) are designed for grid-like data such as images.   -->
+<!-- Unlike dense networks, CNNs use: -->
+<!-- - convolution layers to detect local patterns (edges, shapes), -->
+<!-- - pooling layers to reduce dimensionality and add translation invariance, -->
+<!-- - dropout to reduce overfitting, -->
+<!-- - and dense layers at the end for classification. -->
+
+<!-- We demonstrate CNN using the MNIST handwritten digit dataset. -->
+
+<!-- ### Import library -->
+<!-- We load `keras`.   -->
+<!-- ```{r Import libraries} -->
+<!-- library(keras) -->
+<!-- ``` -->
+
+<!-- ### Importing the data -->
+<!-- MNIST is included as a built-in dataset in Keras. It contains: -->
+<!-- - training images and labels, -->
+<!-- - test images and labels.   -->
+<!-- ```{r Importing the data from the web} -->
+<!-- mnist <- dataset_mnist() -->
+<!-- ``` -->
+
+<!-- - mnist is list; it contains `trainx, trainy, testx, testy`   -->
+<!-- This confirms the object type. Understanding data structure prevents indexing errors later.   -->
+<!-- ```{r} -->
+<!-- class(mnist) -->
+
+<!-- ``` -->
+
+<!-- - the dim of "mnist$train$x" is 60000   28   28   -->
+<!-- This dataset includes 60,000 training images, each 28×28 pixels.   -->
+
+<!-- View the first image in the training set.  -->
+<!-- ```{r} -->
+<!-- # head(mnist) -->
+
+<!-- # Extract the first image from the training set -->
+<!-- first_image <- mnist$train$x[1, , ] -->
+
+<!-- # 1. Check dimensions (should be 28 x 28) -->
+<!-- print(dim(first_image)) -->
+
+<!-- # 2. Inspect pixel value range (0-255) -->
+<!-- # Print a small block of values for a quick look -->
+<!-- print(first_image[10:15, 10:15])  -->
+
+<!-- # 3. Get the corresponding label (outcome) -->
+<!-- first_label <- mnist$train$y[1] -->
+<!-- cat("The true label of this image is:", first_label, "\n") -->
+<!-- ``` -->
+
+<!-- Visualize the first image in the training set.  -->
+<!-- ```{r} -->
+<!-- # Define a plotting function -->
+<!-- plot_mnist_image <- function(image_matrix, title = "") { -->
+<!--   # Fix rotation: transpose the matrix and reverse rows -->
+<!--   rotated_image <- t(apply(image_matrix, 2, rev)) -->
+
+<!--   image(rotated_image,  -->
+<!--         col = gray.colors(256),  -->
+<!--         axes = FALSE,  -->
+<!--         main = title) -->
+<!-- } -->
+
+<!-- # Plot the first image -->
+<!-- plot_mnist_image(first_image, paste("Label:", first_label)) -->
+<!-- ``` -->
+
+<!-- ### preparing the data -->
+<!-- - randomly sampling 1000 cases for training and 200 for testing   -->
+<!-- For demonstration, we sample a smaller subset to reduce training time.   -->
+<!-- In real deep learning tasks, performance generally improves with more data.   -->
+<!-- ```{r} -->
+<!-- set.seed(123) -->
+<!-- # ---- Training set preparation (1000 samples) ---- -->
+<!-- idx_train <- sample(nrow(mnist$train$x), 1000) -->
+<!-- # x_train_cnn <- array_reshape(mnist$train$x[idx_train,,], c(1000, 28, 28, 1)) / 255 -->
+<!-- # y_train_cnn <- k_utils$to_categorical(mnist$train$y[idx_train] ) -->
+<!-- x_train_sample <- mnist$train$x[idx_train, , ] -->
+<!-- y_train_sample <- (mnist$train$y[idx_train] ) -->
+
+<!-- # ---- Test set preparation (200 samples) ---- -->
+<!-- # Sample from mnist$test to ensure the model has not seen these images during training -->
+<!-- idx_test <- sample(nrow(mnist$test$x), 200) -->
+<!-- # x_test_cnn <- array_reshape(mnist$test$x[idx_test,,], c(200, 28, 28, 1)) / 255 -->
+<!-- # y_test_cnn <- k_utils$to_categorical(mnist$test$y[idx_test] ) -->
+<!-- x_test_sample <- mnist$test$x[idx_test, , ] -->
+<!-- y_test_sample  <-  (mnist$test$y[idx_test] ) -->
+
+<!-- ``` -->
+
+<!-- - dim of four data sets   -->
+<!-- Always check dimensions. For CNNs, correct shape handling is the most common source of mistakes.   -->
+<!-- ```{r Dimensions  } -->
+<!-- dim(x_train_sample) -->
+<!-- dim(y_train_sample) -->
+<!-- dim(x_test_sample) -->
+<!-- dim(x_test_sample) -->
+<!-- ``` -->
+
+<!-- #### Generate tensors -->
+<!-- - each image is 28*28 pixel size; pass these values to computer   -->
+<!-- We define image height and width.   -->
+<!-- ```{r Setting dimensions} -->
+<!-- img_rows <- 28 -->
+<!-- img_cols <- 28 -->
+<!-- ``` -->
+
+<!-- - using `array_reshape()` function to transform `list` data into tensors   -->
+<!-- Keras expects images in a 4D tensor:   -->
+<!-- (number of samples, rows, cols, channels).   -->
+<!-- MNIST is grayscale, so channels = 1.   -->
+<!-- ```{r Redefine dimensions to include channel} -->
+<!-- x_train_reshaped <- array_reshape(x_train_sample, -->
+<!--                          c(nrow(x_train_sample), -->
+<!--                            img_rows, -->
+<!--                            img_cols, 1)) -->
+<!-- x_test_reshaped <- array_reshape(x_test_sample, -->
+<!--                         c(nrow(x_test_sample), -->
+<!--                           img_rows, -->
+<!--                           img_cols, 1)) -->
+<!-- input_shape <- c(img_rows, -->
+<!--                  img_cols, 1) -->
+
+<!-- ``` -->
+
+<!-- - this below is tensor data   -->
+<!-- We verify the new tensor dimensions.   -->
+<!-- ```{r New dimensions} -->
+<!-- dim(x_train_reshaped) -->
+<!-- ``` -->
+
+<!-- #### Normalization and one-hot-encoded (dummy) -->
+<!-- - training (features) data is rescaled by dividing the maxmimum to be normalized   -->
+<!-- Pixel brightness values are typically 0–255. Dividing by 255 scales values to 0–1 and improves optimization stability.   -->
+<!-- ```{r Transform the brightness values} -->
+<!-- x_train_cnn <- x_train_reshaped / 255 -->
+<!-- x_test_cnn  <- x_test_reshaped / 255 -->
+<!-- ``` -->
+
+<!-- - converse targets into one-hot-encoded (dummy) type using `to_categorical()` function   -->
+<!-- For digit classification, there are 10 classes (0–9). One-hot encoding converts labels to a 10-column indicator matrix.   -->
+<!-- ```{r One-hot encoding of target variable} -->
+
+<!-- y_train_cnn <- k_utils$to_categorical(y_train_sample ) -->
+<!-- y_test_cnn <- k_utils$to_categorical(y_test_sample ) -->
+<!-- ``` -->
+
+<!-- We print the first encoded label as a sanity check. Exactly one element should be 1 and the rest 0.   -->
+<!-- ```{r} -->
+<!-- y_train_cnn[1,] -->
+<!-- ``` -->
+
+<!-- ### Creating the model -->
+<!-- This CNN includes: -->
+<!-- - two convolution layers (feature extraction), -->
+<!-- - a max pooling layer (downsampling), -->
+<!-- - dropout (regularization), -->
+<!-- - flatten to convert 2D feature maps to a vector, -->
+<!-- - a dense layer, -->
+<!-- - final softmax output for 10-class classification. -->
 
 
+<!-- ```{r Creating the CNN} -->
+<!-- model_cnn <- keras_model_sequential() -->
+<!-- model_cnn$add(layer_input(shape = c(28, 28, 1))) -->
+<!-- model_cnn$add(layer_conv_2d(filters = 32, kernel_size = c(3,3), activation = 'relu')) -->
+<!-- model_cnn$add(layer_max_pooling_2d(pool_size = c(2, 2))) -->
+<!-- model_cnn$add(layer_flatten()) -->
+<!-- model_cnn$add(layer_dense(units = 10, activation = 'softmax')) -->
+<!-- ``` -->
 
+<!-- - summary of model   -->
+<!-- The summary shows the output shapes and parameter counts. This is essential for verifying that the architecture matches the input and output.   -->
+<!-- ```{r} -->
+<!-- model_cnn$summary() -->
+<!-- ``` -->
+
+<!-- #### compiling -->
+<!-- - loss function is `categorical crossentropy`; the gradient descent will be optimized by adadelta;   -->
+<!-- For multi-class classification with one-hot labels, categorical cross-entropy is standard.   -->
+<!-- Adadelta is a classic optimizer; in many modern workflows you may also use Adam, but this example is valid and commonly taught.   -->
+<!-- ```{r Compiling the model} -->
+<!-- model_cnn$compile( -->
+<!--   loss = 'categorical_crossentropy', -->
+<!--   optimizer = 'adam', -->
+<!--   metrics = list('accuracy') -->
+<!-- ) -->
+<!-- ``` -->
+
+<!-- ### Training -->
+<!-- We train for a small number of epochs (10) due to the small sampled dataset and demonstration focus.   -->
+<!-- In practice, you would tune: -->
+<!-- - number of epochs, -->
+<!-- - batch size, -->
+<!-- - learning rate, -->
+<!-- - architecture depth, -->
+<!-- and you would use a larger training set. -->
+
+<!-- ```{r Training the model,message=T,include=T,echo=TRUE} -->
+
+<!-- # Train model -->
+<!-- history_cnn <- model_cnn$fit( -->
+<!--   x_train_cnn, y_train_cnn, -->
+<!--   batch_size = as.integer(128), -->
+<!--   epochs = as.integer(10), -->
+<!--   validation_split = 0.2 -->
+<!-- ) -->
+<!-- ``` -->
+
+<!-- We plot training history to see whether the model is learning and whether validation performance improves.   -->
+<!-- ```{r} -->
+<!-- # Convert the history object to a data frame for visualization -->
+<!-- history_df <- as.data.frame(history_cnn$history) -->
+<!-- history_df$epoch <- 1:nrow(history_df) -->
+
+<!-- # Set up the plotting area (1 row, 2 columns) -->
+<!-- par(mfrow = c(1, 2)) -->
+
+<!-- # Plot Accuracy -->
+<!-- plot(history_df$epoch, history_df$accuracy, type = "l", col = "blue",  -->
+<!--      main = "Model Accuracy", xlab = "Epoch", ylab = "Accuracy", ylim = c(0, 1)) -->
+<!-- lines(history_df$epoch, history_df$val_accuracy, col = "red") -->
+<!-- legend("bottomright", legend = c("Train", "Val"), col = c("blue", "red"), lty = 1) -->
+
+<!-- # Plot Loss -->
+<!-- plot(history_df$epoch, history_df$loss, type = "l", col = "blue",  -->
+<!--      main = "Model Loss", xlab = "Epoch", ylab = "Loss") -->
+<!-- lines(history_df$epoch, history_df$val_loss, col = "red") -->
+<!-- legend("topright", legend = c("Train", "Val"), col = c("blue", "red"), lty = 1) -->
+<!-- ``` -->
+
+<!-- ### Evaluating the accuracy -->
+<!-- We evaluate on the test set and obtain loss and accuracy.   -->
+<!-- Because we used a small sample (100 test images), the accuracy estimate will have variability, but it is sufficient to demonstrate the process.   -->
+<!-- ```{r Evaluating the model} -->
+
+<!-- # Evaluate the model on the test data -->
+<!-- # Note: x_test_cnn and y_test_cnn must be pre-processed tensors -->
+<!-- evaluation <- model_cnn$evaluate( -->
+<!--   x = x_test_cnn,  -->
+<!--   y = y_test_cnn, -->
+<!--   verbose = 0 -->
+<!-- ) -->
+
+<!-- # Extract Loss and Accuracy -->
+<!-- # In Keras 3, evaluate returns a vector: [Loss, Accuracy] -->
+<!-- cat("Test Loss: ", evaluation[1], "\n") -->
+<!-- cat("Test Accuracy: ", evaluation[2] * 100, "%\n") -->
+<!-- ``` -->

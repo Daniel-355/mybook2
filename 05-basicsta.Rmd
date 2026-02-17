@@ -1,8 +1,33 @@
+
+
 # Basic statistics
 
 <!-- ============================= -->
+
+This chapter introduces a practical “starter kit” for working in R from a statistician’s perspective. Before we discuss formal statistical concepts, we need a stable workflow: how to create objects, inspect and clean vectors, manipulate data frames, summarize data, and fit a basic model. These fundamentals are what you will repeatedly use in real projects—whether you are cleaning EHR data, summarizing trial endpoints, or building an analysis dataset for modeling.
+
+The goal here is not to memorize functions, but to understand *what each operation is doing* and *why it matters*. Most errors in applied statistics are not due to a complex model; they come from small issues early in the pipeline: missing values, incorrect variable types, accidental coercion to character, or merges that silently duplicate rows. This chapter makes those risks explicit and gives you a set of reliable patterns.
+
+---
+
 ## The essentials of R
-### Manipulation of vector 
+
+R is built around objects. You create an object (vector, matrix, list, data frame), inspect it, transform it, and then use it as input to another function. When you become comfortable with object types and common manipulations, statistical workflows become much faster and safer.
+
+### Manipulation of vector
+
+A vector is the simplest data structure in R: an ordered collection of values. However, vectors can hide common pitfalls—especially when they contain mixed types (numbers + characters + missing values). In practice, mixed-type vectors appear when importing data (e.g., a numeric column contains `"O"` due to a data entry issue).
+
+The code below demonstrates several key diagnostics:
+
+- `unique()` and `length()` are used to quickly inspect distinct values and count how many unique entries exist—useful when checking a categorical variable, or spotting unexpected values.
+- `as.numeric()` converts the vector to numeric, but any non-numeric values become `NA`. This is one of the most common sources of “silent data loss” in analyses.
+- `log()` illustrates that once coercion introduces `NA`, downstream transformations may produce missing results.
+- `sum(..., na.rm=TRUE)` shows a safe pattern for aggregation in the presence of missing values.
+- `sort(decreasing=TRUE)` is a quick way to inspect extremes and potential outliers.
+- `is.na()` and indexing (`x[!is.na(x)]`) demonstrate a standard workflow for filtering out missing values.
+- `%in%` tests membership (very useful for validation checks).
+- `grepl()` performs pattern matching and is helpful for detecting problematic strings during cleaning.
 
 ```{r,warning=FALSE}
 library(tidyverse)
@@ -22,14 +47,37 @@ num_vec[!is.na(num_vec)]
 c(5,6) %in% vec
 grepl("5", vec)
 ```
-### Generate sequence or repeted sequece  
+
+A practical habit: when you coerce types (e.g., `as.numeric()`), always check how many `NA`s were created and why. If a numeric variable suddenly has many `NA`s, the root cause is usually dirty input values (spaces, commas, symbols, or typos like `"O"` instead of `0`).
+
+---
+
+### Generate sequence or repeted sequece
+
+Simulating data, creating index variables, and generating repeated patterns are extremely common tasks in statistics. Two workhorses are:
+
+- `seq()` to generate sequences (e.g., time points, dose levels, grid search values).
+- `rep()` to repeat values by cycles (`times`) or in blocks (`each`), often used to build study designs or longitudinal datasets.
 
 ```{r}
 seq(from = 0, to = 10, by = 0.5)
 rep(x = 1:3, times = 4)
 rep(x = 1:3, each = 4)
 ```
+
+Conceptually:
+- `times` repeats the *whole vector* multiple times.
+- `each` repeats *each element* multiple times before moving to the next.
+
+---
+
 ### Get directory and write data out and in
+
+A reproducible workflow needs a stable approach to file paths. `getwd()` tells you the working directory, and `setwd()` sets it. Writing and reading data are also routine steps when sharing outputs, debugging, or building analysis datasets.
+
+Important practice notes:
+- If your project grows, prefer project-based workflows (e.g., RStudio projects) rather than repeatedly calling `setwd()`.
+- When exporting, keep track of whether row names are included; they can accidentally become a new column on import.
 
 ```{r}
 getwd()
@@ -38,7 +86,18 @@ write.csv(cars, "cars.csv", row.names=F)
 dataframe  <- read.csv("cars.csv")
 
 ```
+
+---
+
 ### Function
+
+Functions let you encapsulate repeated logic and ensure consistency. In applied statistics, functions are often used to:
+- standardize transformations,
+- compute derived variables,
+- generate reports,
+- run simulation loops.
+
+The function below transforms `x` into a modified value. This is intentionally simple, but the pattern is the same for more complex analysis utilities.
 
 ```{r}
 my_func <- function(x){
@@ -48,14 +107,31 @@ my_func <- function(x){
 
 my_func(num_vec)
 ```
-### Plot 
+
+Practical note: a function is safest when it handles missing values and validates input types. Even when you don’t add validation now, it helps to remember that your “future self” (or collaborator) will appreciate defensive checks.
+
+---
+
+### Plot
+
+Exploratory plots help you understand distributions, detect outliers, and identify relationships before modeling. Base R plotting is fast and lightweight, which is why it remains common in statistical practice.
+
+- A scatterplot (`plot(y ~ x, data=...)`) is the basic tool for relationships.
+- A histogram (`hist()`) checks distribution shape, skewness, and potential anomalies.
 
 ```{r}
 plot(dist ~ speed, data=cars)
 hist(cars$dist )
 
 ```
+
+---
+
 ### Build model and plot
+
+A linear model (`lm`) is often the first modeling step: it provides a baseline, helps you understand effect size and direction, and reveals whether a relationship is approximately linear.
+
+This section fits a simple model and overlays the fitted regression line on the scatterplot. The additional vertical and horizontal lines serve as reference thresholds (e.g., a clinically meaningful cutoff, or a design constraint).
 
 ```{r}
 model <- lm(dist ~ speed, data=cars)
@@ -64,13 +140,33 @@ abline(model)
 abline(v = 25)
 abline(h = 15)
 ```
-### Rename names of columns 
+
+In practice, it is common to annotate plots with reference lines—especially when discussing thresholds, eligibility criteria, or operational boundaries.
+
+---
+
+### Rename names of columns
+
+Clean variable names are more than aesthetics: they affect model formulas, joining keys, and the readability of analysis code. The code below inspects column names and then renames them.
+
+A caution: introducing spaces (e.g., `"speed per hour"`) makes later coding more cumbersome because you must use backticks in formulas and selection. In many applied projects, analysts prefer names like `speed_per_hour` for reliability.
 
 ```{r}
 names(cars)
 names(cars) <- c("speed per hour", "total dist")
 ```
-### Class of dataframe 
+
+---
+
+### Class of dataframe
+
+Understanding classes is crucial because many R functions behave differently depending on the object type.
+
+- `matrix` and `data.frame` look similar but differ in important ways:
+  - A matrix is homogeneous (all values must be the same type).
+  - A data frame can store different types across columns (numeric, factor, character).
+
+The code below converts `cars` to a matrix and back to a data frame, then checks classes. It also demonstrates transposition (`t()`), which is defined for matrices.
 
 ```{r}
 matrix <- as.matrix(cars)
@@ -81,7 +177,16 @@ class(df)
 # tranform
 t(matrix)
 ```
+
+Practical warning: converting a data frame with mixed types to a matrix often forces everything to character. That can break models and summaries if you do not convert back carefully.
+
+---
+
 ### Generate new variable for dataframe (character)
+
+Identifiers and grouping variables are often created using string concatenation. `paste0()` is a clean way to build IDs without spaces.
+
+The examples below create patterned labels like `"raster_1"`, then attach them to the data frame. These patterns are useful when simulating repeated measures or defining cluster membership.
 
 ```{r}
 paste0("raster_", 1:10)
@@ -89,7 +194,17 @@ paste0("raster_", rep(x = 1:5, times = 10))
 df$group <- paste0("raster_", rep(x = 1:5, times = 10))
 df$id <-  paste0("raster_",  1:50)
 ```
+
+---
+
 ### Create a new dataframe using 'rnorm' - random  number from distribution
+
+Simulation is a core skill in modern statistical practice. Here we generate:
+- a numeric variable (`sample`) from a normal distribution,
+- a grouping variable,
+- an ID variable to support merging.
+
+The function `rnorm(n, mean, sd)` generates normal random variables. Rounding is used for readability.
 
 ```{r}
 sample <-  round((rnorm(50,0, 1)),2)
@@ -99,17 +214,44 @@ df_join <- data.frame(sample, group)
 df_join$id <-  paste0("raster_",  1:50)
 ```
 
+---
+
 ### Left join two dataframes  
+
+Merging tables is one of the most error-prone steps in applied analysis. `left_join()` keeps all rows from the left table and adds matching columns from the right table.
+
+Key practice:
+- Always confirm uniqueness of the key (`id`) in each table before joining.
+- After joining, check row counts and inspect for accidental duplication.
+
 ```{r}
 library(dplyr)
 data_all <- left_join(df, df_join, by="id")
 head(data_all)
 ```
+
+---
+
 ### Select variables
+
+Selecting columns is a common step for building analysis-ready datasets. This also helps reduce clutter when checking intermediate results.
+
 ```{r}
 select(data_all, group.x, id  )
 ```
+
+---
+
 ### Filter observations
+
+Filtering creates analytic subsets, such as:
+- a treatment arm,
+- a subgroup,
+- an eligibility population,
+- a set of observations meeting a condition.
+
+This section shows filtering by a grouping string, and filtering by numeric conditions (with a variable name that contains spaces, requiring backticks).
+
 ```{r}
 raster_1 <- filter(data_all, group.x == "raster_1")
 raster_1
@@ -117,30 +259,73 @@ speed_dist <- filter(data_all, data_all$`speed per hour` < 11 & data_all$`total 
 speed_dist
  
 ```
+
+---
+
 ### Append rows
+
+Row-binding is used when you want to stack two datasets with the same structure. This is common when combining:
+- multiple batches,
+- subsets,
+- cohorts.
+
+`rbind()` requires matching columns (names and order). In tidyverse workflows, `bind_rows()` is often more forgiving, but `rbind()` is fine when structures match exactly.
+
 ```{r}
 rbind(raster_1,speed_dist)
 ```
- 
+
+---
+
 ### Create new variables instead of old variables
+
+Data cleaning often involves transforming a variable into a more usable form. Here we round `sample` to one decimal place. Note that `mutate()` returns a modified data frame; you typically assign it back if you want to keep the change.
+
 ```{r}
 mutate(data_all, 
        sample = round(sample,1))
 ```
+
+---
+
 ### summarise statistics
+
+Summarization produces descriptive statistics and quick QA checks. In practice, it is a good idea to confirm that you are summarizing the intended variables and that the variable types are correct.
+
+A practical note for this code chunk: `max("total dist")` will not compute the maximum of the column; it is taking a character string. In real analyses, always verify that your summary outputs look plausible.
+
 ```{r}
  summarise(data_all,
           mean_speed = mean(sample),
           max_dist = max( "total dist" ))
 ```
+
+---
+
 ### Group dataframe then summarise statistics
+
+Grouping is essential for stratified summaries (by arm, site, subgroup, visit). The typical pattern is:
+
+1) `group_by()`  
+2) `summarise()`  
+
+This yields one row per group.
+
 ```{r}
 data_all_group <-   group_by(data_all, group.x)   
  summarise(data_all_group, 
           mean_speed = mean(sample),
           max_dist = max( "total dist" ))
 ```
+
+---
+
 ### Ungroup then summarise statistics 
+
+After group operations, the data may remain grouped. `ungroup()` removes grouping, which prevents unexpected behavior in later steps.
+
+This is a common best practice: ungroup after grouped summaries unless you intentionally want grouping to persist.
+
 ```{r}
 ungroup_data <- ungroup( data_all_group)
  summarise(  ungroup_data , 
@@ -148,23 +333,55 @@ ungroup_data <- ungroup( data_all_group)
           max_dist = max( "total dist" ))
 
 ```
+
+---
+
 ### Summary linear regression model
+
+This section fits a linear regression using the renamed columns. The `summary()` output provides:
+- coefficient estimates,
+- standard errors,
+- t-tests and p-values (under standard assumptions),
+- R-squared and residual standard error.
+
+Even when you plan to use more advanced models, a simple linear regression is a valuable baseline for interpretation and for detecting obvious data issues.
+
 ```{r}
 mod1 <- lm(cars$`total dist` ~ cars$`speed per hour` )
 summary(mod1) 
 ```
+
+---
+
 ### Create frequency table
+
+Frequency tables help you check distributions across groups, detect empty cells, and validate merges.
+
+Two-way tables are also a quick way to identify whether a categorical variable is unevenly distributed across groups.
+
 ```{r}
 table(data_all_group$`speed per hour`,data_all_group$group.x  )
 ```
+
+---
+
 ### Value and variable label
+
+Labels are especially useful for reporting, tables, and clinical datasets where you want human-readable metadata. This section shows:
+
+- inspecting levels of a factor,
+- relabeling factor levels,
+- adding a variable label using `Hmisc::label()`.
+
 ```{r}
 table(iris$Species)
 ```
+
 ```{r}
 iris$Species <- factor(iris$Species,labels = c( "setosanew","versicolornew","virginianew"))
 table(iris$Species)
 ```
+
 ```{r message=FALSE}
 library(Hmisc)
 ```
@@ -173,7 +390,20 @@ library(Hmisc)
 label(iris$Species) <- "Species types"
 table(iris$Species)
 ```
+
+In applied work, consistent labeling helps downstream reporting tools and reduces ambiguity when sharing datasets with collaborators.
+
+---
+
 ### Recode a variable 
+
+Recoding is frequently used to:
+- create categorical versions of continuous variables,
+- define risk groups,
+- implement analysis definitions (e.g., responder/non-responder).
+
+This chunk uses nested `ifelse()` to create a derived variable based on `Sepal.Length`. While nested `ifelse()` works, in complex real projects, `case_when()` is often clearer and less error-prone. The key concept remains: define rules explicitly and validate results with a frequency table.
+
 ```{r}
 irisifelse <-  iris%>% 
 mutate(Sepal.Length2 = ifelse(Sepal.Length < 6 , "level1", ifelse(Sepal.Length < 7 , "level2", Sepal.Length)))
@@ -181,15 +411,44 @@ mutate(Sepal.Length2 = ifelse(Sepal.Length < 6 , "level1", ifelse(Sepal.Length <
 table(irisifelse$Sepal.Length2)
 ```
 
-
-
+---
 
 ## Central Limit Theorem
 
+The Central Limit Theorem (CLT) is one of the most important ideas in statistics: it justifies why normal-based inference often works even when the underlying data are not normal, as long as sample sizes are reasonably large and observations are independent.
+
+In practice, the CLT supports:
+- approximate confidence intervals for means,
+- normal approximations for many estimators,
+- reasoning about sampling variability.
+
 [see here](https://rpubs.com/Daniel_He/1144699)
+
+---
 
 ## Common statistical distribution
 
+Statistical distributions are the language of uncertainty. In applied work, you encounter them in:
+- modeling outcomes (normal, binomial, Poisson),
+- generating simulations,
+- defining priors and likelihoods,
+- interpreting p-values and confidence intervals.
+
 [see here](https://rpubs.com/Daniel_He/1143768)
 
+---
 
+Chapter takeaways 
+
+By the end of this chapter, you should be comfortable with:
+
+- Inspecting vectors, handling missing values, and diagnosing coercion issues  
+- Generating sequences and repeated patterns for indexing and simulation  
+- Reading/writing data and understanding the working directory  
+- Writing simple functions to standardize repeated steps  
+- Making quick exploratory plots  
+- Fitting and interpreting a basic linear regression  
+- Managing variable names, classes, and joins  
+- Building group-wise summaries and validating derived variables  
+
+These are not “intro programming trivia”—they are the daily tools of statistical practice. Once these fundamentals are stable, you can scale up to robust workflows: reproducible reporting, simulation-based power analysis, and model-based inference.

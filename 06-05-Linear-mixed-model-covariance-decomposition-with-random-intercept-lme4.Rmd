@@ -1,42 +1,145 @@
+## Linear mixed model covariance decomposition with random intercept — lme4
 
+This section walks through *the same workflow you used above*, but with a stronger emphasis on (1) what each matrix represents, (2) where the covariance decomposition shows up, and (3) how the “manual” computations match `lme4`.
 
-## Linear mixed model covariance decomposition with random intercept- lme4
+We focus on the random-intercept LMM:
+
+$$
+\mathbf{y} = \mathbf{X}\beta + \mathbf{Z}u + \varepsilon,
+\qquad
+u \sim N(0,\mathbf{G}),
+\qquad
+\varepsilon \sim N(0,\mathbf{R})
+$$
+
+with the implied marginal model
+
+$$
+\mathbf{y} \sim N(\mathbf{X}\beta,\ \mathbf{V}),
+\qquad
+\mathbf{V}=\mathbf{Z}\mathbf{G}\mathbf{Z}'+\mathbf{R}.
+$$
+
+In `lme4` (without `nlme` residual correlation structures), residuals are independent:
+
+$$
+\mathbf{R}=\sigma^2\mathbf{I}.
+$$
+
+For a **random intercept only** model with grouping variable Subject, the random-effect covariance is
+
+$$
+\mathbf{G}=\sigma_u^2\mathbf{I}.
+$$
+
+This is the classic compound symmetry pattern: within a subject, all repeated observations share covariance \(\sigma_u^2\), and the diagonal includes \(\sigma_u^2+\sigma^2\).
+
+---
 
 ### Load data
+
+We use the `Orthodont` dataset and store it as `Data`.
+
 ```{r}
 data(Orthodont, package="nlme")
 Data <- Orthodont
 ```
 
-plot means and variances by higher level variable (grouping)
+---
+
+### Plot means and variances by higher level variable (grouping)
+
+Before fitting models, we quickly examine whether subjects differ in their outcome level and variability.
+
+- If subject means vary a lot, random intercepts are plausible.
+- If within-subject variances vary wildly, a more complex residual structure might be needed (though `lme4` cannot directly specify correlated residuals).
+
 ```{r}
 barplot(with(Data, tapply(distance, list(subject = Subject), mean)))
 barplot(with(Data, tapply(distance, list(subject = Subject), var)))
 ```
 
-### Using glm
+---
+
+### Using glm-style fixed effects (baseline reference)
+
+#### Using glm (subject as fixed effect)
+
+This model allows a separate intercept for each subject as a fixed parameter:
+
+$$
+\text{distance}_{ij}=\beta_0+\beta_1\text{age}_{ij}+\beta_2\text{Sex}_{ij}+\alpha_j+\varepsilon_{ij}.
+$$
+
+It often fits well, but it treats subject effects as fixed and does not provide a variance component interpretation \(\sigma_u^2\).
+
 ```{r}
 fit.lm <- lm(distance ~ age+ Sex + Subject, data = Data) 
 anova(fit.lm)
 ```
 
-### Using glm with random slopes
+---
+
+#### Using glm with random slopes (aov Error term)
+
+This approach is the classical ANOVA / variance-component view. For balanced repeated measures, it connects to mean squares.
+
 ```{r}
 fit.aov <- aov(distance ~ age+ Sex + Error(Subject), data = Data) 
 summary(fit.aov)
 ```
-*how can we compute $σ^2$ a from this output? note that $σ^2$= MSE  , and E(MSA) = $(σ_a)^2$ +n·$σ^2$ ,therefore$(σ_a)^2$ = (MSA−MSE)/n*
 
-### Using lmm
+##### How can we compute \(\sigma_a^2\) from this output?
+
+Your note is the key identity:
+
+- \(\sigma^2 = \mathrm{MSE}\)
+- \(E(\mathrm{MSA}) = \sigma_a^2 + n\sigma^2\)
+
+so
+
+$$
+\sigma_a^2=\frac{\mathrm{MSA}-\mathrm{MSE}}{n}.
+$$
+
+**Practical caution:** `Orthodont` is not perfectly balanced in the same way as textbook ANOVA examples, so this computation is best viewed as an approximation. Likelihood-based LMM estimation (REML/ML) is typically preferred for unbalanced data.
+
+---
+
+### Using LMM (random intercept) in lme4
+
+#### Fit the random intercept model
+
+We fit
+
+$$
+\text{distance}_{ij}=\beta_0+\beta_1\text{age}_{ij}+\beta_2\text{Sex}_{ij}+u_{0j}+\varepsilon_{ij},
+$$
+
+with \(u_{0j}\sim N(0,\sigma_u^2)\), \(\varepsilon_{ij}\sim N(0,\sigma^2)\).
+
 ```{r}
 library(lme4) 
 fit.lmer <- lmer(distance ~ age + Sex  +(1 | Subject), data = Data) 
 summary(fit.lmer)
 ```
 
-**default is compound symmetry**
+**default is compound symmetry** (induced by the random intercept).  
+More precisely:
 
-### Get x,y,z 
+- the random intercept implies constant covariance \(\sigma_u^2\) for any two observations from the same subject,
+- residual errors are independent (identity \(\mathbf{R}=\sigma^2\mathbf{I}\)).
+
+---
+
+### Get \(\mathbf{X}\), \(\mathbf{y}\), \(\mathbf{Z}\)
+
+These are the core objects behind the matrix formulas.
+
+- \(\mathbf{X}\): fixed-effects design matrix (Intercept, age, Sex…)
+- \(\mathbf{y}\): response vector
+- \(\mathbf{Z}\): random-effects design matrix (subject membership for random intercept)
+
 ```{r}
 X=(getME(fit.lmer, "X"))
 head(X)
@@ -47,7 +150,14 @@ Z <- getME(fit.lmer, "Z")
 head(Z)
 ```
 
-### Get fixed effect and random effect coefficients
+---
+
+### Get fixed and random effect coefficients
+
+- \(\hat{\beta}\) are population-average (fixed) coefficients.
+- \(\hat{u}\) are BLUPs (random intercepts per subject).
+- `coef()` combines them into subject-specific coefficients.
+
 ```{r}
 bhat <- getME(fit.lmer, "fixef") #getME(fit.lmer, "beta")  # fixef(fit.lmer)
 bhat 
@@ -57,31 +167,26 @@ uhat
 coef(fit.lmer)
 ```
 
-### Get random effect covariance structure (covariance matrix expandation)      
-```{r}
-# theta <- getME(fit.lmer, "theta") # $r$
-# theta**2+ getME(fit.lmer, "sigma")**2 
-# 
-# theta**2
-# lwr <- getME(fit.lmer, "lower")
-# lwr
+Interpretation:
 
-# Lambda <- getME(fit.lmer, "Lambda") #  matrix
-# # head(Lambda)
-# # dim(Lambda)
-# Lambda%*%t(Lambda)
-```
+- \(\hat{\beta}_0\) is the overall intercept.
+- \(\hat{u}_j\) is subject \(j\)’s deviation from the overall intercept.
+- Subject \(j\)’s conditional intercept is \(\hat{\beta}_0+\hat{u}_j\).
 
-`the relationship $\Sigma = TSST'$`
- <!-- https://stats.stackexchange.com/questions/242759/calculate-random-effect-predictions-manually-for-a-linear-mixed-model -->
- 
-<!-- # ```{r} -->
-<!-- # # getME(fit.lmer, "ST") -->
-<!-- # ``` -->
+---
 
-`the relationship of theta and covariance` 
+### Random effect covariance structure and the role of \(\theta\)
+
+In `lme4`, random-effects parameters are represented via a Cholesky-factor parameterization. Conceptually:
+
+- \(\theta\) parameterizes the *relative Cholesky factors*,
+- from \(\theta\) we can reconstruct the random-effect covariance \(\Sigma\) (often denoted \(\mathbf{G}\) for a random-effect term).
+
+Your 2×2 example (intercept + slope) illustrates:
+
 $$
-\Sigma = \left(
+\Sigma =
+\left(
 \begin{array}{cc}
 \theta_1 & 0 \\
 \theta_2 & \theta_3 
@@ -92,26 +197,32 @@ $$
 \theta_1 & \theta_2 \\
 0 & \theta_3 
 \end{array}
-\right) =
+\right)
+=
 \left(
 \begin{array}{cc}
 \theta_1^2 & \theta_1 \theta_2 \\
 \theta_1 \theta_2 & \theta_2^2 + \theta_3^2 
 \end{array}
-\right) = 
+\right)
+=
 \left(
 \begin{array}{cc}
 \sigma_1^2 & \sigma_{12} \\
 \sigma_{12} & \sigma_2^2 
 \end{array}
-\right)
-
+\right).
 $$
 
-`we can equate θ1 with σ1 (the standard deviation of the intercept), θ2 with σ12/σ1 (the covariance scaled by the SD) ... θ3 is a little more complicated. in particular, in a model with only random-intercept terms, the θ vector is just the vector of RE standard deviations.`
+For a **random intercept only** model, there is only one standard deviation parameter, so \(\theta\) reduces to \(\sigma_u\) (up to the scaling conventions used internally).
 
-`The way lme4 works is that, given a value of θ, we can determine Σ`  
- 
+---
+
+#### Build a “random intercept covariance object” for Subject
+
+`VarCorr(fit.lmer)` reports the random intercept SD for `Subject`.
+You build a diagonal matrix of that SD across subjects:
+
 ```{r}
 vc <- VarCorr(fit.lmer) 
 Lambda_new <-vc[["Subject"]][1]*diag(length(levels(Data$Subject)))
@@ -119,27 +230,21 @@ head(Lambda_new)
 dim(Lambda_new)
 ```
 
-- **"theta": random-effects parameter estimates: these are parameterized as the relative Cholesky factors of each random effect term**
+Notes for interpretation:
 
-- **use other cov structure by nlme**
+- If you want \(\mathbf{G}\) on the **variance** scale, it is \(\sigma_u^2\mathbf{I}\).
+- Many internal pieces in `lme4` are stored in factorized form; the important point is that the random intercept induces a block-constant covariance when mapped through \(\mathbf{Z}\).
 
-- **lme4 does not allow to specify it, and it can only fit LMMs with independent residual errors. However, the range of available variance-covariance matrices for the random effects are restricted to diagonal or general matrices. **
+---
 
-<!--   Get  ST    -->
-<!-- ```{r} -->
-<!-- ST <- getME(fit.lmer, "ST") # $r$  -->
+### Residual variance and \(\mathbf{R}=\sigma^2\mathbf{I}\)
 
-<!-- ``` -->
-<!-- https://rdrr.io/cran/lme4/man/getME.html -->
-<!-- https://en.wikipedia.org/wiki/Cholesky_decomposition -->
+Extract residual SD from the fitted model and square it:
 
-<!--   Get lower   -->
-<!-- ```{r} -->
-<!-- lower <- getME(fit.lmer, "lower") # $r$  -->
-<!-- lower -->
-<!-- ``` -->
+$$
+\mathbf{R}=\sigma^2\mathbf{I}_N.
+$$
 
-### Get residual variance and its identity matrix
 ```{r}
 sigma <- getME(fit.lmer, "sigma")**2 
 sigma
@@ -147,7 +252,20 @@ head(sigma*diag(nrow(Data)))
  
 ```
 
-### Get y covariance matrix  
+---
+
+### Marginal covariance matrix \(\mathbf{V}\) of \(\mathbf{y}\)
+
+The key decomposition is:
+
+$$
+\mathbf{V}=\mathbf{Z}\mathbf{G}\mathbf{Z}'+\sigma^2\mathbf{I}.
+$$
+
+In your implementation:
+
+- \(\mathbf{Z}\Lambda_{\text{new}}\mathbf{Z}'\) creates within-subject covariance,
+- \(\sigma^2\mathbf{I}\) adds residual variance.
 
 ```{r}
 VM <- Z%*%Lambda_new%*%t(Z)+sigma*diag(nrow(Data)) 
@@ -155,7 +273,25 @@ head(VM)
 dim(VM)
 ```
 
-### Get fixed effect coefficients covariance matrix
+This \(\mathbf{V}\) is the object that controls:
+
+- GLS estimation of \(\beta\),
+- shrinkage and BLUP estimation of \(u\),
+- standard errors of \(\hat{\beta}\).
+
+---
+
+### Fixed effect coefficient covariance matrix
+
+From theory:
+
+$$
+\mathrm{Var}(\hat{\beta})=
+(\mathbf{X}'\mathbf{V}^{-1}\mathbf{X})^{-1}.
+$$
+
+`vcov(fit.lmer)` returns the estimated \(\mathrm{Var}(\hat{\beta})\).
+
 ```{r}
 vcov <- vcov(fit.lmer) #fixed cov
 vcov
@@ -163,25 +299,49 @@ vcov
 vcov@x[2]/prod(sqrt( diag(vcov(fit.lmer))[-3] ))
 ```
 
-### Get random effect coefficients covariance matrix (standard deviation)
+Interpretation:
+- diagonal elements are variances of coefficients,
+- square roots are standard errors,
+- off-diagonal elements encode correlation among coefficient estimates.
+
+---
+
+### Random effect covariance matrix (standard deviation scale)
+
+`VarCorr()` prints SDs (and correlations if applicable).  
+`Matrix::bdiag(vc)` produces a block-diagonal covariance structure across random-effect terms.
+
 ```{r}
 vc <- VarCorr(fit.lmer) 
-vc ## default print method: standard dev and corr
+vc ### default print method: standard dev and corr
 as.matrix(Matrix::bdiag(vc)) #random effect covariance matrix
  
 # https://stackoverflow.com/questions/47307340/extracting-the-i-estimated-variance-covariance-matrix-of-random-effects-and-or
 # https://support.sas.com/documentation/cdl/en/statug/63033/HTML/default/viewer.htm#statug_mixed_sect022.htm
 ```
 
-`approximate above sd`  
+And your empirical SD check based on BLUPs:
+
 ```{r}
 uintercept <- (uhat[["Subject"]])
 sd(uintercept[,1])
 
 ```
 
+Important: the SD of the BLUPs is typically smaller than \(\hat{\sigma}_u\) due to shrinkage.
 
-### Computer fixed effect coefficients
+---
+
+### Compute fixed effect coefficients manually (GLS)
+
+Given \(\mathbf{V}\), the GLS estimator is:
+
+$$
+\hat{\beta}=
+(\mathbf{X}'\mathbf{V}^{-1}\mathbf{X})^{-1}\mathbf{X}'\mathbf{V}^{-1}\mathbf{y}.
+$$
+
+You compute it directly and compare with `bhat`.
 
 ```{r}
 library(matlib)
@@ -189,7 +349,18 @@ inv(t(as.matrix(X))%*%inv(as.matrix(VM))%*%as.matrix(X))%*%t(as.matrix(X))%*%inv
 bhat
 ```
 
-### Computer covariance of fixed efffect coefficients
+---
+
+### Compute covariance of fixed effect coefficients manually
+
+Theory:
+
+$$
+\mathrm{Var}(\hat{\beta})=(\mathbf{X}'\mathbf{V}^{-1}\mathbf{X})^{-1}.
+$$
+
+Then standard errors are the square roots of the diagonal.
+
 ```{r}
 inv(t(as.matrix(X))%*%inv(as.matrix(VM))%*%as.matrix(X))
 # standard error
@@ -199,36 +370,73 @@ sqrt(inv(t(as.matrix(X))%*%inv(as.matrix(VM))%*%as.matrix(X)))
 vcov(fit.lmer) 
 sqrt(vcov(fit.lmer))
 ```
-**default is compound symmetry**
 
-### Computer random effect coefficients 
+---
+
+### Compute random effect coefficients manually (BLUPs)
+
+The BLUP formula is:
+
+$$
+\hat{u}=\mathbf{G}\mathbf{Z}'\mathbf{V}^{-1}(\mathbf{y}-\mathbf{X}\hat{\beta}).
+$$
+
+Your code implements the same structure and compares to `ranef()`.
+
 ```{r}
 comput_uhat <- (as.matrix(Lambda_new))%*%t(Z)%*%inv(as.matrix(VM))%*%(y-as.matrix(X)%*%(bhat))
 cbind((comput_uhat@x),(uhat[["Subject"]]))
 
 ```
 
-- covariance matrix of random effect coefficients
+---
+
+#### Covariance object used for random effects
+
+You print the diagonal matrix you constructed:
+
 ```{r}
 head(Lambda_new)
 ```
- 
 
-### Computer predicted values
+In a teaching narrative, this is where you can emphasize:
+
+- in random intercept models, \(\mathbf{G}\) is extremely simple,
+- all complexity in \(\mathbf{V}\) comes from how \(\mathbf{Z}\) maps subject membership into the observation-level covariance.
+
+---
+
+### Compute predicted values
+
+Conditional fitted values are:
+
+$$
+\hat{y}=\mathbf{X}\hat{\beta}+\mathbf{Z}\hat{u}.
+$$
+
+You compute and compare with `fitted()`.
+
 ```{r}
 yhat <- X%*%(bhat)+Z%*%(uhat[["Subject"]][["(Intercept)"]])
 head(yhat)
 head(fitted(fit.lmer))
 ```
 
+Interpretation:
 
+- \(\mathbf{X}\hat{\beta}\) is the population-average prediction,
+- \(\mathbf{Z}\hat{u}\) adds subject-specific intercept shifts,
+- `fitted(fit.lmer)` corresponds to the conditional fitted values under the LMM.
 
+---
 
+#### Key takeaway
 
+This random-intercept example is the cleanest case where the entire mixed model machinery reduces to:
 
-
-
-
-
+1) specify \(\mathbf{V}=\mathbf{Z}\mathbf{G}\mathbf{Z}'+\sigma^2\mathbf{I}\),  
+2) compute GLS \(\hat{\beta}\),  
+3) compute BLUP \(\hat{u}\),  
+4) obtain fitted values \(\hat{y}=\mathbf{X}\hat{\beta}+\mathbf{Z}\hat{u}\).
 
 

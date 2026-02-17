@@ -4,13 +4,13 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>12 Common statistical models | My Little Handbook</title>
+  <title>12 Common statistical models | Biostatistics Handbook</title>
   <meta name="description" content="<p>This is a minimal example of using the bookdown package to write a book.
 The HTML output format for this example is bookdown::gitbook,
 set in the _output.yml file.</p>" />
-  <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="12 Common statistical models | My Little Handbook" />
+  <meta property="og:title" content="12 Common statistical models | Biostatistics Handbook" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="<p>This is a minimal example of using the bookdown package to write a book.
@@ -19,7 +19,7 @@ set in the _output.yml file.</p>" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="12 Common statistical models | My Little Handbook" />
+  <meta name="twitter:title" content="12 Common statistical models | Biostatistics Handbook" />
   
   <meta name="twitter:description" content="<p>This is a minimal example of using the bookdown package to write a book.
 The HTML output format for this example is bookdown::gitbook,
@@ -29,7 +29,7 @@ set in the _output.yml file.</p>" />
 <meta name="author" content="Daniel He" />
 
 
-<meta name="date" content="2024-03-08" />
+<meta name="date" content="2026-02-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -62,6 +62,7 @@ set in the _output.yml file.</p>" />
 
 
 <style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -99,7 +100,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -112,7 +113,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -144,10 +145,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">My Little Handbook</a></li>
+<li><a href="./">Biostatistics Handbook</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>About</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
 <li class="chapter" data-level="1" data-path="data-wrangling.html"><a href="data-wrangling.html"><i class="fa fa-check"></i><b>1</b> Data Wrangling</a>
 <ul>
 <li class="chapter" data-level="1.1" data-path="data-wrangling.html"><a href="data-wrangling.html#how-to-do-data-wrangling"><i class="fa fa-check"></i><b>1.1</b> How to do data wrangling</a>
@@ -178,76 +179,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.3" data-path="data-wrangling.html"><a href="data-wrangling.html#how-to-creat-table-1-with-test"><i class="fa fa-check"></i><b>1.3</b> How to creat table 1 with test</a></li>
 <li class="chapter" data-level="1.4" data-path="data-wrangling.html"><a href="data-wrangling.html#imputing-missing-data-with-mice"><i class="fa fa-check"></i><b>1.4</b> Imputing Missing Data with MICE</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="machine-learning.html"><a href="machine-learning.html"><i class="fa fa-check"></i><b>2</b> Machine learning</a>
-<ul>
-<li class="chapter" data-level="2.1" data-path="machine-learning.html"><a href="machine-learning.html#machine-learning-workflow"><i class="fa fa-check"></i><b>2.1</b> Machine learning workflow</a>
-<ul>
-<li class="chapter" data-level="2.1.1" data-path="machine-learning.html"><a href="machine-learning.html#loading-packages-and-datasets"><i class="fa fa-check"></i><b>2.1.1</b> Loading packages and datasets</a></li>
-<li class="chapter" data-level="2.1.2" data-path="machine-learning.html"><a href="machine-learning.html#spliting-the-dataset-into-training-and-test-data-sets"><i class="fa fa-check"></i><b>2.1.2</b> Spliting the dataset into training and test data sets</a></li>
-<li class="chapter" data-level="2.1.3" data-path="machine-learning.html"><a href="machine-learning.html#implement-data-imputation"><i class="fa fa-check"></i><b>2.1.3</b> Implement data imputation</a></li>
-<li class="chapter" data-level="2.1.4" data-path="machine-learning.html"><a href="machine-learning.html#one-hot-endcoding"><i class="fa fa-check"></i><b>2.1.4</b> One-hot-endcoding</a></li>
-<li class="chapter" data-level="2.1.5" data-path="machine-learning.html"><a href="machine-learning.html#normalizing-features"><i class="fa fa-check"></i><b>2.1.5</b> Normalizing features</a></li>
-<li class="chapter" data-level="2.1.6" data-path="machine-learning.html"><a href="machine-learning.html#plot-features"><i class="fa fa-check"></i><b>2.1.6</b> Plot features</a></li>
-<li class="chapter" data-level="2.1.7" data-path="machine-learning.html"><a href="machine-learning.html#recursive-feature-elimination-rfe"><i class="fa fa-check"></i><b>2.1.7</b> <strong>Recursive feature elimination (rfe)</strong></a></li>
-<li class="chapter" data-level="2.1.8" data-path="machine-learning.html"><a href="machine-learning.html#training-a-model-multivariate-adaptive-regression-splines-mars"><i class="fa fa-check"></i><b>2.1.8</b> Training a model <code>Multivariate Adaptive Regression Splines (MARS)</code></a></li>
-<li class="chapter" data-level="2.1.9" data-path="machine-learning.html"><a href="machine-learning.html#prepare-the-test-data-set"><i class="fa fa-check"></i><b>2.1.9</b> Prepare the test data set</a></li>
-<li class="chapter" data-level="2.1.10" data-path="machine-learning.html"><a href="machine-learning.html#prediction-uisng-testdata"><i class="fa fa-check"></i><b>2.1.10</b> Prediction uisng testdata</a></li>
-<li class="chapter" data-level="2.1.11" data-path="machine-learning.html"><a href="machine-learning.html#compute-confusion-matrix"><i class="fa fa-check"></i><b>2.1.11</b> Compute confusion matrix</a></li>
-<li class="chapter" data-level="2.1.12" data-path="machine-learning.html"><a href="machine-learning.html#tuning-hyperparameter-to-optimize-the-model"><i class="fa fa-check"></i><b>2.1.12</b> Tuning hyperparameter to optimize the model</a></li>
-<li class="chapter" data-level="2.1.13" data-path="machine-learning.html"><a href="machine-learning.html#other-marchine-learning-algorithms"><i class="fa fa-check"></i><b>2.1.13</b> Other marchine learning algorithms</a></li>
-<li class="chapter" data-level="2.1.14" data-path="machine-learning.html"><a href="machine-learning.html#comparisons-of-different-models"><i class="fa fa-check"></i><b>2.1.14</b> Comparisons of different models</a></li>
-<li class="chapter" data-level="2.1.15" data-path="machine-learning.html"><a href="machine-learning.html#plot-comparisons-of-models"><i class="fa fa-check"></i><b>2.1.15</b> Plot comparisons of models</a></li>
-<li class="chapter" data-level="2.1.16" data-path="machine-learning.html"><a href="machine-learning.html#ensemble-predictions-from-multiple-models"><i class="fa fa-check"></i><b>2.1.16</b> Ensemble predictions from multiple models</a></li>
-</ul></li>
-<li class="chapter" data-level="2.2" data-path="machine-learning.html"><a href="machine-learning.html#knn-classifier"><i class="fa fa-check"></i><b>2.2</b> KNN Classifier</a>
-<ul>
-<li class="chapter" data-level="2.2.1" data-path="machine-learning.html"><a href="machine-learning.html#splitting-data"><i class="fa fa-check"></i><b>2.2.1</b> Splitting data</a></li>
-<li class="chapter" data-level="2.2.2" data-path="machine-learning.html"><a href="machine-learning.html#creating-knn-model"><i class="fa fa-check"></i><b>2.2.2</b> Creating KNN model</a></li>
-<li class="chapter" data-level="2.2.3" data-path="machine-learning.html"><a href="machine-learning.html#model-evaluation"><i class="fa fa-check"></i><b>2.2.3</b> Model Evaluation</a></li>
-<li class="chapter" data-level="2.2.4" data-path="machine-learning.html"><a href="machine-learning.html#calculate-accuracy-with-different-k"><i class="fa fa-check"></i><b>2.2.4</b> Calculate accuracy with different K</a></li>
-<li class="chapter" data-level="2.2.5" data-path="machine-learning.html"><a href="machine-learning.html#optimization"><i class="fa fa-check"></i><b>2.2.5</b> Optimization</a></li>
-<li class="chapter" data-level="2.2.6" data-path="machine-learning.html"><a href="machine-learning.html#visualization"><i class="fa fa-check"></i><b>2.2.6</b> Visualization</a></li>
-</ul></li>
-<li class="chapter" data-level="2.3" data-path="machine-learning.html"><a href="machine-learning.html#knn-regression"><i class="fa fa-check"></i><b>2.3</b> KNN regression</a>
-<ul>
-<li class="chapter" data-level="2.3.1" data-path="machine-learning.html"><a href="machine-learning.html#data-exploring"><i class="fa fa-check"></i><b>2.3.1</b> Data exploring</a></li>
-<li class="chapter" data-level="2.3.2" data-path="machine-learning.html"><a href="machine-learning.html#prepareing-data"><i class="fa fa-check"></i><b>2.3.2</b> Prepareing data</a></li>
-<li class="chapter" data-level="2.3.3" data-path="machine-learning.html"><a href="machine-learning.html#creating-model"><i class="fa fa-check"></i><b>2.3.3</b> Creating model</a></li>
-<li class="chapter" data-level="2.3.4" data-path="machine-learning.html"><a href="machine-learning.html#evaluation"><i class="fa fa-check"></i><b>2.3.4</b> Evaluation</a></li>
-<li class="chapter" data-level="2.3.5" data-path="machine-learning.html"><a href="machine-learning.html#optimization-1"><i class="fa fa-check"></i><b>2.3.5</b> Optimization</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="3" data-path="deep-learning.html"><a href="deep-learning.html"><i class="fa fa-check"></i><b>3</b> Deep learning</a>
-<ul>
-<li class="chapter" data-level="3.1" data-path="deep-learning.html"><a href="deep-learning.html#deep-neural-network"><i class="fa fa-check"></i><b>3.1</b> Deep neural network</a>
-<ul>
-<li class="chapter" data-level="3.1.1" data-path="deep-learning.html"><a href="deep-learning.html#load-data"><i class="fa fa-check"></i><b>3.1.1</b> Load data</a></li>
-<li class="chapter" data-level="3.1.2" data-path="deep-learning.html"><a href="deep-learning.html#process-data-and-variable"><i class="fa fa-check"></i><b>3.1.2</b> Process data and variable</a></li>
-<li class="chapter" data-level="3.1.3" data-path="deep-learning.html"><a href="deep-learning.html#split-data-into-training-and-test-datasets"><i class="fa fa-check"></i><b>3.1.3</b> Split data into training and test datasets</a></li>
-<li class="chapter" data-level="3.1.4" data-path="deep-learning.html"><a href="deep-learning.html#creating-neural-network-model"><i class="fa fa-check"></i><b>3.1.4</b> Creating neural network model</a></li>
-<li class="chapter" data-level="3.1.5" data-path="deep-learning.html"><a href="deep-learning.html#evaluation-1"><i class="fa fa-check"></i><b>3.1.5</b> Evaluation</a></li>
-</ul></li>
-<li class="chapter" data-level="3.2" data-path="deep-learning.html"><a href="deep-learning.html#deep-neural-networks-for-regression"><i class="fa fa-check"></i><b>3.2</b> Deep neural networks for regression</a>
-<ul>
-<li class="chapter" data-level="3.2.1" data-path="deep-learning.html"><a href="deep-learning.html#loading-packages-and-data-sets"><i class="fa fa-check"></i><b>3.2.1</b> Loading packages and data sets</a></li>
-<li class="chapter" data-level="3.2.2" data-path="deep-learning.html"><a href="deep-learning.html#convert-dataframe-to-matrix-without-dimnames"><i class="fa fa-check"></i><b>3.2.2</b> Convert dataframe to matrix without dimnames</a></li>
-<li class="chapter" data-level="3.2.3" data-path="deep-learning.html"><a href="deep-learning.html#spiting-training-and-test-data"><i class="fa fa-check"></i><b>3.2.3</b> Spiting training and test data</a></li>
-<li class="chapter" data-level="3.2.4" data-path="deep-learning.html"><a href="deep-learning.html#normalizing-xtrain-and-xtest-data"><i class="fa fa-check"></i><b>3.2.4</b> Normalizing <code>xtrain</code> and <code>xtest</code> data</a></li>
-<li class="chapter" data-level="3.2.5" data-path="deep-learning.html"><a href="deep-learning.html#creating-the-model"><i class="fa fa-check"></i><b>3.2.5</b> Creating the model</a></li>
-<li class="chapter" data-level="3.2.6" data-path="deep-learning.html"><a href="deep-learning.html#compiling-the-model-1"><i class="fa fa-check"></i><b>3.2.6</b> Compiling the model</a></li>
-<li class="chapter" data-level="3.2.7" data-path="deep-learning.html"><a href="deep-learning.html#fitting-the-model"><i class="fa fa-check"></i><b>3.2.7</b> Fitting the model</a></li>
-<li class="chapter" data-level="3.2.8" data-path="deep-learning.html"><a href="deep-learning.html#plot-the-training-process"><i class="fa fa-check"></i><b>3.2.8</b> Plot the training process</a></li>
-</ul></li>
-<li class="chapter" data-level="3.3" data-path="deep-learning.html"><a href="deep-learning.html#convolutional-neural-netwrok"><i class="fa fa-check"></i><b>3.3</b> Convolutional neural netwrok</a>
-<ul>
-<li class="chapter" data-level="3.3.1" data-path="deep-learning.html"><a href="deep-learning.html#import-library"><i class="fa fa-check"></i><b>3.3.1</b> Import library</a></li>
-<li class="chapter" data-level="3.3.2" data-path="deep-learning.html"><a href="deep-learning.html#importing-the-data"><i class="fa fa-check"></i><b>3.3.2</b> Importing the data</a></li>
-<li class="chapter" data-level="3.3.3" data-path="deep-learning.html"><a href="deep-learning.html#preparing-the-data"><i class="fa fa-check"></i><b>3.3.3</b> preparing the data</a></li>
-<li class="chapter" data-level="3.3.4" data-path="deep-learning.html"><a href="deep-learning.html#creating-the-model-1"><i class="fa fa-check"></i><b>3.3.4</b> Creating the model</a></li>
-<li class="chapter" data-level="3.3.5" data-path="deep-learning.html"><a href="deep-learning.html#training"><i class="fa fa-check"></i><b>3.3.5</b> Training</a></li>
-<li class="chapter" data-level="3.3.6" data-path="deep-learning.html"><a href="deep-learning.html#evaluating-the-accuracy"><i class="fa fa-check"></i><b>3.3.6</b> Evaluating the accuracy</a></li>
-</ul></li>
-</ul></li>
+<li class="chapter" data-level="2" data-path="machine-learning.html"><a href="machine-learning.html"><i class="fa fa-check"></i><b>2</b> Machine learning</a></li>
+<li class="chapter" data-level="3" data-path="deep-learning.html"><a href="deep-learning.html"><i class="fa fa-check"></i><b>3</b> Deep learning</a></li>
 <li class="chapter" data-level="4" data-path="data-visualization.html"><a href="data-visualization.html"><i class="fa fa-check"></i><b>4</b> Data visualization</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="data-visualization.html"><a href="data-visualization.html#data-visualization-introduction"><i class="fa fa-check"></i><b>4.1</b> Data visualization introduction</a>
@@ -269,7 +202,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="4.3" data-path="data-visualization.html"><a href="data-visualization.html#bar-chart"><i class="fa fa-check"></i><b>4.3</b> Bar chart</a>
 <ul>
-<li class="chapter" data-level="4.3.1" data-path="data-visualization.html"><a href="data-visualization.html#grouped-bar-chart"><i class="fa fa-check"></i><b>4.3.1</b> Grouped bar chart</a></li>
+<li class="chapter" data-level="4.3.1" data-path="data-visualization.html"><a href="data-visualization.html#add-some-options-for-the-whole-ggplot-rather-than-layers"><i class="fa fa-check"></i><b>4.3.1</b> Add some options for the whole ggplot rather than layers</a></li>
+<li class="chapter" data-level="4.3.2" data-path="data-visualization.html"><a href="data-visualization.html#grouped-bar-chart"><i class="fa fa-check"></i><b>4.3.2</b> Grouped bar chart</a></li>
 </ul></li>
 <li class="chapter" data-level="4.4" data-path="data-visualization.html"><a href="data-visualization.html#line-charts"><i class="fa fa-check"></i><b>4.4</b> Line charts</a>
 <ul>
@@ -306,21 +240,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.1.3" data-path="basic-statistics.html"><a href="basic-statistics.html#get-directory-and-write-data-out-and-in"><i class="fa fa-check"></i><b>5.1.3</b> Get directory and write data out and in</a></li>
 <li class="chapter" data-level="5.1.4" data-path="basic-statistics.html"><a href="basic-statistics.html#function"><i class="fa fa-check"></i><b>5.1.4</b> Function</a></li>
 <li class="chapter" data-level="5.1.5" data-path="basic-statistics.html"><a href="basic-statistics.html#plot"><i class="fa fa-check"></i><b>5.1.5</b> Plot</a></li>
-<li class="chapter" data-level="5.1.6" data-path="basic-statistics.html"><a href="basic-statistics.html#class-of-dataframe"><i class="fa fa-check"></i><b>5.1.6</b> Class of dataframe</a></li>
-<li class="chapter" data-level="5.1.7" data-path="basic-statistics.html"><a href="basic-statistics.html#generate-new-variable-for-dataframe-character"><i class="fa fa-check"></i><b>5.1.7</b> Generate new variable for dataframe (character)</a></li>
-<li class="chapter" data-level="5.1.8" data-path="basic-statistics.html"><a href="basic-statistics.html#create-a-new-dataframe-using-rnorm---random-number-from-distribution"><i class="fa fa-check"></i><b>5.1.8</b> Create a new dataframe using ‘rnorm’ - random number from distribution</a></li>
-<li class="chapter" data-level="5.1.9" data-path="basic-statistics.html"><a href="basic-statistics.html#left-join-two-dataframes"><i class="fa fa-check"></i><b>5.1.9</b> Left join two dataframes</a></li>
-<li class="chapter" data-level="5.1.10" data-path="basic-statistics.html"><a href="basic-statistics.html#select-variables"><i class="fa fa-check"></i><b>5.1.10</b> Select variables</a></li>
-<li class="chapter" data-level="5.1.11" data-path="basic-statistics.html"><a href="basic-statistics.html#filter-observations"><i class="fa fa-check"></i><b>5.1.11</b> Filter observations</a></li>
-<li class="chapter" data-level="5.1.12" data-path="basic-statistics.html"><a href="basic-statistics.html#append-rows"><i class="fa fa-check"></i><b>5.1.12</b> Append rows</a></li>
-<li class="chapter" data-level="5.1.13" data-path="basic-statistics.html"><a href="basic-statistics.html#create-new-variables-instead-of-old-variables"><i class="fa fa-check"></i><b>5.1.13</b> Create new variables instead of old variables</a></li>
-<li class="chapter" data-level="5.1.14" data-path="basic-statistics.html"><a href="basic-statistics.html#summarise-statistics"><i class="fa fa-check"></i><b>5.1.14</b> summarise statistics</a></li>
-<li class="chapter" data-level="5.1.15" data-path="basic-statistics.html"><a href="basic-statistics.html#group-dataframe-then-summarise-statistics"><i class="fa fa-check"></i><b>5.1.15</b> Group dataframe then summarise statistics</a></li>
-<li class="chapter" data-level="5.1.16" data-path="basic-statistics.html"><a href="basic-statistics.html#ungroup-then-summarise-statistics"><i class="fa fa-check"></i><b>5.1.16</b> Ungroup then summarise statistics</a></li>
-<li class="chapter" data-level="5.1.17" data-path="basic-statistics.html"><a href="basic-statistics.html#summary-linear-regression-model"><i class="fa fa-check"></i><b>5.1.17</b> Summary linear regression model</a></li>
-<li class="chapter" data-level="5.1.18" data-path="basic-statistics.html"><a href="basic-statistics.html#create-frequency-table"><i class="fa fa-check"></i><b>5.1.18</b> Create frequency table</a></li>
-<li class="chapter" data-level="5.1.19" data-path="basic-statistics.html"><a href="basic-statistics.html#value-and-variable-label"><i class="fa fa-check"></i><b>5.1.19</b> Value and variable label</a></li>
-<li class="chapter" data-level="5.1.20" data-path="basic-statistics.html"><a href="basic-statistics.html#recode-a-variable"><i class="fa fa-check"></i><b>5.1.20</b> Recode a variable</a></li>
+<li class="chapter" data-level="5.1.6" data-path="basic-statistics.html"><a href="basic-statistics.html#build-model-and-plot"><i class="fa fa-check"></i><b>5.1.6</b> Build model and plot</a></li>
+<li class="chapter" data-level="5.1.7" data-path="basic-statistics.html"><a href="basic-statistics.html#rename-names-of-columns"><i class="fa fa-check"></i><b>5.1.7</b> Rename names of columns</a></li>
+<li class="chapter" data-level="5.1.8" data-path="basic-statistics.html"><a href="basic-statistics.html#class-of-dataframe"><i class="fa fa-check"></i><b>5.1.8</b> Class of dataframe</a></li>
+<li class="chapter" data-level="5.1.9" data-path="basic-statistics.html"><a href="basic-statistics.html#generate-new-variable-for-dataframe-character"><i class="fa fa-check"></i><b>5.1.9</b> Generate new variable for dataframe (character)</a></li>
+<li class="chapter" data-level="5.1.10" data-path="basic-statistics.html"><a href="basic-statistics.html#create-a-new-dataframe-using-rnorm---random-number-from-distribution"><i class="fa fa-check"></i><b>5.1.10</b> Create a new dataframe using ‘rnorm’ - random number from distribution</a></li>
+<li class="chapter" data-level="5.1.11" data-path="basic-statistics.html"><a href="basic-statistics.html#left-join-two-dataframes"><i class="fa fa-check"></i><b>5.1.11</b> Left join two dataframes</a></li>
+<li class="chapter" data-level="5.1.12" data-path="basic-statistics.html"><a href="basic-statistics.html#select-variables"><i class="fa fa-check"></i><b>5.1.12</b> Select variables</a></li>
+<li class="chapter" data-level="5.1.13" data-path="basic-statistics.html"><a href="basic-statistics.html#filter-observations"><i class="fa fa-check"></i><b>5.1.13</b> Filter observations</a></li>
+<li class="chapter" data-level="5.1.14" data-path="basic-statistics.html"><a href="basic-statistics.html#append-rows"><i class="fa fa-check"></i><b>5.1.14</b> Append rows</a></li>
+<li class="chapter" data-level="5.1.15" data-path="basic-statistics.html"><a href="basic-statistics.html#create-new-variables-instead-of-old-variables"><i class="fa fa-check"></i><b>5.1.15</b> Create new variables instead of old variables</a></li>
+<li class="chapter" data-level="5.1.16" data-path="basic-statistics.html"><a href="basic-statistics.html#summarise-statistics"><i class="fa fa-check"></i><b>5.1.16</b> summarise statistics</a></li>
+<li class="chapter" data-level="5.1.17" data-path="basic-statistics.html"><a href="basic-statistics.html#group-dataframe-then-summarise-statistics"><i class="fa fa-check"></i><b>5.1.17</b> Group dataframe then summarise statistics</a></li>
+<li class="chapter" data-level="5.1.18" data-path="basic-statistics.html"><a href="basic-statistics.html#ungroup-then-summarise-statistics"><i class="fa fa-check"></i><b>5.1.18</b> Ungroup then summarise statistics</a></li>
+<li class="chapter" data-level="5.1.19" data-path="basic-statistics.html"><a href="basic-statistics.html#summary-linear-regression-model"><i class="fa fa-check"></i><b>5.1.19</b> Summary linear regression model</a></li>
+<li class="chapter" data-level="5.1.20" data-path="basic-statistics.html"><a href="basic-statistics.html#create-frequency-table"><i class="fa fa-check"></i><b>5.1.20</b> Create frequency table</a></li>
+<li class="chapter" data-level="5.1.21" data-path="basic-statistics.html"><a href="basic-statistics.html#value-and-variable-label"><i class="fa fa-check"></i><b>5.1.21</b> Value and variable label</a></li>
+<li class="chapter" data-level="5.1.22" data-path="basic-statistics.html"><a href="basic-statistics.html#recode-a-variable"><i class="fa fa-check"></i><b>5.1.22</b> Recode a variable</a></li>
 </ul></li>
 <li class="chapter" data-level="5.2" data-path="basic-statistics.html"><a href="basic-statistics.html#central-limit-theorem"><i class="fa fa-check"></i><b>5.2</b> Central Limit Theorem</a></li>
 <li class="chapter" data-level="5.3" data-path="basic-statistics.html"><a href="basic-statistics.html#common-statistical-distribution"><i class="fa fa-check"></i><b>5.3</b> Common statistical distribution</a></li>
@@ -333,155 +269,175 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.1.2" data-path="statistical-models.html"><a href="statistical-models.html#population-regression-function"><i class="fa fa-check"></i><b>6.1.2</b> Population regression function</a></li>
 <li class="chapter" data-level="6.1.3" data-path="statistical-models.html"><a href="statistical-models.html#population-regression-model"><i class="fa fa-check"></i><b>6.1.3</b> Population regression model</a></li>
 <li class="chapter" data-level="6.1.4" data-path="statistical-models.html"><a href="statistical-models.html#sample-regression-model"><i class="fa fa-check"></i><b>6.1.4</b> Sample regression model</a></li>
-<li class="chapter" data-level="6.1.5" data-path="statistical-models.html"><a href="statistical-models.html#solve-hatbeta_1hatbeta_2-and-variance"><i class="fa fa-check"></i><b>6.1.5</b> Solve <span class="math inline">\(\hat{\beta_1},\hat{\beta_2}\)</span> and variance</a></li>
-<li class="chapter" data-level="6.1.6" data-path="statistical-models.html"><a href="statistical-models.html#calculate-the-variance-hatsigma2-of-error-e_i"><i class="fa fa-check"></i><b>6.1.6</b> Calculate the variance <span class="math inline">\(\hat{\sigma}^2\)</span> of error <span class="math inline">\(e_i\)</span></a></li>
-<li class="chapter" data-level="6.1.7" data-path="statistical-models.html"><a href="statistical-models.html#sum-of-squares-decomposition"><i class="fa fa-check"></i><b>6.1.7</b> Sum of squares decomposition</a></li>
-<li class="chapter" data-level="6.1.8" data-path="statistical-models.html"><a href="statistical-models.html#coefficient-of-determination-r2-and-goodness-of-fit"><i class="fa fa-check"></i><b>6.1.8</b> Coefficient of determination <span class="math inline">\(R^2\)</span> and goodness of fit</a></li>
-<li class="chapter" data-level="6.1.9" data-path="statistical-models.html"><a href="statistical-models.html#test-of-regression-coefficients"><i class="fa fa-check"></i><b>6.1.9</b> Test of regression coefficients</a></li>
-<li class="chapter" data-level="6.1.10" data-path="statistical-models.html"><a href="statistical-models.html#statistical-test-of-model"><i class="fa fa-check"></i><b>6.1.10</b> Statistical test of model</a></li>
-<li class="chapter" data-level="6.1.11" data-path="statistical-models.html"><a href="statistical-models.html#mean-prediction"><i class="fa fa-check"></i><b>6.1.11</b> Mean prediction</a></li>
-<li class="chapter" data-level="6.1.12" data-path="statistical-models.html"><a href="statistical-models.html#individual-prediction"><i class="fa fa-check"></i><b>6.1.12</b> Individual prediction</a></li>
+<li class="chapter" data-level="6.1.5" data-path="statistical-models.html"><a href="statistical-models.html#least-squares-minimize-qsum-y_i-haty_i2"><i class="fa fa-check"></i><b>6.1.5</b> Least squares: minimize <span class="math inline">\(Q=\sum (Y_i-\hat{Y}_i)^2\)</span></a></li>
+<li class="chapter" data-level="6.1.6" data-path="statistical-models.html"><a href="statistical-models.html#solve-hatbeta_1hatbeta_2-and-variance"><i class="fa fa-check"></i><b>6.1.6</b> Solve <span class="math inline">\(\hat{\beta}_1,\hat{\beta}_2\)</span> and variance</a></li>
+<li class="chapter" data-level="6.1.7" data-path="statistical-models.html"><a href="statistical-models.html#calculate-the-variance-hatsigma2-of-error-e_i"><i class="fa fa-check"></i><b>6.1.7</b> Calculate the variance <span class="math inline">\(\hat{\sigma}^2\)</span> of error <span class="math inline">\(e_i\)</span></a></li>
+<li class="chapter" data-level="6.1.8" data-path="statistical-models.html"><a href="statistical-models.html#sum-of-squares-decomposition"><i class="fa fa-check"></i><b>6.1.8</b> Sum of squares decomposition</a></li>
+<li class="chapter" data-level="6.1.9" data-path="statistical-models.html"><a href="statistical-models.html#coefficient-of-determination-r2-and-goodness-of-fit"><i class="fa fa-check"></i><b>6.1.9</b> Coefficient of determination <span class="math inline">\(R^2\)</span> and goodness of fit</a></li>
+<li class="chapter" data-level="6.1.10" data-path="statistical-models.html"><a href="statistical-models.html#test-of-regression-coefficients"><i class="fa fa-check"></i><b>6.1.10</b> Test of regression coefficients</a></li>
+<li class="chapter" data-level="6.1.11" data-path="statistical-models.html"><a href="statistical-models.html#statistical-test-of-model"><i class="fa fa-check"></i><b>6.1.11</b> Statistical test of model</a></li>
+<li class="chapter" data-level="6.1.12" data-path="statistical-models.html"><a href="statistical-models.html#mean-prediction"><i class="fa fa-check"></i><b>6.1.12</b> Mean prediction</a></li>
+<li class="chapter" data-level="6.1.13" data-path="statistical-models.html"><a href="statistical-models.html#individual-prediction"><i class="fa fa-check"></i><b>6.1.13</b> Individual prediction</a></li>
 </ul></li>
 <li class="chapter" data-level="6.2" data-path="statistical-models.html"><a href="statistical-models.html#multiple-linear-regression"><i class="fa fa-check"></i><b>6.2</b> Multiple linear regression</a>
 <ul>
 <li class="chapter" data-level="6.2.1" data-path="statistical-models.html"><a href="statistical-models.html#matrix-format"><i class="fa fa-check"></i><b>6.2.1</b> Matrix format</a></li>
 <li class="chapter" data-level="6.2.2" data-path="statistical-models.html"><a href="statistical-models.html#variance-covariance-matrix-of-random-errors"><i class="fa fa-check"></i><b>6.2.2</b> Variance covariance matrix of random errors</a></li>
-<li class="chapter" data-level="6.2.3" data-path="statistical-models.html"><a href="statistical-models.html#minimize-q-sumy-haty2"><i class="fa fa-check"></i><b>6.2.3</b> Minimize Q, <span class="math inline">\(\sum{(y-\hat{y})^2}\)</span></a></li>
+<li class="chapter" data-level="6.2.3" data-path="statistical-models.html"><a href="statistical-models.html#minimize-qsum-y-haty2"><i class="fa fa-check"></i><b>6.2.3</b> Minimize <span class="math inline">\(Q=\sum (y-\hat{y})^2\)</span></a></li>
 <li class="chapter" data-level="6.2.4" data-path="statistical-models.html"><a href="statistical-models.html#solve-hatbeta-by-derivation"><i class="fa fa-check"></i><b>6.2.4</b> Solve <span class="math inline">\(\hat{\beta}\)</span> by derivation</a></li>
-<li class="chapter" data-level="6.2.5" data-path="statistical-models.html"><a href="statistical-models.html#solve-hatsigma_beta2"><i class="fa fa-check"></i><b>6.2.5</b> Solve <span class="math inline">\(\hat{\sigma_\beta}^2\)</span></a></li>
-<li class="chapter" data-level="6.2.6" data-path="statistical-models.html"><a href="statistical-models.html#solve-s2mathbfhatbeta"><i class="fa fa-check"></i><b>6.2.6</b> Solve <span class="math inline">\(S^2(\mathbf{\hat{\beta}})\)</span></a></li>
+<li class="chapter" data-level="6.2.5" data-path="statistical-models.html"><a href="statistical-models.html#solve-vartext-covmathbfhatbeta"><i class="fa fa-check"></i><b>6.2.5</b> Solve <span class="math inline">\(var\text{-}cov(\mathbf{\hat{\beta}})\)</span></a></li>
+<li class="chapter" data-level="6.2.6" data-path="statistical-models.html"><a href="statistical-models.html#solve-s2mathbfhatbeta-sample"><i class="fa fa-check"></i><b>6.2.6</b> Solve <span class="math inline">\(S^2(\mathbf{\hat{\beta}})\)</span> (sample)</a></li>
 <li class="chapter" data-level="6.2.7" data-path="statistical-models.html"><a href="statistical-models.html#sum-of-squares-decomposition-matrix-format"><i class="fa fa-check"></i><b>6.2.7</b> Sum of squares decomposition (matrix format)</a></li>
 <li class="chapter" data-level="6.2.8" data-path="statistical-models.html"><a href="statistical-models.html#determination-coefficient-r2-and-goodness-of-fit"><i class="fa fa-check"></i><b>6.2.8</b> Determination coefficient <span class="math inline">\(R^2\)</span> and goodness of fit</a></li>
 <li class="chapter" data-level="6.2.9" data-path="statistical-models.html"><a href="statistical-models.html#test-of-regression-coefficients-1"><i class="fa fa-check"></i><b>6.2.9</b> Test of regression coefficients</a></li>
 <li class="chapter" data-level="6.2.10" data-path="statistical-models.html"><a href="statistical-models.html#test-of-model"><i class="fa fa-check"></i><b>6.2.10</b> Test of model</a></li>
-<li class="chapter" data-level="6.2.11" data-path="statistical-models.html"><a href="statistical-models.html#mean-prediction-1"><i class="fa fa-check"></i><b>6.2.11</b> Mean prediction</a></li>
-<li class="chapter" data-level="6.2.12" data-path="statistical-models.html"><a href="statistical-models.html#individual-prediction-1"><i class="fa fa-check"></i><b>6.2.12</b> Individual prediction</a></li>
+<li class="chapter" data-level="6.2.11" data-path="statistical-models.html"><a href="statistical-models.html#mean-prediction-multiple-regression"><i class="fa fa-check"></i><b>6.2.11</b> Mean prediction (multiple regression)</a></li>
+<li class="chapter" data-level="6.2.12" data-path="statistical-models.html"><a href="statistical-models.html#individual-prediction-multiple-regression"><i class="fa fa-check"></i><b>6.2.12</b> Individual prediction (multiple regression)</a></li>
 </ul></li>
 <li class="chapter" data-level="6.3" data-path="statistical-models.html"><a href="statistical-models.html#multiple-linear-regression-practice"><i class="fa fa-check"></i><b>6.3</b> Multiple linear regression practice</a>
 <ul>
-<li class="chapter" data-level="6.3.1" data-path="statistical-models.html"><a href="statistical-models.html#loading-and-describing-data"><i class="fa fa-check"></i><b>6.3.1</b> Loading and describing data</a></li>
-<li class="chapter" data-level="6.3.2" data-path="statistical-models.html"><a href="statistical-models.html#create-table-1"><i class="fa fa-check"></i><b>6.3.2</b> Create table 1</a></li>
-<li class="chapter" data-level="6.3.3" data-path="statistical-models.html"><a href="statistical-models.html#missingness-checking"><i class="fa fa-check"></i><b>6.3.3</b> Missingness checking</a></li>
-<li class="chapter" data-level="6.3.4" data-path="statistical-models.html"><a href="statistical-models.html#exploratory-data-analysis"><i class="fa fa-check"></i><b>6.3.4</b> Exploratory data analysis</a></li>
-<li class="chapter" data-level="6.3.5" data-path="statistical-models.html"><a href="statistical-models.html#transformations"><i class="fa fa-check"></i><b>6.3.5</b> Transformations</a></li>
-<li class="chapter" data-level="6.3.6" data-path="statistical-models.html"><a href="statistical-models.html#data-imputation-and-normalization"><i class="fa fa-check"></i><b>6.3.6</b> Data imputation and normalization</a></li>
-<li class="chapter" data-level="6.3.7" data-path="statistical-models.html"><a href="statistical-models.html#generate-dummy-variables"><i class="fa fa-check"></i><b>6.3.7</b> Generate dummy variables</a></li>
-<li class="chapter" data-level="6.3.8" data-path="statistical-models.html"><a href="statistical-models.html#spliting-data-into-trainning-data-and-test-data"><i class="fa fa-check"></i><b>6.3.8</b> Spliting data into trainning data and test data</a></li>
-<li class="chapter" data-level="6.3.9" data-path="statistical-models.html"><a href="statistical-models.html#step-regression"><i class="fa fa-check"></i><b>6.3.9</b> Step regression</a></li>
-<li class="chapter" data-level="6.3.10" data-path="statistical-models.html"><a href="statistical-models.html#create-a-model-after-selecting-variables"><i class="fa fa-check"></i><b>6.3.10</b> Create a model after selecting variables</a></li>
-<li class="chapter" data-level="6.3.11" data-path="statistical-models.html"><a href="statistical-models.html#multicollinearity-checking"><i class="fa fa-check"></i><b>6.3.11</b> Multicollinearity checking</a></li>
-<li class="chapter" data-level="6.3.12" data-path="statistical-models.html"><a href="statistical-models.html#plot-model-to-check-assumptions"><i class="fa fa-check"></i><b>6.3.12</b> Plot model to check assumptions</a></li>
-<li class="chapter" data-level="6.3.13" data-path="statistical-models.html"><a href="statistical-models.html#add-polynomial-of-quadratic-term"><i class="fa fa-check"></i><b>6.3.13</b> Add polynomial of quadratic term</a></li>
-<li class="chapter" data-level="6.3.14" data-path="statistical-models.html"><a href="statistical-models.html#add-interaction-terms"><i class="fa fa-check"></i><b>6.3.14</b> Add interaction terms</a></li>
-<li class="chapter" data-level="6.3.15" data-path="statistical-models.html"><a href="statistical-models.html#robust-regression"><i class="fa fa-check"></i><b>6.3.15</b> Robust regression</a></li>
-<li class="chapter" data-level="6.3.16" data-path="statistical-models.html"><a href="statistical-models.html#create-a-model-before-transforming-data"><i class="fa fa-check"></i><b>6.3.16</b> Create a model before transforming data</a></li>
-<li class="chapter" data-level="6.3.17" data-path="statistical-models.html"><a href="statistical-models.html#k-fold-cross-validation"><i class="fa fa-check"></i><b>6.3.17</b> K-fold cross validation</a></li>
-<li class="chapter" data-level="6.3.18" data-path="statistical-models.html"><a href="statistical-models.html#nonnest-models-comparisons"><i class="fa fa-check"></i><b>6.3.18</b> Nonnest models comparisons</a></li>
-<li class="chapter" data-level="6.3.19" data-path="statistical-models.html"><a href="statistical-models.html#create-forest-plot-for-coefficients"><i class="fa fa-check"></i><b>6.3.19</b> Create forest plot for coefficients</a></li>
-<li class="chapter" data-level="6.3.20" data-path="statistical-models.html"><a href="statistical-models.html#relative-importance"><i class="fa fa-check"></i><b>6.3.20</b> Relative Importance</a></li>
-<li class="chapter" data-level="6.3.21" data-path="statistical-models.html"><a href="statistical-models.html#model-prediction"><i class="fa fa-check"></i><b>6.3.21</b> Model prediction</a></li>
-<li class="chapter" data-level="6.3.22" data-path="statistical-models.html"><a href="statistical-models.html#external-data-validation"><i class="fa fa-check"></i><b>6.3.22</b> External data validation</a></li>
+<li class="chapter" data-level="6.3.1" data-path="statistical-models.html"><a href="statistical-models.html#load-required-packages"><i class="fa fa-check"></i><b>6.3.1</b> Load required packages</a></li>
+<li class="chapter" data-level="6.3.2" data-path="statistical-models.html"><a href="statistical-models.html#loading-and-describing-data"><i class="fa fa-check"></i><b>6.3.2</b> Loading and describing data</a></li>
+<li class="chapter" data-level="6.3.3" data-path="statistical-models.html"><a href="statistical-models.html#create-table-1"><i class="fa fa-check"></i><b>6.3.3</b> Create table 1</a></li>
+<li class="chapter" data-level="6.3.4" data-path="statistical-models.html"><a href="statistical-models.html#missingness-checking"><i class="fa fa-check"></i><b>6.3.4</b> Missingness checking</a></li>
+<li class="chapter" data-level="6.3.5" data-path="statistical-models.html"><a href="statistical-models.html#exploratory-data-analysis"><i class="fa fa-check"></i><b>6.3.5</b> Exploratory data analysis</a></li>
+<li class="chapter" data-level="6.3.6" data-path="statistical-models.html"><a href="statistical-models.html#transformations"><i class="fa fa-check"></i><b>6.3.6</b> Transformations</a></li>
+<li class="chapter" data-level="6.3.7" data-path="statistical-models.html"><a href="statistical-models.html#check-linearity-between-y-and-x"><i class="fa fa-check"></i><b>6.3.7</b> Check linearity between <span class="math inline">\(y\)</span> and <span class="math inline">\(x\)</span></a></li>
+<li class="chapter" data-level="6.3.8" data-path="statistical-models.html"><a href="statistical-models.html#data-imputation-and-normalization"><i class="fa fa-check"></i><b>6.3.8</b> Data imputation and normalization</a></li>
+<li class="chapter" data-level="6.3.9" data-path="statistical-models.html"><a href="statistical-models.html#generate-dummy-variables"><i class="fa fa-check"></i><b>6.3.9</b> Generate dummy variables</a></li>
+<li class="chapter" data-level="6.3.10" data-path="statistical-models.html"><a href="statistical-models.html#splitting-data-into-training-and-test-data"><i class="fa fa-check"></i><b>6.3.10</b> Splitting data into training and test data</a></li>
+<li class="chapter" data-level="6.3.11" data-path="statistical-models.html"><a href="statistical-models.html#step-regression"><i class="fa fa-check"></i><b>6.3.11</b> Step regression</a></li>
+<li class="chapter" data-level="6.3.12" data-path="statistical-models.html"><a href="statistical-models.html#create-a-model-after-selecting-variables"><i class="fa fa-check"></i><b>6.3.12</b> Create a model after selecting variables</a></li>
+<li class="chapter" data-level="6.3.13" data-path="statistical-models.html"><a href="statistical-models.html#multicollinearity-checking"><i class="fa fa-check"></i><b>6.3.13</b> Multicollinearity checking</a></li>
+<li class="chapter" data-level="6.3.14" data-path="statistical-models.html"><a href="statistical-models.html#plot-model-to-check-assumptions"><i class="fa fa-check"></i><b>6.3.14</b> Plot model to check assumptions</a></li>
+<li class="chapter" data-level="6.3.15" data-path="statistical-models.html"><a href="statistical-models.html#add-polynomial-quadratic-terms"><i class="fa fa-check"></i><b>6.3.15</b> Add polynomial (quadratic) terms</a></li>
+<li class="chapter" data-level="6.3.16" data-path="statistical-models.html"><a href="statistical-models.html#add-interaction-terms"><i class="fa fa-check"></i><b>6.3.16</b> Add interaction terms</a></li>
+<li class="chapter" data-level="6.3.17" data-path="statistical-models.html"><a href="statistical-models.html#robust-regression"><i class="fa fa-check"></i><b>6.3.17</b> Robust regression</a></li>
+<li class="chapter" data-level="6.3.18" data-path="statistical-models.html"><a href="statistical-models.html#create-a-model-before-transforming-data"><i class="fa fa-check"></i><b>6.3.18</b> Create a model before transforming data</a></li>
+<li class="chapter" data-level="6.3.19" data-path="statistical-models.html"><a href="statistical-models.html#k-fold-cross-validation"><i class="fa fa-check"></i><b>6.3.19</b> K-fold cross validation</a></li>
+<li class="chapter" data-level="6.3.20" data-path="statistical-models.html"><a href="statistical-models.html#nonnest-models-comparisons"><i class="fa fa-check"></i><b>6.3.20</b> Nonnest models comparisons</a></li>
+<li class="chapter" data-level="6.3.21" data-path="statistical-models.html"><a href="statistical-models.html#posterior-predictive-diagnostic-checks"><i class="fa fa-check"></i><b>6.3.21</b> Posterior predictive / diagnostic checks</a></li>
+<li class="chapter" data-level="6.3.22" data-path="statistical-models.html"><a href="statistical-models.html#forest-plot-for-coefficients"><i class="fa fa-check"></i><b>6.3.22</b> Forest plot for coefficients</a></li>
+<li class="chapter" data-level="6.3.23" data-path="statistical-models.html"><a href="statistical-models.html#relative-importance"><i class="fa fa-check"></i><b>6.3.23</b> Relative Importance</a></li>
+<li class="chapter" data-level="6.3.24" data-path="statistical-models.html"><a href="statistical-models.html#model-prediction"><i class="fa fa-check"></i><b>6.3.24</b> Model prediction</a></li>
+<li class="chapter" data-level="6.3.25" data-path="statistical-models.html"><a href="statistical-models.html#compare-predictions-vs-actual-values"><i class="fa fa-check"></i><b>6.3.25</b> Compare predictions vs actual values</a></li>
+<li class="chapter" data-level="6.3.26" data-path="statistical-models.html"><a href="statistical-models.html#manual-computation-haty-and-confidence-interval"><i class="fa fa-check"></i><b>6.3.26</b> Manual computation: <span class="math inline">\(\hat{y}\)</span> and confidence interval</a></li>
+<li class="chapter" data-level="6.3.27" data-path="statistical-models.html"><a href="statistical-models.html#external-data-validation"><i class="fa fa-check"></i><b>6.3.27</b> External data validation</a></li>
 </ul></li>
-<li class="chapter" data-level="6.4" data-path="statistical-models.html"><a href="statistical-models.html#variable-selection"><i class="fa fa-check"></i><b>6.4</b> Variable selection</a></li>
+<li class="chapter" data-level="6.4" data-path="statistical-models.html"><a href="statistical-models.html#variable-selection"><i class="fa fa-check"></i><b>6.4</b> Variable selection</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="statistical-models.html"><a href="statistical-models.html#chapter-takeaways"><i class="fa fa-check"></i><b>6.4.1</b> Chapter takeaways</a></li>
+</ul></li>
 <li class="chapter" data-level="6.5" data-path="statistical-models.html"><a href="statistical-models.html#linear-mixed-model-theory"><i class="fa fa-check"></i><b>6.5</b> Linear mixed model theory</a>
 <ul>
 <li class="chapter" data-level="6.5.1" data-path="statistical-models.html"><a href="statistical-models.html#matrix-format-1"><i class="fa fa-check"></i><b>6.5.1</b> Matrix format</a></li>
-<li class="chapter" data-level="6.5.2" data-path="statistical-models.html"><a href="statistical-models.html#exmaple-reducing-the-work-stress-of-nurses"><i class="fa fa-check"></i><b>6.5.2</b> Exmaple: reducing the work stress of nurses</a></li>
-<li class="chapter" data-level="6.5.3" data-path="statistical-models.html"><a href="statistical-models.html#dependent-variable-y"><i class="fa fa-check"></i><b>6.5.3</b> Dependent variable, <span class="math inline">\(y\)</span></a></li>
-<li class="chapter" data-level="6.5.4" data-path="statistical-models.html"><a href="statistical-models.html#independent-variables-fixed-effects-xs"><i class="fa fa-check"></i><b>6.5.4</b> Independent variables (fixed effects), <span class="math inline">\(Xs\)</span></a></li>
-<li class="chapter" data-level="6.5.5" data-path="statistical-models.html"><a href="statistical-models.html#fixed-effect-coefficients-hatbeta"><i class="fa fa-check"></i><b>6.5.5</b> Fixed effect coefficients, <span class="math inline">\(\hat{\beta}\)</span></a></li>
-<li class="chapter" data-level="6.5.6" data-path="statistical-models.html"><a href="statistical-models.html#variance--covariance-matrix-of-hatbeta"><i class="fa fa-check"></i><b>6.5.6</b> Variance- covariance matrix of <span class="math inline">\(\hat{\beta}\)</span></a></li>
-<li class="chapter" data-level="6.5.7" data-path="statistical-models.html"><a href="statistical-models.html#random-effects-z"><i class="fa fa-check"></i><b>6.5.7</b> Random effects, <span class="math inline">\(Z\)</span></a></li>
-<li class="chapter" data-level="6.5.8" data-path="statistical-models.html"><a href="statistical-models.html#random-effects-coefficients-u"><i class="fa fa-check"></i><b>6.5.8</b> Random effects coefficients, <span class="math inline">\(u\)</span></a></li>
-<li class="chapter" data-level="6.5.9" data-path="statistical-models.html"><a href="statistical-models.html#variance-covariance-matrix-of-the-random-effects-boldsymbolu"><i class="fa fa-check"></i><b>6.5.9</b> Variance-covariance matrix of the random effects, <span class="math inline">\(\boldsymbol{u}\)</span></a></li>
-<li class="chapter" data-level="6.5.10" data-path="statistical-models.html"><a href="statistical-models.html#how-to-solve-sigma2-and-sigma_ub2"><i class="fa fa-check"></i><b>6.5.10</b> How to solve <span class="math inline">\(\sigma^{2}\)</span> and <span class="math inline">\(\sigma_{u(B)}^{2}\)</span></a></li>
-<li class="chapter" data-level="6.5.11" data-path="statistical-models.html"><a href="statistical-models.html#residuals-errors-and-their-variance--covariance-matrix"><i class="fa fa-check"></i><b>6.5.11</b> Residuals (errors) and their variance- covariance matrix</a></li>
-<li class="chapter" data-level="6.5.12" data-path="statistical-models.html"><a href="statistical-models.html#estimated-parameters"><i class="fa fa-check"></i><b>6.5.12</b> Estimated parameters</a></li>
-<li class="chapter" data-level="6.5.13" data-path="statistical-models.html"><a href="statistical-models.html#lmm-equation"><i class="fa fa-check"></i><b>6.5.13</b> LMM equation</a></li>
-<li class="chapter" data-level="6.5.14" data-path="statistical-models.html"><a href="statistical-models.html#testing-of-models-also-suitable-for-fixed-effect-coefficients"><i class="fa fa-check"></i><b>6.5.14</b> Testing of models (also suitable for fixed effect coefficients)</a></li>
-<li class="chapter" data-level="6.5.15" data-path="statistical-models.html"><a href="statistical-models.html#testing-of-fixed-effect-coefficients-only-ml"><i class="fa fa-check"></i><b>6.5.15</b> Testing of fixed effect coefficients (only ML)</a></li>
-<li class="chapter" data-level="6.5.16" data-path="statistical-models.html"><a href="statistical-models.html#the-95-confidence-interval-of-fixed-effect-coefficients"><i class="fa fa-check"></i><b>6.5.16</b> The <span class="math inline">\(95 \%\)</span> confidence interval of fixed effect coefficients</a></li>
-<li class="chapter" data-level="6.5.17" data-path="statistical-models.html"><a href="statistical-models.html#testing-of-random-effect-coefficients-typically-variances-reml"><i class="fa fa-check"></i><b>6.5.17</b> Testing of random effect coefficients (typically variances, REML)</a></li>
-<li class="chapter" data-level="6.5.18" data-path="statistical-models.html"><a href="statistical-models.html#confidence-intervals-for-random-effects-parameters-variances"><i class="fa fa-check"></i><b>6.5.18</b> Confidence intervals for random effects parameters (variances)</a></li>
-<li class="chapter" data-level="6.5.19" data-path="statistical-models.html"><a href="statistical-models.html#model-diagnostics"><i class="fa fa-check"></i><b>6.5.19</b> Model diagnostics</a></li>
+<li class="chapter" data-level="6.5.2" data-path="statistical-models.html"><a href="statistical-models.html#why-random-effects-create-correlation"><i class="fa fa-check"></i><b>6.5.2</b> Why random effects create correlation</a></li>
+<li class="chapter" data-level="6.5.3" data-path="statistical-models.html"><a href="statistical-models.html#example-reducing-the-work-stress-of-nurses"><i class="fa fa-check"></i><b>6.5.3</b> Example: reducing the work stress of nurses</a></li>
+<li class="chapter" data-level="6.5.4" data-path="statistical-models.html"><a href="statistical-models.html#the-dependent-variable-mathbfy"><i class="fa fa-check"></i><b>6.5.4</b> The dependent variable <span class="math inline">\(\mathbf{y}\)</span></a></li>
+<li class="chapter" data-level="6.5.5" data-path="statistical-models.html"><a href="statistical-models.html#fixed-effects-design-matrix-mathbfx"><i class="fa fa-check"></i><b>6.5.5</b> Fixed effects design matrix <span class="math inline">\(\mathbf{X}\)</span></a></li>
+<li class="chapter" data-level="6.5.6" data-path="statistical-models.html"><a href="statistical-models.html#fixed-effect-coefficients-boldsymbolhatbeta"><i class="fa fa-check"></i><b>6.5.6</b> Fixed effect coefficients <span class="math inline">\(\boldsymbol{\hat{\beta}}\)</span></a></li>
+<li class="chapter" data-level="6.5.7" data-path="statistical-models.html"><a href="statistical-models.html#variancecovariance-matrix-of-hatbeta"><i class="fa fa-check"></i><b>6.5.7</b> Variance–covariance matrix of <span class="math inline">\(\hat{\beta}\)</span></a></li>
+<li class="chapter" data-level="6.5.8" data-path="statistical-models.html"><a href="statistical-models.html#random-effects-design-matrix-mathbfz"><i class="fa fa-check"></i><b>6.5.8</b> Random effects design matrix <span class="math inline">\(\mathbf{Z}\)</span></a></li>
+<li class="chapter" data-level="6.5.9" data-path="statistical-models.html"><a href="statistical-models.html#random-effects-boldsymbolu-and-blup-intuition"><i class="fa fa-check"></i><b>6.5.9</b> Random effects <span class="math inline">\(\boldsymbol{u}\)</span> and BLUP intuition</a></li>
+<li class="chapter" data-level="6.5.10" data-path="statistical-models.html"><a href="statistical-models.html#covariance-structures-mathbfg-mathbfr-and-mathbfv"><i class="fa fa-check"></i><b>6.5.10</b> Covariance structures: <span class="math inline">\(\mathbf{G}\)</span>, <span class="math inline">\(\mathbf{R}\)</span>, and <span class="math inline">\(\mathbf{V}\)</span></a></li>
+<li class="chapter" data-level="6.5.11" data-path="statistical-models.html"><a href="statistical-models.html#estimating-variance-parameters"><i class="fa fa-check"></i><b>6.5.11</b> Estimating variance parameters</a></li>
+<li class="chapter" data-level="6.5.12" data-path="statistical-models.html"><a href="statistical-models.html#model-statement-and-interpretation"><i class="fa fa-check"></i><b>6.5.12</b> Model statement and interpretation</a></li>
+<li class="chapter" data-level="6.5.13" data-path="statistical-models.html"><a href="statistical-models.html#testing-and-model-comparison"><i class="fa fa-check"></i><b>6.5.13</b> Testing and model comparison</a></li>
+<li class="chapter" data-level="6.5.14" data-path="statistical-models.html"><a href="statistical-models.html#diagnostics-what-to-actually-check"><i class="fa fa-check"></i><b>6.5.14</b> Diagnostics (what to actually check)</a></li>
+<li class="chapter" data-level="6.5.15" data-path="statistical-models.html"><a href="statistical-models.html#practical-takeaway-for-readers"><i class="fa fa-check"></i><b>6.5.15</b> Practical takeaway for readers</a></li>
 </ul></li>
 <li class="chapter" data-level="6.6" data-path="statistical-models.html"><a href="statistical-models.html#linear-mixed-model-practice"><i class="fa fa-check"></i><b>6.6</b> Linear mixed model practice</a>
 <ul>
 <li class="chapter" data-level="6.6.1" data-path="statistical-models.html"><a href="statistical-models.html#loading-data-and-library"><i class="fa fa-check"></i><b>6.6.1</b> Loading data and library</a></li>
-<li class="chapter" data-level="6.6.2" data-path="statistical-models.html"><a href="statistical-models.html#general-linear-regression"><i class="fa fa-check"></i><b>6.6.2</b> General linear regression</a></li>
-<li class="chapter" data-level="6.6.3" data-path="statistical-models.html"><a href="statistical-models.html#generalized-linear-regression"><i class="fa fa-check"></i><b>6.6.3</b> Generalized linear regression</a></li>
-<li class="chapter" data-level="6.6.4" data-path="statistical-models.html"><a href="statistical-models.html#varying-intercept-by-adding-a-stratum-variable-as-fixed-effect-glm"><i class="fa fa-check"></i><b>6.6.4</b> Varying intercept by adding a stratum variable as fixed effect (glm)</a></li>
-<li class="chapter" data-level="6.6.5" data-path="statistical-models.html"><a href="statistical-models.html#comparisions-of-models"><i class="fa fa-check"></i><b>6.6.5</b> Comparisions of models</a></li>
-<li class="chapter" data-level="6.6.6" data-path="statistical-models.html"><a href="statistical-models.html#adding-class-and-school-as-fixed-effects-glm"><i class="fa fa-check"></i><b>6.6.6</b> Adding class and school as fixed effects (glm)</a></li>
-<li class="chapter" data-level="6.6.7" data-path="statistical-models.html"><a href="statistical-models.html#considering-different-slopes-by-stratum-glm"><i class="fa fa-check"></i><b>6.6.7</b> Considering different slopes by stratum (glm)</a></li>
+<li class="chapter" data-level="6.6.2" data-path="statistical-models.html"><a href="statistical-models.html#general-linear-regression-ols"><i class="fa fa-check"></i><b>6.6.2</b> General linear regression (OLS)</a></li>
+<li class="chapter" data-level="6.6.3" data-path="statistical-models.html"><a href="statistical-models.html#generalized-linear-regression-glm"><i class="fa fa-check"></i><b>6.6.3</b> Generalized linear regression (GLM)</a></li>
+<li class="chapter" data-level="6.6.4" data-path="statistical-models.html"><a href="statistical-models.html#varying-intercept-by-adding-a-stratum-variable-as-fixed-effect-glm"><i class="fa fa-check"></i><b>6.6.4</b> Varying intercept by adding a stratum variable as fixed effect (GLM)</a></li>
+<li class="chapter" data-level="6.6.5" data-path="statistical-models.html"><a href="statistical-models.html#comparisons-of-models-fixed-effect-approach"><i class="fa fa-check"></i><b>6.6.5</b> Comparisons of models (fixed effect approach)</a></li>
+<li class="chapter" data-level="6.6.6" data-path="statistical-models.html"><a href="statistical-models.html#adding-class-and-school-as-fixed-effects-glm"><i class="fa fa-check"></i><b>6.6.6</b> Adding class and school as fixed effects (GLM)</a></li>
+<li class="chapter" data-level="6.6.7" data-path="statistical-models.html"><a href="statistical-models.html#considering-different-slopes-by-stratum-glm"><i class="fa fa-check"></i><b>6.6.7</b> Considering different slopes by stratum (GLM)</a></li>
 <li class="chapter" data-level="6.6.8" data-path="statistical-models.html"><a href="statistical-models.html#varying-intercept-with-lmm"><i class="fa fa-check"></i><b>6.6.8</b> Varying intercept with LMM</a></li>
-<li class="chapter" data-level="6.6.9" data-path="statistical-models.html"><a href="statistical-models.html#varying-slope-with-lmm"><i class="fa fa-check"></i><b>6.6.9</b> Varying slope with LMM</a></li>
-<li class="chapter" data-level="6.6.10" data-path="statistical-models.html"><a href="statistical-models.html#summary-the-model-8"><i class="fa fa-check"></i><b>6.6.10</b> Summary the model 8</a></li>
-<li class="chapter" data-level="6.6.11" data-path="statistical-models.html"><a href="statistical-models.html#extracting-elements-parameters"><i class="fa fa-check"></i><b>6.6.11</b> Extracting elements (parameters)</a></li>
-<li class="chapter" data-level="6.6.12" data-path="statistical-models.html"><a href="statistical-models.html#model-diagnostics-1"><i class="fa fa-check"></i><b>6.6.12</b> Model diagnostics</a></li>
-<li class="chapter" data-level="6.6.13" data-path="statistical-models.html"><a href="statistical-models.html#notice"><i class="fa fa-check"></i><b>6.6.13</b> Notice</a></li>
+<li class="chapter" data-level="6.6.9" data-path="statistical-models.html"><a href="statistical-models.html#add-class-and-school-as-random-effects"><i class="fa fa-check"></i><b>6.6.9</b> Add class and school as random effects</a></li>
+<li class="chapter" data-level="6.6.10" data-path="statistical-models.html"><a href="statistical-models.html#nested-terms-schoolclass"><i class="fa fa-check"></i><b>6.6.10</b> Nested terms: <code>school/class</code></a></li>
+<li class="chapter" data-level="6.6.11" data-path="statistical-models.html"><a href="statistical-models.html#varying-slope-with-lmm"><i class="fa fa-check"></i><b>6.6.11</b> Varying slope with LMM</a></li>
+<li class="chapter" data-level="6.6.12" data-path="statistical-models.html"><a href="statistical-models.html#summarize-model-8"><i class="fa fa-check"></i><b>6.6.12</b> Summarize model 8</a></li>
+<li class="chapter" data-level="6.6.13" data-path="statistical-models.html"><a href="statistical-models.html#testing-random-effects-lrt-logic"><i class="fa fa-check"></i><b>6.6.13</b> Testing random effects (LRT logic)</a></li>
+<li class="chapter" data-level="6.6.14" data-path="statistical-models.html"><a href="statistical-models.html#visualizing-grouping-structure"><i class="fa fa-check"></i><b>6.6.14</b> Visualizing grouping structure</a></li>
+<li class="chapter" data-level="6.6.15" data-path="statistical-models.html"><a href="statistical-models.html#residual-checks-by-grouping-variables"><i class="fa fa-check"></i><b>6.6.15</b> Residual checks by grouping variables</a></li>
+<li class="chapter" data-level="6.6.16" data-path="statistical-models.html"><a href="statistical-models.html#residuals-vs-explanatory-variables"><i class="fa fa-check"></i><b>6.6.16</b> Residuals vs explanatory variables</a></li>
+<li class="chapter" data-level="6.6.17" data-path="statistical-models.html"><a href="statistical-models.html#normality-checks"><i class="fa fa-check"></i><b>6.6.17</b> Normality checks</a></li>
+<li class="chapter" data-level="6.6.18" data-path="statistical-models.html"><a href="statistical-models.html#extracting-elements-parameters"><i class="fa fa-check"></i><b>6.6.18</b> Extracting elements (parameters)</a></li>
+<li class="chapter" data-level="6.6.19" data-path="statistical-models.html"><a href="statistical-models.html#fitted-values-and-residuals"><i class="fa fa-check"></i><b>6.6.19</b> Fitted values and residuals</a></li>
+<li class="chapter" data-level="6.6.20" data-path="statistical-models.html"><a href="statistical-models.html#fitted-lines-by-group"><i class="fa fa-check"></i><b>6.6.20</b> Fitted lines by group</a></li>
+<li class="chapter" data-level="6.6.21" data-path="statistical-models.html"><a href="statistical-models.html#model-diagnostics-second-dataset-nurses"><i class="fa fa-check"></i><b>6.6.21</b> Model diagnostics (second dataset: Nurses)</a></li>
+<li class="chapter" data-level="6.6.22" data-path="statistical-models.html"><a href="statistical-models.html#intra-class-correlation-icc"><i class="fa fa-check"></i><b>6.6.22</b> Intra class correlation (ICC)</a></li>
 </ul></li>
-<li class="chapter" data-level="6.7" data-path="statistical-models.html"><a href="statistical-models.html#linear-mixed-model-covariance-decomposition-with-random-intercept--lme4"><i class="fa fa-check"></i><b>6.7</b> Linear mixed model covariance decomposition with random intercept- lme4</a>
+<li class="chapter" data-level="6.7" data-path="statistical-models.html"><a href="statistical-models.html#linear-mixed-model-covariance-decomposition-with-random-intercept-lme4"><i class="fa fa-check"></i><b>6.7</b> Linear mixed model covariance decomposition with random intercept — lme4</a>
 <ul>
-<li class="chapter" data-level="6.7.1" data-path="statistical-models.html"><a href="statistical-models.html#load-data-1"><i class="fa fa-check"></i><b>6.7.1</b> Load data</a></li>
-<li class="chapter" data-level="6.7.2" data-path="statistical-models.html"><a href="statistical-models.html#using-glm"><i class="fa fa-check"></i><b>6.7.2</b> Using glm</a></li>
-<li class="chapter" data-level="6.7.3" data-path="statistical-models.html"><a href="statistical-models.html#using-glm-with-random-slopes"><i class="fa fa-check"></i><b>6.7.3</b> Using glm with random slopes</a></li>
-<li class="chapter" data-level="6.7.4" data-path="statistical-models.html"><a href="statistical-models.html#using-lmm"><i class="fa fa-check"></i><b>6.7.4</b> Using lmm</a></li>
-<li class="chapter" data-level="6.7.5" data-path="statistical-models.html"><a href="statistical-models.html#get-xyz"><i class="fa fa-check"></i><b>6.7.5</b> Get x,y,z</a></li>
-<li class="chapter" data-level="6.7.6" data-path="statistical-models.html"><a href="statistical-models.html#get-fixed-effect-and-random-effect-coefficients"><i class="fa fa-check"></i><b>6.7.6</b> Get fixed effect and random effect coefficients</a></li>
-<li class="chapter" data-level="6.7.7" data-path="statistical-models.html"><a href="statistical-models.html#get-random-effect-covariance-structure-covariance-matrix-expandation"><i class="fa fa-check"></i><b>6.7.7</b> Get random effect covariance structure (covariance matrix expandation)</a></li>
-<li class="chapter" data-level="6.7.8" data-path="statistical-models.html"><a href="statistical-models.html#get-residual-variance-and-its-identity-matrix"><i class="fa fa-check"></i><b>6.7.8</b> Get residual variance and its identity matrix</a></li>
-<li class="chapter" data-level="6.7.9" data-path="statistical-models.html"><a href="statistical-models.html#get-y-covariance-matrix"><i class="fa fa-check"></i><b>6.7.9</b> Get y covariance matrix</a></li>
-<li class="chapter" data-level="6.7.10" data-path="statistical-models.html"><a href="statistical-models.html#get-fixed-effect-coefficients-covariance-matrix"><i class="fa fa-check"></i><b>6.7.10</b> Get fixed effect coefficients covariance matrix</a></li>
-<li class="chapter" data-level="6.7.11" data-path="statistical-models.html"><a href="statistical-models.html#get-random-effect-coefficients-covariance-matrix-standard-deviation"><i class="fa fa-check"></i><b>6.7.11</b> Get random effect coefficients covariance matrix (standard deviation)</a></li>
-<li class="chapter" data-level="6.7.12" data-path="statistical-models.html"><a href="statistical-models.html#computer-fixed-effect-coefficients"><i class="fa fa-check"></i><b>6.7.12</b> Computer fixed effect coefficients</a></li>
-<li class="chapter" data-level="6.7.13" data-path="statistical-models.html"><a href="statistical-models.html#computer-covariance-of-fixed-efffect-coefficients"><i class="fa fa-check"></i><b>6.7.13</b> Computer covariance of fixed efffect coefficients</a></li>
-<li class="chapter" data-level="6.7.14" data-path="statistical-models.html"><a href="statistical-models.html#computer-random-effect-coefficients"><i class="fa fa-check"></i><b>6.7.14</b> Computer random effect coefficients</a></li>
-<li class="chapter" data-level="6.7.15" data-path="statistical-models.html"><a href="statistical-models.html#computer-predicted-values"><i class="fa fa-check"></i><b>6.7.15</b> Computer predicted values</a></li>
+<li class="chapter" data-level="6.7.1" data-path="statistical-models.html"><a href="statistical-models.html#load-data"><i class="fa fa-check"></i><b>6.7.1</b> Load data</a></li>
+<li class="chapter" data-level="6.7.2" data-path="statistical-models.html"><a href="statistical-models.html#plot-means-and-variances-by-higher-level-variable-grouping"><i class="fa fa-check"></i><b>6.7.2</b> Plot means and variances by higher level variable (grouping)</a></li>
+<li class="chapter" data-level="6.7.3" data-path="statistical-models.html"><a href="statistical-models.html#using-glm-style-fixed-effects-baseline-reference"><i class="fa fa-check"></i><b>6.7.3</b> Using glm-style fixed effects (baseline reference)</a></li>
+<li class="chapter" data-level="6.7.4" data-path="statistical-models.html"><a href="statistical-models.html#using-lmm-random-intercept-in-lme4"><i class="fa fa-check"></i><b>6.7.4</b> Using LMM (random intercept) in lme4</a></li>
+<li class="chapter" data-level="6.7.5" data-path="statistical-models.html"><a href="statistical-models.html#get-mathbfx-mathbfy-mathbfz"><i class="fa fa-check"></i><b>6.7.5</b> Get <span class="math inline">\(\mathbf{X}\)</span>, <span class="math inline">\(\mathbf{y}\)</span>, <span class="math inline">\(\mathbf{Z}\)</span></a></li>
+<li class="chapter" data-level="6.7.6" data-path="statistical-models.html"><a href="statistical-models.html#get-fixed-and-random-effect-coefficients"><i class="fa fa-check"></i><b>6.7.6</b> Get fixed and random effect coefficients</a></li>
+<li class="chapter" data-level="6.7.7" data-path="statistical-models.html"><a href="statistical-models.html#random-effect-covariance-structure-and-the-role-of-theta"><i class="fa fa-check"></i><b>6.7.7</b> Random effect covariance structure and the role of <span class="math inline">\(\theta\)</span></a></li>
+<li class="chapter" data-level="6.7.8" data-path="statistical-models.html"><a href="statistical-models.html#residual-variance-and-mathbfrsigma2mathbfi"><i class="fa fa-check"></i><b>6.7.8</b> Residual variance and <span class="math inline">\(\mathbf{R}=\sigma^2\mathbf{I}\)</span></a></li>
+<li class="chapter" data-level="6.7.9" data-path="statistical-models.html"><a href="statistical-models.html#marginal-covariance-matrix-mathbfv-of-mathbfy"><i class="fa fa-check"></i><b>6.7.9</b> Marginal covariance matrix <span class="math inline">\(\mathbf{V}\)</span> of <span class="math inline">\(\mathbf{y}\)</span></a></li>
+<li class="chapter" data-level="6.7.10" data-path="statistical-models.html"><a href="statistical-models.html#fixed-effect-coefficient-covariance-matrix"><i class="fa fa-check"></i><b>6.7.10</b> Fixed effect coefficient covariance matrix</a></li>
+<li class="chapter" data-level="6.7.11" data-path="statistical-models.html"><a href="statistical-models.html#random-effect-covariance-matrix-standard-deviation-scale"><i class="fa fa-check"></i><b>6.7.11</b> Random effect covariance matrix (standard deviation scale)</a></li>
+<li class="chapter" data-level="6.7.12" data-path="statistical-models.html"><a href="statistical-models.html#compute-fixed-effect-coefficients-manually-gls"><i class="fa fa-check"></i><b>6.7.12</b> Compute fixed effect coefficients manually (GLS)</a></li>
+<li class="chapter" data-level="6.7.13" data-path="statistical-models.html"><a href="statistical-models.html#compute-covariance-of-fixed-effect-coefficients-manually"><i class="fa fa-check"></i><b>6.7.13</b> Compute covariance of fixed effect coefficients manually</a></li>
+<li class="chapter" data-level="6.7.14" data-path="statistical-models.html"><a href="statistical-models.html#compute-random-effect-coefficients-manually-blups"><i class="fa fa-check"></i><b>6.7.14</b> Compute random effect coefficients manually (BLUPs)</a></li>
+<li class="chapter" data-level="6.7.15" data-path="statistical-models.html"><a href="statistical-models.html#compute-predicted-values"><i class="fa fa-check"></i><b>6.7.15</b> Compute predicted values</a></li>
 </ul></li>
-<li class="chapter" data-level="6.8" data-path="statistical-models.html"><a href="statistical-models.html#linear-mixed-model-covariance-decomposition-with-random-slopes--lme4"><i class="fa fa-check"></i><b>6.8</b> Linear mixed model covariance decomposition with random slopes- lme4</a>
+<li class="chapter" data-level="6.8" data-path="statistical-models.html"><a href="statistical-models.html#linear-mixed-model-covariance-decomposition-with-random-slopes-lme4"><i class="fa fa-check"></i><b>6.8</b> Linear Mixed Model Covariance Decomposition with Random Slopes (lme4)</a>
 <ul>
-<li class="chapter" data-level="6.8.1" data-path="statistical-models.html"><a href="statistical-models.html#load-data-2"><i class="fa fa-check"></i><b>6.8.1</b> Load data</a></li>
-<li class="chapter" data-level="6.8.2" data-path="statistical-models.html"><a href="statistical-models.html#using-lmm-1"><i class="fa fa-check"></i><b>6.8.2</b> Using lmm</a></li>
-<li class="chapter" data-level="6.8.3" data-path="statistical-models.html"><a href="statistical-models.html#get-xyz-1"><i class="fa fa-check"></i><b>6.8.3</b> Get x,y,z</a></li>
-<li class="chapter" data-level="6.8.4" data-path="statistical-models.html"><a href="statistical-models.html#get-fixed-effect-and-random-effect-coefficients-1"><i class="fa fa-check"></i><b>6.8.4</b> Get fixed effect and random effect coefficients</a></li>
-<li class="chapter" data-level="6.8.5" data-path="statistical-models.html"><a href="statistical-models.html#get-random-effect-covariance-structure-covariance-matrix-expandation-1"><i class="fa fa-check"></i><b>6.8.5</b> Get random effect covariance structure (covariance matrix expandation)</a></li>
-<li class="chapter" data-level="6.8.6" data-path="statistical-models.html"><a href="statistical-models.html#get-residual-variance-and-its-identity-matrix-1"><i class="fa fa-check"></i><b>6.8.6</b> Get residual variance and its identity matrix</a></li>
-<li class="chapter" data-level="6.8.7" data-path="statistical-models.html"><a href="statistical-models.html#get-y-covariance-matrix-1"><i class="fa fa-check"></i><b>6.8.7</b> Get y covariance matrix</a></li>
-<li class="chapter" data-level="6.8.8" data-path="statistical-models.html"><a href="statistical-models.html#get-fixed-effect-coefficients-covariance-matrix-1"><i class="fa fa-check"></i><b>6.8.8</b> Get fixed effect coefficients covariance matrix</a></li>
-<li class="chapter" data-level="6.8.9" data-path="statistical-models.html"><a href="statistical-models.html#get-random-effect-coefficients-covariance-matrix-standard-deviation-1"><i class="fa fa-check"></i><b>6.8.9</b> Get random effect coefficients covariance matrix (standard deviation)</a></li>
-<li class="chapter" data-level="6.8.10" data-path="statistical-models.html"><a href="statistical-models.html#computer-fixed-effect-coefficients-1"><i class="fa fa-check"></i><b>6.8.10</b> Computer fixed effect coefficients</a></li>
-<li class="chapter" data-level="6.8.11" data-path="statistical-models.html"><a href="statistical-models.html#computer-covariance-of-fixed-efffect-coefficients-1"><i class="fa fa-check"></i><b>6.8.11</b> Computer covariance of fixed efffect coefficients</a></li>
-<li class="chapter" data-level="6.8.12" data-path="statistical-models.html"><a href="statistical-models.html#computer-random-effect-coefficients-1"><i class="fa fa-check"></i><b>6.8.12</b> Computer random effect coefficients</a></li>
-<li class="chapter" data-level="6.8.13" data-path="statistical-models.html"><a href="statistical-models.html#computer-predicted-values-1"><i class="fa fa-check"></i><b>6.8.13</b> Computer predicted values</a></li>
-<li class="chapter" data-level="6.8.14" data-path="statistical-models.html"><a href="statistical-models.html#using-lmm-with-two-grouping-factors"><i class="fa fa-check"></i><b>6.8.14</b> Using lmm with two grouping factors</a></li>
-<li class="chapter" data-level="6.8.15" data-path="statistical-models.html"><a href="statistical-models.html#get-z2"><i class="fa fa-check"></i><b>6.8.15</b> Get z2</a></li>
-<li class="chapter" data-level="6.8.16" data-path="statistical-models.html"><a href="statistical-models.html#using-lmm-with-nested-or-crossed-random-effects"><i class="fa fa-check"></i><b>6.8.16</b> Using lmm with nested or crossed random effects</a></li>
-<li class="chapter" data-level="6.8.17" data-path="statistical-models.html"><a href="statistical-models.html#get-z3"><i class="fa fa-check"></i><b>6.8.17</b> Get z3</a></li>
+<li class="chapter" data-level="6.8.1" data-path="statistical-models.html"><a href="statistical-models.html#load-data-1"><i class="fa fa-check"></i><b>6.8.1</b> Load data</a></li>
+<li class="chapter" data-level="6.8.2" data-path="statistical-models.html"><a href="statistical-models.html#using-a-linear-mixed-model-with-random-slopes"><i class="fa fa-check"></i><b>6.8.2</b> Using a linear mixed model with random slopes</a></li>
+<li class="chapter" data-level="6.8.3" data-path="statistical-models.html"><a href="statistical-models.html#extracting-the-design-matrices-x-y-and-z"><i class="fa fa-check"></i><b>6.8.3</b> Extracting the design matrices X, y, and Z</a></li>
+<li class="chapter" data-level="6.8.4" data-path="statistical-models.html"><a href="statistical-models.html#fixed-and-random-effect-coefficients"><i class="fa fa-check"></i><b>6.8.4</b> Fixed and random effect coefficients</a></li>
+<li class="chapter" data-level="6.8.5" data-path="statistical-models.html"><a href="statistical-models.html#random-effect-covariance-structure-matrix-expansion"><i class="fa fa-check"></i><b>6.8.5</b> Random-effect covariance structure (matrix expansion)</a></li>
+<li class="chapter" data-level="6.8.6" data-path="statistical-models.html"><a href="statistical-models.html#residual-variance-and-identity-matrix"><i class="fa fa-check"></i><b>6.8.6</b> Residual variance and identity matrix</a></li>
+<li class="chapter" data-level="6.8.7" data-path="statistical-models.html"><a href="statistical-models.html#covariance-matrix-of-the-response-vector-y"><i class="fa fa-check"></i><b>6.8.7</b> Covariance matrix of the response vector y</a></li>
+<li class="chapter" data-level="6.8.8" data-path="statistical-models.html"><a href="statistical-models.html#covariance-matrix-of-fixed-effect-coefficients"><i class="fa fa-check"></i><b>6.8.8</b> Covariance matrix of fixed-effect coefficients</a></li>
+<li class="chapter" data-level="6.8.9" data-path="statistical-models.html"><a href="statistical-models.html#random-effect-covariance-matrix"><i class="fa fa-check"></i><b>6.8.9</b> Random-effect covariance matrix</a></li>
+<li class="chapter" data-level="6.8.10" data-path="statistical-models.html"><a href="statistical-models.html#computing-fixed-effect-coefficients-manually"><i class="fa fa-check"></i><b>6.8.10</b> Computing fixed-effect coefficients manually</a></li>
+<li class="chapter" data-level="6.8.11" data-path="statistical-models.html"><a href="statistical-models.html#covariance-of-fixed-effect-coefficients"><i class="fa fa-check"></i><b>6.8.11</b> Covariance of fixed-effect coefficients</a></li>
+<li class="chapter" data-level="6.8.12" data-path="statistical-models.html"><a href="statistical-models.html#computing-random-effect-coefficients"><i class="fa fa-check"></i><b>6.8.12</b> Computing random-effect coefficients</a></li>
+<li class="chapter" data-level="6.8.13" data-path="statistical-models.html"><a href="statistical-models.html#predicted-values"><i class="fa fa-check"></i><b>6.8.13</b> Predicted values</a></li>
+<li class="chapter" data-level="6.8.14" data-path="statistical-models.html"><a href="statistical-models.html#model-with-two-grouping-factors"><i class="fa fa-check"></i><b>6.8.14</b> Model with two grouping factors</a></li>
+<li class="chapter" data-level="6.8.15" data-path="statistical-models.html"><a href="statistical-models.html#extracting-z-for-the-two-factor-model"><i class="fa fa-check"></i><b>6.8.15</b> Extracting Z for the two-factor model</a></li>
+<li class="chapter" data-level="6.8.16" data-path="statistical-models.html"><a href="statistical-models.html#nested-versus-crossed-random-effects"><i class="fa fa-check"></i><b>6.8.16</b> Nested versus crossed random effects</a></li>
+<li class="chapter" data-level="6.8.17" data-path="statistical-models.html"><a href="statistical-models.html#remark-nested-vs.-crossed-random-effects"><i class="fa fa-check"></i><b>6.8.17</b> Remark: Nested vs. crossed random effects</a></li>
 </ul></li>
-<li class="chapter" data-level="6.9" data-path="statistical-models.html"><a href="statistical-models.html#linear-mixed-model-covariance-decomposition-nlme"><i class="fa fa-check"></i><b>6.9</b> Linear mixed model covariance decomposition (nlme)</a>
+<li class="chapter" data-level="6.9" data-path="statistical-models.html"><a href="statistical-models.html#linear-mixed-model-covariance-decomposition-nlme"><i class="fa fa-check"></i><b>6.9</b> Linear Mixed Model Covariance Decomposition (nlme)</a>
 <ul>
-<li class="chapter" data-level="6.9.1" data-path="statistical-models.html"><a href="statistical-models.html#load-data-3"><i class="fa fa-check"></i><b>6.9.1</b> Load data</a></li>
-<li class="chapter" data-level="6.9.2" data-path="statistical-models.html"><a href="statistical-models.html#using-lme-nlme"><i class="fa fa-check"></i><b>6.9.2</b> Using lme (nlme)</a></li>
-<li class="chapter" data-level="6.9.3" data-path="statistical-models.html"><a href="statistical-models.html#model-diagnosing"><i class="fa fa-check"></i><b>6.9.3</b> Model diagnosing</a></li>
-<li class="chapter" data-level="6.9.4" data-path="statistical-models.html"><a href="statistical-models.html#get-x-y-z-matrixs-using-lme4"><i class="fa fa-check"></i><b>6.9.4</b> Get x, y, z matrixs (using lme4)</a></li>
-<li class="chapter" data-level="6.9.5" data-path="statistical-models.html"><a href="statistical-models.html#fixed-effect-coefficient"><i class="fa fa-check"></i><b>6.9.5</b> Fixed effect coefficient</a></li>
-<li class="chapter" data-level="6.9.6" data-path="statistical-models.html"><a href="statistical-models.html#random-effect-coefficient"><i class="fa fa-check"></i><b>6.9.6</b> Random effect coefficient</a></li>
-<li class="chapter" data-level="6.9.7" data-path="statistical-models.html"><a href="statistical-models.html#fixed-effect-coefficients-covariance"><i class="fa fa-check"></i><b>6.9.7</b> Fixed effect coefficients covariance</a></li>
-<li class="chapter" data-level="6.9.8" data-path="statistical-models.html"><a href="statistical-models.html#random-effect-covariance-and-correlation"><i class="fa fa-check"></i><b>6.9.8</b> Random effect covariance and correlation</a></li>
-<li class="chapter" data-level="6.9.9" data-path="statistical-models.html"><a href="statistical-models.html#get-y-covariance-directly"><i class="fa fa-check"></i><b>6.9.9</b> Get y covariance directly</a></li>
-<li class="chapter" data-level="6.9.10" data-path="statistical-models.html"><a href="statistical-models.html#residual-variance"><i class="fa fa-check"></i><b>6.9.10</b> Residual variance</a></li>
-<li class="chapter" data-level="6.9.11" data-path="statistical-models.html"><a href="statistical-models.html#compute-fixed-effect-coefficients"><i class="fa fa-check"></i><b>6.9.11</b> Compute fixed effect coefficients</a></li>
-<li class="chapter" data-level="6.9.12" data-path="statistical-models.html"><a href="statistical-models.html#compute-covariance-of-fixed-efffect-coefficients"><i class="fa fa-check"></i><b>6.9.12</b> Compute covariance of fixed efffect coefficients</a></li>
-<li class="chapter" data-level="6.9.13" data-path="statistical-models.html"><a href="statistical-models.html#compute-random-effect-coefficients"><i class="fa fa-check"></i><b>6.9.13</b> Compute random effect coefficients</a></li>
-<li class="chapter" data-level="6.9.14" data-path="statistical-models.html"><a href="statistical-models.html#compute-predicted-values"><i class="fa fa-check"></i><b>6.9.14</b> Compute predicted values</a></li>
-<li class="chapter" data-level="6.9.15" data-path="statistical-models.html"><a href="statistical-models.html#using-lme-with-gaussian"><i class="fa fa-check"></i><b>6.9.15</b> Using lme with Gaussian</a></li>
-<li class="chapter" data-level="6.9.16" data-path="statistical-models.html"><a href="statistical-models.html#using-lme-with-autoregressive"><i class="fa fa-check"></i><b>6.9.16</b> Using lme with autoregressive</a></li>
-<li class="chapter" data-level="6.9.17" data-path="statistical-models.html"><a href="statistical-models.html#using-lme-with-exponential"><i class="fa fa-check"></i><b>6.9.17</b> Using lme with exponential</a></li>
-<li class="chapter" data-level="6.9.18" data-path="statistical-models.html"><a href="statistical-models.html#using-lme-with-unstructured"><i class="fa fa-check"></i><b>6.9.18</b> Using lme with unstructured</a></li>
-<li class="chapter" data-level="6.9.19" data-path="statistical-models.html"><a href="statistical-models.html#using-lme-with-compound-symm"><i class="fa fa-check"></i><b>6.9.19</b> Using lme with compound symm</a></li>
-<li class="chapter" data-level="6.9.20" data-path="statistical-models.html"><a href="statistical-models.html#using-gls-with-unstructured-corsymm"><i class="fa fa-check"></i><b>6.9.20</b> Using gls with unstructured, corSymm</a></li>
-<li class="chapter" data-level="6.9.21" data-path="statistical-models.html"><a href="statistical-models.html#using-gls-with-compound-symm-which-lmer-model-default-lme-default-lme-compound-symm-lme-auto-reg-in-this-example"><i class="fa fa-check"></i><b>6.9.21</b> Using gls with compound symm, which = lmer model default = lme default = lme compound symm =lme auto reg in this example</a></li>
+<li class="chapter" data-level="6.9.1" data-path="statistical-models.html"><a href="statistical-models.html#load-data-2"><i class="fa fa-check"></i><b>6.9.1</b> Load data</a></li>
+<li class="chapter" data-level="6.9.2" data-path="statistical-models.html"><a href="statistical-models.html#exploratory-visualization"><i class="fa fa-check"></i><b>6.9.2</b> Exploratory visualization</a></li>
+<li class="chapter" data-level="6.9.3" data-path="statistical-models.html"><a href="statistical-models.html#using-lme-nlme"><i class="fa fa-check"></i><b>6.9.3</b> Using lme (nlme)</a></li>
+<li class="chapter" data-level="6.9.4" data-path="statistical-models.html"><a href="statistical-models.html#inference-for-fixed-effects"><i class="fa fa-check"></i><b>6.9.4</b> Inference for fixed effects</a></li>
+<li class="chapter" data-level="6.9.5" data-path="statistical-models.html"><a href="statistical-models.html#model-diagnosing"><i class="fa fa-check"></i><b>6.9.5</b> Model diagnosing</a></li>
+<li class="chapter" data-level="6.9.6" data-path="statistical-models.html"><a href="statistical-models.html#get-x-y-z-matrices-using-lme4"><i class="fa fa-check"></i><b>6.9.6</b> Get X, y, Z matrices (using lme4)</a></li>
+<li class="chapter" data-level="6.9.7" data-path="statistical-models.html"><a href="statistical-models.html#fixed-effect-coefficient"><i class="fa fa-check"></i><b>6.9.7</b> Fixed effect coefficient</a></li>
+<li class="chapter" data-level="6.9.8" data-path="statistical-models.html"><a href="statistical-models.html#random-effect-coefficient"><i class="fa fa-check"></i><b>6.9.8</b> Random effect coefficient</a></li>
+<li class="chapter" data-level="6.9.9" data-path="statistical-models.html"><a href="statistical-models.html#fixed-effect-coefficients-covariance"><i class="fa fa-check"></i><b>6.9.9</b> Fixed effect coefficients covariance</a></li>
+<li class="chapter" data-level="6.9.10" data-path="statistical-models.html"><a href="statistical-models.html#random-effect-covariance-and-correlation"><i class="fa fa-check"></i><b>6.9.10</b> Random effect covariance and correlation</a></li>
+<li class="chapter" data-level="6.9.11" data-path="statistical-models.html"><a href="statistical-models.html#get-y-covariance-directly"><i class="fa fa-check"></i><b>6.9.11</b> Get y covariance directly</a></li>
+<li class="chapter" data-level="6.9.12" data-path="statistical-models.html"><a href="statistical-models.html#residual-variance"><i class="fa fa-check"></i><b>6.9.12</b> Residual variance</a></li>
+<li class="chapter" data-level="6.9.13" data-path="statistical-models.html"><a href="statistical-models.html#compute-fixed-effect-coefficients-by-gls"><i class="fa fa-check"></i><b>6.9.13</b> Compute fixed effect coefficients (by GLS)</a></li>
+<li class="chapter" data-level="6.9.14" data-path="statistical-models.html"><a href="statistical-models.html#compute-covariance-of-fixed-effect-coefficients"><i class="fa fa-check"></i><b>6.9.14</b> Compute covariance of fixed effect coefficients</a></li>
+<li class="chapter" data-level="6.9.15" data-path="statistical-models.html"><a href="statistical-models.html#compute-random-effect-coefficients-blup"><i class="fa fa-check"></i><b>6.9.15</b> Compute random effect coefficients (BLUP)</a></li>
+<li class="chapter" data-level="6.9.16" data-path="statistical-models.html"><a href="statistical-models.html#compute-predicted-values-1"><i class="fa fa-check"></i><b>6.9.16</b> Compute predicted values</a></li>
+<li class="chapter" data-level="6.9.17" data-path="statistical-models.html"><a href="statistical-models.html#the-marginal-distribution"><i class="fa fa-check"></i><b>6.9.17</b> The marginal distribution</a></li>
+<li class="chapter" data-level="6.9.18" data-path="statistical-models.html"><a href="statistical-models.html#extending-the-covariance-structure-correlated-residual-errors"><i class="fa fa-check"></i><b>6.9.18</b> Extending the covariance structure: correlated residual errors</a></li>
+<li class="chapter" data-level="6.9.19" data-path="statistical-models.html"><a href="statistical-models.html#using-lme-with-gaussian-correlation"><i class="fa fa-check"></i><b>6.9.19</b> Using lme with Gaussian correlation</a></li>
+<li class="chapter" data-level="6.9.20" data-path="statistical-models.html"><a href="statistical-models.html#using-lme-with-autoregressive-ar1"><i class="fa fa-check"></i><b>6.9.20</b> Using lme with autoregressive (AR1)</a></li>
+<li class="chapter" data-level="6.9.21" data-path="statistical-models.html"><a href="statistical-models.html#using-lme-with-exponential-correlation"><i class="fa fa-check"></i><b>6.9.21</b> Using lme with exponential correlation</a></li>
+<li class="chapter" data-level="6.9.22" data-path="statistical-models.html"><a href="statistical-models.html#using-lme-with-unstructured-residual-correlation-corsymm"><i class="fa fa-check"></i><b>6.9.22</b> Using lme with unstructured residual correlation (corSymm)</a></li>
+<li class="chapter" data-level="6.9.23" data-path="statistical-models.html"><a href="statistical-models.html#using-lme-with-compound-symmetry-residual-correlation-corcompsymm"><i class="fa fa-check"></i><b>6.9.23</b> Using lme with compound symmetry residual correlation (corCompSymm)</a></li>
+<li class="chapter" data-level="6.9.24" data-path="statistical-models.html"><a href="statistical-models.html#gls-models-correlation-in-residuals-without-random-effects"><i class="fa fa-check"></i><b>6.9.24</b> GLS models: correlation in residuals without random effects</a></li>
+<li class="chapter" data-level="6.9.25" data-path="statistical-models.html"><a href="statistical-models.html#gls-with-unstructured-correlation"><i class="fa fa-check"></i><b>6.9.25</b> GLS with unstructured correlation</a></li>
+<li class="chapter" data-level="6.9.26" data-path="statistical-models.html"><a href="statistical-models.html#gls-with-compound-symmetry"><i class="fa fa-check"></i><b>6.9.26</b> GLS with compound symmetry</a></li>
+<li class="chapter" data-level="6.9.27" data-path="statistical-models.html"><a href="statistical-models.html#practical-limitation-of-lme4"><i class="fa fa-check"></i><b>6.9.27</b> Practical limitation of lme4</a></li>
 </ul></li>
 <li class="chapter" data-level="6.10" data-path="statistical-models.html"><a href="statistical-models.html#manual-simulating-data-for-linear-mix-model"><i class="fa fa-check"></i><b>6.10</b> Manual simulating data for linear mix model</a></li>
 <li class="chapter" data-level="6.11" data-path="statistical-models.html"><a href="statistical-models.html#how-to-calculate-the-prediction-interval-for-lmm"><i class="fa fa-check"></i><b>6.11</b> How to calculate the prediction interval for LMM</a></li>
@@ -497,23 +453,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.1.3" data-path="probability.html"><a href="probability.html#calculation-of-probability-operations"><i class="fa fa-check"></i><b>7.1.3</b> Calculation of probability (operations)</a></li>
 <li class="chapter" data-level="7.1.4" data-path="probability.html"><a href="probability.html#bayess-theorem"><i class="fa fa-check"></i><b>7.1.4</b> Bayes’s theorem</a></li>
 <li class="chapter" data-level="7.1.5" data-path="probability.html"><a href="probability.html#random-variables-and-distribution-functions"><i class="fa fa-check"></i><b>7.1.5</b> Random variables and distribution functions</a></li>
-<li class="chapter" data-level="7.1.6" data-path="probability.html"><a href="probability.html#probability-distribution"><i class="fa fa-check"></i><b>7.1.6</b> Probability distribution</a></li>
+<li class="chapter" data-level="7.1.6" data-path="probability.html"><a href="probability.html#probability-distributions-joint-marginal-conditional"><i class="fa fa-check"></i><b>7.1.6</b> Probability distributions (joint, marginal, conditional)</a></li>
 <li class="chapter" data-level="7.1.7" data-path="probability.html"><a href="probability.html#conditional-expectation"><i class="fa fa-check"></i><b>7.1.7</b> Conditional expectation</a></li>
 <li class="chapter" data-level="7.1.8" data-path="probability.html"><a href="probability.html#conditional-variance"><i class="fa fa-check"></i><b>7.1.8</b> Conditional variance</a></li>
 <li class="chapter" data-level="7.1.9" data-path="probability.html"><a href="probability.html#sampling"><i class="fa fa-check"></i><b>7.1.9</b> Sampling</a></li>
-<li class="chapter" data-level="7.1.10" data-path="probability.html"><a href="probability.html#confidence-interval"><i class="fa fa-check"></i><b>7.1.10</b> Confidence interval</a></li>
-<li class="chapter" data-level="7.1.11" data-path="probability.html"><a href="probability.html#introduction-to-hypothesis-testing"><i class="fa fa-check"></i><b>7.1.11</b> Introduction to Hypothesis Testing</a></li>
+<li class="chapter" data-level="7.1.10" data-path="probability.html"><a href="probability.html#central-limit-theorem-and-law-of-large-numbers"><i class="fa fa-check"></i><b>7.1.10</b> Central limit theorem and law of large numbers</a></li>
+<li class="chapter" data-level="7.1.11" data-path="probability.html"><a href="probability.html#confidence-interval"><i class="fa fa-check"></i><b>7.1.11</b> Confidence interval</a></li>
+<li class="chapter" data-level="7.1.12" data-path="probability.html"><a href="probability.html#introduction-to-hypothesis-testing"><i class="fa fa-check"></i><b>7.1.12</b> Introduction to hypothesis testing</a></li>
 </ul></li>
 <li class="chapter" data-level="7.2" data-path="probability.html"><a href="probability.html#probability-r-practice"><i class="fa fa-check"></i><b>7.2</b> Probability R practice</a>
 <ul>
 <li class="chapter" data-level="7.2.1" data-path="probability.html"><a href="probability.html#integrate"><i class="fa fa-check"></i><b>7.2.1</b> Integrate</a></li>
-<li class="chapter" data-level="7.2.2" data-path="probability.html"><a href="probability.html#derivation"><i class="fa fa-check"></i><b>7.2.2</b> Derivation</a></li>
+<li class="chapter" data-level="7.2.2" data-path="probability.html"><a href="probability.html#derivation-symbolic-differentiation"><i class="fa fa-check"></i><b>7.2.2</b> Derivation (symbolic differentiation)</a></li>
 <li class="chapter" data-level="7.2.3" data-path="probability.html"><a href="probability.html#create-random-variables-with-specific-distributions"><i class="fa fa-check"></i><b>7.2.3</b> Create random variables with specific distributions</a></li>
-<li class="chapter" data-level="7.2.4" data-path="probability.html"><a href="probability.html#prob-function"><i class="fa fa-check"></i><b>7.2.4</b> Prob function</a></li>
+<li class="chapter" data-level="7.2.4" data-path="probability.html"><a href="probability.html#probability-function-examples"><i class="fa fa-check"></i><b>7.2.4</b> Probability function examples</a></li>
 <li class="chapter" data-level="7.2.5" data-path="probability.html"><a href="probability.html#vector-and-operations"><i class="fa fa-check"></i><b>7.2.5</b> Vector and operations</a></li>
 <li class="chapter" data-level="7.2.6" data-path="probability.html"><a href="probability.html#select-and-substitute-elements-of-vector"><i class="fa fa-check"></i><b>7.2.6</b> Select and substitute elements of vector</a></li>
 <li class="chapter" data-level="7.2.7" data-path="probability.html"><a href="probability.html#matrix-and-operations"><i class="fa fa-check"></i><b>7.2.7</b> Matrix and operations</a></li>
-<li class="chapter" data-level="7.2.8" data-path="probability.html"><a href="probability.html#compute-inverse-determinant-and-eigen-values-of-matrix"><i class="fa fa-check"></i><b>7.2.8</b> Compute inverse, determinant and eigen values of matrix</a></li>
+<li class="chapter" data-level="7.2.8" data-path="probability.html"><a href="probability.html#compute-inverse-determinant-and-eigenvalues"><i class="fa fa-check"></i><b>7.2.8</b> Compute inverse, determinant and eigenvalues</a></li>
 <li class="chapter" data-level="7.2.9" data-path="probability.html"><a href="probability.html#dataframe"><i class="fa fa-check"></i><b>7.2.9</b> Dataframe</a></li>
 <li class="chapter" data-level="7.2.10" data-path="probability.html"><a href="probability.html#solve-problems-using-simulation"><i class="fa fa-check"></i><b>7.2.10</b> Solve problems using simulation</a></li>
 <li class="chapter" data-level="7.2.11" data-path="probability.html"><a href="probability.html#permutations-and-combinations"><i class="fa fa-check"></i><b>7.2.11</b> Permutations and combinations</a></li>
@@ -524,15 +481,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.2.16" data-path="probability.html"><a href="probability.html#exponent-distribution"><i class="fa fa-check"></i><b>7.2.16</b> Exponent distribution</a></li>
 <li class="chapter" data-level="7.2.17" data-path="probability.html"><a href="probability.html#normal-distribution-plot"><i class="fa fa-check"></i><b>7.2.17</b> Normal distribution plot</a></li>
 <li class="chapter" data-level="7.2.18" data-path="probability.html"><a href="probability.html#distribution-of-random-variable-function"><i class="fa fa-check"></i><b>7.2.18</b> Distribution of random variable function</a></li>
-<li class="chapter" data-level="7.2.19" data-path="probability.html"><a href="probability.html#join-and-margin-probability"><i class="fa fa-check"></i><b>7.2.19</b> Join and margin probability</a></li>
-<li class="chapter" data-level="7.2.20" data-path="probability.html"><a href="probability.html#multiple-random-variables-plots"><i class="fa fa-check"></i><b>7.2.20</b> Multiple random variables plots</a></li>
-<li class="chapter" data-level="7.2.21" data-path="probability.html"><a href="probability.html#generate-a-circle-using-simulated-random-dots"><i class="fa fa-check"></i><b>7.2.21</b> Generate a circle using simulated random dots</a></li>
-<li class="chapter" data-level="7.2.22" data-path="probability.html"><a href="probability.html#expectation"><i class="fa fa-check"></i><b>7.2.22</b> Expectation</a></li>
-<li class="chapter" data-level="7.2.23" data-path="probability.html"><a href="probability.html#central-limit-theorem-1"><i class="fa fa-check"></i><b>7.2.23</b> Central Limit Theorem</a></li>
-<li class="chapter" data-level="7.2.24" data-path="probability.html"><a href="probability.html#law-of-large-numbers"><i class="fa fa-check"></i><b>7.2.24</b> Law of large numbers</a></li>
-<li class="chapter" data-level="7.2.25" data-path="probability.html"><a href="probability.html#empirical-distribution"><i class="fa fa-check"></i><b>7.2.25</b> Empirical distribution</a></li>
-<li class="chapter" data-level="7.2.26" data-path="probability.html"><a href="probability.html#maximum-likelihood-estimate"><i class="fa fa-check"></i><b>7.2.26</b> Maximum likelihood estimate</a></li>
-<li class="chapter" data-level="7.2.27" data-path="probability.html"><a href="probability.html#t-distribution-f-distribution-plots-and-common-distributions"><i class="fa fa-check"></i><b>7.2.27</b> t distribution, F distribution plots, and common distributions</a></li>
+<li class="chapter" data-level="7.2.19" data-path="probability.html"><a href="probability.html#joint-and-marginal-probability-simulation-approach"><i class="fa fa-check"></i><b>7.2.19</b> Joint and marginal probability (simulation approach)</a></li>
+<li class="chapter" data-level="7.2.20" data-path="probability.html"><a href="probability.html#multiple-random-variables-derived-distributions"><i class="fa fa-check"></i><b>7.2.20</b> Multiple random variables: derived distributions</a></li>
+<li class="chapter" data-level="7.2.21" data-path="probability.html"><a href="probability.html#sum-of-two-independent-normal-variables"><i class="fa fa-check"></i><b>7.2.21</b> Sum of two independent normal variables</a></li>
+<li class="chapter" data-level="7.2.22" data-path="probability.html"><a href="probability.html#generate-a-circle-using-simulated-random-dots"><i class="fa fa-check"></i><b>7.2.22</b> Generate a circle using simulated random dots</a></li>
+<li class="chapter" data-level="7.2.23" data-path="probability.html"><a href="probability.html#expectation-simulation"><i class="fa fa-check"></i><b>7.2.23</b> Expectation (simulation)</a></li>
+<li class="chapter" data-level="7.2.24" data-path="probability.html"><a href="probability.html#central-limit-theorem-simulation"><i class="fa fa-check"></i><b>7.2.24</b> Central Limit Theorem (simulation)</a></li>
+<li class="chapter" data-level="7.2.25" data-path="probability.html"><a href="probability.html#law-of-large-numbers"><i class="fa fa-check"></i><b>7.2.25</b> Law of large numbers</a></li>
+<li class="chapter" data-level="7.2.26" data-path="probability.html"><a href="probability.html#empirical-distribution-function-ecdf"><i class="fa fa-check"></i><b>7.2.26</b> Empirical distribution function (ECDF)</a></li>
+<li class="chapter" data-level="7.2.27" data-path="probability.html"><a href="probability.html#probability-of-mean-3-simulation"><i class="fa fa-check"></i><b>7.2.27</b> Probability of mean &gt; 3 (simulation)</a></li>
+<li class="chapter" data-level="7.2.28" data-path="probability.html"><a href="probability.html#maximum-likelihood-estimate-mle"><i class="fa fa-check"></i><b>7.2.28</b> Maximum likelihood estimate (MLE)</a></li>
+<li class="chapter" data-level="7.2.29" data-path="probability.html"><a href="probability.html#t-distribution-f-distribution-plots-and-common-distributions"><i class="fa fa-check"></i><b>7.2.29</b> t distribution, F distribution plots, and common distributions</a></li>
+<li class="chapter" data-level="" data-path="probability.html"><a href="probability.html#closing-perspective"><i class="fa fa-check"></i>Closing perspective</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="algorithms.html"><a href="algorithms.html"><i class="fa fa-check"></i><b>8</b> Algorithms</a>
@@ -540,70 +500,77 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.1" data-path="algorithms.html"><a href="algorithms.html#maximum-likelihood-estimation"><i class="fa fa-check"></i><b>8.1</b> Maximum likelihood estimation</a>
 <ul>
 <li class="chapter" data-level="8.1.1" data-path="algorithms.html"><a href="algorithms.html#likelihood-estimation"><i class="fa fa-check"></i><b>8.1.1</b> Likelihood estimation</a></li>
-<li class="chapter" data-level="8.1.2" data-path="algorithms.html"><a href="algorithms.html#r-demonstration"><i class="fa fa-check"></i><b>8.1.2</b> <code>R demonstration</code></a></li>
-<li class="chapter" data-level="8.1.3" data-path="algorithms.html"><a href="algorithms.html#estimate-confidence-intervals-using-the-likelihood"><i class="fa fa-check"></i><b>8.1.3</b> Estimate confidence intervals using the likelihood</a></li>
-<li class="chapter" data-level="8.1.4" data-path="algorithms.html"><a href="algorithms.html#the-profile-likelihood"><i class="fa fa-check"></i><b>8.1.4</b> The profile likelihood</a></li>
-<li class="chapter" data-level="8.1.5" data-path="algorithms.html"><a href="algorithms.html#maximum-likelihood-estimate-practice"><i class="fa fa-check"></i><b>8.1.5</b> Maximum likelihood estimate practice</a></li>
+<li class="chapter" data-level="8.1.2" data-path="algorithms.html"><a href="algorithms.html#negative-log-likelihood-scalar-form"><i class="fa fa-check"></i><b>8.1.2</b> Negative log-likelihood (scalar form)</a></li>
+<li class="chapter" data-level="8.1.3" data-path="algorithms.html"><a href="algorithms.html#matrix-formulation"><i class="fa fa-check"></i><b>8.1.3</b> Matrix formulation</a></li>
+<li class="chapter" data-level="8.1.4" data-path="algorithms.html"><a href="algorithms.html#minimizing-the-negative-log-likelihood"><i class="fa fa-check"></i><b>8.1.4</b> Minimizing the negative log-likelihood</a></li>
+<li class="chapter" data-level="8.1.5" data-path="algorithms.html"><a href="algorithms.html#taking-derivatives"><i class="fa fa-check"></i><b>8.1.5</b> Taking derivatives</a></li>
+<li class="chapter" data-level="8.1.6" data-path="algorithms.html"><a href="algorithms.html#reml-versus-ml"><i class="fa fa-check"></i><b>8.1.6</b> REML versus ML</a></li>
 </ul></li>
-<li class="chapter" data-level="8.2" data-path="algorithms.html"><a href="algorithms.html#gradient-descent"><i class="fa fa-check"></i><b>8.2</b> Gradient descent</a></li>
-<li class="chapter" data-level="8.3" data-path="algorithms.html"><a href="algorithms.html#markov-chain-monte-carlo"><i class="fa fa-check"></i><b>8.3</b> Markov chain Monte Carlo</a></li>
-<li class="chapter" data-level="8.4" data-path="algorithms.html"><a href="algorithms.html#expectation-maximum"><i class="fa fa-check"></i><b>8.4</b> Expectation maximum</a></li>
-<li class="chapter" data-level="8.5" data-path="algorithms.html"><a href="algorithms.html#combine-estimates-by-pooling-rules"><i class="fa fa-check"></i><b>8.5</b> Combine estimates by pooling rules</a></li>
-<li class="chapter" data-level="8.6" data-path="algorithms.html"><a href="algorithms.html#simulations-and-bootstrapping"><i class="fa fa-check"></i><b>8.6</b> Simulations and Bootstrapping</a></li>
+<li class="chapter" data-level="8.2" data-path="algorithms.html"><a href="algorithms.html#r-demonstration"><i class="fa fa-check"></i><b>8.2</b> R demonstration</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="algorithms.html"><a href="algorithms.html#toy-data"><i class="fa fa-check"></i><b>8.2.1</b> Toy data</a></li>
+<li class="chapter" data-level="8.2.2" data-path="algorithms.html"><a href="algorithms.html#linear-regression-closed-form-mle"><i class="fa fa-check"></i><b>8.2.2</b> Linear regression (closed-form MLE)</a></li>
+<li class="chapter" data-level="8.2.3" data-path="algorithms.html"><a href="algorithms.html#mle-via-explicit-negative-log-likelihood"><i class="fa fa-check"></i><b>8.2.3</b> MLE via explicit negative log-likelihood</a></li>
+<li class="chapter" data-level="8.2.4" data-path="algorithms.html"><a href="algorithms.html#maximum-likelihood-via-maxlik"><i class="fa fa-check"></i><b>8.2.4</b> Maximum likelihood via <code>maxLik</code></a></li>
+<li class="chapter" data-level="8.2.5" data-path="algorithms.html"><a href="algorithms.html#another-example-real-data"><i class="fa fa-check"></i><b>8.2.5</b> Another example (real data)</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="algorithms.html"><a href="algorithms.html#confidence-intervals-from-likelihood"><i class="fa fa-check"></i><b>8.3</b> Confidence intervals from likelihood</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="algorithms.html"><a href="algorithms.html#fisher-information-and-hessian"><i class="fa fa-check"></i><b>8.3.1</b> Fisher information and Hessian</a></li>
+<li class="chapter" data-level="8.3.2" data-path="algorithms.html"><a href="algorithms.html#likelihood-ratio-confidence-intervals"><i class="fa fa-check"></i><b>8.3.2</b> Likelihood ratio confidence intervals</a></li>
+<li class="chapter" data-level="8.3.3" data-path="algorithms.html"><a href="algorithms.html#profile-likelihood"><i class="fa fa-check"></i><b>8.3.3</b> Profile likelihood</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="algorithms.html"><a href="algorithms.html#maximum-likelihood-estimate-practice"><i class="fa fa-check"></i><b>8.4</b> Maximum likelihood estimate practice</a></li>
+<li class="chapter" data-level="8.5" data-path="algorithms.html"><a href="algorithms.html#gradient-descent"><i class="fa fa-check"></i><b>8.5</b> Gradient descent</a>
+<ul>
+<li class="chapter" data-level="8.5.1" data-path="algorithms.html"><a href="algorithms.html#linear-regression-example"><i class="fa fa-check"></i><b>8.5.1</b> Linear regression example</a></li>
+<li class="chapter" data-level="8.5.2" data-path="algorithms.html"><a href="algorithms.html#cost-function-and-gradient-descent"><i class="fa fa-check"></i><b>8.5.2</b> Cost function and gradient descent</a></li>
+<li class="chapter" data-level="8.5.3" data-path="algorithms.html"><a href="algorithms.html#cost-function-convergence"><i class="fa fa-check"></i><b>8.5.3</b> Cost function convergence</a></li>
+<li class="chapter" data-level="8.5.4" data-path="algorithms.html"><a href="algorithms.html#comparing-gradient-descent-and-linear-regression"><i class="fa fa-check"></i><b>8.5.4</b> Comparing gradient descent and linear regression</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="sasmarkdown.html"><a href="sasmarkdown.html"><i class="fa fa-check"></i><b>9</b> SASmarkdown</a>
 <ul>
-<li class="chapter" data-level="9.1" data-path="sasmarkdown.html"><a href="sasmarkdown.html#how-to-install-sasmarkdown"><i class="fa fa-check"></i><b>9.1</b> How to install sasmarkdown</a></li>
+<li class="chapter" data-level="9.1" data-path="sasmarkdown.html"><a href="sasmarkdown.html#how-to-install-sasmarkdown"><i class="fa fa-check"></i><b>9.1</b> How to install SASmarkdown</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="sasmarkdown.html"><a href="sasmarkdown.html#use-an-engine"><i class="fa fa-check"></i><b>9.1.1</b> Use an engine</a></li>
+</ul></li>
 <li class="chapter" data-level="9.2" data-path="sasmarkdown.html"><a href="sasmarkdown.html#common-statements"><i class="fa fa-check"></i><b>9.2</b> Common statements</a>
 <ul>
-<li class="chapter" data-level="9.2.1" data-path="sasmarkdown.html"><a href="sasmarkdown.html#read-in-date-data-using-informat"><i class="fa fa-check"></i><b>9.2.1</b> read in (date) data using informat</a></li>
-<li class="chapter" data-level="9.2.2" data-path="sasmarkdown.html"><a href="sasmarkdown.html#compute-mean-and-freqency"><i class="fa fa-check"></i><b>9.2.2</b> compute mean and freqency</a></li>
-<li class="chapter" data-level="9.2.3" data-path="sasmarkdown.html"><a href="sasmarkdown.html#sort-a-data-set"><i class="fa fa-check"></i><b>9.2.3</b> sort a data set</a></li>
-<li class="chapter" data-level="9.2.4" data-path="sasmarkdown.html"><a href="sasmarkdown.html#transpose-or-reshape"><i class="fa fa-check"></i><b>9.2.4</b> transpose or reshape</a></li>
-<li class="chapter" data-level="9.2.5" data-path="sasmarkdown.html"><a href="sasmarkdown.html#conditional-statement"><i class="fa fa-check"></i><b>9.2.5</b> conditional statement</a></li>
-<li class="chapter" data-level="9.2.6" data-path="sasmarkdown.html"><a href="sasmarkdown.html#using-like-operation-to-select-rows-contaning-a-pattern"><i class="fa fa-check"></i><b>9.2.6</b> using like operation to select rows contaning a pattern</a></li>
-<li class="chapter" data-level="9.2.7" data-path="sasmarkdown.html"><a href="sasmarkdown.html#change-format-of-the-variable"><i class="fa fa-check"></i><b>9.2.7</b> change format of the variable</a></li>
-<li class="chapter" data-level="9.2.8" data-path="sasmarkdown.html"><a href="sasmarkdown.html#basic-operations"><i class="fa fa-check"></i><b>9.2.8</b> basic operations</a></li>
-<li class="chapter" data-level="9.2.9" data-path="sasmarkdown.html"><a href="sasmarkdown.html#rename-variables-1"><i class="fa fa-check"></i><b>9.2.9</b> rename variables</a></li>
-<li class="chapter" data-level="9.2.10" data-path="sasmarkdown.html"><a href="sasmarkdown.html#extract-text-from-a-character-value"><i class="fa fa-check"></i><b>9.2.10</b> extract text from a character value</a></li>
-<li class="chapter" data-level="9.2.11" data-path="sasmarkdown.html"><a href="sasmarkdown.html#convert-the-character-value-into-a-numeric-value-and-reverse"><i class="fa fa-check"></i><b>9.2.11</b> convert the character value into a numeric value and reverse</a></li>
-<li class="chapter" data-level="9.2.12" data-path="sasmarkdown.html"><a href="sasmarkdown.html#change-the-length-of-the-variable"><i class="fa fa-check"></i><b>9.2.12</b> change the length of the variable</a></li>
-<li class="chapter" data-level="9.2.13" data-path="sasmarkdown.html"><a href="sasmarkdown.html#create-a-report"><i class="fa fa-check"></i><b>9.2.13</b> create a report</a></li>
-<li class="chapter" data-level="9.2.14" data-path="sasmarkdown.html"><a href="sasmarkdown.html#create-a-random-variable"><i class="fa fa-check"></i><b>9.2.14</b> create a random variable</a></li>
-<li class="chapter" data-level="9.2.15" data-path="sasmarkdown.html"><a href="sasmarkdown.html#combine-two-texts"><i class="fa fa-check"></i><b>9.2.15</b> combine two texts</a></li>
-<li class="chapter" data-level="9.2.16" data-path="sasmarkdown.html"><a href="sasmarkdown.html#compress-spaces"><i class="fa fa-check"></i><b>9.2.16</b> compress spaces</a></li>
-<li class="chapter" data-level="9.2.17" data-path="sasmarkdown.html"><a href="sasmarkdown.html#identify-the-position-of-a-specified-text"><i class="fa fa-check"></i><b>9.2.17</b> identify the position of a specified text</a></li>
-<li class="chapter" data-level="9.2.18" data-path="sasmarkdown.html"><a href="sasmarkdown.html#convert-upcase-lower-case-and-propcase"><i class="fa fa-check"></i><b>9.2.18</b> convert upcase, lower case and propcase</a></li>
-<li class="chapter" data-level="9.2.19" data-path="sasmarkdown.html"><a href="sasmarkdown.html#deduplication-1"><i class="fa fa-check"></i><b>9.2.19</b> deduplication</a></li>
-<li class="chapter" data-level="9.2.20" data-path="sasmarkdown.html"><a href="sasmarkdown.html#select-sub-data-set"><i class="fa fa-check"></i><b>9.2.20</b> select sub data set</a></li>
-<li class="chapter" data-level="9.2.21" data-path="sasmarkdown.html"><a href="sasmarkdown.html#create-macro-using-do-loop-statement"><i class="fa fa-check"></i><b>9.2.21</b> create macro using do loop statement</a></li>
-<li class="chapter" data-level="9.2.22" data-path="sasmarkdown.html"><a href="sasmarkdown.html#output-intermediate-tables"><i class="fa fa-check"></i><b>9.2.22</b> output intermediate tables</a></li>
-<li class="chapter" data-level="9.2.23" data-path="sasmarkdown.html"><a href="sasmarkdown.html#creat-a-sequence-number"><i class="fa fa-check"></i><b>9.2.23</b> creat a sequence number</a></li>
-<li class="chapter" data-level="9.2.24" data-path="sasmarkdown.html"><a href="sasmarkdown.html#merge-data-sets"><i class="fa fa-check"></i><b>9.2.24</b> merge data sets</a></li>
-<li class="chapter" data-level="9.2.25" data-path="sasmarkdown.html"><a href="sasmarkdown.html#create-table-1-1"><i class="fa fa-check"></i><b>9.2.25</b> create table 1</a></li>
-<li class="chapter" data-level="9.2.26" data-path="sasmarkdown.html"><a href="sasmarkdown.html#create-table-1-without-statistical-test"><i class="fa fa-check"></i><b>9.2.26</b> create table 1 without statistical test</a></li>
-<li class="chapter" data-level="9.2.27" data-path="sasmarkdown.html"><a href="sasmarkdown.html#perform-a-regression"><i class="fa fa-check"></i><b>9.2.27</b> perform a regression</a></li>
+<li class="chapter" data-level="9.2.1" data-path="sasmarkdown.html"><a href="sasmarkdown.html#read-in-data-using-informats-date-data"><i class="fa fa-check"></i><b>9.2.1</b> Read in data using informats (date data)</a></li>
+<li class="chapter" data-level="9.2.2" data-path="sasmarkdown.html"><a href="sasmarkdown.html#compute-mean-and-frequency"><i class="fa fa-check"></i><b>9.2.2</b> Compute mean and frequency</a></li>
+<li class="chapter" data-level="9.2.3" data-path="sasmarkdown.html"><a href="sasmarkdown.html#sort-a-dataset"><i class="fa fa-check"></i><b>9.2.3</b> Sort a dataset</a></li>
+<li class="chapter" data-level="9.2.4" data-path="sasmarkdown.html"><a href="sasmarkdown.html#transpose-or-reshape"><i class="fa fa-check"></i><b>9.2.4</b> Transpose or reshape</a></li>
+<li class="chapter" data-level="9.2.5" data-path="sasmarkdown.html"><a href="sasmarkdown.html#conditional-statements"><i class="fa fa-check"></i><b>9.2.5</b> Conditional statements</a></li>
+<li class="chapter" data-level="9.2.6" data-path="sasmarkdown.html"><a href="sasmarkdown.html#like-operation-to-select-rows-containing-a-pattern"><i class="fa fa-check"></i><b>9.2.6</b> LIKE operation to select rows containing a pattern</a></li>
+<li class="chapter" data-level="9.2.7" data-path="sasmarkdown.html"><a href="sasmarkdown.html#change-format-of-a-variable"><i class="fa fa-check"></i><b>9.2.7</b> Change format of a variable</a></li>
+<li class="chapter" data-level="9.2.8" data-path="sasmarkdown.html"><a href="sasmarkdown.html#basic-operations"><i class="fa fa-check"></i><b>9.2.8</b> Basic operations</a></li>
+<li class="chapter" data-level="9.2.9" data-path="sasmarkdown.html"><a href="sasmarkdown.html#rename-variables-1"><i class="fa fa-check"></i><b>9.2.9</b> Rename variables</a></li>
+<li class="chapter" data-level="9.2.10" data-path="sasmarkdown.html"><a href="sasmarkdown.html#text-manipulation"><i class="fa fa-check"></i><b>9.2.10</b> Text manipulation</a></li>
+<li class="chapter" data-level="9.2.11" data-path="sasmarkdown.html"><a href="sasmarkdown.html#create-a-report"><i class="fa fa-check"></i><b>9.2.11</b> Create a report</a></li>
+<li class="chapter" data-level="9.2.12" data-path="sasmarkdown.html"><a href="sasmarkdown.html#random-variables"><i class="fa fa-check"></i><b>9.2.12</b> Random variables</a></li>
+<li class="chapter" data-level="9.2.13" data-path="sasmarkdown.html"><a href="sasmarkdown.html#combine-two-texts-compress-spaces-locate-a-substring-change-case"><i class="fa fa-check"></i><b>9.2.13</b> Combine two texts, compress spaces, locate a substring, change case</a></li>
+<li class="chapter" data-level="9.2.14" data-path="sasmarkdown.html"><a href="sasmarkdown.html#deduplication-1"><i class="fa fa-check"></i><b>9.2.14</b> Deduplication</a></li>
+<li class="chapter" data-level="9.2.15" data-path="sasmarkdown.html"><a href="sasmarkdown.html#select-a-subset-of-rows"><i class="fa fa-check"></i><b>9.2.15</b> Select a subset of rows</a></li>
+<li class="chapter" data-level="9.2.16" data-path="sasmarkdown.html"><a href="sasmarkdown.html#create-macros-with-do-loops"><i class="fa fa-check"></i><b>9.2.16</b> Create macros with DO loops</a></li>
+<li class="chapter" data-level="9.2.17" data-path="sasmarkdown.html"><a href="sasmarkdown.html#output-intermediate-tables-with-ods"><i class="fa fa-check"></i><b>9.2.17</b> Output intermediate tables with ODS</a></li>
+<li class="chapter" data-level="9.2.18" data-path="sasmarkdown.html"><a href="sasmarkdown.html#create-sequence-numbers"><i class="fa fa-check"></i><b>9.2.18</b> Create sequence numbers</a></li>
+<li class="chapter" data-level="9.2.19" data-path="sasmarkdown.html"><a href="sasmarkdown.html#merge-datasets"><i class="fa fa-check"></i><b>9.2.19</b> Merge datasets</a></li>
+<li class="chapter" data-level="9.2.20" data-path="sasmarkdown.html"><a href="sasmarkdown.html#create-table-1-1"><i class="fa fa-check"></i><b>9.2.20</b> Create Table 1</a></li>
 </ul></li>
-<li class="chapter" data-level="9.3" data-path="sasmarkdown.html"><a href="sasmarkdown.html#using-macro"><i class="fa fa-check"></i><b>9.3</b> Using macro</a>
+<li class="chapter" data-level="9.3" data-path="sasmarkdown.html"><a href="sasmarkdown.html#using-macros"><i class="fa fa-check"></i><b>9.3</b> Using macros</a>
 <ul>
-<li class="chapter" data-level="9.3.1" data-path="sasmarkdown.html"><a href="sasmarkdown.html#create-a-macro-variable"><i class="fa fa-check"></i><b>9.3.1</b> Create a macro variable</a></li>
-<li class="chapter" data-level="9.3.2" data-path="sasmarkdown.html"><a href="sasmarkdown.html#select-variables-names"><i class="fa fa-check"></i><b>9.3.2</b> Select variables names</a></li>
-<li class="chapter" data-level="9.3.3" data-path="sasmarkdown.html"><a href="sasmarkdown.html#use-iterative-do-to-syntax-to-iterate-a-specific-number"><i class="fa fa-check"></i><b>9.3.3</b> Use iterative DO TO syntax to iterate a Specific Number</a></li>
-<li class="chapter" data-level="9.3.4" data-path="sasmarkdown.html"><a href="sasmarkdown.html#proc-report-allows-more-flexibility-in-displaying-the-data"><i class="fa fa-check"></i><b>9.3.4</b> PROC REPORT allows more flexibility in displaying the data</a></li>
-<li class="chapter" data-level="9.3.5" data-path="sasmarkdown.html"><a href="sasmarkdown.html#create-a-macro-to-calculate-descriptive-stats-and-summarize-tabels"><i class="fa fa-check"></i><b>9.3.5</b> Create a macro to calculate descriptive stats and summarize tabels</a></li>
+<li class="chapter" data-level="9.3.1" data-path="sasmarkdown.html"><a href="sasmarkdown.html#proc-report-for-flexible-summaries"><i class="fa fa-check"></i><b>9.3.1</b> PROC REPORT for flexible summaries</a></li>
 </ul></li>
-<li class="chapter" data-level="9.4" data-path="sasmarkdown.html"><a href="sasmarkdown.html#use-sas-format"><i class="fa fa-check"></i><b>9.4</b> Use SAS format</a>
+<li class="chapter" data-level="9.4" data-path="sasmarkdown.html"><a href="sasmarkdown.html#use-sas-formats"><i class="fa fa-check"></i><b>9.4</b> Use SAS formats</a>
 <ul>
-<li class="chapter" data-level="9.4.1" data-path="sasmarkdown.html"><a href="sasmarkdown.html#creating-labels-for-different-values"><i class="fa fa-check"></i><b>9.4.1</b> Creating labels for different values</a></li>
-<li class="chapter" data-level="9.4.2" data-path="sasmarkdown.html"><a href="sasmarkdown.html#storing-farmats-to-a-library--way-1"><i class="fa fa-check"></i><b>9.4.2</b> Storing farmats to a library- way 1</a></li>
-<li class="chapter" data-level="9.4.3" data-path="sasmarkdown.html"><a href="sasmarkdown.html#use-stored-defined-format--way-2"><i class="fa fa-check"></i><b>9.4.3</b> Use stored defined format- way 2</a></li>
-<li class="chapter" data-level="9.4.4" data-path="sasmarkdown.html"><a href="sasmarkdown.html#use-stored-defined-format--way-3"><i class="fa fa-check"></i><b>9.4.4</b> Use stored defined format- way 3</a></li>
-<li class="chapter" data-level="9.4.5" data-path="sasmarkdown.html"><a href="sasmarkdown.html#use-stored-defined-format-in-batch--way-4"><i class="fa fa-check"></i><b>9.4.5</b> Use stored defined format in batch- way 4</a></li>
-<li class="chapter" data-level="9.4.6" data-path="sasmarkdown.html"><a href="sasmarkdown.html#modify-format-of-the-existing-proc-format"><i class="fa fa-check"></i><b>9.4.6</b> Modify format of the existing proc format</a></li>
-<li class="chapter" data-level="9.4.7" data-path="sasmarkdown.html"><a href="sasmarkdown.html#transform-missing-to-char-then-to-numeric-again"><i class="fa fa-check"></i><b>9.4.7</b> Transform missing to char then to numeric again</a></li>
-<li class="chapter" data-level="9.4.8" data-path="sasmarkdown.html"><a href="sasmarkdown.html#output-format-of-the-existing-format-name-by-alphabet-order"><i class="fa fa-check"></i><b>9.4.8</b> Output format of the existing format name by alphabet order</a></li>
-<li class="chapter" data-level="9.4.9" data-path="sasmarkdown.html"><a href="sasmarkdown.html#a-macro-to-copy-the-existing-proc-format"><i class="fa fa-check"></i><b>9.4.9</b> A macro to copy the existing proc format</a></li>
-<li class="chapter" data-level="9.4.10" data-path="sasmarkdown.html"><a href="sasmarkdown.html#a-macro-to-view-the-list-of-variables"><i class="fa fa-check"></i><b>9.4.10</b> A macro to view the list of variables</a></li>
+<li class="chapter" data-level="9.4.1" data-path="sasmarkdown.html"><a href="sasmarkdown.html#storing-formats-to-a-library"><i class="fa fa-check"></i><b>9.4.1</b> Storing formats to a library</a></li>
+<li class="chapter" data-level="9.4.2" data-path="sasmarkdown.html"><a href="sasmarkdown.html#modify-formats"><i class="fa fa-check"></i><b>9.4.2</b> Modify formats</a></li>
+<li class="chapter" data-level="9.4.3" data-path="sasmarkdown.html"><a href="sasmarkdown.html#transform-missing-to-character-then-to-numeric-again"><i class="fa fa-check"></i><b>9.4.3</b> Transform missing to character then to numeric again</a></li>
+<li class="chapter" data-level="9.4.4" data-path="sasmarkdown.html"><a href="sasmarkdown.html#output-format-definition-details"><i class="fa fa-check"></i><b>9.4.4</b> Output format definition details</a></li>
+<li class="chapter" data-level="9.4.5" data-path="sasmarkdown.html"><a href="sasmarkdown.html#a-macro-to-copy-an-existing-proc-format"><i class="fa fa-check"></i><b>9.4.5</b> A macro to copy an existing PROC FORMAT</a></li>
+<li class="chapter" data-level="9.4.6" data-path="sasmarkdown.html"><a href="sasmarkdown.html#a-macro-to-view-the-list-of-variables"><i class="fa fa-check"></i><b>9.4.6</b> A macro to view the list of variables</a></li>
+<li class="chapter" data-level="9.4.7" data-path="sasmarkdown.html"><a href="sasmarkdown.html#practical-workflow-recommendations-for-sasmarkdown"><i class="fa fa-check"></i><b>9.4.7</b> Practical workflow recommendations for SASmarkdown</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="10" data-path="causal-inference.html"><a href="causal-inference.html"><i class="fa fa-check"></i><b>10</b> Causal inference</a>
@@ -667,23 +634,36 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="17.1.1" data-path="miscellaneous.html"><a href="miscellaneous.html#matrix-basics"><i class="fa fa-check"></i><b>17.1.1</b> Matrix basics</a></li>
 <li class="chapter" data-level="17.1.2" data-path="miscellaneous.html"><a href="miscellaneous.html#operations"><i class="fa fa-check"></i><b>17.1.2</b> Operations</a></li>
-<li class="chapter" data-level="17.1.3" data-path="miscellaneous.html"><a href="miscellaneous.html#advanced-operations"><i class="fa fa-check"></i><b>17.1.3</b> Advanced operations</a></li>
-<li class="chapter" data-level="17.1.4" data-path="miscellaneous.html"><a href="miscellaneous.html#solve-linear-equations"><i class="fa fa-check"></i><b>17.1.4</b> Solve linear equations</a></li>
-<li class="chapter" data-level="17.1.5" data-path="miscellaneous.html"><a href="miscellaneous.html#summary"><i class="fa fa-check"></i><b>17.1.5</b> Summary</a></li>
+<li class="chapter" data-level="17.1.3" data-path="miscellaneous.html"><a href="miscellaneous.html#eigen-decomposition"><i class="fa fa-check"></i><b>17.1.3</b> Eigen decomposition</a></li>
+<li class="chapter" data-level="17.1.4" data-path="miscellaneous.html"><a href="miscellaneous.html#advanced-operations"><i class="fa fa-check"></i><b>17.1.4</b> Advanced operations</a></li>
+<li class="chapter" data-level="17.1.5" data-path="miscellaneous.html"><a href="miscellaneous.html#solve-linear-equations"><i class="fa fa-check"></i><b>17.1.5</b> Solve linear equations</a></li>
+<li class="chapter" data-level="17.1.6" data-path="miscellaneous.html"><a href="miscellaneous.html#summary"><i class="fa fa-check"></i><b>17.1.6</b> Summary</a></li>
 </ul></li>
 <li class="chapter" data-level="17.2" data-path="miscellaneous.html"><a href="miscellaneous.html#calculus"><i class="fa fa-check"></i><b>17.2</b> Calculus</a>
 <ul>
-<li class="chapter" data-level="17.2.1" data-path="miscellaneous.html"><a href="miscellaneous.html#derivation-1"><i class="fa fa-check"></i><b>17.2.1</b> Derivation</a></li>
+<li class="chapter" data-level="17.2.1" data-path="miscellaneous.html"><a href="miscellaneous.html#derivation"><i class="fa fa-check"></i><b>17.2.1</b> Derivation</a></li>
 <li class="chapter" data-level="17.2.2" data-path="miscellaneous.html"><a href="miscellaneous.html#integration"><i class="fa fa-check"></i><b>17.2.2</b> Integration</a></li>
 </ul></li>
-<li class="chapter" data-level="17.3" data-path="miscellaneous.html"><a href="miscellaneous.html#sample-size-calculation"><i class="fa fa-check"></i><b>17.3</b> Sample size calculation</a></li>
-<li class="chapter" data-level="17.4" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-evaluate-z-score"><i class="fa fa-check"></i><b>17.4</b> How to evaluate z score</a></li>
-<li class="chapter" data-level="17.5" data-path="miscellaneous.html"><a href="miscellaneous.html#mathmatic-coupling"><i class="fa fa-check"></i><b>17.5</b> Mathmatic coupling</a></li>
-<li class="chapter" data-level="17.6" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-create-a-bookdown"><i class="fa fa-check"></i><b>17.6</b> How to create a bookdown</a></li>
+<li class="chapter" data-level="17.3" data-path="miscellaneous.html"><a href="miscellaneous.html#sample-size-calculation-simulation-based-power"><i class="fa fa-check"></i><b>17.3</b> Sample size calculation (simulation-based power)</a></li>
+<li class="chapter" data-level="17.4" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-evaluate-a-z-score"><i class="fa fa-check"></i><b>17.4</b> How to evaluate a z score</a>
+<ul>
+<li class="chapter" data-level="17.4.1" data-path="miscellaneous.html"><a href="miscellaneous.html#call-the-parameter-estimates-file"><i class="fa fa-check"></i><b>17.4.1</b> Call the parameter estimates file</a></li>
+<li class="chapter" data-level="17.4.2" data-path="miscellaneous.html"><a href="miscellaneous.html#calculate-mean-and-standard-deviation-at-a-specific-value"><i class="fa fa-check"></i><b>17.4.2</b> Calculate mean and standard deviation at a specific value</a></li>
+<li class="chapter" data-level="17.4.3" data-path="miscellaneous.html"><a href="miscellaneous.html#output-the-calculated-mean-on-exp-scale"><i class="fa fa-check"></i><b>17.4.3</b> Output the calculated mean (on exp scale)</a></li>
+<li class="chapter" data-level="17.4.4" data-path="miscellaneous.html"><a href="miscellaneous.html#calculate-z-score"><i class="fa fa-check"></i><b>17.4.4</b> Calculate z score</a></li>
+<li class="chapter" data-level="17.4.5" data-path="miscellaneous.html"><a href="miscellaneous.html#result-checking"><i class="fa fa-check"></i><b>17.4.5</b> Result checking</a></li>
+</ul></li>
+<li class="chapter" data-level="17.5" data-path="miscellaneous.html"><a href="miscellaneous.html#mathematical-coupling"><i class="fa fa-check"></i><b>17.5</b> Mathematical coupling</a></li>
+<li class="chapter" data-level="17.6" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-create-a-bookdown"><i class="fa fa-check"></i><b>17.6</b> How to create a bookdown</a>
+<ul>
+<li class="chapter" data-level="17.6.1" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-git-up-a-project-into-github"><i class="fa fa-check"></i><b>17.6.1</b> How to git up a project into GitHub</a></li>
+<li class="chapter" data-level="17.6.2" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-git-down-a-project-into-your-pc"><i class="fa fa-check"></i><b>17.6.2</b> How to git down a project into your PC</a></li>
+<li class="chapter" data-level="17.6.3" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-return-to-a-previous-version"><i class="fa fa-check"></i><b>17.6.3</b> How to return to a previous version</a></li>
+</ul></li>
 <li class="chapter" data-level="17.7" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-create-a-blogdown"><i class="fa fa-check"></i><b>17.7</b> How to create a blogdown</a></li>
 <li class="chapter" data-level="17.8" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-install-tensorflow-and-keras"><i class="fa fa-check"></i><b>17.8</b> How to install tensorflow and keras</a></li>
-<li class="chapter" data-level="17.9" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-use-github-in-team"><i class="fa fa-check"></i><b>17.9</b> How to use github in team</a></li>
-<li class="chapter" data-level="17.10" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-insert-picture-indrectly-in-markdown"><i class="fa fa-check"></i><b>17.10</b> How to insert picture indrectly in markdown</a></li>
+<li class="chapter" data-level="17.9" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-use-github-in-a-team"><i class="fa fa-check"></i><b>17.9</b> How to use GitHub in a team</a></li>
+<li class="chapter" data-level="17.10" data-path="miscellaneous.html"><a href="miscellaneous.html#how-to-insert-a-picture-indirectly-in-markdown"><i class="fa fa-check"></i><b>17.10</b> How to insert a picture indirectly in markdown</a></li>
 <li class="chapter" data-level="17.11" data-path="miscellaneous.html"><a href="miscellaneous.html#r-cheatsheets"><i class="fa fa-check"></i><b>17.11</b> R cheatsheets</a></li>
 </ul></li>
 <li class="divider"></li>
@@ -698,7 +678,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">My Little Handbook</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Biostatistics Handbook</a>
           </h1>
         </div>
 
@@ -763,42 +743,42 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/12-Common-statistical-models.Rmd",
-"text": "Edit"
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": null,
-"text": null
-},
-"download": ["_main.pdf", "_main.epub"],
-"search": {
-"engine": "fuse",
-"options": null
-},
-"toc": {
-"collapse": "subsection"
-}
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/USERNAME/REPO/edit/BRANCH/12-Common-statistical-models.Rmd",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["_main.pdf", "_main.epub"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
 });
 });
 </script>

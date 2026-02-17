@@ -1,0 +1,787 @@
+# Data Wrangling   
+
+<!-- ========================= -->
+## How to do data wrangling  
+We will use `tidyverse` package to work with data.  
+
+### Load data and package
+```{r}
+head (iris)
+```
+```{r}
+library(tidyverse)
+```
+### Select certain rows
+```{r}
+setosa <- filter(iris, Species == 'setosa')
+setosa
+```
+
+`filter the first 5 rows`
+```{r}
+iris %>% 
+  slice(1:5)
+```
+
+
+### Select certain columns
+```{r}
+select(iris, Sepal.Length, Species)
+```
+
+```{r}
+select(iris, -Sepal.Length, -Species)
+```
+
+`reorder the variables`
+```{r}
+  iris %>% select(Species, everything()) %>% 
+  print()
+```
+
+```{r}
+# using the direction of vector
+  iris %>% select(Species:Sepal.Length ) %>% 
+  print()
+```
+
+### Rename variables
+```{r}
+rename(iris,  Sepal_Width= Sepal.Width,  Sepal_Length= Sepal.Length )
+```
+
+```{r}
+iris %>% 
+  rename_with(tolower) %>% head()
+```
+
+### Sorting in ascending or descending order  
+- put a minus in front of a variable for descending order
+```{r}
+arrange(iris, Petal.Length, -Petal.Width)
+ 
+```
+### Transform variables
+```{r}
+mutate(iris,  newvar= Sepal.Width*10, Petal.Length=Petal.Length/100  )
+
+# use mutate and ifelse to categorize the varible
+```
+
+`rep, sample` 
+```{r}
+set.seed(123)
+
+drug_trial <- tibble(
+  #  each id has three 
+  id = rep(1:20, each = 3),
+  #  all has 20
+  year = rep(0:2, times = 20),
+  # sample 20 and each repeat 3  
+  age = sample(35:75, 20, TRUE) %>% rep(each = 3),
+  # 
+  drug = sample(c("Placebo", "Active"), 20, TRUE) %>% 
+    rep(each = 3),
+  #  
+  se_headache = if_else(
+    drug == "Placebo", 
+    # the possibility that outcome is 1
+    sample(0:1, 60, TRUE, c(.95,.05)), 
+    sample(0:1, 60, TRUE, c(.10, .90))
+  )
+  #  
+)
+head(drug_trial)
+```
+
+```{r}
+# 
+drug_trial %>%
+  mutate(complete = c(1))
+```
+
+`factor is just for factor (labeling the value; while `rename` labeling the variable) and recode is for different types whose outcome depends on the right side of the equation sign. factor can change the reference group. `.
+```{r}
+drug_trial=drug_trial %>% 
+  mutate(mi_f = factor(se_headache , c(0, 1), c("No", "Yes")))%>%  
+  mutate(mi_f_reverse = factor(se_headache , c(1, 0), c("yes", "no")))%>% 
+  # change the reference group by using factor
+  
+  mutate(mi  = recode(se_headache ,  "0"=2, "1"=1))
+
+str(drug_trial)
+
+table (drug_trial$mi_f)
+table (drug_trial$mi_f_reverse)
+```
+
+```{r}
+drug_trial %>% 
+  rowwise() %>% 
+  mutate(any_se_year = sum(se_headache, year) > 0)
+```
+
+`what is the difference of rowwise and group_by`
+```{r}
+drug_trial %>%  group_by(id) %>% 
+  mutate(any_se_year = sum(se_headache, year)  )
+```
+
+```{r}
+
+drug_trial %>% 
+  rowwise() %>% 
+  mutate(any_se_year = sum(se_headache, year)  )
+```
+
+`starts_with and end_with`
+```{r}
+drug_trial_sub <- drug_trial %>% 
+  select(id, year, starts_with("se")) %>% 
+  print()
+```
+
+`keep all combination levels even 0 times`
+```{r}
+drug_trial %>% 
+  filter(year == 0) %>% 
+  filter(age < 65) %>% 
+  group_by(drug, se_headache, .drop = FALSE) %>% 
+  summarise(n = n())
+```
+`group_by`
+```{r}
+drug_trial %>% 
+  filter(!is.na(age)) %>% 
+  group_by(drug) %>% 
+  summarise(mean_age = mean(age))
+```
+
+
+
+### Working with pipes %>% 
+```{r}
+iris %>% 
+  filter(Species=="setosa") %>% 
+  mutate (newvar=Sepal.Width*10) %>% 
+  select (-Sepal.Width, -Petal.Width) %>% 
+  arrange(-Sepal.Length, newvar)
+```
+### Pivot wider (long to wide)  
+- If no unique identifier row in each group **doesn't work**   
+
+```{r}
+iris %>%
+pivot_wider(  names_from=Species, values_from= c(Sepal.Length))
+```
+- Create a unique identifier row for each name and then use pivot_wider 
+
+```{r}
+widedata <- iris %>%
+  # create groups then assign unique identifier row number in each group
+  group_by(Species) %>%
+  mutate(row = row_number()) %>%
+pivot_wider(names_from=Species, values_from= c(Petal.Length,Sepal.Length,Petal.Width,Sepal.Width))
+widedata
+```
+
+```{r}
+iris %>%
+  group_by(Species) %>%
+  mutate(row = row_number()) %>%
+pivot_wider( names_from=Species, values_from= c(Petal.Length, Petal.Width))
+```
+### Pivot longer (wide to long)   
+
+why long format? there are many analytic techniques that require our data to be in this format, like plotting.
+```{r}
+longdata = pivot_longer(widedata, -
+                          c(  "row"   ,                  "Petal.Length_setosa" ,    "Petal.Length_versicolor",
+  "Petal.Length_virginica",  "Sepal.Length_setosa"  ,   "Sepal.Length_versicolor",
+  "Sepal.Length_virginica" , "Petal.Width_setosa"    ,  "Petal.Width_versicolor" ,
+  "Petal.Width_virginica"    )        , names_to="Sepal.Width", values_to="Sepal.Width.value")
+longdata
+```
+
+
+```{r}
+babies <- tibble(
+  id       = 1001:1008,
+  sex      = c("F", "F", "M", "F", "M", "M", "M", "F"),
+  weight_3  = c(9, 11, 17, 16, 11, 17, 16, 15),
+  weight_6  = c(13, 16, 20, 18, 15, 21, 17, 16),
+  weight_9  = c(16, 17, 23, 21, 16, 25, 19, 18),
+  weight_12 = c(17, 20, 24, 22, 18, 26, 21, 19)
+) %>% 
+  print()
+```
+
+`select which cols`
+```{r}
+babies %>% 
+  pivot_longer(
+    cols         = starts_with("weight"),  #which cols
+    names_to     = "months",
+    names_prefix = "weight_",  #remove prefix 
+    values_to    = "weight"
+  )
+```
+
+`using names_prefix argument`
+
+“it is a regular expression used to remove matching text from the start of each variable name.”
+```{r}
+babies %>% 
+  pivot_longer(
+    cols         = starts_with("weight"),
+    names_to     = "months",
+    names_prefix = "\\w+_"
+  )
+```
+
+
+
+
+`using default argument`
+```{r}
+babies %>% 
+  pivot_longer(
+    cols = starts_with("weight")
+  )
+```
+
+```{r}
+set.seed(123)
+babies <- tibble(
+  id       = 1001:1008,
+  sex      = c("F", "F", "M", "F", "M", "M", "M", "F"),
+  weight_3  = c(9, 11, 17, 16, 11, 17, 16, 15),
+  weight_6  = c(13, 16, 20, 18, 15, 21, 17, 16),
+  weight_9  = c(16, 17, 23, 21, 16, 25, 19, 18),
+  weight_12 = c(17, 20, 24, 22, 18, 26, 21, 19),
+  length_3  = c(17, 19, 23, 20, 18, 22, 21, 18),
+  length_6  = round(length_3 + rnorm(8, 2, 1)),
+  length_9  = round(length_6 + rnorm(8, 2, 1)),
+  length_12 = round(length_9 + rnorm(8, 2, 1)),
+) %>% 
+  print()
+```
+- pivoting multiple sets of cols
+```{r}
+babies %>% 
+  pivot_longer(
+    cols      = c(-id, -sex),
+    names_to  = c(".value", "months"),
+    names_sep = "_"
+  )
+```
+
+```{r}
+babies %>% 
+  pivot_longer(
+    cols      = c(-id, -sex),
+    names_to  = "months",
+    values_to = "weight"
+  ) %>% 
+  print()
+```
+
+`using names_sep and .value argument `
+```{r}
+babies %>% 
+  pivot_longer(
+    cols      = c(-id, -sex),
+    names_to  = c("measure", "months"),
+    names_sep = "_"
+  ) 
+```
+
+`.value tells pivot_longer() to create a new column for each unique character string that is in front of the underscore`
+
+```{r}
+babies %>% 
+  pivot_longer(
+    cols      = c(-id, -sex),
+    names_to  = c( ".value","months" ), 
+    names_sep = "_"
+  )  
+```
+
+ 
+
+```{r}
+babies %>% 
+  pivot_longer(
+    cols      = c(-id, -sex),
+    names_to  = c( "months", ".value"),
+    names_sep = "_"
+  )
+```
+
+
+
+- Pivot wider again (long to wide)
+
+`pivoting to multiple sets of cols`
+```{r}
+babies %>% 
+  pivot_longer(
+    cols      = c(-id, -sex),
+    names_to  = c( ".value","months" ), 
+    names_sep = "_"
+  ) %>% 
+  pivot_wider( names_from=months, values_from= c(weight, length ))
+```
+
+```{r}
+pivot_wider(longdata, names_from=Sepal.Width, values_from= c(Sepal.Width.value))
+
+```
+### Separate columns       
+```{r}
+separate(iris, Species, into = c("integer","decimal","third"), sep="o")
+
+```
+### Recode/relabel data    
+```{r}
+mutate(iris, Species2 = recode(Species, "setosa"="seto", "versicolor"="versi"))
+```
+
+### deduplication
+#### Complete duplicate row
+```{r}
+df <- tribble(
+  ~id, ~day, ~x,
+    1, 1, 1,
+    1, 2, 11,
+    2, 1, 12,
+    2, 2, 13,
+    2, 2, 14,
+    3, 1, 12,
+    3, 1, 12,
+    3, 2, 13,
+    4, 1, 13,
+    5, 1, 10,
+    5, 2, 11,
+    5, 1, 10
+)  
+
+df %>% 
+  distinct()
+```
+
+`mark duplication`
+```{r}
+df %>% 
+  mutate(dup = duplicated(df)) 
+  
+```
+
+```{r}
+df %>% 
+  group_by_all() %>% 
+  mutate(
+    n_row = row_number(),
+    dup   = n_row > 1
+  )
+```
+
+#### Partial duplicate rows
+```{r}
+df %>% 
+  distinct(id, day, .keep_all = TRUE)
+```
+
+```{r}
+df %>% 
+  group_by(id, day) %>% 
+  mutate(
+    count = row_number(), # Counts rows by group
+    dup   = count > 1     # TRUE if there is more than one row per group
+  )
+```
+
+`select duplicates`
+```{r}
+df %>% 
+  mutate(dup = duplicated(.) | duplicated(., fromLast = TRUE)) %>% 
+  filter(dup==T)
+```
+
+### Combine data sets  
+- prepare data sets 
+```{r}
+data1 <- data.frame(ID = 1:4,                       
+                    X1 = c("a1", "a2","a3", "a4"),
+                    stringsAsFactors = FALSE)
+data2 <- data.frame(ID = 2:5,                       
+                    X2 = c("b1", "b2","b3", "b4"),
+                    stringsAsFactors = FALSE)
+```
+- inner join   
+```{r}
+inner_join(data1, data2, by = "ID")    
+```
+- left join   
+
+`there is not ID 1 in data2, thence, x2 is missing. `
+```{r}
+left_join(data1, data2, by = "ID")   
+```
+
+`differing key col names`
+```{r}
+left_join(data1, data2, by = c("ID"="ID"))  
+```
+
+`One-to-many relationship` has the same statement  
+```{r}
+left_join(data1, data2, by = c("ID" ))  
+```
+
+`multiple data frames`
+```{r}
+data1 %>% 
+  left_join(data2, by = "ID") %>% 
+  left_join(data2, by = "ID")
+```
+
+`multiple key values`
+```{r}
+
+# demographics %>%  
+#   left_join(ultra, by = c("id", "visit"))
+```
+
+- right join   
+```{r}
+right_join(data1, data2, by = "ID")  
+```
+- full join   
+```{r}
+full_join(data1, data2, by = "ID") 
+```
+- keep cases of left data table without in right data table 
+```{r}
+anti_join(data1, data2, by = "ID")  
+```
+- keep cases of left data table in right data table 
+```{r}
+semi_join(data1, data2, by = "ID")  
+```
+- multiple full join  
+```{r}
+full_join(data1, data2, by = "ID") %>%              
+  full_join(., data2, by = "ID") 
+```
+
+ 
+- append two data tables by using join and merge       
+```{r}
+data_frame1 <- data.frame(col1 = c(6:8),
+                         col2 = letters[1:3],
+                         col3 = c(1,4,NA))
+ 
+data_frame2 <- data.frame(col1 = c(5:6),
+                          col5 = letters[7:8])
+ 
+data_frame_merge <- merge(data_frame1, data_frame2,
+                          by = 'col1', all = TRUE)
+ 
+print (data_frame_merge)
+```
+
+```{r}
+full_join(data_frame1,data_frame2, by=c("col1"),)
+```
+
+- adding rows using `bind_ function`
+
+rbind **doesn't work** 
+
+`bind_ function conbines the data frames `based on column names`; having our columns in a different order isn’t a problem.` 
+```{r}
+df1 <- data.frame(col1 = LETTERS[1:6],
+                  col2a = c(5:10),
+                  col3a = TRUE)
+
+df2 <- data.frame(col1 = LETTERS[4:8],
+                  col2b= c(4:8),
+                  col3b = FALSE)
+# rbind(df1,df2)
+
+df1 %>% 
+  bind_rows(df2)
+```
+
+`rename the differing cols`
+```{r}
+df1 %>% 
+  bind_rows(df2 %>% 
+   rename(col2a=col2b,
+          col3a=col3b)  )
+```
+
+
+combining more than 2 data frames 
+```{r}
+df1 %>% 
+  bind_rows(df2,df2)
+```
+
+
+
+### Working with character strings
+```{r}
+library(stringr)  
+library(readxl)
+```
+- Look at the values   
+```{r}
+ehr <- read_excel("C:\\Users\\hed2\\Downloads\\mybook2\\mybook2/excel.xlsx")
+ehr %>% 
+  arrange(sex) %>% 
+  pull(sex)
+```
+- Coerce to lowercase
+```{r}
+ehr %>% 
+  arrange(sex) %>% 
+  pull(sex) %>% 
+  str_to_lower()
+```
+- Coerce to upper case
+```{r}
+ehr %>% 
+  arrange(sex) %>% 
+  pull(sex) %>% 
+  str_to_upper()
+```
+- Title case
+```{r}
+ehr %>% 
+  arrange(sex) %>% 
+  pull(sex) %>% 
+  str_to_title()
+```
+- Sentence case
+```{r}
+ehr %>% 
+  arrange(sex) %>% 
+  pull(sex) %>% 
+  str_to_sentence()
+```
+- Trim white space from the beginning and end 
+```{r}
+str_trim("Ryan Edwards  ")
+```
+- Remove the comma
+```{r}
+str_replace(
+  string      = "weston fox,", 
+  pattern     = ",",
+  replacement = ""
+)
+```
+
+```{r}
+ehr %>% 
+  mutate(sex = str_replace(sex, ",", ""))
+```
+
+- Separate values into component parts 
+
+regular express, `^\\w+ look for one or more consecutive word characters at the start of the character string and extract them.`
+
+```{r}
+str_extract("zariah hernandez", "^\\w+")
+str_extract("zariah hernandez", "\\w+$")
+```
+
+```{r}
+stringr::str_match("mean(weight_3)", "(\\()(\\w+)(\\_)(\\d+)(\\))")
+```
+
+- Detect a special string to category
+`index a special string`
+```{r}
+ehr %>% 
+  mutate(
+    man   = str_detect(sex, "F"),
+    woman = str_detect(sex, "M"),
+    all   = str_detect(sex, "ale")
+  ) %>% 
+  mutate(man_dummy = as.numeric(man))
+```
+
+
+```{r}
+ehr %>% 
+  mutate(
+    dummy   =   ifelse(str_detect(sex, "F"),0,1)   
+  )  
+```
+
+### Conditional operations
+
+- Testing multiple conditions simultaneously
+```{r}
+blood_pressure <- tibble(
+  id     = 1:10,
+  sysbp  = c(152, 120, 119, 123, 135, 83, 191, 147, 209, 166),
+  diasbp = c(78, 60, 88, 76, 85, 54, 116, 95, 100, 106)
+) %>% 
+  print()
+```
+
+```{r}
+blood_pressure %>% 
+  mutate(bp = if_else(sysbp < 120 & diasbp < 80, "Normal", "Not Normal"))
+```
+
+- Using case_when function
+```{r}
+blood_pressure %>% 
+  mutate(
+    bp = case_when(
+      sysbp < 120 & diasbp < 80                               ~ "Normal",
+      sysbp >= 120 & sysbp < 130 & diasbp < 80                ~ "Elevated",
+      sysbp >= 130 & sysbp < 140 | diasbp >= 80 & diasbp < 90 ~ "Hypertension Stage 1",
+      sysbp >= 140 | diasbp >= 90                             ~ "Hypertension Stage 2"
+    )
+  )
+```
+ 
+- Recoding variables
+```{r}
+blood_pressure %>% 
+  mutate(
+    bp= case_when(
+      sysbp < 120 & diasbp < 80                               ~ 1,
+      sysbp >= 120 & sysbp < 130 & diasbp < 80                ~ 2,
+      sysbp >= 130 & sysbp < 140 | diasbp >= 80 & diasbp < 90 ~ 3,
+      sysbp >= 140 | diasbp >= 90                             ~ 4
+    )
+  ,
+ bp_f = factor( bp,
+      labels = c(
+        "normal", "elevated", "stage 1",
+        "stage 2")
+      )
+  )
+```
+
+- Recoding missing
+
+`using NA_real instead of NA.`
+```{r}
+demographics <- tibble(
+    race     = c(1, 2, 1, 4, 7, 1, 2, 9, 1, 3),
+    hispanic = c(7, 0, 1, 0, 1, 0, 1, 9, 0, 1)
+  )
+
+demographics %>% 
+  mutate(
+    # Recode 7 and 9 to missing
+    race_recode = if_else(race == 7 | race == 9, NA_real_, race),
+    hispanic_recode = if_else(hispanic == 7 | hispanic == 9, NA_real_, hispanic)
+  ) 
+```
+
+
+`check whether or not `
+```{r}
+blood_pressure %>% 
+  mutate(
+    match = sysbp == sysbp,
+    n_match = if_else(is.na(match), FALSE, match)
+  )
+```
+ 
+
+<!-- ======================= -->
+
+## How to do aggregation/ summarization
+### Summarization after grouping
+```{r echo=TRUE,  message=FALSE}
+library(tidyverse)
+```
+
+```{r echo=TRUE,  include=FALSE}
+library(tidyverse)
+```
+
+```{r}
+iris %>% 
+  group_by(Species) %>% 
+  summarize(Support = mean(Sepal.Length)) %>%    # average
+  arrange(-Support)                         # sort
+```
+
+```{r}
+iris %>% 
+  group_by(Species) %>% 
+summarize(mean_s = mean(Sepal.Width), 
+            meas_p = mean(Petal.Length), 
+            diff = mean(Sepal.Width-Petal.Length)) %>% 
+  arrange(-diff) 
+```
+
+```{r}
+iris %>% 
+  group_by(Species) %>% 
+summarize(n = n(), 
+            meas_p = mean(Petal.Length), 
+            sd = sd(Petal.Length))  
+```
+### Summarization with upgroup
+```{r}
+iris %>% 
+  ungroup( ) %>% 
+summarize(n = n(), 
+            meas_p = mean(Petal.Length), 
+            sd = sd(Petal.Length))  
+```
+### Mutate new variables after grouping
+```{r}
+iris %>% 
+  group_by(Species) %>% 
+mutate(n = n(), 
+            meas_p = mean(Petal.Length), 
+            sd = sd(Petal.Length))  
+```
+
+
+```{r}
+iris %>% 
+  group_by(Species) %>% 
+mutate(n = n(), 
+            meas_p = mean(Petal.Length, na.rm = T), 
+            sd = sd(Petal.Length))  %>% 
+  summarize (n_mean = paste ("sample size:",mean(n)), 
+            meas_p = mean(Petal.Length), 
+            sd = sd(Petal.Length))
+```
+
+### Recode and generate new variables, then value label
+```{r}
+irisifelse <- iris %>% 
+mutate(Species2 = ifelse(Species == "setosa", NA, Species))
+# relabel values
+irisifelse$Species2 <- factor(irisifelse$Species2,labels = c( "versi","virg"))
+irisifelse
+```
+```{r}
+str(irisifelse)
+```
+ 
+
+
+## How to creat table 1 with test
+
+[see here](https://rpubs.com/Daniel_He/1041833)
+
+
+## Imputing Missing Data with MICE
+
+[see here](https://rpubs.com/Daniel_He/1140881)

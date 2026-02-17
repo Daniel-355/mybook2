@@ -1,0 +1,314 @@
+
+
+## Linear mixed model practice
+
+### Loading data and library
+```{r}
+library(lme4) # load library
+library(arm) # convenience functions for regression in R
+lmm.data <- read.table("http://bayes.acs.unt.edu:8083/BayesContent/class/Jon/R_SC/Module9/lmm.data.txt",
+                       header=TRUE, sep=",", na.strings="NA", dec=".", strip.white=TRUE)
+#summary(lmm.data)
+head(lmm.data)
+```
+
+### General linear regression
+```{r}
+OLSexamp <- lm(extro ~ open + agree + social, data = lmm.data)
+display(OLSexamp)
+```
+### Generalized linear regression 
+```{r}
+MLexamp <- glm(extro ~ open + agree + social, data=lmm.data)
+display(MLexamp)
+```
+
+ 
+### Varying intercept by adding a stratum variable as fixed effect (glm)
+```{r}
+MLexamp.2 <- glm(extro ~ open + agree + social + class, data=lmm.data )
+display(MLexamp.2)
+```
+### Comparisions of models
+- add class as fixed effect
+```{r}
+AIC(MLexamp)
+AIC(MLexamp.2)
+```
+
+```{r}
+anova(MLexamp, MLexamp.2, test="F")
+```
+### Adding class and school as fixed effects (glm)
+```{r}
+MLexamp.4 <- glm(extro ~ open + agree + social + school:class, data=lmm.data )
+display(MLexamp.4)
+```
+
+```{r}
+AIC(MLexamp)
+AIC(MLexamp.4)
+```
+
+```{r}
+anova(MLexamp, MLexamp.4, test="F")
+```
+
+### Considering different slopes by stratum (glm)
+```{r}
+require(plyr)
+
+modellist <- dlply(lmm.data, .(school, class), function(x) 
+                              glm(extro~ open + agree + social, data=x))
+strat1 <- display(modellist[[1]])
+```
+
+```{r}
+strat2 <- display(modellist[[2]])
+```
+```{r}
+strat24 <- display(modellist[[24]])
+```
+
+```{r}
+AIC(MLexamp)
+# AIC(strat1)
+# AIC(strat2)
+# AIC(strat24)
+```
+`how to combine these models?` 
+
+### Varying intercept with LMM
+- add class as random effect
+```{r}
+MLexamp.6 <- lmer(extro ~ open + agree + social + (1|class), data=lmm.data)
+display(MLexamp.6)
+```
+
+```{r}
+AIC(MLexamp.2)
+AIC(MLexamp.6)
+```
+
+- add class and school as random effects
+```{r}
+MLexamp.7 <- lmer(extro ~ open + agree + social + (1|school) + (1|class), data=lmm.data)
+display(MLexamp.7)
+```
+
+
+- fit nested terms `school/class`
+```{r}
+MLexamp.8 <- lmer(extro ~ open + agree + social + (1|school/class), data=lmm.data)
+display(MLexamp.8)
+```
+
+
+
+### Varying slope with LMM
+```{r}
+MLexamp.9 <- lmer(extro ~ open + agree + social + (1+open|school/class), data=lmm.data)
+display(MLexamp.9)
+```
+
+```{r}
+AIC(MLexamp.4) #using the interaction of class and school as fixed effect
+AIC(MLexamp.7) #using class and school as random intercepts
+AIC(MLexamp.8) #using nested term of class and school as random intercepts
+AIC(MLexamp.9) #adding open as random slope based on MLexamp.8
+```
+
+### Summary the model 8 
+```{r}
+summary(MLexamp.8)
+```
+`in random effect variances, the nested effect of class within the higher level variable and the random effect of the higher level variable. If all the percentages for each random effect (each part/ the total) are very small, then the random effects are not present and linear mixed modeling is not appropriate.`
+
+
+- testing random effect
+```{r}
+# W2 will have to build the test statistic by hand because we cannot rely on asymptotics
+L_Model= logLik(MLexamp.8)[1]
+L_Model1=logLik(MLexamp.9)[1]
+LRT_statistic=-2*(L_Model1-L_Model)
+# Model has 3 parameters associated with the Random Effects
+# Model1 has 1 parameter associated with the Random Effects
+# DF=2
+# We will look at a mixture of chi-squared distributions with 1 and 2 degrees of freedom
+0.5*pchisq(LRT_statistic,df=2,lower.tail = F)+0.5*pchisq(LRT_statistic,df=1,lower.tail = F)
+```
+
+- plot a x and y by grouping variables 
+```{r}
+library(ggplot2)
+ggplot(lmm.data,aes(x= open,y=extro  ,group=school,color= school))+geom_line() 
+```
+
+- Plot of Residuals by grouping variables
+```{r}
+plot(MLexamp.8, school~resid(.))
+plot(MLexamp.8, class~resid(.))
+```
+
+- Plot Residuals by explanatory variables 
+```{r}
+plot(MLexamp.8, resid(.)~open)
+# plot(MLexamp.8,resid(.,type="p")~fitted(.) | BMIGRP_fm002)
+```
+
+- QQ plot of residuals
+```{r}
+qqnorm(resid(MLexamp.8)  )
+```
+
+- Random effect coefficients normality 
+```{r}
+test= ((ranef(MLexamp.8)[1])[["class:school"]])
+qqnorm ((test$`(Intercept)`) )
+```
+
+
+### Extracting elements (parameters)
+- fixed effect coefficients
+```{r}
+fixef(MLexamp.8) 
+```
+- random effect coefficients
+```{r}
+ranef(MLexamp.8) 
+```
+
+
+- total coefficients for model (random + fixed)
+```{r}
+coef(MLexamp.8)
+```
+- predicted values based on the model 
+```{r}
+yhat <- fitted(MLexamp.8)
+head(yhat)
+summary(yhat) 
+```
+- residuals of model 
+```{r}
+residuals <- resid(MLexamp.8)
+head(residuals)
+summary(residuals) 
+hist(residuals,50) 
+```
+
+<!-- issues -->
+- Fitted lines (less variation)
+```{r}
+lmm.data$Fitted=predict(MLexamp.8)
+# subjects=unique(lmm.data$school) #Taking the identifiers and saving it
+# sam="V" # Taking a random sample of 10 Subjects
+ 
+ggplot(lmm.data    ,aes(x=open ,y=Fitted,group=school,color=school ) )+geom_line(se=F)
+```
+
+
+### Model diagnostics 
+#### Residuals normality  
+```{r}
+library(haven)
+nurse <- read_sav(file="https://github.com/MultiLevelAnalysis/Datasets-third-edition-Multilevel-book/blob/master/chapter%202/Nurses/SPSS/Nurses.sav?raw=true")
+```
+
+```{r}
+MLexamp.18 <- lmer(stress ~ experien+ wardtype+ expcon  + (1|hospital/ward), data=nurse)
+summary(MLexamp.18)
+```
+*`outcome is ordinal variable`*
+
+`residual vs. fitted values `
+```{r}
+lmerresid <- resid(MLexamp.18)
+par(mfrow = c(1,2))
+plot(sqrt(abs(lmerresid)) ~ predict(MLexamp.18))
+qqnorm(lmerresid)
+qqline(lmerresid)
+```
+
+#### Checking for variance homogeneity
+`residual vs. explanatory variables `
+```{r,warning=F}
+par(mfrow = c(2,2))
+plot(lmerresid ~ fitted(MLexamp.18))
+with(nurse, plot(lmerresid ~ experien , col = heat.colors(20)))
+with(nurse, plot(lmerresid ~ wardtype , col = rainbow(3)))
+with(nurse, plot(lmerresid ~ expcon , col = rainbow(5)))
+# with(lmm.data, plot(lmerresid ~ class, col = rainbow(5)))
+```
+
+#### Influence points
+`Cook’s distance`
+```{r,warning=F}
+library(influence.ME)
+lmer3.infl <- influence(MLexamp.18, obs = TRUE)
+par(mfrow = c(1,1))
+plot(cooks.distance(lmer3.infl), type = "p", pch = 20)
+```
+
+#### Random effect normality 
+```{r}
+par(mfrow = c(1,3))
+qqnorm(ranef(MLexamp.18)$`ward:hospital`$`(Intercept)`)
+
+```
+
+#### Post hoc analysis
+`ci: sd of random effect coeffcient `
+```{r}
+confint(MLexamp.18, parm = 1:4, oldNames = FALSE)
+```
+`lsmeans (ideally means) plot` 
+```{r}
+mylsmeans <- emmeans::emmeans(MLexamp.18, c("wardtype", "expcon" ))
+sum_mylsmeans <- summary(mylsmeans)
+with(sum_mylsmeans, interaction.plot(wardtype , expcon ,emmean, col = 2:4))
+```
+
+`paired lsmeans`
+```{r}
+sum_difflsmeans <- summary(pairs(mylsmeans))
+head(sum_difflsmeans)
+
+barplot(sum_difflsmeans$SE)
+barplot(sum_difflsmeans$estimate)
+```
+
+A `plot` function 
+```{r}
+performance::check_model(MLexamp.18)
+```
+
+#### Intra class correlation
+
+It allows us to assess whether or not the random effect is present in the data.
+```{r}
+ lmm.null <- lmer(extro ~ 1 + (1|school), data = lmm.data)
+ summary(lmm.null) 
+```
+`indicates that 93.07% (95.8720 / 103.0119 
+) of the variance in 'extro' can be "explained" by school group membership. `
+
+
+### Notice
+- Back transformed expected values (lsmeans) not ci
+- Box-Cox transformations 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

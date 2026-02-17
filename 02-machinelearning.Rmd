@@ -1,546 +1,716 @@
+<!-- # --- -->
+<!-- # title: "Introduction to machine learning" -->
+<!-- # author: "Daniel He" -->
+<!-- # date: "`r Sys.Date()`" -->
+<!-- # output: -->
+<!-- #   html_document: -->
+<!-- #     toc: true -->
+<!-- #     toc_depth: 3 -->
+<!-- #   pdf_document: -->
+<!-- #     toc: true -->
+<!-- #     toc_depth: 3 -->
+<!-- #   word_document: -->
+<!-- #     toc: true -->
+<!-- #     toc_depth: 3 -->
+<!-- # --- -->
+
 # Machine learning
 
-## Machine learning workflow
-### Loading packages and datasets 
-```{r}
-# load the Pima Indians dataset from the mlbench dataset
-library(mlbench)
-data(PimaIndiansDiabetes) 
-# rename dataset to have shorter name because lazy
-diabetes <- PimaIndiansDiabetes
-```
-- look at the data set
-```{r}
-# install.packages(c('caret', 'skimr', 'RANN', 'randomForest', 'fastAdaboost', 'gbm', 'xgboost', 'caretEnsemble', 'C50', 'earth'))
-
-# Load the caret package
-library(caret)
-
-# Structure of the dataframe
-str(diabetes)
-
-# See top 6 rows 
-head(diabetes )
-```
-### Spliting the dataset into training and test data sets
-```{r}
-# Create the training and test datasets
-set.seed(100)
-
-# Step 1: Get row numbers for the training data
-trainRowNumbers <- createDataPartition(diabetes$diabetes, p=0.8, list=FALSE)
-
-# Step 2: Create the training  dataset
-trainData <- diabetes[trainRowNumbers,]
-
-# Step 3: Create the test dataset
-testData <- diabetes[-trainRowNumbers,]
-
-# Store X and Y for later use.
-# x = trainData[, -1]
-y = trainData$diabetes
-```
-- have a look training data set
-```{r}
-library(skimr)
-skimmed <- skim (trainData)
-skimmed 
-  
-```
-### Implement data imputation 
-- compiling knnimpute model
-```{r}
-# Create the knn imputation model on the training data
-preProcess_missingdata_model <- preProcess(trainData, method='knnImpute')
-preProcess_missingdata_model
-```
-- check missingness
-```{r}
-# Use the imputation model to predict the values of missing data points
-library(RANN)  # required for knnInpute
-trainData <- predict(preProcess_missingdata_model, newdata = trainData)
-anyNA(trainData)
-```
-### One-hot-endcoding  
-- Y (dependent) will not be encoded as one-hot-encoding
-```{r}
-# One-Hot Encoding
-# Creating dummy variables is converting a categorical variable to as many binary variables as here are categories.
-dummies_model <- dummyVars(diabetes ~ ., data=trainData)
-
-# Create the dummy variables using predict. The Y variable (Purchase) will not be present in trainData_mat.
-trainData_mat <- predict(dummies_model, newdata = trainData)
-
-# # Convert to dataframe
-trainData <- data.frame(trainData_mat)
-
-# # See the structure of the new dataset
-str(trainData)
-```
-### Normalizing features
-```{r}
-preProcess_range_model <- preProcess(trainData, method='range')
-trainData <- predict(preProcess_range_model, newdata = trainData)
-
-# Append the Y variable instead of normalized data
-trainData$diabetes <- y
-
-# Look the dataset
-apply(trainData[, -1], 2, FUN=function(x){c('min'=min(x), 'max'=max(x))})
-```
-```{r}
-str(trainData)
-```
-### Plot features
-```{r}
-featurePlot(x = trainData[, 1:8], 
-            y = trainData$diabetes, 
-            plot = "box",
-            strip=strip.custom(par.strip.text=list(cex=.7)),
-            scales = list(x = list(relation="free"), 
-                          y = list(relation="free")))
-```
-
-```{r}
-featurePlot(x = trainData[, 1:8], 
-            y = trainData$diabetes, 
-            plot = "density",
-            strip=strip.custom(par.strip.text=list(cex=.7)),
-            scales = list(x = list(relation="free"), 
-                          y = list(relation="free")))
-```
-
-```{r}
- library(corrplot)
-corrplot(cor((trainData[,-9] )))
- 
-```
-
-### **Recursive feature elimination (rfe)** 
-
-- In some scenarios, we just have to include the significant features into the following model. A good choice of selecting the important features is the recursive feature elimination (RFE).      
-- the final subset model is marked with a `starisk` in the last column, here it is 8th.       
-- though it is not wise to neglect the other predictors.   
-```{r}
-set.seed(100)
-
-options(warn=-1)
-
-subsets <- c(1:8)
-
-ctrl <- rfeControl(functions = rfFuncs,  #random forest algorithm
-                   method = "repeatedcv", #k fold cross validation repeated 5 times
-                   repeats = 5,
-                   verbose = FALSE)
-
-lmProfile <- rfe(x=trainData[, 1:8], y=trainData$diabetes,
-                 sizes = subsets,
-                 rfeControl = ctrl)
-
-lmProfile
-```
-`look up features of all models in R` 
-```{r}
-# See available algorithms in caret
-modelnames <- paste(names(getModelInfo()), collapse=',  ')
-
-```
-
-```{r}
-modelLookup('xgbTree')
-```
-### Training a model `Multivariate Adaptive Regression Splines (MARS)`
-```{r}
-# Set the seed for reproducibility
-set.seed(100)
-
-# Train the model using randomForest and predict on the training data itself.
-model_mars = train(diabetes ~ ., data=trainData, method='earth')
-fitted <- predict(model_mars)
-```
-- the default of resampling (Bootstrapped) is 25 reps
-```{r}
-model_mars
-```
-- plot the Accuracy of various combinations of the hyper parameters - `interaction.depth and n.trees`. 
-```{r}
-plot(model_mars, main="Model Accuracies with MARS")
-```
-
-- calculate the importance of variable
-```{r}
-varimp_mars <- varImp(model_mars)
-plot(varimp_mars, main="Variable Importance with MARS")
-```
-
-### Prepare the test data set
-- `imputation,dummy, and normalization`
-```{r}
-# Step 1: Impute missing values 
-testData2 <- predict(preProcess_missingdata_model, testData)  
-
-# Step 2: Create one-hot encodings (dummy variables)
-testData3 <- predict(dummies_model, testData2)
-
-# Step 3: Transform the features to range between 0 and 1
-testData4 <- predict(preProcess_range_model, testData3)
-
-# View
-head(testData4 )
-```
-### Prediction uisng testdata
-```{r}
-# Predict on testData
-predicted <- predict(model_mars, testData4)
-head(predicted)
-```
-### Compute confusion matrix
-```{r}
-# Compute the confusion matrix
-confusionMatrix(reference = as.factor(testData$diabetes), data = predicted )
-```
-### Tuning hyperparameter to optimize the model
-- setting up hyper parameter `tuneLength, tuneGrid`  
-```{r}
-# Define the training control
-fitControl <- trainControl(
-    method = 'cv',                   # k-fold cross validation 
-    number = 5,                      # number of folds 
-    savePredictions = 'final',       # saves predictions for optimal tuning parameter
-    classProbs = T,                  # should class probabilities be returned
-    summaryFunction=twoClassSummary  # results summary function
-) 
-```
-
-```{r}
-# Step 1: Define the tuneGrid
-marsGrid <-  expand.grid(nprune = c(2, 4, 6, 8, 10), 
-                         degree = c(1, 2, 3))
-
-# Step 2: Tune hyper parameters by setting tuneGrid
-set.seed(100)
-model_mars3 = train(diabetes ~ ., data=trainData, method='earth', metric='ROC', tuneGrid = marsGrid, trControl = fitControl)
-model_mars3
-
-```
-```{r}
-# Step 3: Predict on testData and Compute the confusion matrix
-predicted3 <- predict(model_mars3, testData4)
-confusionMatrix(reference = as.factor(testData$diabetes), data = predicted3   )
-```
-### Other marchine learning algorithms
-#### **adaboost algorithm**
-
-```{r}
-set.seed(100)
-
-# Train the model using adaboost
-model_adaboost = train(diabetes ~ ., data=trainData, method='adaboost', tuneLength=2, trControl = fitControl)
-model_adaboost
-```
-#### **random forest** 
-```{r}
-set.seed(100)
-
-# Train the model using rf
-model_rf = train(diabetes ~ ., data=trainData, method='rf', tuneLength=5, trControl = fitControl)
-model_rf
-```
-
-#### **xgbDART algorithm** 
-```{r}
-# set.seed(100)
-# 
-# # Train the model using MARS
-# model_xgbDART = train(Purchase ~ ., data=trainData, method='xgbDART', tuneLength=5, trControl = fitControl, verbose=F)
-# model_xgbDART
-```
-#### **Support Vector Machines (SVM)**
-```{r}
-set.seed(100)
-
-# Train the model using MARS
-model_svmRadial = train(diabetes ~ ., data=trainData, method='svmRadial', tuneLength=15, trControl = fitControl)
-model_svmRadial
-```
-#### **K-Nearest Neighbors**  
-```{r}
-set.seed(100)
-
-# Train the model using MARS
-model_knn = train(diabetes ~ ., data=trainData, method='knn', tuneLength=15, trControl = fitControl)
-model_knn
-```
-### Comparisons of different models
-```{r}
-# Compare model performances using resample()
-models_compare <- resamples(list(ADABOOST=model_adaboost, RF=model_rf, knn=model_knn, MARS=model_mars3, SVM=model_svmRadial))
-
-# Summary of the models performances
-summary(models_compare)
-```
-### Plot comparisons of models
-```{r}
-# Draw box plots to compare models
-scales <- list(x=list(relation="free"), y=list(relation="free"))
-bwplot(models_compare, scales=scales)
-```
-
-### Ensemble predictions from multiple models 
-- create multiple models
-```{r}
-library(caretEnsemble)
-# Stacking Algorithms - Run multiple algos in one call.
-trainControl <- trainControl(method="repeatedcv", 
-                             number=10, 
-                             repeats=3,
-                             savePredictions=TRUE, 
-                             classProbs=TRUE)
-
-algorithmList <- c('rf', 'adaboost', 'earth', 'knn', 'svmRadial')
-
-set.seed(100)
-models <- caretList(diabetes ~ ., data=trainData, trControl=trainControl, methodList=algorithmList) 
-results <- resamples(models)
-summary(results)
-```
-- comparison by visualization
-```{r}
-# Box plots to compare models
-scales <- list(x=list(relation="free"), y=list(relation="free"))
-bwplot(results, scales=scales)
-```
-   
-- ensemble predictions on testdata  
-```{r}
-# Create the trainControl
-set.seed(101)
-stackControl <- trainControl(method="repeatedcv", 
-                             number=10, 
-                             repeats=3,
-                             savePredictions=TRUE, 
-                             classProbs=TRUE)
-
-# Ensemble the predictions of `models` to form a new combined prediction based on glm
-stack.glm <- caretStack(models, method="glm", metric="Accuracy", trControl=stackControl)
-print(stack.glm)
-```
-
-- compute confusion matrix
-```{r}
-# Predict on testData
-stack_predicteds <- predict(stack.glm, newdata=testData4)
-confusionMatrix(reference = as.factor(testData$diabetes), data = stack_predicteds   )
-```
-
-<!-- =================== -->
-
-##  KNN Classifier
-
-```{r,message=FALSE}
-# Loading package
-# library(e1071)
-library(caTools)
-library(class)
-```
-### Splitting data
-```{r}
-# load the Pima Indians dataset from the mlbench dataset
-library(mlbench)
-data(PimaIndiansDiabetes) 
-# rename dataset to have shorter name because lazy
-diabetes <- PimaIndiansDiabetes
-```
-
-```{r}
-# Splitting data into train and test data
-set.seed(100)
-
-split <- sample.split(diabetes, SplitRatio = 0.8)
-train_cl <- subset(diabetes, split == "TRUE")
-test_cl <- subset(diabetes, split == "FALSE")
-```
-
-```{r}
-# Feature Scaling
-train_scale <- scale(train_cl[, 1:8])
-test_scale <- scale(test_cl[, 1:8])
-
-# train_y <- scale(train_cl[, 5])
-# test_y <- scale(test_cl[, 5])
-```
-
-### Creating KNN model
-```{r}
-# Fitting KNN Model to training dataset
-classifier_knn <- knn(train = train_scale,
-                      cl = train_cl$diabetes,
-                      
-                      test = test_scale,
-                      k = 1)
-classifier_knn
-```
-### Model Evaluation
-- Creat confusion matrix
-```{r}
-# Confusion Matrix
-cm <- table(test_cl$diabetes, classifier_knn)
-cm
-```
-### Calculate accuracy with different K
-```{r}
-# Model Evaluation - Choosing K =1
-# Calculate out of Sample error
-misClassError <- mean(classifier_knn != test_cl$diabetes)
-print(paste('Accuracy =', 1-misClassError))
-```
-```{r}
-# K = 7
-classifier_knn <- knn(train = train_scale,
-                      test = test_scale,
-                      cl = train_cl$diabetes,
-                      k = 23)
-
-misClassError <- mean(classifier_knn != test_cl$diabetes)
-print(paste('Accuracy =', 1-misClassError))
-```
-###  Optimization
-- search better k parameter
-
-```{r}
-i=1
-k.optm=1
-
-for (i in 1:39){
- y_pred = knn(train = train_scale,
-             test = test_scale,
-             
-             cl = train_cl$diabetes,
-             k = i )
- 
- k.optm[i] <-   1- mean(y_pred != test_cl$diabetes)
- 
- k=i
- cat(k,'=',k.optm[i],'')
- }
-```
-- Accuracy plot `k=15`
-
-```{r}
-plot(k.optm, type="b", xlab="K- Value",ylab="RMSE level")
-```
-
-### Visualization
-```{r}
-# Visualising the Training set results
-# Install ElemStatLearn if not present 
-```
-
-
-## KNN regression
-### Data exploring
-```{r, message=FALSE}
-library("Amelia")
-```
-
-```{r}
-data("Boston", package = "MASS")
-missmap(Boston,col=c('yellow','black'),y.at=1,y.labels='',legend=TRUE)
-```
-
-```{r}
-library(corrplot)
-corrplot(cor((Boston)))
-```
-```{r,message=F}
-library(Hmisc)
-describe(Boston)
-```
-
-### Prepareing data
-```{r}
-Boston <-    dplyr::select (Boston ,medv , crim , rm , tax , lstat)
-```
-
-```{r}
-# Splitting the dataset into 
-# the Training set and Test set
-# install.packages('caTools')
-library(caTools)
-set.seed(123)
-split = sample.split(Boston$medv, 
-                     SplitRatio = 0.75)
-training_set_origi = subset(Boston, 
-                      split == TRUE)
-test_set_origi = subset(Boston, 
-                  split == FALSE)
-
-
-```
-
-
-```{r}
-# Feature Scaling
-
-training_set = scale(training_set_origi[,-1] )
-test_set = scale(test_set_origi [,-1])
-```
-
-
-### Creating model
-```{r}
-# Fitting K-NN to the Training set 
-# and Predicting the Test set results
-# library(class)
-y_pred = knn(train = training_set[, -1],
-             test = test_set[, -1],
-             
-             cl = training_set_origi[, 1],
-             k = 15 )
-
-# 
-
- 
-```
-
-### Evaluation
-```{r}
-# converting factor into character then into numeric
-error <- test_set_origi[,1]-as.numeric (as.character(y_pred))
-head(error)
-rmse <- sqrt(mean(error)^2)
-rmse
-```
-```{r}
-plot(error)
-```
-
-```{r}
-head(cbind(test_set_origi[,1], as.numeric (as.character(y_pred))))
-```
-###  Optimization
-- search better k parameter
-
-```{r}
-i=1
-k.optm=1
-
-for (i in 1:29){
- y_pred = knn(train = training_set[, -1],
-             test = test_set[, -1],
-             
-             cl = training_set_origi[, 1],
-             k = i )
- 
- k.optm[i] <-  sqrt(mean(   test_set_origi[,1]-as.numeric (as.character(y_pred))   )^2)
- 
- k=i
- cat(k,'=',k.optm[i],'')
- }
-```
-
-- Accuracy plot `k=15`
-
-```{r}
-plot(k.optm, type="b", xlab="K- Value",ylab="RMSE level")
-```
+Machine learning (ML) is a collection of methods that learn patterns from data and use those patterns to make predictions or classifications. In practice, ML is most useful when (1) the relationship between predictors and outcome is complex, (2) there are many predictors and potential interactions, or (3) prediction performance is the primary goal.  
+
+This chapter focuses on a practical, end-to-end workflow using the `caret` ecosystem. The emphasis is on **reproducible steps** that appear repeatedly in real work:  
+1) load data and inspect structure,  
+2) split data into training and test sets,  
+3) perform preprocessing (imputation, encoding, normalization),  
+4) explore features visually,  
+5) train models and tune hyperparameters,  
+6) evaluate performance using a confusion matrix and cross-validation, and  
+7) compare/ensemble multiple models.  
+
+We will use the Pima Indians Diabetes dataset (`PimaIndiansDiabetes`) as a standard binary classification example. The outcome variable is `diabetes`, and the predictors are clinical measurements. The goal is to predict whether a subject has diabetes.
+
+For more details, please read [here](https://rpubs.com/Daniel_He/1396669).
+
+
+
+<!-- ## Machine learning workflow -->
+
+<!-- A common mistake in ML is to “peek” at the test data during preprocessing or tuning. In a strict workflow, the test set is held out until the end. All preprocessing models (imputation, encoding, scaling) should be built **on training data only**, then applied to the test data using the same transformation objects. This prevents information leakage and gives a more honest estimate of performance. -->
+
+<!-- ### Loading packages and datasets -->
+<!-- We first load the dataset. It is good practice to keep dataset names short and consistent, especially in teaching code or iterative modeling scripts.   -->
+<!-- ```{r} -->
+<!-- # load the Pima Indians dataset from the mlbench dataset -->
+<!-- library(mlbench) -->
+<!-- data(PimaIndiansDiabetes) -->
+<!-- # rename dataset to have shorter name because lazy -->
+<!-- diabetes <- PimaIndiansDiabetes -->
+<!-- ``` -->
+
+<!-- - look at the data set   -->
+<!-- Before modeling, always inspect the dataset: check variable types, outcome coding, and whether any variables have unexpected distributions. This early check often prevents downstream errors.   -->
+<!-- ```{r} -->
+<!-- # install.packages(c('caret', 'skimr', 'RANN', 'randomForest',   'gbm', 'xgboost', 'caretEnsemble', 'C50', 'earth')) -->
+
+<!-- # Load the caret package -->
+<!-- library(caret) -->
+
+<!-- # Structure of the dataframe -->
+<!-- str(diabetes) -->
+
+<!-- # See top 6 rows -->
+<!-- head(diabetes ) -->
+<!-- ``` -->
+
+<!-- ### Spliting the dataset into training and test data sets -->
+<!-- Splitting data is essential for evaluating generalization. The training set is used to learn model parameters and tuning, and the test set is used for final evaluation.   -->
+
+<!-- Here we use an 80/20 split. `createDataPartition()` performs a stratified split when possible, which is important for classification tasks because it helps preserve the class proportions in the training and test sets.   -->
+<!-- ```{r} -->
+<!-- # Create the training and test datasets -->
+<!-- set.seed(100) -->
+
+<!-- # Step 1: Get row numbers for the training data -->
+<!-- trainRowNumbers <- createDataPartition(diabetes$diabetes, p=0.8, list=FALSE) -->
+
+<!-- # Step 2: Create the training  dataset -->
+<!-- trainData <- diabetes[trainRowNumbers,] -->
+
+<!-- # Step 3: Create the test dataset -->
+<!-- testData <- diabetes[-trainRowNumbers,] -->
+
+<!-- # Store X and Y for later use. -->
+<!-- # x = trainData[, -1] -->
+<!-- y = trainData$diabetes -->
+<!-- ``` -->
+
+<!-- - have a look training data set   -->
+<!-- A quick summary of missingness, distributions, and variable types helps decide which preprocessing steps are needed. `skimr::skim()` is a convenient way to get a compact overview.   -->
+<!-- ```{r} -->
+<!-- library(skimr) -->
+<!-- skimmed <- skim (trainData) -->
+<!-- skimmed -->
+
+<!-- ``` -->
+
+<!-- ### Implement data imputation -->
+<!-- Missing data are common in real-world clinical and EHR datasets. Many ML algorithms cannot handle missing values directly, so imputation is a practical preprocessing step.   -->
+
+<!-- Important practice note: the imputation model must be fit on the training data only, then applied to both training and test sets using the same fitted object. -->
+
+<!-- - compiling knnimpute model   -->
+<!-- Here we use k-nearest neighbors imputation (`knnImpute`). This method imputes missing values based on similar observations in the feature space.   -->
+<!-- ```{r} -->
+<!-- # Create the knn imputation model on the training data -->
+<!-- preProcess_missingdata_model <- preProcess(trainData, method='knnImpute') -->
+<!-- preProcess_missingdata_model -->
+<!-- ``` -->
+
+<!-- - check missingness   -->
+<!-- After applying imputation, we check if any missing values remain. If `anyNA(trainData)` is still TRUE, we need to investigate which variables were not imputed and why.   -->
+<!-- ```{r} -->
+<!-- # Use the imputation model to predict the values of missing data points -->
+<!-- library(RANN)  # required for knnInpute -->
+<!-- trainData <- predict(preProcess_missingdata_model, newdata = trainData) -->
+<!-- anyNA(trainData) -->
+<!-- ``` -->
+
+<!-- ### One-hot-endcoding -->
+<!-- Many ML algorithms require numeric inputs. Categorical predictors must be converted into numeric features. One-hot encoding (dummy variables) is a standard approach: it converts a categorical variable with K levels into K (or K-1) binary indicators.   -->
+
+<!-- - Y (dependent) will not be encoded as one-hot-encoding   -->
+<!-- A practical rule: **do not one-hot encode the outcome** in typical classification workflows. Keep the outcome as a factor with levels representing classes.   -->
+
+<!-- This code creates a dummy-variable model based on the training data, then applies it to generate a numeric feature matrix.   -->
+<!-- ```{r} -->
+<!-- # One-Hot Encoding -->
+<!-- # Creating dummy variables is converting a categorical variable to as many binary variables as here are categories. -->
+<!-- dummies_model <- dummyVars(diabetes ~ ., data=trainData) -->
+
+<!-- # Create the dummy variables using predict. The Y variable (Purchase) will not be present in trainData_mat. -->
+<!-- trainData_mat <- predict(dummies_model, newdata = trainData) -->
+
+<!-- # # Convert to dataframe -->
+<!-- trainData <- data.frame(trainData_mat) -->
+
+<!-- # # See the structure of the new dataset -->
+<!-- str(trainData) -->
+<!-- ``` -->
+
+<!-- ### Normalizing features -->
+<!-- Many ML algorithms are sensitive to feature scales (e.g., KNN, SVM). Normalization ensures predictors are on comparable scales. Here we use range scaling to transform features to [0, 1].   -->
+
+<!-- Key practice note: scaling parameters must be learned on training data only, then applied to test data using the same fitted object.   -->
+<!-- ```{r} -->
+<!-- preProcess_range_model <- preProcess(trainData, method='range') -->
+<!-- trainData <- predict(preProcess_range_model, newdata = trainData) -->
+
+<!-- # Append the Y variable instead of normalized data -->
+<!-- trainData$diabetes <- y -->
+
+<!-- # Look the dataset -->
+<!-- apply(trainData[, -1], 2, FUN=function(x){c('min'=min(x), 'max'=max(x))}) -->
+<!-- ``` -->
+
+<!-- After preprocessing, always confirm the structure. This helps catch unexpected type changes or column ordering issues.   -->
+<!-- ```{r} -->
+<!-- str(trainData) -->
+<!-- ``` -->
+
+<!-- ### Plot features -->
+<!-- Exploratory data analysis (EDA) is still valuable in ML workflows. Even when prediction is the goal, feature plots can reveal outliers, skewness, separation between classes, and variables that may be uninformative.   -->
+
+<!-- Boxplots show distribution and outliers by class.   -->
+<!-- ```{r} -->
+<!-- featurePlot(x = trainData[, 1:8], -->
+<!--             y = trainData$diabetes, -->
+<!--             plot = "box", -->
+<!--             strip=strip.custom(par.strip.text=list(cex=.7)), -->
+<!--             scales = list(x = list(relation="free"), -->
+<!--                           y = list(relation="free"))) -->
+<!-- ``` -->
+
+<!-- Density plots show the entire distribution and allow visual comparison between classes (e.g., “pos” vs “neg”).   -->
+<!-- ```{r} -->
+<!-- featurePlot(x = trainData[, 1:8], -->
+<!--             y = trainData$diabetes, -->
+<!--             plot = "density", -->
+<!--             strip=strip.custom(par.strip.text=list(cex=.7)), -->
+<!--             scales = list(x = list(relation="free"), -->
+<!--                           y = list(relation="free"))) -->
+<!-- ``` -->
+
+<!-- Correlation plots help detect highly correlated predictors. Strong correlations can affect some models (e.g., linear models) and can also reduce interpretability. In tree-based models, correlation is less problematic, but it still matters for feature importance interpretation.   -->
+<!-- ```{r} -->
+<!--  library(corrplot) -->
+<!-- corrplot(cor((trainData[,-9] ))) -->
+
+<!-- ``` -->
+
+<!-- ### **Recursive feature elimination (rfe)** -->
+<!-- Feature selection is sometimes used to reduce dimensionality, improve interpretability, and possibly improve generalization. However, removing predictors can also discard useful signals. In many applied settings, we use feature selection as a diagnostic tool rather than a hard rule.   -->
+
+<!-- - In some scenarios, we just have to include the significant features into the following model. A good choice of selecting the important features is the recursive feature elimination (RFE).   -->
+<!-- RFE iteratively trains a model and removes the least important predictors, then evaluates performance for different subset sizes. -->
+
+<!-- - the final subset model is marked with a `starisk` in the last column, here it is 8th.   -->
+<!-- In the printed RFE output, the chosen subset size is marked. This indicates which number of predictors produced the best resampling performance under the chosen control settings. -->
+
+<!-- - though it is not wise to neglect the other predictors.   -->
+<!-- This is a practical warning: “important” features can change depending on resampling splits and model type. If the goal is prediction, do not remove variables unless you have a clear reason (e.g., cost, feasibility, regulatory constraints, or strong collinearity concerns). -->
+
+<!-- Below we run RFE using random forest functions (`rfFuncs`) with repeated cross-validation.   -->
+<!-- ```{r} -->
+<!-- set.seed(100) -->
+
+<!-- options(warn=-1) -->
+
+<!-- subsets <- c(1:8) -->
+
+<!-- ctrl <- rfeControl(functions = rfFuncs,  #random forest algorithm -->
+<!--                    method = "repeatedcv", #k fold cross validation repeated 5 times -->
+<!--                    repeats = 5, -->
+<!--                    verbose = FALSE) -->
+
+<!-- lmProfile <- rfe(x=trainData[, 1:8], y=trainData$diabetes, -->
+<!--                  sizes = subsets, -->
+<!--                  rfeControl = ctrl) -->
+
+<!-- lmProfile -->
+<!-- ``` -->
+
+<!-- `look up features of all models in R`   -->
+<!-- `caret` supports many model types through a unified interface. You can list all available model methods, and you can look up details for a specific model. This is helpful when selecting candidate algorithms for a given problem.   -->
+<!-- ```{r} -->
+<!-- # See available algorithms in caret -->
+<!-- modelnames <- paste(names(getModelInfo()), collapse=',  ') -->
+
+<!-- ``` -->
+
+<!-- This shows tuning parameters and required packages for the `xgbTree` method.   -->
+<!-- ```{r} -->
+<!-- modelLookup('xgbTree') -->
+<!-- ``` -->
+
+<!-- ### Training a model `Multivariate Adaptive Regression Splines (MARS)` -->
+<!-- MARS is a flexible regression/classification approach that can model nonlinear relationships using piecewise linear basis functions. It is often more interpretable than many black-box models while still capturing nonlinearity.   -->
+
+<!-- We train the model using `caret::train()`. The formula interface `diabetes ~ .` uses all predictors in `trainData` to predict `diabetes`.   -->
+<!-- ```{r} -->
+<!-- # Set the seed for reproducibility -->
+<!-- set.seed(100) -->
+
+<!-- # Train the model using randomForest and predict on the training data itself. -->
+<!-- model_mars = train(diabetes ~ ., data=trainData, method='earth') -->
+<!-- fitted <- predict(model_mars) -->
+<!-- ``` -->
+
+<!-- - the default of resampling (Bootstrapped) is 25 reps   -->
+<!-- The `train()` function uses resampling to estimate performance during training. If you do not specify `trControl`, caret uses a default resampling method (often bootstrap). This matters because reported accuracy during training is a resampling estimate, not the final test performance.   -->
+<!-- ```{r} -->
+<!-- model_mars -->
+<!-- ``` -->
+
+<!-- - plot the Accuracy of various combinations of the hyper parameters - `interaction.depth and n.trees`.   -->
+<!-- In practice, always plot performance across tuning parameters to see stability. Even when a “best” tuning is selected, nearby settings may perform similarly.   -->
+<!-- ```{r} -->
+<!-- plot(model_mars, main="Model Accuracies with MARS") -->
+<!-- ``` -->
+
+<!-- - calculate the importance of variable   -->
+<!-- Variable importance provides a rough summary of which predictors the model relies on. Interpret importance with caution, especially when predictors are correlated.   -->
+<!-- ```{r} -->
+<!-- varimp_mars <- varImp(model_mars) -->
+<!-- plot(varimp_mars, main="Variable Importance with MARS") -->
+<!-- ``` -->
+
+<!-- ### Prepare the test data set -->
+<!-- - `imputation,dummy, and normalization`   -->
+<!-- This is a critical step: we must apply the **same** transformations learned from training data to the test data. We do not refit preprocessing on test data.   -->
+
+<!-- The following code applies (1) imputation, (2) dummy encoding, and (3) range normalization to the test set, using the objects already fitted on training data.   -->
+<!-- ```{r} -->
+<!-- # Step 1: Impute missing values -->
+<!-- testData2 <- predict(preProcess_missingdata_model, testData) -->
+
+<!-- # Step 2: Create one-hot encodings (dummy variables) -->
+<!-- testData3 <- predict(dummies_model, testData2) -->
+
+<!-- # Step 3: Transform the features to range between 0 and 1 -->
+<!-- testData4 <- predict(preProcess_range_model, testData3) -->
+
+<!-- # View -->
+<!-- head(testData4 ) -->
+<!-- ``` -->
+
+<!-- ### Prediction uisng testdata -->
+<!-- Now we generate predictions on the final test feature matrix. In classification, predictions are typically class labels; in other settings, we may predict probabilities as well.   -->
+<!-- ```{r} -->
+<!-- # Predict on testData -->
+<!-- predicted <- predict(model_mars, testData4) -->
+<!-- head(predicted) -->
+<!-- ``` -->
+
+<!-- ### Compute confusion matrix -->
+<!-- The confusion matrix summarizes classification performance by comparing predicted labels with true labels. It includes sensitivity, specificity, and overall accuracy. In medical or clinical contexts, sensitivity/specificity are often more informative than accuracy alone, especially when classes are imbalanced.   -->
+<!-- ```{r} -->
+<!-- # Compute the confusion matrix -->
+<!-- confusionMatrix(reference = as.factor(testData$diabetes), data = as.factor(predicted )) -->
+<!-- ``` -->
+
+<!-- ### Tuning hyperparameter to optimize the model -->
+<!-- Hyperparameter tuning searches over model settings to improve performance. The key is to tune using cross-validation on the training set, then evaluate final tuned performance on the test set.   -->
+
+<!-- - setting up hyper parameter `tuneLength, tuneGrid`   -->
+<!-- Here we define cross-validation settings and specify that class probabilities and ROC-based summary metrics should be computed. ROC/AUC is often preferred when class imbalance exists or when threshold choice matters.   -->
+<!-- ```{r} -->
+<!-- # Define the training control -->
+<!-- fitControl <- trainControl( -->
+<!--     method = 'cv',                   # k-fold cross validation -->
+<!--     number = 5,                      # number of folds -->
+<!--     savePredictions = 'final',       # saves predictions for optimal tuning parameter -->
+<!--     classProbs = T,                  # should class probabilities be returned -->
+<!--     summaryFunction=twoClassSummary  # results summary function -->
+<!-- ) -->
+<!-- ``` -->
+
+<!-- We define a tuning grid for MARS:   -->
+<!-- - `nprune` controls the number of terms retained (model complexity),   -->
+<!-- - `degree` controls interaction degree (nonlinearity/interaction flexibility).   -->
+<!-- Then we train using ROC as the optimization metric.   -->
+<!-- ```{r} -->
+<!-- # Step 1: Define the tuneGrid -->
+<!-- marsGrid <-  expand.grid(nprune = c(2, 4, 6, 8, 10), -->
+<!--                          degree = c(1, 2, 3)) -->
+
+<!-- # Step 2: Tune hyper parameters by setting tuneGrid -->
+<!-- set.seed(100) -->
+<!-- model_mars3 = train(diabetes ~ ., data=trainData, method='earth', metric='ROC', tuneGrid = marsGrid, trControl = fitControl) -->
+<!-- model_mars3 -->
+
+<!-- ``` -->
+
+<!-- After tuning, evaluate on the test data. This gives a more realistic estimate of out-of-sample performance than training resampling metrics.   -->
+<!-- ```{r} -->
+<!-- # Step 3: Predict on testData and Compute the confusion matrix -->
+<!-- predicted3 <- predict(model_mars3, testData4) -->
+<!-- confusionMatrix(reference = as.factor(testData$diabetes), data = as.factor(predicted3   )) -->
+<!-- ``` -->
+
+<!-- ### Other marchine learning algorithms -->
+<!-- It is good practice to compare multiple algorithms. Different models have different bias-variance profiles and handle nonlinearities and interactions differently. Here we train several common classifiers using the same training control settings. -->
+
+<!-- #### **adaboost algorithm** -->
+<!-- AdaBoost is an ensemble method that combines weak learners into a stronger classifier. It can perform well but may be sensitive to noise and outliers.   -->
+<!-- ```{r} -->
+<!-- set.seed(100) -->
+
+<!-- # Train the model using adaboost -->
+<!-- model_adaboost = train(diabetes ~ ., data=trainData, method='gbm', tuneLength=2, trControl = fitControl) -->
+<!-- model_adaboost -->
+<!-- ``` -->
+
+<!-- #### **random forest** -->
+<!-- Random forest is a robust tree-based ensemble method. It handles nonlinearities and interactions well and is often a strong baseline model.   -->
+<!-- ```{r} -->
+<!-- set.seed(100) -->
+
+<!-- # Train the model using rf -->
+<!-- model_rf = train(diabetes ~ ., data=trainData, method='rf', tuneLength=5, trControl = fitControl) -->
+<!-- model_rf -->
+<!-- ``` -->
+
+<!-- #### **xgbDART algorithm** -->
+<!-- This section shows an example template for XGBoost DART, which is a boosted-tree approach with dropout. The code is commented out, which is a common way to keep a placeholder for future extensions.   -->
+<!-- ```{r} -->
+<!-- # set.seed(100) -->
+<!-- # -->
+<!-- # # Train the model using MARS -->
+<!-- # model_xgbDART = train(Purchase ~ ., data=trainData, method='xgbDART', tuneLength=5, trControl = fitControl, verbose=F) -->
+<!-- # model_xgbDART -->
+<!-- ``` -->
+
+<!-- #### **Support Vector Machines (SVM)** -->
+<!-- SVMs can be very effective in classification, especially with nonlinear kernels. They are sensitive to feature scaling, which is why normalization earlier is important.   -->
+<!-- ```{r} -->
+<!-- set.seed(100) -->
+
+<!-- # Train the model using MARS -->
+<!-- model_svmRadial = train(diabetes ~ ., data=trainData, method='svmRadial', tuneLength=15, trControl = fitControl) -->
+<!-- model_svmRadial -->
+<!-- ``` -->
+
+<!-- #### **K-Nearest Neighbors** -->
+<!-- KNN is a simple and intuitive method: classify based on the majority class of the nearest neighbors. It is strongly affected by scaling and by the choice of K.   -->
+<!-- ```{r} -->
+<!-- set.seed(100) -->
+
+<!-- # Train the model using MARS -->
+<!-- model_knn = train(diabetes ~ ., data=trainData, method='knn', tuneLength=15, trControl = fitControl) -->
+<!-- model_knn -->
+<!-- ``` -->
+
+<!-- ### Comparisons of different models -->
+<!-- A common workflow is to train multiple models under the same resampling settings and then compare their performance distributions. `resamples()` collects resampling results across models for summary and visualization.   -->
+<!-- ```{r} -->
+<!-- # Compare model performances using resample() -->
+<!-- models_compare <- resamples(list(ADABOOST=model_adaboost, RF=model_rf, knn=model_knn, MARS=model_mars3, SVM=model_svmRadial)) -->
+
+<!-- # Summary of the models performances -->
+<!-- summary(models_compare) -->
+<!-- ``` -->
+
+<!-- ### Plot comparisons of models -->
+<!-- Visualization helps compare stability and variability across resampling folds. A model with slightly lower mean performance but more stability might be preferable in production settings.   -->
+<!-- ```{r} -->
+<!-- # Draw box plots to compare models -->
+<!-- scales <- list(x=list(relation="free"), y=list(relation="free")) -->
+<!-- bwplot(models_compare, scales=scales) -->
+<!-- ``` -->
+
+<!-- ### Ensemble predictions from multiple models -->
+<!-- Ensembling combines multiple models to potentially improve performance and robustness. The idea is that different models capture different aspects of the signal; combining them can reduce variance and improve generalization. -->
+
+<!-- - create multiple models   -->
+<!-- Here we use `caretEnsemble` to train multiple algorithms under repeated cross-validation and store predictions for stacking.   -->
+<!-- ```{r} -->
+<!-- library(caretEnsemble) -->
+<!-- # Stacking Algorithms - Run multiple algos in one call. -->
+<!-- trainControl <- trainControl(method="repeatedcv", -->
+<!--                              number=10, -->
+<!--                              repeats=3, -->
+<!--                              savePredictions=TRUE, -->
+<!--                              classProbs=TRUE) -->
+
+<!-- algorithmList <- c('rf', 'gbm', 'earth', 'knn', 'svmRadial') -->
+
+<!-- set.seed(100) -->
+<!-- models <- caretList(diabetes ~ ., data=trainData, trControl=trainControl, methodList=algorithmList) -->
+<!-- results <- resamples(models) -->
+<!-- summary(results) -->
+<!-- ``` -->
+
+<!-- - comparison by visualization   -->
+<!-- Boxplots summarize performance across resampling repeats. This helps identify consistently strong models.   -->
+<!-- ```{r} -->
+<!-- # Box plots to compare models -->
+<!-- scales <- list(x=list(relation="free"), y=list(relation="free")) -->
+<!-- bwplot(results, scales=scales) -->
+<!-- ``` -->
+
+<!-- - ensemble predictions on testdata   -->
+<!-- Stacking trains a meta-model (here a GLM) on the predictions from base models. This is a practical and widely used ensembling strategy.   -->
+<!-- ```{r} -->
+<!-- # Create the trainControl -->
+<!-- set.seed(101) -->
+<!-- stackControl <- trainControl(method="repeatedcv", -->
+<!--                              number=10, -->
+<!--                              repeats=3, -->
+<!--                              savePredictions=TRUE, -->
+<!--                              classProbs=TRUE) -->
+
+<!-- # Ensemble the predictions of `models` to form a new combined prediction based on glm -->
+<!-- stack.glm <- caretStack(models, method="glm", metric="Accuracy", trControl=stackControl) -->
+<!-- (stack.glm) -->
+<!-- ``` -->
+
+<!-- - compute confusion matrix   -->
+<!-- Finally, evaluate the stacked model on the test data. This provides a direct comparison against individual models.   -->
+<!-- ```{r} -->
+<!-- # Predict on testData -->
+<!-- stack_predicteds <- predict(stack.glm, newdata=testData4) -->
+<!-- stack_predicteds$label <- ifelse(stack_predicteds$neg > stack_predicteds$pos, "neg", "pos") -->
+<!-- confusionMatrix(reference = as.factor(testData$diabetes), data = as.factor(stack_predicteds$label ) ) -->
+<!-- ``` -->
+
+<!-- <!-- =================== --> -->
+
+<!-- ##  KNN Classifier -->
+
+<!-- This section demonstrates KNN in a more direct way using the `class::knn()` function. This is useful for learning and for understanding how KNN works under the hood, separate from the caret wrapper.   -->
+<!-- A key reminder: KNN requires feature scaling because it relies on distance calculations. -->
+
+<!-- ```{r,message=FALSE} -->
+<!-- # Loading package -->
+<!-- # library(e1071) -->
+<!-- library(caTools) -->
+<!-- library(class) -->
+<!-- ``` -->
+
+<!-- ### Splitting data -->
+<!-- We reload the dataset and split it again. In real projects, you would typically reuse the same split. Here the goal is to demonstrate a standalone KNN pipeline.   -->
+<!-- ```{r} -->
+<!-- # load the Pima Indians dataset from the mlbench dataset -->
+<!-- library(mlbench) -->
+<!-- data(PimaIndiansDiabetes) -->
+<!-- # rename dataset to have shorter name because lazy -->
+<!-- diabetes <- PimaIndiansDiabetes -->
+<!-- ``` -->
+
+<!-- We create a train/test split using `caTools::sample.split()`. This function is commonly used for quick splits.   -->
+<!-- ```{r} -->
+<!-- # Splitting data into train and test data -->
+<!-- set.seed(100) -->
+
+<!-- split <- sample.split(diabetes, SplitRatio = 0.8) -->
+<!-- train_cl <- subset(diabetes, split == "TRUE") -->
+<!-- test_cl <- subset(diabetes, split == "FALSE") -->
+<!-- ``` -->
+
+<!-- Feature scaling is required for KNN. Here we scale predictors to have mean 0 and standard deviation 1.   -->
+<!-- This is different from range scaling earlier; both are common. The key is to apply the same scaling logic consistently.   -->
+<!-- ```{r} -->
+<!-- # Feature Scaling -->
+<!-- train_scale <- scale(train_cl[, 1:8]) -->
+<!-- test_scale <- scale(test_cl[, 1:8]) -->
+
+<!-- # train_y <- scale(train_cl[, 5]) -->
+<!-- # test_y <- scale(test_cl[, 5]) -->
+<!-- ``` -->
+
+<!-- ### Creating KNN model -->
+<!-- KNN predicts the class of each test observation based on the majority class among its K nearest neighbors in the training set. Smaller K tends to fit more locally (higher variance), while larger K smooths more (higher bias).   -->
+<!-- ```{r} -->
+<!-- # Fitting KNN Model to training dataset -->
+<!-- classifier_knn <- knn(train = train_scale, -->
+<!--                       cl = train_cl$diabetes, -->
+
+<!--                       test = test_scale, -->
+<!--                       k = 1) -->
+<!-- classifier_knn -->
+<!-- ``` -->
+
+<!-- ### Model Evaluation -->
+<!-- - Creat confusion matrix   -->
+<!-- A confusion matrix is the most basic evaluation tool for classifiers. It shows counts of correct/incorrect predictions by class.   -->
+<!-- ```{r} -->
+<!-- # Confusion Matrix -->
+<!-- cm <- table(test_cl$diabetes, classifier_knn) -->
+<!-- cm -->
+<!-- ``` -->
+
+<!-- ### Calculate accuracy with different K -->
+<!-- Accuracy is easy to compute, but do not rely on accuracy alone if classes are imbalanced. In applied medical problems, sensitivity/specificity (or ROC/AUC) often matter more.   -->
+<!-- ```{r} -->
+<!-- # Model Evaluation - Choosing K =1 -->
+<!-- # Calculate out of Sample error -->
+<!-- misClassError <- mean(classifier_knn != test_cl$diabetes) -->
+<!-- print(paste('Accuracy =', 1-misClassError)) -->
+<!-- ``` -->
+
+<!-- This example uses a larger K. In practice, you tune K by evaluating a range of values and selecting the best under cross-validation or a validation set.   -->
+<!-- ```{r} -->
+<!-- # K = 7 -->
+<!-- classifier_knn <- knn(train = train_scale, -->
+<!--                       test = test_scale, -->
+<!--                       cl = train_cl$diabetes, -->
+<!--                       k = 23) -->
+
+<!-- misClassError <- mean(classifier_knn != test_cl$diabetes) -->
+<!-- print(paste('Accuracy =', 1-misClassError)) -->
+<!-- ``` -->
+
+<!-- ###  Optimization -->
+<!-- - search better k parameter   -->
+<!-- Here we try a sequence of K values and compute accuracy for each. This gives a quick sensitivity analysis of performance versus K.   -->
+<!-- Note: In production, prefer cross-validation rather than a single split to reduce randomness.   -->
+<!-- ```{r} -->
+<!-- i=1 -->
+<!-- k.optm=1 -->
+
+<!-- for (i in 1:39){ -->
+<!--  y_pred = knn(train = train_scale, -->
+<!--              test = test_scale, -->
+
+<!--              cl = train_cl$diabetes, -->
+<!--              k = i ) -->
+
+<!--  k.optm[i] <-   1- mean(y_pred != test_cl$diabetes) -->
+
+<!--  k=i -->
+<!--  cat(k,'=',k.optm[i],'') -->
+<!--  } -->
+<!-- ``` -->
+
+<!-- - Accuracy plot `k=15`   -->
+<!-- Plotting performance across K helps identify a stable region rather than a single “lucky” optimum.   -->
+<!-- ```{r} -->
+<!-- plot(k.optm, type="b", xlab="K- Value",ylab="RMSE level") -->
+<!-- ``` -->
+
+<!-- ### Visualization -->
+<!-- This section is a placeholder for visualization of results. In practice, you might visualize:   -->
+<!-- - decision boundaries (for 2D cases),   -->
+<!-- - ROC curves,   -->
+<!-- - or distributions of predicted probabilities.   -->
+<!-- ```{r} -->
+<!-- # Visualising the Training set results -->
+<!-- # Install ElemStatLearn if not present -->
+<!-- ``` -->
+
+
+<!-- ## KNN regression -->
+<!-- KNN can also be used for regression problems, where the prediction is a continuous value. Instead of majority vote, regression KNN typically averages the outcomes of nearest neighbors.   -->
+<!-- This section uses the Boston housing dataset (`MASS::Boston`) and focuses on predicting `medv` (median value of owner-occupied homes). -->
+
+<!-- ### Data exploring -->
+<!-- We first inspect missingness and correlation structure. For KNN regression, feature scaling is especially important because distance computations drive the model.   -->
+<!-- ```{r, message=FALSE} -->
+<!-- library("Amelia") -->
+<!-- ``` -->
+
+<!-- The missingness map provides a quick visual summary of missing patterns.   -->
+<!-- ```{r} -->
+<!-- data("Boston", package = "MASS") -->
+<!-- missmap(Boston,col=c('yellow','black'),y.at=1,y.labels='',legend=TRUE) -->
+<!-- ``` -->
+
+<!-- Correlation plots help identify redundant predictors and strong relationships with the outcome.   -->
+<!-- ```{r} -->
+<!-- library(corrplot) -->
+<!-- corrplot(cor((Boston))) -->
+<!-- ``` -->
+
+<!-- Descriptive summaries help confirm variable ranges and distributions before selecting predictors.   -->
+<!-- ```{r,message=F} -->
+<!-- library(Hmisc) -->
+<!-- describe(Boston) -->
+<!-- ``` -->
+
+<!-- ### Prepareing data -->
+<!-- We select a subset of variables for a simpler demonstration. In practice, variable selection may be based on domain knowledge, correlation screening, or model-based importance.   -->
+<!-- ```{r} -->
+<!-- Boston <-    dplyr::select (Boston ,medv , crim , rm , tax , lstat) -->
+<!-- ``` -->
+
+<!-- We split the dataset into training and test sets. This is necessary to evaluate out-of-sample RMSE (or other regression metrics).   -->
+<!-- ```{r} -->
+<!-- # Splitting the dataset into -->
+<!-- # the Training set and Test set -->
+<!-- # install.packages('caTools') -->
+<!-- library(caTools) -->
+<!-- set.seed(123) -->
+<!-- split = sample.split(Boston$medv, -->
+<!--                      SplitRatio = 0.75) -->
+<!-- training_set_origi = subset(Boston, -->
+<!--                       split == TRUE) -->
+<!-- test_set_origi = subset(Boston, -->
+<!--                   split == FALSE) -->
+
+
+<!-- ``` -->
+
+
+<!-- Feature scaling is applied to predictors. This is critical for distance-based methods like KNN.   -->
+<!-- ```{r} -->
+<!-- # Feature Scaling -->
+
+<!-- training_set = scale(training_set_origi[,-1] ) -->
+<!-- test_set = scale(test_set_origi [,-1]) -->
+<!-- ``` -->
+
+
+<!-- ### Creating model -->
+<!-- This code fits a KNN model and predicts on the test set.   -->
+<!-- Note: The `class::knn()` function is primarily designed for classification, but this code demonstrates a simplified approach for regression-style prediction. In applied regression settings, you would typically use a KNN regression implementation (e.g., from specialized packages) to avoid forced categorical conversion.   -->
+<!-- ```{r} -->
+<!-- # Fitting K-NN to the Training set -->
+<!-- # and Predicting the Test set results -->
+<!-- # library(class) -->
+<!-- y_pred = knn(train = training_set[, -1], -->
+<!--              test = test_set[, -1], -->
+
+<!--              cl = training_set_origi[, 1], -->
+<!--              k = 15 ) -->
+
+<!-- # -->
+
+
+<!-- ``` -->
+
+<!-- ### Evaluation -->
+<!-- We compute prediction error and a simple RMSE-like metric. In standard regression, RMSE is computed as `sqrt(mean(error^2))`. Here we follow the structure in the code and inspect results.   -->
+<!-- ```{r} -->
+<!-- # converting factor into character then into numeric -->
+<!-- error <- test_set_origi[,1]-as.numeric (as.character(y_pred)) -->
+<!-- head(error) -->
+<!-- rmse <- sqrt(mean(error)^2) -->
+<!-- rmse -->
+<!-- ``` -->
+
+<!-- Plotting the error helps detect systematic bias or extreme outliers.   -->
+<!-- ```{r} -->
+<!-- plot(error) -->
+<!-- ``` -->
+
+<!-- Viewing observed vs predicted values is a quick sanity check.   -->
+<!-- ```{r} -->
+<!-- head(cbind(test_set_origi[,1], as.numeric (as.character(y_pred)))) -->
+<!-- ``` -->
+
+<!-- ###  Optimization -->
+<!-- - search better k parameter   -->
+<!-- As in classification, K controls the bias-variance tradeoff. We search over a range of K values and compute the metric stored in `k.optm`.   -->
+<!-- ```{r} -->
+<!-- i=1 -->
+<!-- k.optm=1 -->
+
+<!-- for (i in 1:29){ -->
+<!--  y_pred = knn(train = training_set[, -1], -->
+<!--              test = test_set[, -1], -->
+
+<!--              cl = training_set_origi[, 1], -->
+<!--              k = i ) -->
+
+<!--  k.optm[i] <-  sqrt(mean(   test_set_origi[,1]-as.numeric (as.character(y_pred))   )^2) -->
+
+<!--  k=i -->
+<!--  cat(k,'=',k.optm[i],'') -->
+<!--  } -->
+<!-- ``` -->
+
+<!-- - Accuracy plot `k=15`   -->
+<!-- Plotting the metric versus K helps identify the region where performance stabilizes and avoid choosing K based on a single noisy optimum.   -->
+<!-- ```{r} -->
+<!-- plot(k.optm, type="b", xlab="K- Value",ylab="RMSE level") -->
+<!-- ``` -->

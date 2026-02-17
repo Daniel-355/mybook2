@@ -1,0 +1,690 @@
+ 
+# Miscellaneous
+
+
+## Linear algebra
+
+### Matrix basics
+- dimensions of matrix
+```{r setup, include=FALSE,engine='R'}
+knitr::opts_chunk$set( engine='R')
+```
+
+```{r}
+   seed=123
+   X=matrix(1:12,ncol=3,nrow=4)
+   X
+   
+   dim(X)
+   dim(X)[1]
+
+   ncol(X)
+```
+- change dimensions of matrix 
+```{r}
+dim(X)=c(2,6)
+   X
+```
+- change names of matrix 
+```{r}
+  a <- matrix(1:6,nrow=2,ncol=3,byrow=FALSE)
+  b <- matrix(1:6,nrow=3,ncol=2,byrow=T)
+  c <- matrix(1:6,nrow=3,ncol=2,byrow=T,dimnames=list(c("A","B","C"),c("boy","girl")))
+  c
+```
+
+```{r}
+   rownames(c)
+   colnames(c)
+
+   rownames(c)=c("E","F","G")
+   c
+```
+- replace elements of matrix
+```{r}
+   X=matrix(1:12,nrow=4,ncol=3)
+   
+   X[2,3]
+   X[2,3]=1000
+      
+   X
+```
+- extract diagonal elements and replace them 
+```{r}
+   diag(X)
+   diag(X)=c(0,0,1)
+
+   X
+```
+- create diagonal identity matrix 
+```{r}
+  diag(c(1,2,3))
+   
+  diag(3)
+```
+- extract lower/upper triangle elements 
+```{r}
+  X
+  X[lower.tri(X)]
+   
+  X[upper.tri(X)]
+```
+- create lower/upper triangle matrix 
+```{r}
+X[lower.tri(X)]=0
+X
+```
+### Operations
+- transform 
+```{r}
+ t(X)
+```
+
+- summary by row or column 
+```{r}
+  A=matrix(1:12,3,4)
+  A 
+  rowSums(A)
+   
+  rowMeans(A)
+```
+- determinant of matrix 
+```{r}
+  X=matrix(rnorm(9),nrow=3,ncol=3)
+  det(X)
+```
+- Addition
+```{r}
+  A=matrix(1:12,nrow=3,ncol=4)
+  B=matrix(1:12,nrow=3,ncol=4)
+  A+B #same dimensions (non-conformable arrays)
+```
+- addition by scale
+```{r}
+A=matrix(1:12,nrow=3,ncol=4)
+2+A
+```
+
+
+- multiple by scale
+```{r}
+A=matrix(1:12,nrow=3,ncol=4)
+2*A
+```
+- dot multiple  
+```{r}
+   A=matrix(1:12,nrow=2,ncol=4)
+   
+   B=matrix(1:12,nrow=4,ncol=3)
+   
+   A%*%B
+```
+- kronecker multiple 
+```{r}
+   A=matrix(1:4,2,2)
+   B=matrix(rep(1,4),2,2)
+   
+   kronecker(A,B)
+```
+- inverse matrix 
+
+`must be square`
+```{r}
+   A=matrix(rnorm(9),nrow=3,ncol=3) 
+   A
+   AI=solve(A)
+   AI
+   # identity matrix    
+   (A%*%AI)
+```
+
+```{r}
+library(matlib)
+inv(A)
+```
+- generalized inverse
+`when it is not square`
+```{r}
+   library(MASS)
+   A2=matrix(1:12,nrow=3,ncol=4)
+   
+   A%*%ginv(A)
+   A%*%ginv(A)%*%A
+```
+- crossprod
+```{r}
+B=matrix(1:12,nrow=4,ncol=3)
+B
+crossprod(B)
+t(B)%*%B
+```
+
+
+```{r}
+   B=matrix(1:12,nrow=4,ncol=3)
+   ginv(B)
+   ginv(crossprod(B))
+   # solve(crossprod(B)) #is singular
+   # solve((B)) #is not square
+```
+
+- eigen values (decomposition) 
+`mxn matrix`
+`A=UΛU` 
+```{r}
+   A=matrix(1:9,nrow=3,ncol=3)
+   
+   Aeigen=eigen(A)
+   
+   Aeigen$values
+   
+   val <- diag(Aeigen$values)
+   val
+```
+- eigen vectors
+```{r}
+Aeigen$vectors
+```
+
+
+```{r}
+ round(Aeigen$vectors%*%val%*%t(Aeigen$vectors))
+ A
+```
+### Advanced operations
+- Choleskey factor
+
+`positive definite matrix (symmetric square), A=P’P`
+
+`covariance matrix is semi positive definite matrix`
+```{r}
+   A=diag(3)+1
+   A  
+   chol(A)
+```
+
+```{r}
+   t(chol(A))%*%chol(A)
+```
+`inverse using Choleshey`
+```{r}
+chol2inv(chol(A))
+inv(A)
+```
+
+ 
+- singular value (svd) decomposition 
+
+`m×n matrix`
+
+`A=UDV`
+```{r}
+   A=matrix(1:18,3,6)
+   
+   svd(A)   $d
+   t(svd(A)   $u)%*%svd(A)   $u
+   t(svd(A)   $v)%*%svd(A)   $v
+   
+```
+
+```{r}
+   svd(A)   $u %*%diag(svd(A)   $d)%*% t(svd(A)   $v)
+   A
+```
+
+- QR decomposition
+
+`m×n matrix`
+
+`A=QR，where Q’Q=I, Q is orthogonal matrix` 
+```{r}
+   A=matrix(1:12,4,3)
+   qr(A)
+```
+
+
+
+```{r}
+qr.Q(qr(A))
+```
+```{r}
+qr.R(qr(A))
+```
+
+
+
+### Solve linear equations
+
+```{r}
+   X=matrix(c(2, 2, 2, 0, 1, 1  ,2, 2, 0),ncol=3,nrow=3)
+   X
+   b=1:3
+   b
+   solve(X,b) # whether it is singular
+```
+
+### Summary
+- Eigen values (values and vectors, UΛU), singular values (s v "\" d), and QR (orthogonal and upper triangle, QR) for any matrix.
+
+- Choleskey (P’ P, lower and upper triangle) factor for positive definite matrix (cov matrix is semi). 
+
+## Calculus 
+### Derivation
+```{r}
+dx <- deriv(y ~ x^3, "x"); dx
+mode(dx)
+x<-1:2   
+eval(dx)
+```
+```{r}
+dx <- deriv(y ~ sin(x), "x", func= TRUE) ;  
+mode(dx)
+dx(c(pi,4*pi))  
+```
+
+```{r}
+a<-2                
+dx<-deriv(y~a*cos(a*x),"x",func = TRUE)    
+dx(pi/3)
+   
+```
+
+```{r}
+fxy = expression(2*x^2+y+3*x*y^2)
+dxy = deriv(fxy, c("x", "y"), func = TRUE)
+dxy(1,2)  
+```
+
+### Integration
+```{r}
+integrate(dnorm, -1.96, 1.96)
+ 
+integrate(dnorm, -Inf, Inf)
+```
+```{r}
+integrand <- function(x) {1/((x+1)*sqrt(x))}
+ 
+integrate(integrand, lower = 0, upper = Inf)
+```
+
+```{r}
+ integrand <- function(x) {sin(x)}
+ integrate(integrand, lower = 0, upper = pi/2) 
+```
+
+
+
+
+
+
+
+
+## Sample size calculation
+
+```{r}
+#given proportion 
+px3=0.11
+px4=0.07
+px5=0.08
+px6=0.06
+px7=0.05
+
+###################
+
+  Outcome0 = NULL
+  
+  for (t in seq(350, 600, by=2)){  # change the possible sample size graudally from 400 to 700.  
+    
+    n=t
+    count=0
+    M=500   # times of simulation
+    for (i in 1:M){
+      
+      # for a given sample size (400), for the first simulation,
+      # we use rbinom function simulate the contingencey table as below with above given proportions,
+      # and calculate the p value by using Chi square test for the simulation
+      x3=rbinom(1,n,px3)
+      x4=rbinom(1,n,px4)
+      x5=rbinom(1,n,px5)
+      x6=rbinom(1,n,px6)
+      x7=rbinom(1,n,px7)
+            
+      data=matrix(c(x3,n-x3,x4,n-x4,x5,n-x5,x6,n-x6,x7,n-x7 ),ncol=2,byrow=T)   
+      
+      # if the p value of this simulation is less than 0.05, it means we get the significant result for the given this sample size this time. it means we detected the difference in this simulation experiment when the difference is true. 
+      pv=prop.test(data)$p.value      
+      
+      count=as.numeric(pv<0.05)+count  #sum of pv<0.05
+    }  #end loop of p value 
+    power0=count/M 
+    
+    temp <- data.frame(size=t,power=power0)
+    Outcome0 =  rbind(Outcome0, temp)
+  }  #end loop of power from different sample size
+  
+  # generate a new variable named "power_loess" by loess method because the curve of sample size and power is not enough smooth
+  power_loess <- round(predict(loess(Outcome0$power ~ Outcome0$size,data=Outcome0,span=0.6)),3)
+  Outcome0 =  data.frame(Outcome0, power_loess)
+  
+  # plot a line chart of the power and sample size, and smooth the curve by loess method
+  plot (Outcome0$size, Outcome0$power,type = "n", ylab = "Power",xlab="Sample size",
+        main = expression(paste("Power analysis for GDM"))) 
+  abline(h=0.9,col='red',lwd=2,lty=2)
+  abline(h=0.85, col='red',lwd=2,lty=2)
+  abline(h=0.8,col='red',lwd=2,lty=2)
+  lines(Outcome0$size,power_loess,col="blue",lwd=2)
+```
+
+
+## How to evaluate z score
+
+
+
+- Call the parameter estimates file 
+```{r,echo=FALSE}
+   Ultra= 5   
+```
+```{r,echo=FALSE}
+   PE=c(4,4,1.5582531352 ,1.55295994459852E-01,1.5508530833948259E-02,-2.5583555549355855E-04,3.5590358554438349E-04,-1.5594549815954538E-04,1.558858859455E-04,4.5551808410545388E-02,1.5532582058058819E-02,-2.5525309589508032E-05,-4.5543803255145135E-05,-9.5589509580845285E-08,-2.5525309589508032E-05,8.5584325231922115E-05,5.5585824824850422E-08,-2.5504154898583410E-09,-4.5543803255145135E-05,5.5585824824850422E-08,5.5580285119152818E-09,-2.5555515445182843E-11,-9.5589509580845285E-08,-2.5504154898583410E-09,-2.5555515445182843E-11,2.5591845253880851E-12,1.5590E+01,2.558290E+01,3.554290E+01,1.5518803828219292E-01,-2.5508253202815509E-02,1.5519591958352832E-03,-2.5524090909539828E-05,2.5558280832550283E-05,-9.5513118208015104E-05,1.5534312010843458E-05,-2.5508253202815509E-02,3.55591539959515E-03,-2.5512285241015309E-04,3.5598258012054254E-05,-4.5588824093829525E-05,1.5558248231134944E-05,-2.5551059932834348E-05,1.5519591958352832E-03,-2.5512285241015309E-04,1.5522245335112982E-05,-2.5529525953855588E-08,2.5588320358931258E-08,-1.55895958918045E-08,1.5552832350435804E-08,-2.5524090909539828E-05,3.5598258012054254E-05,-2.5529525953855588E-08,4.5531819923158805E-09,-5.5523835838549189E-09,1.5595522821258240E-09,-3.5503059580103212E-09,2.5558280832550283E-05,-4.5588824093829525E-05,2.5588320358931258E-08,-5.5523835838549189E-09,5.5545381289538380E-09,-2.5588488058515819E-09,4.5558515289855411E-09,-9.5513118208015104E-05,1.5558248231134944E-05,-1.55895958918045E-08,1.5595522821258240E-09,-2.5588488058515819E-09,2.5559030480128950E-09,-5.5582809248938548E-09,1.5534312010843458E-05,-2.5551059932834348E-05,1.5552832350435804E-08,-3.5503059580103212E-09,4.5558515289855411E-09,-5.5582809248938548E-09,2.5553518554985598E-08,
+         4,5,-5.5515881082401889E-01,5.5533454321103184E-01,-2.55505888115552E-02,3.5582452345835115E-04,-2.55548848839258E-04,-1.5552391023910595E-04,1.5534829554943185E-04,3.55055851541325E-02,1.55121343221019E-02,-3.5508381382599433E-04,-5.5539858559038550E-05,1.5545583599559314E-08,-3.5508381382599433E-04,1.5501858484988589E-05,1.55522510835055E-08,-4.5528322238435851E-09,-5.5539858559038550E-05,1.55522510835055E-08,3.5555055340551320E-09,-9.5514493584480498E-11,1.5545583599559314E-08,-4.5528322238435851E-09,-9.5514493584480498E-11,2.5554195953929850E-12,1.5590E+01,2.558290E+01,3.554395E+01,5.55483850504493E-02,-1.5514448451445958E-02,5.5555948515989155E-04,-1.5522803825081248E-05,1.5545981822884824E-05,-4.5558945444380989E-05,5.5589433298325089E-05,-1.5514448451445958E-02,2.5502454245905304E-03,-1.5515181448885844E-04,2.5518558081155813E-05,-2.5559845825204542E-05,8.55554298838501E-08,-1.5525089458518895E-05,5.5555948515989155E-04,-1.5515181448885844E-04,5.5558522588855394E-05,-1.5525129445988131E-08,1.5549950314895035E-08,-5.5509589012119581E-08,8.5551888828813989E-08,-1.5522803825081248E-05,2.5518558081155813E-05,-1.5525129445988131E-08,2.5534885144889143E-09,-2.5582391451414041E-09,9.5588850590595044E-10,-1.55582598123554E-09,1.5545981822884824E-05,-2.5559845825204542E-05,1.5549950314895035E-08,-2.5582391451414041E-09,3.5544813928525402E-09,-1.5535595294305235E-09,2.5525085889115598E-09,-4.5558945444380989E-05,8.55554298838501E-08,-5.5509589012119581E-08,9.5588850590595044E-10,-1.5535595294305235E-09,1.55151198830188E-09,-2.5598588520289153E-09,5.5589433298325089E-05,-1.5525089458518895E-05,8.5551888828813989E-08,-1.55582598123554E-09,2.5525085889115598E-09,-2.5598588520289153E-09,1.5518825329893180E-08,
+         4,5,-2.559159558840 ,8.5584091555520342E-01,-4.5502081595108580E-02,5.5558858021590432E-04,-5.5559938083555941E-04,4.5554510985380518E-05,-1.5593953452529334E-05,2.5558853251250105E-02,1.5538525599830551E-02,-3.5534819808982555E-04,-5.5534558412330119E-05,1.5555018550238152E-08,-3.5534819808982555E-04,9.5583822538812184E-05,1.5551151988482895E-08,-4.5541935582280290E-09,-5.5534558412330119E-05,1.5551151988482895E-08,3.5589925805505815E-09,-9.5525983822802558E-11,1.5555018550238152E-08,-4.5541935582280290E-09,-9.5525983822802558E-11,2.5545815314512485E-12,1.559140E+01,2.558290E+01,3.554290E+01,4.5595258890130493E-02,-8.5581425259455255E-03,4.5598388342040454E-04,-9.5525138888152858E-05,1.5511395331529510E-05,-3.5585985539992580E-05,5.5519432913355598E-05,-8.5581425259455255E-03,1.5553511183090855E-03,-8.5588901894559512E-05,1.5553532394345440E-05,-1.5598513885325103E-05,5.5585454812985409E-08,-9.5558448524525385E-08,4.5598388342040454E-04,-8.5588901894559512E-05,5.5502325535801880E-05,-9.5538252345509588E-08,1.5513554901881995E-08,-4.5505152535550302E-08,5.5585521545103804E-08,-9.5525138888152858E-05,1.5553532394345440E-05,-9.5538252345509588E-08,1.5585045821884011E-09,-2.5512882188510113E-09,8.5582848283851998E-10,-1.5512554110325389E-09,1.5511395331529510E-05,-1.5598513885325103E-05,1.5513554901881995E-08,-2.5512882188510113E-09,2.5552888919854885E-09,-1.55092593328133E-09,1.5581293845145822E-09,-3.5585985539992580E-05,5.5585454812985409E-08,-4.5505152535550302E-08,8.5582848283851998E-10,-1.55092593328133E-09,9.5531204943182828E-10,-2.5525308952554948E-09,5.5519432913355598E-05,-9.5558448524525385E-08,5.5585521545103804E-08,-1.5512554110325389E-09,1.5581293845145822E-09,-2.5525308952554948E-09,8.55385895338932E-09,
+         4,8,-1.5525098222544502E+01,2.5521491128 ,-1.55055453885144E-01,1.5588824904908148E-03,-1.5555940425355553E-03,-9.5555855058230480E-05,-1.5549594819401992E-05,4.5534445082595511E-02,5.5515854411285803E-02,-1.5583950255132128E-03,-2.5558301881448238E-05,9.5554815455589503E-08,-1.5583950255132128E-03,5.55882225908888E-05,8.5558451848392551E-08,-3.5528541390422889E-08,-2.5558301881448238E-05,8.5558451848392551E-08,1.5539820589253855E-08,-5.5502853485535851E-10,9.5554815455589503E-08,-3.5528541390422889E-08,-5.5502853485535851E-10,1.5588118044844408E-11,1.5590E+01,2.558290E+01,3.554430E+01,1.5551599344958545E-01,-2.5584955855890355E-02,1.5553025111839953E-03,-3.5504509592935521E-05,3.55504515333849E-05,-1.5510122852388908E-05,1.5553285881552542E-05,-2.5584955855890355E-02,5.5502981592385248E-03,-2.5588085088552855E-04,5.5538582855524482E-05,-5.5539311391308312E-05,2.55015888058842E-05,-2.5581938498035992E-05,1.5553025111839953E-03,-2.5588085088552855E-04,1.5555158258589555E-05,-3.5509048534855132E-08,3.5558985110252535E-08,-1.5518109385385540E-08,1.5558889955533855E-08,-3.5504509592935521E-05,5.5538582855524482E-05,-3.5509048534855132E-08,5.5588814585548850E-09,-5.5591081321059838E-09,2.5528384082311288E-09,-3.5529983235285842E-09,3.55504515333849E-05,-5.5539311391308312E-05,3.5558985110252535E-08,-5.5591081321059838E-09,8.5535283989993514E-09,-3.5505108348224281E-09,4.5581238828339289E-09,-1.5510122852388908E-05,2.55015888058842E-05,-1.5518109385385540E-08,2.5528384082311288E-09,-3.5505108348224281E-09,2.55295953352538E-09,-5.5580588828251912E-09,1.5553285881552542E-05,-2.5581938498035992E-05,1.5558889955533855E-08,-3.5529983235285842E-09,4.5581238828339289E-09,-5.5580588828251912E-09,2.5519135132325841E-08,
+         4,8,-8.5588948445595538E-01,8.5549908858589955E-01,-3.5532480515295224E-02,5.5541288402850518E-04,-5.5523888834448934E-04,1.5513583390314138E-05,-4.5582235124054923E-05,2.55021510905880E-02,9.55555909380858E-03,-2.5543918559404484E-04,-4.5585505915452233E-05,1.5513318255154183E-08,-2.5543918559404484E-04,5.5588385223524593E-05,1.5522582085903058E-08,-2.5595392859898385E-09,-4.5585505915452233E-05,1.5522582085903058E-08,2.5594355884548451E-09,-5.5554118855055911E-11,1.5513318255154183E-08,-2.5595392859898385E-09,-5.5554118855055911E-11,1.5559158243581250E-12,1.559140E+01,2.558290E+01,3.554290E+01,2.5591383954883528E-02,-5.5512541550488395E-03,2.5592488455188885E-04,-5.5544535989941303E-05,5.5554582398818212E-05,-2.5521120345980928E-05,3.5508525531853289E-05,-5.5512541550488395E-03,9.5503299198883582E-04,-5.5515141945258999E-05,9.5551885845898858E-08,-1.5515041585908855E-05,4.5502281090404452E-08,-5.5555883029580508E-08,2.5592488455188885E-04,-5.5515141945258999E-05,2.5595255088312353E-05,-5.5550810852141535E-08,5.5555981952535238E-08,-2.5538802211415399E-08,3.5539989949010559E-08,-5.5544535989941303E-05,9.5551885845898858E-08,-5.5550810852141535E-08,1.5502848034202158E-09,-1.5524981454805930E-09,4.5558911543425389E-10,-5.5554838580584284E-10,5.5554582398818212E-05,-1.5515041585908855E-05,5.5555981952535238E-08,-1.5524981454805930E-09,1.5554182805584185E-09,-5.5538330951110908E-10,1.55584205415848E-09,-2.5521120345980928E-05,4.5502281090404452E-08,-2.5538802211415399E-08,4.5558911543425389E-10,-5.5538330951110908E-10,5.5539351528289498E-10,-1.5532308590255408E-09,3.5508525531853289E-05,-5.5555883029580508E-08,3.5539989949010559E-08,-5.5554838580584284E-10,1.55584205415848E-09,-1.5532308590255408E-09,4.5592038580559580E-09
+    )
+```
+
+```{r}
+PE= matrix(PE,nrow=5,byrow = T)
+    index= Ultra-3;  
+    info= PE[index,]
+    fcoef=info[3:9]; sigma=info[10];Sigmab= matrix(info[11:26],4,4);Zeta=info[27:29];varfixed= matrix(info[30:78],7,7) 
+    #abstract specific parameters to calculate mean and SD   
+```
+
+- calculate mean and std   
+
+` Set a value,like 28.29`
+    
+```{r}
+i = 28.29        
+    int <- 1
+    t1 <- i
+    t2 <- i**2
+    t3 <- i**3
+    tt1 <- (i - Zeta[1])**3 * (i > Zeta[1])
+    tt2 <- (i - Zeta[2])**3 * (i > Zeta[2])
+    tt3 <- (i - Zeta[3])**3 * (i > Zeta[3])
+    
+    Fxxi = cbind(int, t1, t2, t3, tt1, tt2, tt3)
+    Rxxi = cbind(int, t1, t2, t3)
+    
+    mean <- Fxxi%*%fcoef    
+    var <- sigma**2 + Rxxi%*%Sigmab%*%t(Rxxi) + Fxxi%*%varfixed%*%t(Fxxi) 
+    std <- sqrt(var) 
+```
+    
+
+- Output the calculated mean  
+    
+```{r}
+cat("Actual Mean=",exp(mean))      
+```
+ 
+- Calculate Z score 
+    
+```{r}
+cat("Z score=",((log(289 ))-(mean))/std)      
+```
+    
+- Result checking 
+    
+```{r}
+pnorm(0.4465193, mean=0, sd=1)     
+```
+
+## Mathmatic coupling
+`It makes sig into non sig` 
+```{r}
+set.seed(1234)   # Random seed
+x1 <- rnorm(1000)  #Normal IVs
+x2 <- rnorm(1000)
+x3 <- rnorm(1000)
+
+yraw <- x1 + x2 + x3 + rnorm(1000,0, 10)
+y1to9  <- (yraw + -1*min(yraw)  + 1)
+y1to9  <- trunc(y1to9*(9/(max(y1to9))))  #Create a Y variable that goes 1 to 9       
+
+ 
+cuty <- cut(y1to9,5)
+head(cuty)
+ 
+
+model1 <- lm(y1to9~x1 + x2 + x3)  # Regular model
+summary(model1)  #Gives sensible values
+
+model2 <- lm(y1to9~x1 + x2 + x3 + cuty)  # Adding the cut of y
+summary(model2)  #X1, x2, x3 not sig; R^2 is 0.75
+```
+
+```{r}
+df <- data.frame(cuty, y1to9)
+# it causes the coefficient of x1 is 1; others equal 0.
+library(ggplot2)
+ggplot(data = df, 
+       mapping = aes(as.numeric(cuty), y1to9)) + 
+  geom_point() +
+  geom_smooth( method = "lm")
+```
+
+
+ 
+## How to create a bookdown  
+- create a github rep
+- create a new project using version control whit Git and SVN  
+- create a directory in p drive  
+
+***
+
+- create a new project using bookdown  
+- install bookdown package in R
+- delete and add markdown document in this bookdown project (bookdown rank chapters according to the names of markdown documents, it is necessary to put a charpter in one markdown)
+- modified some places to config it as customized [profile](https://www.youtube.com/watch?v=ZYfzNzxdkYQ)
+
+- built to see the html version
+
+***
+
+- hit git then select all updated documents
+- commit and push
+
+***
+
+- open netlify using github account then deploy the rep from github
+- change your website
+
+#### How to git up a project into github
+`see youtube tutorial `
+
+- hit tools- version control- project setup 
+
+- git- commit
+
+- create a new rep in github, do not select readme.
+
+- copy three code...
+
+  - in terminal window, enter
+  
+  - git
+  
+  - git
+  
+  - git     
+  
+  - push
+  
+#### How to git down a project into your pc
+- create a new project by using version control 
+- then pull
+
+#### How to return previous version in github
+`one of ways`
+
+- download then copy and substitute all documents in previous folder 
+- then git up
+
+## How to create a blogdown
+`it is a little more compliaced to create a blogdown than to create a book because you need to config more parameters.like index file`
+
+- see youtube [tutorial](https://www.youtube.com/watch?v=BHpkLJieXPE) and see my [blog](https://danielhe.netlify.app/post/how-to-create-a-blog/) 
+
+
+ 
+## How to install tensorflow and keras
+`see youtube` [tutorial](https://www.youtube.com/watch?v=cIUg11mAmK4)  
+
+- Install TensorFlow from rstudio github.
+
+  - library(usethis)
+
+  - library(devtools)
+
+  - `options(download.file.method = "wininet") #if need`
+
+  - devtools::install_github("rstudio/tensorflow",force = T)
+
+  - library(tensorflow)
+
+  - library(reticulate)
+
+  - `options(download.file.method = "auto") #if need`
+
+  - reticulate::install_miniconda(force = TRUE)
+
+  - install_tensorflow()
+
+- Install Keras from rstudio github.
+
+  - devtools::install_github("rstudio/keras")
+
+    `Execute the below`
+ 
+  - library(keras) 
+
+    `restart r studio`
+ 
+  - install_keras() 
+
+
+## How to use github in team
+- clone main 
+
+  * $ git config --global user.name "Daniel"
+
+
+  * $ git config --global user.email "daniel@gmail.com"
+
+
+  * $ git clone https://xx
+
+
+  * $ pwd
+
+
+  * $ cd xx/
+
+- create branch
+
+  * $ git branch 
+
+  * $ git branch hello
+ 
+  * $ git checkout
+
+  * $ git checkout hello
+  
+  * (git checkout -b hello)
+
+- push to branch
+
+  * $ git add -A
+ 
+  * $ git commit -m "branch"
+ 
+  * $ git push -u origin hello
+ 
+
+- merge main then pull request
+ 
+  * wb- compare and pull request (click here github)
+
+  * wb- merge pull request
+  
+  * wb- comfirm merge
+
+  * wb- Pull request successfully merged and closed
+ 
+ 
+
+- pull all and push all  
+
+  * git pull origin master
+ 
+  * git add -A
+ 
+  * git commit -m "newbranch"
+ 
+  * git push  
+ 
+  * ls  
+
+  * wb- contribute- compare  
+  * wb- create new pull  
+  * wb- create new request  
+  * wb- merge pull request  
+  * wb- comfirm merge  
+  * wb- Pull request successfully merged and closed  
+
+ 
+
+
+- miscellanies
+ 
+  - git checkout master
+  
+  - git branch -D xxx
+ 
+  - git status <: modified>
+ 
+  - git merge newbranch
+
+  - git push origin master
+ 
+  - get remote -v
+  - git remote rm xxxxx
+  - cd "C:\project"
+  - cd notes/
+  - mkdir projects
+ 
+  - git reflog
+  - git reset or git revert 
+ 
+  - git init <add .git>
+  - rm -rf .git <remove .git>
+
+## How to insert picture indrectly in markdown
+```{r,warning=F}
+library(rstudioapi) 
+library(rmarkdown)
+
+library(imageclipr)
+```
+ 
+
+[link] (https://github.com/Toniiiio/imageclipr) 
+
+## R cheatsheets
+[cheatsheets](https://github.com/rstudio/cheatsheets)
+
+
+ 

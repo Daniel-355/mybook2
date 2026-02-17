@@ -1,210 +1,443 @@
- 
+<!-- # --- -->
+<!-- # title: "Probability" -->
+<!-- # author: "Daniel He" -->
+<!-- # date: "`r Sys.Date()`" -->
+<!-- # output: -->
+<!-- #   html_document: -->
+<!-- #     toc: true -->
+<!-- #     toc_depth: 3 -->
+<!-- #   pdf_document: -->
+<!-- #     toc: true -->
+<!-- #     toc_depth: 3 -->
+<!-- #   word_document: -->
+<!-- #     toc: true -->
+<!-- #     toc_depth: 3 -->
+<!-- # --- -->
+
 # Probability
+
+Probability is the mathematical language for uncertainty. In statistics, we use probability to formalize *how likely* events are, how random quantities behave, and how sampling variability arises. This chapter is organized in two parts:
+
+1) **Probability basics**: the conceptual and mathematical foundation (events, rules, distributions, expectation).  
+2) **Probability R practice**: simulation and computation in R, which often provides intuition even when the exact analytic solution is difficult.
+
+A key theme is that probability is not only “abstract theory”—it directly supports the logic of estimation, confidence intervals, and hypothesis testing.
+
+---
 
 ## Probability basics
 
 ### Events
-- Probability is the likelihood of an outcome. 
-e.g. {any combination of two dice}
 
-- Event is a collection of outcomes. 
-e.g. {both dice show the same face}
+An **outcome** is a single possible result of a random experiment.  
+An **event** is a set (collection) of outcomes.  
+The **sample space** (outcome space) is the set of all possible outcomes.
 
-- The outcome space is all the possible outcomes. 
-e.g. {all the possible outcomes die show}
+Example: two dice.
 
-<!-- mutual independence of events,mutual independence of random variables, mutual independence of observations, `confusion`-->  
+- Outcome: $(1,6)$ means die 1 shows 1 and die 2 shows 6.  
+- Sample space: all 36 ordered pairs $(i,j)$ where $i,j\in\{1,2,3,4,5,6\}$.  
+- Event example: “both dice show the same face” is  
+  $$E=\{(1,1),(2,2),(3,3),(4,4),(5,5),(6,6)\}.$$
 
-### Probability formulas  
+In practice:
+- We use events when we talk about “probability that something happens.”
+- We use random variables when we want a numeric summary of outcomes, such as “sum of two dice.”
 
-- `discrete variable`
+A common confusion worth separating early (even if we do not fully formalize it here):
+
+- **Independence of events**: statements about sets, e.g., $A$ independent of $B$.  
+- **Independence of random variables**: statements about distributions, e.g., $X$ independent of $Y$.  
+- **Independence of observations**: a modeling assumption in data analysis, often violated in clustered/longitudinal data (which motivates mixed models, GEE, etc.).
+
+---
+
+### Probability formulas
+
+#### Discrete case
+
+For equally likely outcomes, the probability of an event is:
 
 $$
-P(E) = \frac{number\ of\ outcomes\ in\ E}{number\ of\ possible\ outcomes}
+P(E) = \frac{\text{number of outcomes in }E}{\text{number of possible outcomes}}.
 $$
 
-- `continuous varable` 
+This definition is intuitive but has two important limitations:
+
+1) It requires that outcomes be equally likely.  
+2) It is mainly useful when the sample space is countable and not too large.
+
+When outcomes are not equally likely, we assign each outcome $\omega$ a probability $P(\omega)$, and then:
 
 $$
-P\begin{pmatrix}a\leq X \leq b \end{pmatrix} = \int_a^b f(x) dx
+P(E)=\sum_{\omega\in E}P(\omega).
 $$
-*Probabilities of continuous random variables (X) are the area under the curve. The probability of any value is always zero. when X = k,*
+
+#### Continuous case
+
+For a continuous random variable $X$ with density $f(x)$:
 
 $$
-P\begin{pmatrix}X = k \end{pmatrix} = 0
+P(a \le X \le b)=\int_a^b f(x)\,dx.
 $$
+
+This expresses the fundamental idea:
+
+- Probabilities of continuous random variables are **areas under a curve**.
+
+A crucial consequence:
+
+$$
+P(X=k)=0
+$$
+
+for any fixed value $k$ when $X$ is continuous.  
+So the statement “$X=3$” has probability zero, but intervals like “$2.9 \le X \le 3.1$” have positive probability.
+
+---
 
 ### Calculation of probability (operations)
 
-`union probability, addition rule +`
+Most probability calculations are built from three core operations:
+
+1) **Union** (“A or B”)  
+2) **Intersection** (“A and B”)  
+3) **Conditioning** (“A given B”)
+
+#### Union probability (addition rule)
+
 $$
 \begin{aligned}
-&P(A \cup B)=P(A)+P(B)-P(A \cap B) \\
-&P(A \cup B)=P(A)+P(B) \quad \text { if } \mathrm{A} \text { and } \mathrm{B} \text { are mutually exclusive }
+P(A \cup B) &= P(A)+P(B)-P(A \cap B),\\
+P(A \cup B) &= P(A)+P(B)\quad \text{if }A\text{ and }B\text{ are mutually exclusive.}
 \end{aligned}
 $$
-`joint probability, multiple rule x` 
+
+Interpretation:
+- We subtract $P(A\cap B)$ because it is counted twice when adding $P(A)+P(B)$.
+- “Mutually exclusive” means $A\cap B=\emptyset$ (they cannot happen together).
+
+#### Joint probability (multiplication rule)
+
 $$
 \begin{aligned}
-&P(A \cap B)=P(A \mid B) P(B)=P(B \mid A) P(A) \\
-&P(A \cap B)=P(A) P(B) \quad \text { if } \mathrm{A} \text { and } \mathrm{B} \text { are independent }
+P(A \cap B) &= P(A\mid B)P(B)=P(B\mid A)P(A),\\
+P(A \cap B) &= P(A)P(B)\quad \text{if }A\text{ and }B\text{ are independent.}
 \end{aligned}
 $$
-`Marginal Probability` is without reference to any other event or events
-$$
- P(A)  or  P(B)
-$$
 
-`conditional Probability`
-$$
-P(A\mid B)=\dfrac{P(A \: \cap\: B)}{P(B)}
-$$
-`p-values are conditional probabilities.`
+Interpretation:
+- Independence is a strong statement: knowing $B$ does not change the probability of $A$.
+- Many real-world problems are *not* independent, which is why conditional probability is central.
 
-### Bayes's theorem  
-- multiple law
-$$
-P(A \cap B) = P(A\ |\ B) P(B) = P(B\ |\ A) P(A)
-$$
+#### Marginal probability
 
-- bayes's formula  
+A **marginal** probability is “standalone,” without conditioning:
 
 $$
-P(B_j\ |\ A) = \frac{P(A\ |\ B_j) P(B_j)}{P(A)}\
+P(A)\quad \text{or}\quad P(B).
 $$
 
-- law of total probability $P(A)$
+In multivariable settings, “marginal” also means summing/integrating out other variables.
+
+#### Conditional probability
 
 $$
-P(A) = P(A\ |\ B_1) P(B_1) + \cdots + P(A\ |\ B_n) P(B_n).\notag
+P(A\mid B)=\dfrac{P(A \cap B)}{P(B)}.
 $$
+
+Interpretation:
+- Restrict attention to the world where $B$ happened, then measure how often $A$ occurs inside that restricted world.
+
+A short caution on wording:
+
+- People sometimes say “p-values are conditional probabilities.”  
+  This is only partly true. A p-value is a probability computed **under the null model** and **conditional on the testing procedure** (and sometimes on nuisance estimates). It is *not* the probability that the null hypothesis is true.
+
+---
+
+### Bayes's theorem
+
+Bayes’s theorem is essentially a systematic way to reverse conditioning.
+
+#### Multiplication law (re-stated)
+
+$$
+P(A \cap B)=P(A\mid B)P(B)=P(B\mid A)P(A).
+$$
+
+#### Bayes’s formula
+
+For mutually exclusive and exhaustive events $B_1,\ldots,B_n$:
+
+$$
+P(B_j\mid A)=\frac{P(A\mid B_j)P(B_j)}{P(A)}.
+$$
+
+This shows that the posterior probability of a cause $B_j$ after observing evidence $A$ is proportional to:
+
+- how likely the evidence is under the cause ($P(A\mid B_j)$), and
+- how likely the cause was before seeing the evidence ($P(B_j)$).
+
+#### Law of total probability
+
+$$
+P(A)=P(A\mid B_1)P(B_1)+\cdots+P(A\mid B_n)P(B_n).
+$$
+
+This is the denominator in Bayes’s theorem and is often the step where many probability problems become manageable: break a difficult event into simpler conditional pieces.
+
+---
 
 ### Random variables and distribution functions
 
-Random variable takes on different values determined by chance. we can use random variables' mathematical (distribution) function to find their probability. 
+A **random variable** is a numerical function of the outcome of a random experiment. We use random variables because they let us summarize events numerically and apply algebra/calculus.
 
-- probability mass function (PMF, discrete), e.g. Binomial Distribution. upon some conditions are satisfied, the sampling distribution of the sample proportion is approximately normal. 
-- Probability Density Function (PDF, continuous), e.g. normal distribution, t, chi-squre, f...
-- Cumulative Distribution Function (CDF). 
+There are three major distribution functions:
 
-
-### Probability distribution
-`joint distribution, discrete variables` 
-$$
-P\left(X=x_{i}, Y=y_{j}\right)=p_{i j}, i, j=1,2, \ldots
-$$
-`Marginal distribution, discrete variables` 
-$$
-P\left(X=x_{i}\right)=\sum_{j=1}^{\infty} p_{i j}=p_{i}, i=1,2, \ldots
-$$
-`conditional probability, discrete variables`
-$$
-P\left(Y=y_{j} \mid X=x_{i}\right)=\frac{p_{i j}}{p_{i}}, j=1,2, \ldots
-$$
-
-### Conditional expectation 
-Conditional expectation is the mathematical expectation of a conditional distribution. 
-
-`The discrete variable`
+- **PMF** (probability mass function) for discrete variables, e.g., binomial, Poisson.  
+- **PDF** (probability density function) for continuous variables, e.g., normal, exponential.  
+- **CDF** (cumulative distribution function) for both, defined by:
 
 $$
-E(Y|X_i)=\sum_{i=1}^{N}{(Y_i|X_i)}\cdot p(Y_i|X_i)
+F(x)=P(X\le x).
 $$
 
-`The continuous variable`
+The CDF is universal: even when a PDF does not exist, the CDF still defines the distribution.
+
+---
+
+### Probability distributions (joint, marginal, conditional)
+
+For two discrete random variables $(X,Y)$, the **joint distribution** is:
 
 $$
-E(Y|X)=\int{(Y|X)}\cdot g(Y|X)dY
+P(X=x_i, Y=y_j)=p_{ij},\quad i,j=1,2,\ldots
 $$
 
-`expectation formula, discrete variable`
+The **marginal distribution** of $X$ is obtained by summing out $Y$:
+
 $$
-\mu=E(X)=\sum x_if(x_i)
+P(X=x_i)=\sum_{j=1}^{\infty} p_{ij}=p_i.
 $$
+
+The **conditional distribution** of $Y$ given $X=x_i$ is:
+
+$$
+P(Y=y_j\mid X=x_i)=\frac{p_{ij}}{p_i}.
+$$
+
+This joint → marginal/conditional workflow is a general template used throughout statistics, including regression, Bayesian inference, and graphical models.
+
+---
+
+### Conditional expectation
+
+Conditional expectation is the expected value of a random variable under a conditional distribution. Intuitively, it is the “average of $Y$ when we hold $X$ fixed.”
+
+Discrete form (conceptual structure):
+
+$$
+E(Y\mid X)=\sum_{y} y\cdot P(Y=y\mid X).
+$$
+
+Continuous form:
+
+$$
+E(Y\mid X)=\int y\cdot f_{Y\mid X}(y\mid X)\,dy.
+$$
+
+(Your notes use a sample-style indexing; the key conceptual point is: expectation is always “value times probability,” summed or integrated over the support.)
+
+Unconditional expectation (discrete):
+
+$$
+\mu=E(X)=\sum x_i f(x_i).
+$$
+
+Practical connection:
+- In regression, $E(Y\mid X=x)$ is modeled as a function of $x$.  
+- Thus conditional expectation becomes the theoretical basis for regression modeling.
+
+---
 
 ### Conditional variance
 
-`variance formula, discrete variable`
+Variance measures dispersion around the mean:
+
 $$
-\sigma^2=\text{Var}(X)=\sum (x_i-\mu)^2f(x_i)
-$$
-
-*Conditional expectation and conditional variance exist and can be estimated by regression models.*
-
-
-### Sampling 
-
-We make inferences about the population based on the sample (inference) after summarizing data (description). 
-
-The error is resulting from using a sample characteristic (statistic) to estimate a population characteristic (parameter).
-
-`Standard Error`
-$$
-SD(\bar{X})=SE(\bar{X})=\dfrac{\sigma}{\sqrt{n}}
+\sigma^2=\mathrm{Var}(X)=\sum (x_i-\mu)^2 f(x_i).
 $$
 
-**Central limit theorem and law of large numbers**
+Conditional variance is defined similarly but under the conditional distribution:
 
-- For a large sample size,  x mean is approximately normally distributed, regardless of the distribution of the population one samples from. so, the population parameter can be estimated using the sample. 
+$$
+\mathrm{Var}(Y\mid X)=E\left((Y-E(Y\mid X))^2\mid X\right).
+$$
 
-- With large samples, The mean of the sampling distribution is very close to the population mean. 
+Practical connection:
+- Many models (e.g., linear regression, GLMs, mixed models) can be viewed as specifying a mean structure $E(Y\mid X)$ and a variance/covariance structure $\mathrm{Var}(Y\mid X)$.
 
+---
+
+### Sampling
+
+In statistics, we use a sample to learn about a population. A sample statistic (e.g., $\bar X$) varies from sample to sample, and that variability is the foundation of uncertainty quantification.
+
+The error from using statistics to estimate parameters is summarized by the **standard error**.
+
+Standard error of the sample mean under i.i.d. sampling:
+
+$$
+SD(\bar{X})=SE(\bar{X})=\dfrac{\sigma}{\sqrt{n}}.
+$$
+
+This formula is simple, but it encodes important assumptions:
+- independent observations,
+- common variance $\sigma^2$,
+- finite variance.
+
+When these assumptions fail (e.g., correlation), we must modify the standard error (again connecting back to covariance modeling).
+
+---
+
+### Central limit theorem and law of large numbers
+
+**Law of large numbers (LLN)**: sample averages converge to the population mean as $n$ grows.
+
+**Central limit theorem (CLT)**: for large $n$, the sampling distribution of $\bar X$ is approximately normal:
+
+$$
+\bar X \approx N\left(\mu,\frac{\sigma^2}{n}\right),
+$$
+
+even if the population is not normal (under mild conditions).  
+This approximation is the backbone of classical confidence intervals and many hypothesis tests.
+
+---
 
 ### Confidence interval
 
-The higher the confidence level, the wider the width of the interval and thus the poorer the precision.
+A confidence interval has the general form:
 
 $$
-\text{point estimate }\pm M\times \hat{SE}(\text{estimate})
-$$
-`the margin of error`
-$$
-E=z_{\alpha/2}\sqrt{\dfrac{\hat{p}(1-\hat{p})}{n}}
+\text{point estimate} \pm M\times \widehat{SE}(\text{estimate}).
 $$
 
-### Introduction to Hypothesis Testing 
+The multiplier $M$ depends on the desired confidence level and the sampling distribution (z, t, etc.). The tradeoff is fundamental:
 
--Set up the hypotheses and decide on the significance level.
+- Higher confidence → larger $M$ → wider interval → lower precision.
 
--Construct and calculate the test statistic.
+For a proportion, the common large-sample margin of error is:
 
--Calculate probability value (p-value).
+$$
+E=z_{\alpha/2}\sqrt{\dfrac{\hat{p}(1-\hat{p})}{n}}.
+$$
 
--Make a decision and state an overall conclusion.  
+---
+
+### Introduction to hypothesis testing
+
+Hypothesis testing is a structured decision framework:
+
+- Set up hypotheses and choose significance level $\alpha$.
+- Construct and calculate a test statistic.
+- Compute a p-value under the null model.
+- Make a decision and state a conclusion in context.
+
+In many common tests, the p-value is computed using a known reference distribution (normal, t, chi-square, F). In more complex problems, simulation becomes a practical alternative.
+
+---  
+
 
 
 ## Probability R practice
-  - pros: don't need complicated probability theory, easy (simulation)
-  - cons: hard to get the exact solution 
 
-### Integrate 
+R lets us compute probabilities, simulate random experiments, and visualize distributions. Simulation is especially valuable when:
+
+- exact probability calculations are complicated,
+- or the analytic form is unknown.
+
+Pros:
+- minimal probability theory required,
+- often intuitive and flexible.
+
+Cons:
+- simulation gives approximate answers,
+- accuracy depends on the number of simulations and computational cost.
+
+---
+
+### Integrate
+
+Integration is how we compute probabilities for continuous random variables and expectations of functions.
+
 ```{r}
 integrate(function(x){x^2},0,2)$value
 ```
-### Derivation
+
+Interpretation:
+- This returns $\int_0^2 x^2\,dx$, illustrating numerical integration in R.
+- For probability, we typically integrate a density over an interval.
+
+---
+
+### Derivation (symbolic differentiation)
+
+`deriv()` can generate derivatives of expressions, useful for sensitivity checks or simple symbolic gradients.
+
 ```{r}
 fxy = expression(2*x^2+y+3*x*y^2)
 dxy = deriv(fxy, c("x", "y"), func = TRUE)
 dxy(1,2)  
 ```
 
-### Create random variables with specific distributions 
+Interpretation:
+- This computes partial derivatives with respect to $x$ and $y$ at $(1,2)$.
+- In statistics, derivatives appear in likelihood maximization, gradient-based optimization, and delta-method approximations.
+
+---
+
+### Create random variables with specific distributions
+
+R provides standard “distribution functions,” typically in four families:
+
+- `d*` density/pmf: $f(x)$  
+- `p*` CDF: $P(X\le x)$  
+- `q*` quantile: inverse CDF  
+- `r*` random generation  
+
 ```{r}
  dnorm(0)# density at a number 
  pnorm(1.28)# cumulative possibility 
  qnorm(0.95)#  quantile
  rnorm(10)# random numbers
 ```
- 
-`using covariance matrix to generate Gaussian multiple variables `
+
+The naming convention is consistent across many distributions (normal, t, chi-square, Poisson, binomial, exponential, etc.), which makes R especially convenient for probability practice.
+
+---
+
+#### Using covariance matrix to generate multivariate normal variables
+
+The multivariate normal is a cornerstone in statistics because linear combinations remain normal and because many estimators have asymptotic normality.
+
 ```{r}
  library(MASS)
  Sigma <- matrix(c(10,3,3,2),2,2)
  mvrnorm(n=20, rep(0, 2), Sigma)
 ```
 
- 
-### Prob function
+Interpretation:
+- `Sigma` encodes variances (diagonal) and covariance (off-diagonal).
+- Covariance controls correlation and joint behavior, which becomes central in multivariate inference and mixed models.
+
+---
+
+### Probability function examples
+
+Here we compute common tail probabilities and quantiles used in hypothesis testing.
+
 ```{r}
 pnorm(1.96,    0,1)
 qnorm(0.025,    0,1)
@@ -213,8 +446,18 @@ mean(rchisq(10000,1)>3.84) #simulation
 
 ```
 
+Interpretation:
+- `pnorm(1.96)` is the classic 97.5th percentile check for $N(0,1)$.
+- `qnorm(0.025)` gives the 2.5th percentile.
+- `pchisq(3.84,1,lower.tail=F)` computes the upper-tail probability beyond the chi-square cutoff 3.84 (often used in 1-df likelihood ratio tests).
+- The final line approximates the same tail probability via simulation, reinforcing that probability can be estimated empirically.
+
+---
 
 ### Vector and operations
+
+Probability simulation relies heavily on vectorization.
+
 ```{r}
 seq(1,10,  2)
 x=rep(1:3,6)
@@ -228,7 +471,17 @@ x*y
 x/y
 x%*%y
 ```
+
+Notes:
+- Elementwise operations (`+,-,*,/`) are the default.
+- `%*%` is matrix multiplication; for vectors it yields an inner product when dimensions align.
+
+---
+
 ### Select and substitute elements of vector
+
+Subsetting is essential for event counting in simulations.
+
 ```{r}
 x[c(2,3)]
 x[-1]
@@ -240,7 +493,16 @@ x[x == 2] <- 0.5
 x
 ```
 
+Interpretation:
+- Logical conditions create event indicators.
+- Assignment replaces selected outcomes, which is useful for recoding or constructing piecewise variables.
+
+---
+
 ### Matrix and operations
+
+Matrices are used for multivariate distributions and linear algebra operations in estimation.
+
 ```{r}
 matrix(1:10,2,5)
 matrix(1:10,5,2)
@@ -253,7 +515,12 @@ a[2,1]=21
 a 
 ```
 
-### Compute inverse, determinant and eigen values of matrix 
+---
+
+### Compute inverse, determinant and eigenvalues
+
+These operations appear in multivariate normal densities, GLS estimators, and covariance decompositions.
+
 ```{r}
 a<-matrix(c(11,21,31,21,32,43,12,32,54),3,3)
 solve(a)
@@ -263,7 +530,18 @@ solve(a)*det(a)
 t(a)
 eigen(a)
 ```
-### Dataframe 
+
+Interpretation:
+- `solve(a)` computes $a^{-1}$ (if invertible).
+- `det(a)` is used in densities and volume scaling.
+- `eigen(a)` decomposes into eigenvalues/eigenvectors (useful for checking positive definiteness of covariance matrices).
+
+---
+
+### Dataframe
+
+Data frames are the standard structure for statistical data in R.
+
 ```{r}
 name<-c('A','B','C')
 chinese<-c(92,96,95)
@@ -274,11 +552,18 @@ score[2]
 score$math
 ```
 
-
-
+---
 
 ### Solve problems using simulation
-`for loop`
+
+Simulation approximates probabilities by repeated random experiments, using:
+
+$$
+P(E)\approx \frac{\#\{\text{simulations where }E\text{ occurs}\}}{\text{number of simulations}}.
+$$
+
+#### for loop
+
 ```{r}
 sim<-10000
 p<-numeric(sim)
@@ -289,12 +574,23 @@ for (i in 1:sim){
 
 mean(p)
 ```
-`using replicate`
+
+Interpretation:
+- In each simulation, we generate two samples from the same normal distribution and compare their sample means.
+- The event is “absolute difference in means < 0.1.”
+- `mean(p)` estimates the probability of that event.
+
+#### using replicate
+
 ```{r}
 mean(replicate(10000,abs(mean(rnorm(10,20,sqrt(3)))-mean(rnorm(15,20,sqrt(3))))<0.1))
 
 ```
-`using apply function`
+
+`replicate()` is cleaner and less error-prone for repeated simulations. It is often a good default unless performance constraints require custom vectorization.
+
+#### using apply function (vectorized simulation)
+
 ```{r}
 A<-matrix(rnorm(250000,  20,sqrt(3)),10000,25)
 head(A)
@@ -305,11 +601,25 @@ f<-function(x)   {abs(mean(x[1:10])-mean(x[11:25]))}
 mean(apply(A,1,f)>0.1)
 ```
 
-`using probability method`
+Interpretation:
+- This creates 10,000 simulated experiments at once.
+- Each row is one experiment with 25 observations; the first 10 and last 15 form two groups.
+- Vectorization often improves speed and clarity when structured carefully.
+
+#### using probability method
+
 ```{r}
  pnorm(0.1,0,sqrt(0.5))-pnorm(-0.1,0,sqrt(0.5))
 ```
+
+This line attempts an analytic shortcut: if the difference of two independent sample means is normal with known variance, we can compute the probability directly using the normal CDF. This is a good example of how simulation and theory complement each other: simulation suggests the answer, and probability theory can sometimes confirm it exactly.
+
+---
+
 ### Permutations and combinations
+
+Combinatorics supports counting arguments for discrete probability.
+
 ```{r}
 choose(10,2)
 # combn(10,2)
@@ -317,7 +627,18 @@ factorial(10)
 prod(1:10)
  
 ```
-### Search value position in vector 
+
+Interpretation:
+- `choose(n,k)` computes $\binom{n}{k}$.
+- `factorial(10)` equals $10!$.
+- `prod(1:10)` is another way to compute $10!$ numerically.
+
+---
+
+### Search value position in vector
+
+These are practical utilities for data cleaning and simulation summaries.
+
 ```{r}
 a<-c(1,2,3,5,0,9)
 which(a==min(a))
@@ -331,8 +652,12 @@ all(c(3,4) %in% a)
 
 ```
 
-### Solve directly and optimize 
-`plot and find the range of solve`
+---
+
+### Solve directly and optimize
+
+Finding roots and optimizing functions are common in probability (e.g., solving for quantiles, MLE equations).
+
 ```{r}
 f<-function(x){x^2-exp(x)} 
 uniroot(f,c(-0.8,-0.6))  $root
@@ -340,8 +665,17 @@ uniroot(f,c(-0.8,-0.6))  $root
 f2<-function(x){abs(x^2-exp(x))} 
 optimize   (f2,lower=-0.8,upper=-0.6)$minimum
 ```
+
+Interpretation:
+- `uniroot()` solves $f(x)=0$ in a range.
+- `optimize()` finds the minimum of a function in a range, which can be used when the root is hard to bracket.
+
+---
+
 ### Calculate probability using simulation method
-`questions: randomly select 3 numbers out of 1:10, the sum is 9. `
+
+#### Example: select 3 numbers out of 1:10, sum equals 9
+
 ```{r}
 badge<-1:10 
 sim<-10000 
@@ -352,7 +686,15 @@ p[i]<-sum(a)==9 }
 
 mean(p)
 ```
-`questions: eat three flavors tangyuan. `
+
+Interpretation:
+- The probability is estimated by the fraction of times the sampled triple sums to 9.
+- Because sampling is without replacement, the outcome space is combinations (unordered) but simulation avoids manual counting.
+
+#### Example: tangyuan flavors
+
+This simulation checks whether each block of 6 draws contains all three flavors. The logic uses `unique()` counts to represent the event “all flavors present.”
+
 ```{r}
 Tangyuan<-c(rep('A',8),rep('B',8),rep('C',8))
 sim<-10000
@@ -364,7 +706,13 @@ for (i in 1:sim){
 }
 mean(p)
 ```
-`question: select 2 balls when they are the same color. `
+
+Interpretation:
+- Each chunk represents a “serving” or “round.”
+- The event is that each serving includes all three flavors at least once.
+
+#### Example: two boxes, same color
+
 ```{r}
 box1<-c(rep('white',5), rep("black",11), rep('red',8))
 box2<-c(rep('white',10), rep("black",8), rep('red',6))
@@ -379,7 +727,13 @@ for (i in 1:sim){
 mean(p)
  
 ```
-`select after putting them back`
+
+Interpretation:
+- This approximates $P(\text{color}_1=\text{color}_2)$.
+- A quick analytic approach would sum products of marginal probabilities by color; simulation provides a fast check.
+
+#### Example: sampling with replacement, both white
+
 ```{r}
 box<-c(rep("white",4),rep("red",2))
 sim<-10000
@@ -393,7 +747,13 @@ for (i in 1:sim){
 mean(t)
 
 ```
-`question: two students have the same birthday out of 30 students`
+
+Interpretation:
+- With replacement, the draws are independent.
+- This event probability is approximately $(4/6)^2$; simulation verifies it.
+
+#### Birthday problem: at least two share a birthday among 30
+
 ```{r}
 n<-30
 sim<-10000
@@ -411,18 +771,31 @@ for (i in 1:sim){
 
 ```
 
-`An event is a set of outcomes. You can describe certain events using random variables (x, distribution). the distribution of random variable function. `
+Interpretation:
+- Simulation estimates $P(\text{at least one match})$.
+- The exact probability uses the complement event “all birthdays distinct.”
+
+---
 
 ### Discrete random variable
-`question: choose correct one out of four answers`
+
+#### Example: binomial (guessing answers)
+
+If each question has 4 options and you guess randomly, the number correct out of 5 follows $X\sim\mathrm{Bin}(5,1/4)$.
+
 ```{r}
 x<-0:5
 y<-dbinom(x,5,1/4)
 plot(x,y,col=2,type='h')
 ```
 
-- using plot
-`the probability of shooting is 0.02, what is the most likelihood of hit with 400 shootings`
+Interpretation:
+- The plot is a PMF: it shows $P(X=k)$ as vertical bars.
+
+#### Example: most likely number of hits
+
+If hit probability is 0.02 per trial and there are 400 trials, the number of hits is $X\sim\mathrm{Bin}(400,0.02)$, and the “most likely” value is the mode (the $k$ with maximum PMF).
+
 ```{r}
 k<-0:400
 p<-dbinom(k,400,0.02)
@@ -433,9 +806,22 @@ dbinom(7,400,0.02)
 dbinom(8,400,0.02)
 ```
 
+Interpretation:
+- The zoomed-in plot helps locate the mass near the mean $np=8$.
+- Comparing `dbinom(7,...)` and `dbinom(8,...)` checks which value is more likely.
+
+---
 
 ### Exponent distribution
-`question: lifetime of a light (lamda=1/2000)`
+
+If lifetime is exponential with rate $\lambda=1/2000$, then:
+
+$$
+P(X>1000)=\int_{1000}^{\infty}\lambda e^{-\lambda x}\,dx = e^{-\lambda\cdot 1000}.
+$$
+
+Your code computes this probability using integration, the CDF, and simulation.
+
 ```{r}
 integrate(dexp,rate=1/2000,1000,Inf)$value
  
@@ -446,8 +832,19 @@ integrate(f,1000,Inf) $value
  
 mean(rexp(10000,rate=1/2000)>1000)
 ```
+
+Interpretation:
+- `1-pexp(...)` is usually the cleanest way.
+- Simulation provides a numerical check and builds intuition about tail probabilities.
+
+---
+
 ### Normal distribution plot
-`continue variable`
+
+Normal density plots are helpful for understanding how mean and standard deviation control shape.
+
+#### Changing the standard deviation
+
 ```{r}
 x<-seq(-3,3,0.01)
 plot(x, dnorm(x,mean=0, sd=2),type="l",xlab="x",ylab = "f(x)", col=1,lwd=2,ylim=c(0,1))   #density function
@@ -460,6 +857,12 @@ exbeta<-c(expression(paste(mu,"=0,", sigma,"=2")), expression(paste(mu,"=0,",sig
 legend("topright", exbeta, lty = c(1, 2,3),col=c(1,2,3),lwd=2)
 ```
 
+Interpretation:
+- Larger $\sigma$ spreads the curve and lowers the peak.
+- Smaller $\sigma$ concentrates mass near the mean and increases the peak.
+
+#### Shifting the mean
+
 ```{r}
 x<-seq(-3,3,0.01)
 plot(x, dnorm(x,mean=-1, sd=1),type="l",xlab="x",ylab = "f(x)", col=1,lwd=2,ylim=c(0,0.6))
@@ -468,7 +871,20 @@ lines(x, dnorm(x,mean=1, sd=1), lty=3,col=3,lwd=2)
 exbeta<-c(expression(paste(mu,"=-1,", sigma,"=1")), expression(paste(mu,"=0,",sigma,"=1")), expression(paste(mu,"=1,", sigma,"=1")))
 legend("topright", exbeta, lty = c(1, 2,3),col=c(1,2,3),lwd=2)
 ```
-`question: solve sigma using nomoral distribution  `
+
+Interpretation:
+- Changing $\mu$ shifts the curve left/right without changing shape (when $\sigma$ is fixed).
+
+#### Solving for sigma numerically
+
+This code finds a $\sigma$ such that:
+
+$$
+P(120\le X\le 200) < 0.80 \quad \text{for }X\sim N(160,\sigma^2),
+$$
+
+using iterative search.
+
 ```{r}
 sigma<-1
 repeat{
@@ -482,8 +898,18 @@ while( pnorm(200,160,sigma)-pnorm(120,160,sigma)>=0.80){sigma<-sigma+0.01}
 sigma
 ```
 
+Interpretation:
+- This is a simple numerical method (incremental search).
+- In more advanced work, you might solve it using `uniroot()`.
+
+---
+
 ### Distribution of random variable function
-`qestion: x^2 and 2x distributions `
+
+#### Discrete transformation
+
+Here we sample from a discrete distribution with weights, then examine the distributions of transformations $X^2$ and $2X$.
+
 ```{r}
 x<-c(-1,0,1,2,2.5)
 weight<-c(0.2,0.1,0.1,0.3,0.3)
@@ -492,7 +918,15 @@ table(toss^2)/length(toss^2)
 
 table(2*toss)/length(2*toss)
 ```
-`quetsion: continous vairable density   `
+
+Interpretation:
+- Transformations can change the support and probabilities.
+- This is a simulation-based way to study the distribution of $g(X)$.
+
+#### Continuous density via simulation
+
+This code compares an estimated density to a known “truth” piecewise density.
+
 ```{r}
 x <- seq(0,5,0.01)
 truth<-rep(0,length(x))
@@ -505,8 +939,16 @@ lines(x,truth,col="red",lwd=2)
 legend("topright",c("True Density","Estimated Density"), col=c("red","black"),lwd=3,lty=c(1,3))
 ```
 
-### Join and margin probability 
-`question: x is randomly selected from 1:4, y randomly select from x`
+Interpretation:
+- Kernel density estimation approximates a PDF from simulated samples.
+- This is a common strategy when the analytic density of a transformed variable is difficult to derive.
+
+---
+
+### Joint and marginal probability (simulation approach)
+
+This example constructs a joint distribution by simulation: choose $X$ uniformly from 1:4, then choose $Y$ uniformly from 1:$X$.
+
 ```{r}
 p<-function(x,y) {
 sim<-10000
@@ -525,8 +967,25 @@ PF
 apply(PF,1,sum)
 apply(PF,2,sum)
 ```
-### Multiple random variables plots
-`2 discrete variables distribution `
+
+Interpretation:
+- `PF` approximates the joint PMF table $p_{ij}$.
+- Row sums approximate the marginal distribution of $X$.
+- Column sums approximate the marginal distribution of $Y$.
+
+This is a useful template: if you can simulate from the joint mechanism, you can estimate joint/marginal/conditional distributions numerically.
+
+---
+
+### Multiple random variables: derived distributions
+
+Here we simulate $(X,Y)$, then compute the distributions of several derived variables:
+
+- $Z_1=X+Y$  
+- $Z_2=XY$  
+- $Z_3=\max(X,Y)$  
+- $Z_4=X/Y$
+
 ```{r}
 x<-sample(1:4, 10000, replace=T, prob=c(1/4, 1/4, 1/4, 1/4))
 y<-numeric(10000)
@@ -547,8 +1006,22 @@ z4<-x/y
 table(z4)/length(z4)
 ```
 
-`two normal distributions  `
-`X～N(0,1),Y～N(0,1), Z=X+Y, therefre Z~N(0,2)`
+Interpretation:
+- This is a direct demonstration that even if $(X,Y)$ are discrete with a known mechanism, the distribution of $g(X,Y)$ may be nontrivial.
+- Simulation gives a quick empirical picture of the resulting distribution.
+
+---
+
+### Sum of two independent normal variables
+
+If $X\sim N(0,1)$ and $Y\sim N(0,1)$ independent, then:
+
+$$
+Z=X+Y \sim N(0,2).
+$$
+
+This code overlays simulated density with the true $N(0,2)$ density.
+
 ```{r}
 Z<-function(n){
 x<-seq(-4,4,0.01)
@@ -563,8 +1036,22 @@ legend("topright",c("True","Estimated"),col=c("red","black"),lwd=2,lty=c(1,2))
 Z(10000)
 ```
 
+Interpretation:
+- This is an important pattern: sums of independent normals remain normal, and variances add.
+- Many asymptotic results in statistics rely on this stability.
+
+---
+
 ### Generate a circle using simulated random dots
-`D={(x,y)|x^2 + y^2 <= 1}`
+
+Monte Carlo geometry: estimate regions defined by inequalities.
+
+Circle region:
+
+$$
+D=\{(x,y): x^2+y^2\le 1\}.
+$$
+
 ```{r}
 x<-runif(10000,-1,1)
 y<-runif(10000,-1,1)
@@ -574,7 +1061,12 @@ b<-y[x^2+y^2<=1]
 plot(a,b,col=4)
 ```
 
-`oval`
+Oval (ellipse) region:
+
+$$
+\frac{x^2}{a^2}+\frac{y^2}{b^2}\le 1.
+$$
+
 ```{r}
 a<-3
 b<-1
@@ -585,9 +1077,17 @@ y1<-y[x^2/a^2+y^2/b^2<=1]
 plot(x1,y1,col=3)
 ```
 
-### Expectation 
-`discrete variable`
-`question: the benefit of products is different.` 
+Interpretation:
+- This technique generalizes to Monte Carlo integration: “probability = area/volume proportion.”
+
+---
+
+### Expectation (simulation)
+
+Expectation is the long-run average outcome. Simulation estimates it naturally by sample means.
+
+Example: piecewise payoff depending on an exponential random variable.
+
 ```{r}
 sim<-10000
 t<-numeric(sim)
@@ -604,11 +1104,27 @@ t[i]<-Y
 
 mean(t)
 ```
-`continue variable`
- 
-### Central Limit Theorem
+
+Interpretation:
+- This is a practical way to compute $E(Y)$ when $Y$ is a complicated function of a random input.
+- Analytically, you would integrate the payoff function against the density of $X$.
+
+---
+
+### Central Limit Theorem (simulation)
+
+#### CLT for exponential distribution
+
+This code simulates the sampling distribution of $\bar X$ for $X\sim\mathrm{Exp}(\lambda)$, and overlays the normal approximation:
+
+$$
+\bar X \approx N\left(\mu,\frac{\sigma^2}{n}\right),
+$$
+
+with $\mu=1/\lambda$ and $\sigma=1/\lambda$ for the exponential.
+
 ```{r}
-###Central Limit Theorem for Expotential distribution
+####Central Limit Theorem for Expotential distribution
 layout(matrix(c(1,3,2,4 ),ncol=2))
 r<-1000
 lambda<-1/100
@@ -628,9 +1144,23 @@ lines(seq(mu-3*sxbar,mu+3*sxbar,0.01),Npdf,lty=2,col=2)
 box()
 }
 ```
- 
+
+Interpretation:
+- For small $n$, the distribution is skewed (reflecting the exponential).
+- As $n$ increases, the histogram becomes closer to normal.
+
+#### CLT for uniform distribution
+
+Uniform(0,10) has:
+
+$$
+\mu=5,\quad \sigma=\frac{10}{\sqrt{12}}.
+$$
+
+The code repeats the same idea for a different population distribution.
+
 ```{r}
-#####The central limit theorem for uniform distribution
+#######The central limit theorem for uniform distribution
 layout(matrix(c(1,3,2,4),ncol=2))
 r<-10000
 mu<-5
@@ -647,7 +1177,12 @@ lines(XX,Npdf,lty=2,col=2)
 box()}
 ```
 
+---
+
 ### Law of large numbers
+
+The law of large numbers says the running average converges to the expected value. For a discrete uniform sample from 1:10, the theoretical mean is 5.5.
+
 ```{r}
 N <- 5000
 set.seed(123) 
@@ -663,21 +1198,53 @@ plot(r.avg, ylim=c(1, 10), type = "l", xlab = "Observations"
 lines(c(0,N), c(5.5,5.5),col="red", lwd = 2)
 ```
 
-### Empirical distribution 
+Interpretation:
+- Early averages fluctuate widely.
+- As $N$ grows, the curve stabilizes around 5.5.
+
+---
+
+### Empirical distribution function (ECDF)
+
+The ECDF is the sample-based estimate of the CDF:
+
+$$
+\hat F(x)=\frac{1}{n}\sum_{i=1}^n I(X_i\le x).
+$$
+
 ```{r}
 x<-c(-2,-1.2,1.5,2.3,3.5)
 plot(ecdf(x),col=2)
 abline(v=0,col=3)
 ```
 
-`question: three numbers are from N(2,9), and what is the prob of their mean >3?`
+Interpretation:
+- The ECDF jumps by $1/n$ at each observed value.
+- It is a nonparametric summary of the distribution.
+
+---
+
+### Probability of mean > 3 (simulation)
+
+If three numbers are from $N(2,9)$, then $\bar X$ is normal, but simulation provides an easy estimate.
+
 ```{r}
 A<-matrix(rnorm(30000,2,3),10000,3)
 mean(apply(A,1,mean)>3)
 ```
 
-### Maximum likelihood estimate 
-`question: eatimate mean and variance` 
+Interpretation:
+- Each row is one sample of size 3.
+- We estimate $P(\bar X>3)$ by counting the fraction of rows with mean > 3.
+
+(Analytically, $\bar X\sim N(2, 9/3)=N(2,3)$, so $P(\bar X>3)=1-\Phi((3-2)/\sqrt{3})$.)
+
+---
+
+### Maximum likelihood estimate (MLE)
+
+MLE chooses parameters that maximize the likelihood (or log-likelihood). Your code estimates mean and variance for a normal model.
+
 ```{r}
 sample<-c(1.38, 3.96, -0.16, 8.12, 6.30, 2.61, -1.35, 0.03, 3.94, 1.11)
 n<-length(sample)
@@ -692,7 +1259,18 @@ return(-a)
 }
 optim(c(2,2),loglike,method="BFGS")$par
 ```
+
+Interpretation:
+- The MLE for $\mu$ is the sample mean.
+- The MLE for $\sigma^2$ divides by $n$ (not $n-1$), which differs from the unbiased sample variance.
+- `optim()` numerically confirms the closed-form solution, which is a useful habit when teaching likelihood.
+
+---
+
 ### t distribution, F distribution plots, and common distributions
+
+This section overlays simulated and theoretical densities to reinforce the idea that distributions can be understood both analytically and empirically.
+
 ```{r}
 n<-30
 x<-seq(-6,6,0.01)
@@ -718,4 +1296,21 @@ lines(y,dunif(-6:6,min=-6,max=6 ),col=5) #uniform
  
 ```
 
+Interpretation notes:
+- `rt(... )^2` produces a distribution related to F (because ratios of chi-squares define F, and $t^2$ is a special case).
+- Overlaying multiple distributions is primarily pedagogical: it builds intuition for how shapes differ (skew, tail heaviness, support).
 
+---
+
+### Closing perspective {-}
+
+Probability is not an isolated topic; it is the foundation for:
+
+- interpreting randomness and variation in real data,
+- understanding why estimators fluctuate,
+- quantifying uncertainty via standard errors and confidence intervals,
+- and making principled decisions via hypothesis tests.
+
+The R practice section emphasizes a pragmatic approach:
+- If you can **simulate** a mechanism, you can estimate probabilities and expectations.
+- When analytic solutions exist, simulation becomes a powerful way to validate them and build intuition.

@@ -1,0 +1,8 @@
+
+# Bayesian statistics
+
+## Bayesian Inference in R
+
+[see here](https://rpubs.com/Daniel_He/1142539)
+
+ 

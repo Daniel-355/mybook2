@@ -1,0 +1,1414 @@
+# Data visualization
+
+<!-- ================ -->
+## Data visualization introduction
+
+### Summarization 
+```{r}
+library(tidyverse)
+library(dplyr)
+mtcars %>%
+  mutate( kml = mpg * 0.42) %>%
+  group_by(cyl) %>%
+   summarise(avg_US = mean(mpg), avg_metric = mean(kml))
+```
+
+```{r}
+mpg %>% 
+  group_by(manufacturer, year) %>% 
+  summarise_at(vars(cty, hwy), mean)
+```
+- change layout
+```{r}
+mpg %>% count(class, year)%>% 
+  spread(class, n) 
+```
+- change all characters into factors
+```{r}
+mpg <- mpg %>% 
+  mutate_if(is.character, as.factor) #if a column is a character, change to a factor
+```
+- wide to long data
+```{r}
+mpg1 <- mpg %>% 
+  gather("key", "value", cty, hwy)
+```
+
+- convert wide data to long data using `pivot_longer `
+```{r}
+## Your code here. Naming choices for 1 and 2 are yours
+dta <- mpg %>% 
+  pivot_longer(cty:hwy, names_to = "var", values_to = "value") %>%  # Both of those are 
+  # value label
+   mutate(var = ifelse( var == 'cty', 'city','highway'))
+
+ggplot(dta, aes(x = displ, y = value)) + 
+  geom_point(aes(color = var))  +
+  geom_smooth(aes(color = var), se = F)
+```
+
+- explore distribution  
+```{r}
+library(DataExplorer)
+library(psych)
+library(naniar)
+plot_histogram(riskfactors)
+```
+
+- explore relationship/correlation
+```{r}
+library(psych)
+pairs.panels(riskfactors[,1:10])
+```
+
+- create a individual theme
+```{r}
+my_theme <- function(){
+  theme_bw() + 
+ 
+  theme(axis.title = element_text(size=16),
+  axis.text = element_text(size=14),
+  text = element_text(size = 14))
+}
+```
+### Explore missing values
+```{r}
+# install.packages("naniar")
+library(naniar)
+# head(riskfactors)
+riskfactors <- riskfactors
+```
+
+```{r}
+gg_miss_upset(riskfactors,nsets=10)
+```
+
+```{r}
+# install.packages("DataExplorer")
+
+plot_missing(riskfactors)
+```
+
+```{r}
+# take a quick look at the data types of each column
+visdat::vis_dat(riskfactors)
+```
+ 
+
+
+
+### Add statistical test 
+```{r ,warning=F}
+library(ggpubr)
+plt <- ggplot(  data=mpg,
+  mapping= aes(x =  as.factor(year),
+               y = cty,
+               color = as.factor(year) ) )+
+  geom_boxplot() +
+  geom_jitter(width=0.1)+
+  labs(x = 'Year',
+       y = "City mpg") +
+  my_theme()+ facet_wrap( ~ manufacturer,nrow = 2)  
+  
+# add statistical test
+  my_comparisons <- list(c('1999','2008'))
+plt + stat_compare_means() +
+stat_compare_means(comparisons = my_comparisons)
+```
+
+
+### Add texts to dots 
+```{r}
+USArrests <- USArrests %>% rownames_to_column('State')
+
+ggplot(USArrests, aes(
+x=UrbanPop,y=Murder))+
+geom_point() +
+  labs(x = "Percent of population that is urban", 
+       y = "Murder arrests (per 100,000)",
+       caption =  "McNeil (1997). Interactive Data Analysis")+
+  geom_text(aes(label=State),size=3)
+```
+
+### Set the legend
+```{r}
+ggplot(iris, aes(x=  Sepal.Length , fill= as.factor( Species)) ) +  #whole plot's option
+  
+  geom_histogram(aes(y=..density..),alpha=0.5, position="identity" , bins = 50)+
+  geom_density(aes(linetype=as.factor(Species)),alpha=.1 )+    #aesthetic's option
+  
+  scale_fill_manual( name = "Groups",values = c("grey", "black", "skyblue"),labels = c("setosa", "versicolor" , "virginica" ))+  
+  scale_linetype_manual( name = "Groups" ,values = c(1,3,5),labels = c("setosa", "versicolor" , "virginica") )+       # common legend 
+  
+  labs(x = "Sepal.Length", 
+       y = "Density", 
+       title = "") 
+```
+
+### Create a panel of plots
+
+- combine multiple plots into one
+```{r}
+p1=ggplot(data=riskfactors,aes(x=age))+
+  geom_histogram(bins = 30 )
+
+p2=ggplot(data=riskfactors,aes(x=sex))+
+  geom_bar (aes(x=sex) )
+
+p3=ggplot(riskfactors,aes(x = education, y = bmi))+
+  geom_boxplot (  )
+
+p4=ggplot(riskfactors, aes(x = marital )) + 
+  geom_bar(aes(group = education, y = (..count..)/sum(..count..),fill = education)) + 
+          scale_y_continuous(labels=scales::percent) 
+
+# install.packages("ggpubr")
+library(ggpubr)
+ggarrange(p1, p2, p3, p4, ncol = 2, nrow=2)
+```
+
+
+
+### Plots in regression
+- create linear regression model
+```{r}
+data("Boston", package = "MASS")
+linear_reg <- glm(medv ~ ., data=Boston , family = gaussian())
+summary(linear_reg)
+```
+- summary
+```{r}
+knitr::kable(broom::tidy(linear_reg))
+```
+
+- create logistical regression 
+```{r}
+# load the Pima Indians dataset from the mlbench dataset
+library(mlbench)
+data(PimaIndiansDiabetes) 
+# rename dataset to have shorter name because lazy
+diabetes <- PimaIndiansDiabetes
+
+logistic_reg <- glm(diabetes ~ ., data=diabetes, family = binomial)
+
+summary(logistic_reg)
+
+```
+- summary
+
+```{r}
+knitr::kable(broom::tidy(logistic_reg))
+```
+
+
+#### Create forest plots for `coefficients` or `OR`
+```{r}
+library(sjPlot)
+plot_model(linear_reg, show.values = TRUE, value.offset = 0.5)
+```
+
+```{r}
+plot_model(logistic_reg, show.values = TRUE, value.offset = .5, vline.color = "black")
+```
+**another way**
+```{r}
+library(finalfit) 
+
+explanatory = c(  "crim"  ,  "zn"   ,   "indus"  ,   "nox"   ,  "rm"   ,   "age" ,    "dis"  ,   "rad"   ,  "tax"   ,"ptratio" ,"black"  , "lstat" )
+
+dependent = "medv"
+
+
+Boston %>%
+ coefficient_plot(dependent, explanatory, table_text_size=3, 
+                  title_text_size=12,
+                   plot_opts=list(xlab("Beta, 95% CI"), 
+                                  theme(axis.title = element_text(size=12))))
+```
+
+```{r}
+ 
+library(finalfit) 
+
+explanatory = c(  "pregnant", "glucose" , "pressure", "triceps"  ,"insulin" , "mass"   ,  "pedigree", "age"  )
+
+dependent = "diabetes"
+
+diabetes %>%
+ or_plot(dependent, explanatory, table_text_size=3, 
+                  title_text_size=12,
+                   plot_opts=list(xlab("OR, 95% CI"), 
+                                  theme(axis.title = element_text(size=12))))
+ 
+```
+
+- qq plot
+```{r}
+ggqqplot( (Boston$medv))
+```
+
+<!-- ======================== -->
+
+- Loading data set
+```{r}
+library(printr)
+library(tidyverse)
+head(iris)
+```
+## Scatter plot
+### Create a empty canvas
+- then create `aesthetic mapping`  
+- tell the function which dataset and variables to use
+```{r}
+ggplot(data = iris,        # which data set? canvas? 
+       aes(x=Sepal.Length , y=Petal.Length   ))  # which variables as aesthetics? x and y are mapped to columns of the data; different geoms can have different aesthetics (different variables). 
+```
+
+ 
+### Add a layer/geom of `points` to the canvas
+```{r}
+ggplot(data = iris,
+       mapping = aes(x=Sepal.Length , y=Petal.Length  )) + 
+  geom_point()   # adding the geometrical representation 
+```
+ 
+```{r,eval=F}
+# same plot as above
+ggplot(data = iris) + 
+  geom_point(  aes(x=Sepal.Length , y=Petal.Length  )) 
+```
+### Add another aesthetic
+- add a curve/straight line to fit these points
+- geom provides the aesthetic to ggplot
+```{r}
+# Loess curve
+ggplot(data = iris, 
+       mapping = aes(x=Sepal.Length , y=Petal.Length  )) + 
+  geom_point() +
+  geom_smooth() 
+
+```
+
+```{r}
+# Linear regression line
+ggplot(data = iris, 
+       mapping = aes(x=Sepal.Length , y=Petal.Length)) + 
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+### Add other aesthetic
+- set other aesthetics `colour, alpha (transparency), and size of points`
+
+```{r}
+ggplot(data = iris) + 
+  geom_point(aes(x=Sepal.Length , y=Petal.Length, size = Sepal.Width     ), 
+             alpha = .5, 
+             colour = "red")
+```
+
+ 
+
+```{r}
+ggplot(data = iris) + 
+  geom_point(aes(x=Sepal.Length , y=Petal.Length, size = Sepal.Width , colour=Species), #white is a variable here 
+             alpha=.9)
+```
+
+ 
+- categorize `Petal.Width` then map colour to this new variable
+```{r}
+iris <- iris %>% 
+  mutate(growth = ifelse(Petal.Width   > 1.5, "Wide", "Normal"))
+
+ggplot(data=iris) + 
+  geom_point(aes(x=Sepal.Length , y=Petal.Length, size = Sepal.Width , colour=growth), 
+             alpha=.9)
+```
+
+ 
+## Bar chart
+```{r}
+ggplot(data = iris) + 
+  geom_bar(aes(x = growth))
+```
+
+- bar chart after `group_by` 
+- then use `stat='identity'` 
+```{r}
+library(dplyr)
+results  <- iris %>% 
+  group_by(Species, growth) %>% 
+   summarise(Sepal.Length.mean=mean (Sepal.Length ))
+
+ gop <- results  %>% 
+  filter(Species != "setosa_null"  )
+ gop
+```
+- though meaningless below until line chart (just use the mean as the sum for demonstration)
+```{r}
+# We can also store parts of a plot in an object
+plot1 <- ggplot(gop) + 
+  geom_bar(aes(x=growth , y=Sepal.Length.mean), 
+           
+           stat='identity')
+plot1
+```
+### Add some options for the whole ggplot rather than layers
+- `switch` the x and y axes 
+```{r}
+plot1 + 
+  coord_flip()
+```
+
+- `reorder` x categories (`-`means descending)
+```{r}
+ggplot( gop) + 
+  geom_bar(aes(x=reorder(growth, -Sepal.Length.mean), y=Sepal.Length.mean, fill=growth), 
+           stat='identity') + 
+  coord_flip()
+```
+
+- add x axis `label` and a `theme` 
+```{r}
+ggplot(gop) + 
+  geom_bar(aes(x=reorder(growth, -Sepal.Length.mean), y=Sepal.Length.mean, fill=growth), 
+           stat='identity') + 
+  coord_flip() + 
+  xlab("Growth categories") + 
+  guides(fill=F) +
+  theme_minimal()
+```
+
+- set theme
+```{r}
+library(ggthemes)
+ggplot(data = iris) + 
+  geom_bar(aes(x = growth)) + 
+  theme_economist()
+```
+
+### Grouped bar chart 
+-bar chart with different panels
+```{r}
+ggplot(mpg, aes(x = class)) + 
+  geom_bar() + 
+  facet_wrap( ~ year)
+```
+
+- actual number (groups are stacked by default)
+```{r}
+ggplot(gop) + 
+  geom_bar(aes(x=growth, y=Sepal.Length.mean, fill=Species)
+           , stat='identity'
+           )
+```
+
+```{r}
+ggplot(mpg, aes(x = class )) + 
+  geom_bar(aes(group = year, fill = year), position = "stack")
+```
+
+- percentage
+```{r}
+ggplot(gop) + 
+  geom_bar(aes(x=growth, y=Sepal.Length.mean, fill=Species), 
+           stat='identity', 
+           position='fill')
+```
+ 
+- groups are dodge with `actual number `
+```{r}
+ggplot(gop) + 
+  geom_bar(aes(x=growth, y=Sepal.Length.mean, fill=Species), 
+           stat='identity', 
+           position='dodge')
+
+```
+- groups are dodge with `percentage`
+```{r}
+gop2 <- gop %>% 
+  group_by(growth ) %>% 
+  mutate(Sepal.Length.prop=Sepal.Length.mean/sum(Sepal.Length.mean))
+
+ggplot(gop2) + 
+  geom_bar(aes(x=growth, y=Sepal.Length.prop, fill=Species), 
+           stat='identity', 
+           position='dodge') + 
+  ylab("Votes (%)")
+```
+
+ 
+## Line charts
+ 
+```{r}
+ggplot(iris) + 
+  geom_line(aes(x=Sepal.Length , y=Petal.Length))
+```
+ 
+### Grouped by `colour variable`
+```{r}
+ggplot(iris) + 
+  geom_line(aes(x=Sepal.Length , y=Petal.Length, colour = Species))
+```
+
+ 
+- grouped by state then set how many rows or columns
+```{r}
+ggplot(iris) + 
+  geom_line(aes(x=Sepal.Length , y=Petal.Length) ) + 
+  
+  facet_wrap(~Species, nrow = 1) +      #set how many rows
+  coord_flip()  
+```
+
+### Multiple aesthetics
+```{r}
+iris <- iris %>% 
+  mutate(growth = ifelse(Petal.Width   > 1.5, "Wide", "Normal"))
+
+ggplot(iris, aes(x = Sepal.Length, y = Petal.Length)) + 
+  geom_line(size=2,color="purple")+  
+  # number format
+  scale_x_log10(labels = scales::label_number())+
+  geom_point( aes(size =  Sepal.Length,colour = as.factor(growth)),show.legend = F)+
+  facet_wrap(~ Species) 
+
+```
+
+
+## ggplot2 parameters
+For detail, please read this [article](http://www.sthda.com/english/wiki/be-awesome-in-ggplot2-a-practical-guide-to-be-highly-effective-r-software-and-data-visualization#change-colors-automatically-and-manually) and this [one](https://ggplot2-book.org/). 
+
+<!-- https://bookdown.org/wangminjie/R4DS/tidyverse-ggplot2-scales.html -->
+
+```{r, echo=FALSE}
+packages <- c(
+  'ggplot2',
+  'ggrepel',
+  'patchwork',
+  'ggraph',
+  'dplyr',
+  'gganimate',
+  'gifski',
+  'ggforce',
+  'ggthemes',
+  'maps',
+  'sf',
+  'tidyr',
+  'concaveman',
+  'remotes'
+)
+# Uncomment the next lines (remove the first #) to install the packages
+# install.packages(packages)
+# remotes::install_github("hrbrmstr/hrbrthemes")
+# Load standard packages
+library(ggplot2)
+```
+
+
+```{r}
+library(datasauRus)
+  ggplot( )+
+    geom_point(data=datasaurus_dozen[datasaurus_dozen$dataset=="dino",], aes(x = x, y = y),color= "#7CAE00" ) +
+    theme_void()+
+    theme(legend.position = "none") 
+ 
+```
+
+
+### Components of plot
+- Components of plot
+  - Data: is a data frame
+  - Aesthetics: is used to indicate x and y variables and to control the color, the size or the shape ...
+  - Geometry: the type of graphics (bar plot, line plot, scatter plot...)
+- adjust parameters
+  - adjust legend using `guide_`  
+  - adjust color, size, and shape using `scale_`, `guide_` can further adjust `scale_`
+  - adjust panel, background, axis (font, color, size, angle), title, legend (position), caption using theme
+- types of plots
+  - geom_boxplot(): Box plot
+  - geom_violin(): Violin plot
+  - geom_dotplot(): Dot plot
+  - geom_jitter(): Jitter charts
+  - geom_line(): Line plot
+  - geom_bar(): Bar plot
+  - geom_errorbar(): Error bars
+  - geom_point(): Scatter plot
+  - geom_smooth(): Add smoothed curve
+  - geom_quantile(): Add quantile lines  
+  - geom_text(): Textual annotations
+  - geom_density(): Create a smooth density curve
+  - geom_histogram(): Histogram
+
+`example`  
+
+```{r}
+data("faithful")
+# Basic scatterplot
+ggplot(data = faithful, 
+       mapping = aes(x = eruptions, y = waiting)) + 
+  geom_point()+
+  stat_density_2d(aes(fill = ..level..), geom="polygon")   
+  
+# Data and mapping can be given both as global (in ggplot()) or per layer
+# ggplot() + 
+#   geom_point(mapping = aes(x = eruptions, y = waiting),
+#              data = faithful)
+```
+
+### Create main title, axis labels, caption 
+
+pay attention whether argument is factor or continuous.
+```{r}
+ggplot(data = faithful, 
+       mapping = aes(x = eruptions, y = waiting)) + 
+  geom_point()+
+  
+  labs(title = "Number of xxx",
+       caption = "source: http://xxx",
+       x = "Eruptions" ,
+       y = "Waiting time" ) +
+# customize title, axis, caption  
+  theme(
+plot.title = element_text(color="red", size=14, face="bold.italic"),
+plot.caption = element_text(color="red", size=10, face="italic"),
+axis.title.x = element_text(color="blue", size=14, face="bold"),
+axis.title.y = element_text(color="#993333", size=14, face="bold")
+)+
+  
+# hide main title  
+theme(plot.title = element_blank() )
+```
+
+### Create legend title, position  
+
+```{r}
+p <- ggplot(faithful) + 
+  geom_point(aes(x = eruptions, y = waiting, colour = eruptions < 3))+
+  labs(color="Numbers of eruptions") +
+  
+  theme(legend.position = "left")+
+# Change the appearance of legend title and labels
+  theme(legend.title = element_text(colour="blue"),
+          legend.text = element_text(colour="red"))+
+# Change legend box background color
+  theme(legend.background = element_rect(fill=NULL))
+print(p)
+```
+
+- `customize legends using scale functions`
+```{r}
+# how to change order of legend?  
+# Set legend title and labels
+p+ scale_color_discrete(name = "Numbers of eruptions change", labels = c("F", "T" ))
+```
+ 
+- customize legend
+
+`guide_colorbar(): continuous colors`
+
+`guide_legend(): discrete values (shapes, colors)`
+```{r}
+ggplot(faithful) + 
+  geom_point(aes(x = eruptions, y = waiting, size = eruptions < 3))+
+  guides(size = guide_legend(
+    # legend title
+    title = "title is too low",
+    title.position = "bottom",
+    title.vjust = -5,
+    # legend label
+    label.position = "left",
+    label.hjust = 1,
+    label.theme = element_text(size = 15,
+                               face = "italic",
+                               colour = "red",
+                               angle = 0),
+    # label reverse
+    reverse = TRUE,
+    
+    # width of bin
+    keywidth = 1,
+    
+    ncol = 4
+    
+   )
+  )
+```
+
+ 
+
+
+- delete a legend
+```{r}
+  ggplot(mpg, aes(x = displ, y = hwy, color = class, size = cyl)) +
+  geom_point() +
+  guides(
+    color = guide_legend("type"),      # keep
+    size = "none"                      # remove
+  )
+```
+
+- combine two legends when they use the same variable (mapping)
+```{r}
+  ggplot(mpg, aes(x = displ, y = hwy, color = cyl, size = cyl)) +
+  geom_point() +
+  scale_color_viridis_c() +
+  
+  guides(
+    color = guide_legend("title"),
+    size = guide_legend("title")
+  )
+
+# guide = "legend"
+```
+
+### Change plot colors 
+`set color into aes()` 
+
+```{r}
+ggplot(faithful) + 
+  geom_point(aes(x = eruptions, y = waiting, colour = eruptions < 3))
+```
+
+`set color outside of aes()`
+
+```{r}
+ggplot(faithful) + 
+  geom_point(aes(x = eruptions, y = waiting),
+             colour = 'steelblue')
+```
+
+- Colour the histogram with `color` and `fill `
+
+```{r}
+ggplot(faithful) + 
+  geom_histogram(aes(x = eruptions,color=eruptions < 3, fill=eruptions < 4))
+```
+  
+
+- Colour the histogram by `waiting` and changing `position`
+
+```{r}
+ggplot(faithful) + 
+  geom_histogram(aes(x = eruptions,color=waiting>60), position = 'dodge')
+```
+
+```{r}
+ggplot(faithful) + 
+  geom_histogram(aes(x = eruptions,color=waiting>60), position = 'identity')
+```
+
+For fill and stack position, please see `position` section.  
+
+
+- `change colors manually using scale`
+```{r,message=FALSE}
+ggplot(faithful) + 
+  geom_histogram(aes(x = eruptions,color=eruptions < 3, fill=eruptions < 4))+
+  # Box plot
+  scale_fill_manual(values=c("#999999", "#E69F00"))
+# Scatter plot
+  scale_color_manual(values=c( "#E69F00", "#56B4E9"))
+```
+
+- `using scale brewer automatically`   
+```{r}
+ggplot(faithful) + 
+  geom_histogram(aes(x = eruptions,color=eruptions < 3, fill=eruptions < 4))+
+  # Box plot
+  scale_fill_brewer(palette="Dark2")
+# Scatter plot
+  scale_color_brewer(palette="Set1")
+  # using guide to change the color of legend key
+  
+```
+
+- `using gray colors using scale`
+```{r}
+# 
+p + scale_fill_grey()  #no fill element
+# 
+p + scale_color_grey()  
+```
+
+- `Gradient or continuous colors (can set the middle point as `white`)`
+```{r}
+# Color by cty values
+sp2<-ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(aes(color = cty))
+sp2
+# Change the low and high colors
+# Sequential color scheme
+sp2+scale_color_gradient(low="blue", high="red")
+# Diverging color scheme
+mid<-mean(mpg$cty)
+sp2+scale_color_gradient2(midpoint=mid, low="blue", mid="white",
+                          high="red"  )
+```
+
+
+### Change points shapes, transparent and size
+
+make the points larger and slightly transparent.
+ 
+```{r}
+ggplot(faithful) + 
+  geom_point(aes(x = eruptions, y = waiting, shape= eruptions < 3, size=eruptions), color="steelblue", alpha=0.5)
+
+```
+ 
+```{r}
+# hwo to reverse order of legend size 
+ggplot(faithful) + 
+  geom_point(aes(x = eruptions, y = waiting, shape= eruptions < 3, size=eruptions), color="steelblue", alpha=0.5)+
+
+  scale_shape_manual(values=c(10, 23 ))+
+ 
+  theme(legend.position="top")
+```
+
+
+### Change bars position
+```{r}
+p <- ggplot(mpg, aes(fl, fill = drv))
+
+p1 <- p + geom_bar ()
+
+p2 <- p + geom_bar(position = "dodge")
+ 
+p3 <-p + geom_bar(position = "fill")
+ 
+p4 <-p + geom_bar(position = "stack")
+
+library(gridExtra)
+grid.arrange(p1, p2, p3,p4, ncol=2)
+ 
+```
+
+
+### Add text annotations
+```{r}
+ggplot(data=mpg[(1:100), ], aes(x = displ, y = hwy)) +
+  geom_point(aes(color = cty))+
+  
+  geom_text(aes(label = manufacturer ),
+               size = 2, vjust = -1)  #vjust is site not direction
+```
+
+### Add a line that (separates points)   
+
+```{r}
+ggplot(faithful) + 
+  geom_point(aes(x = eruptions, y = waiting))+
+  
+  geom_abline(slope=-13,intercept = 100,color="red", linetype = "dashed")+
+  # Add horizontal line at y = 2O; change line type and color
+  geom_hline(yintercept=20, linetype="dotted", color = "red")+
+# Add vertical line at x = 3; change line type, color and size
+  geom_vline(xintercept = 3, color = "blue", size=1.5)
+# Add regression line
+```
+
+`add segment and arrow`
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy )) +
+  geom_point() +
+# Add horizontal line segment
+  geom_segment(aes(x = 2, y = 15, xend = 3, yend = 15, size=3, color="red")) +
+  geom_segment(aes(x = 3, y = 33, xend = 2.5 , yend = 30),
+                  arrow = arrow(length = unit(0.5, "cm")))
+
+```
+
+`fitted curve`
+```{r}
+ggplot(data=mpg[mpg$fl!="c",], aes(x = displ, y = hwy)) +
+  geom_point( ) +
+  geom_smooth(color="red") #fitted curve
+  
+```
+
+```{r}
+ggplot(data=mpg[mpg$fl!="c",], aes(x = displ, y = hwy)) +
+  geom_point( ) + 
+  geom_quantile() +
+  geom_rug()+
+  theme_minimal()
+  
+```
+
+`customize line`
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy, color = fl, linetype = fl, size=fl)) +
+  geom_point() +
+  geom_line(aes( ) )+
+  labs(color="What is fl")+
+  
+# customize linetype, color, size  
+  scale_linetype_manual(values=c("twodash", "dotted","twodash", "dotted","twodash"))+
+  scale_color_manual(name = "continents",breaks = c("c", "d", "e", "Europe", "Oceania"),labels = c("africa", "americas", "asia", "europe", "oceania"),  values=c('#999999','#E69F00','#999999','#E69F00','#999999')   )+ #using breaks define three labels   
+  scale_size_manual(values=seq(1,4, 0.2))+
+  theme(legend.position="top") +
+  
+  guides(color="legend")
+```
+
+
+ 
+
+### Using scale_ function
+all mappings have associated scales even if not specified. 
+
+- uisng `scale_colour_brewer`. 
+
+```{r}
+ggplot(mpg) + 
+  geom_point(aes(x = displ, y = hwy, colour = class)) + 
+  scale_colour_brewer(type = 'qual')
+```
+
+
+
+`RColorBrewer`
+```{r}
+RColorBrewer::display.brewer.all()
+```
+
+- using different palettes 
+
+```{r}
+ggplot(mpg) + 
+  geom_point(aes(x = displ, y = hwy, colour = class)) + 
+  scale_colour_brewer (palette = 'Paired')
+```
+ 
+- showing `cyl` with size 
+```{r}
+ggplot(mpg) + 
+  geom_point(aes(x = displ, y = hwy, colour =  class, size=cyl)) + 
+  scale_colour_brewer(palette  = 'Set1' ) +
+  scale_size (breaks = c(4,6))   
+
+```
+
+<!-- - **Can use `breaks` to select the legend you want** -->
+<!-- ```{r} -->
+<!-- # how to remove a legend? -->
+<!-- ggplot(mpg) +  -->
+<!--   geom_point(aes(x = displ, y = hwy, colour =  class, size=cyl)) +  -->
+<!--   scale_colour_brewer(palette  = 'Set1') + -->
+<!--   scale_size (breaks = c(40,60))    -->
+
+<!-- ggplot(mpg) +  -->
+<!--   geom_point(aes(x = displ, y = hwy, colour =  class, size=cyl)) +  -->
+<!--   scale_colour_brewer(palette  = 'Set1', breaks = c(4,6)) + -->
+<!--   scale_size (breaks = c(4,6))    -->
+
+<!-- ``` -->
+
+- using `guides` to modify the `scale_` 
+```{r}
+ ggplot(mpg) +
+   geom_point(aes(x = displ, y = hwy, colour = cyl, size=cyl)) +
+   # scale_colour_brewer(palette  = 'Set1') +   #can not continuous 
+   scale_size (breaks = c(4,5,6))  +
+  
+   guides( size = guide_legend(
+            override.aes = list(color = c('red', 'blue', 'black'))))
+```
+ 
+
+- unite legends 
+
+when multiple aesthetics are mapped to the same variable.
+
+
+```{r}
+ggplot(mpg) + 
+  geom_point(aes(x = displ, y = hwy, colour = cyl, size=cyl))   +
+  guides(colour="legend")
+```
+
+`category is also ok` 
+```{r}
+ggplot(mpg) + 
+  geom_point(aes(x = displ, y = hwy, colour = fl, size=fl))   +
+  guides(colour="legend") #size is not ok
+```
+ 
+ 
+ - x and y also have associated scales 
+
+```{r}
+ggplot(mpg) + 
+  geom_point(aes(x = displ, y = hwy)) + 
+  scale_x_continuous(breaks = c(3.5, 5, 6)) + 
+  scale_y_continuous(trans = 'log2')
+``` 
+ 
+ 
+
+
+### Change coordinates
+
+Changing the coordinate system can have dramatic effects 
+
+- coord_polar
+
+```{r}
+ggplot(mpg) + 
+  geom_bar(aes(x = class)) + 
+  coord_polar()
+```
+
+```{r}
+ggplot(mpg) + 
+  geom_bar(aes(x = class)) + 
+  coord_polar(theta = 'y') + 
+  expand_limits(y = 70)
+```
+
+- specify the scale of coordinate 
+
+```{r}
+require(scales)
+ggplot(mpg) + 
+  geom_bar(aes(x = class)) + 
+  scale_y_continuous(limits = c(0, 50), breaks = seq(0, 50, 01)) 
+  
+  # scale_y_continuous(labels = percent) # labels as percents
+  # +
+  # scale_x_discrete(labels=c(1:7)  )
+```
+
+- using coord_cartesian `zoom in` 
+ 
+```{r}
+# have been deleted 
+ggplot(mpg) + 
+  geom_bar(aes(x = class)) + 
+  scale_y_continuous(limits = c(0, 30))+
+  scale_x_discrete( limit=c("midsize","compact"))
+```
+
+```{r}
+ggplot(mpg) + 
+  geom_bar(aes(x = class)) + 
+  coord_cartesian( ylim = c(0, 30))+
+  scale_x_discrete( limit=c("midsize","compact"))
+```
+ 
+
+- reverse direction of axes
+
+```{r}
+ggplot(mpg) + 
+  geom_point(aes(x = hwy, y = displ))+
+  
+  scale_x_continuous(breaks = c(20, 30, 35,40)) + 
+  scale_y_reverse()+
+  scale_y_continuous(trans="log2")
+  
+# log10, sqrt, reverse, scale_y_continuous(trans="log2")
+```
+ 
+
+### Customize axis ticks
+- change axis text font, color, size, angle using theme 
+```{r}
+# when use theme, scale, guide? 
+ggplot(mpg) + 
+  geom_point(aes(x = hwy, y = displ))+
+  
+  theme(axis.text.x = element_text(face="bold", color="#993333", 
+                           size=14, angle=45),
+          axis.text.y = element_text(face="bold", color="blue", 
+                           size=7, angle=90))
+```
+
+- `remove aixs ticks and tick labels`
+```{r}
+ggplot(mpg) + 
+  geom_point(aes(x = hwy, y = displ))+
+theme(
+  axis.text.x = element_blank(), # Remove x axis tick labels
+  axis.text.y = element_blank(), # Remove y axis tick labels
+  axis.ticks = element_blank()) # Remove ticks
+```
+
+### Flip and reverse plot 
+
+
+- boxplot and violin 
+```{r}
+ggplot(mpg ) + 
+  geom_violin( aes(x = as.factor(cyl), y=hwy ,color=as.factor(cyl) ) ,trim = FALSE,width = 4 ) +
+  geom_boxplot( aes(x = as.factor(cyl), y=hwy  ), notch = F , width = 0.1)  
+ 
+```
+
+- dotplot
+`using stat_ function` 
+```{r}
+ggplot(mpg ,aes(x = as.factor(cyl), y=hwy ) )+ 
+  geom_dotplot(aes(color =as.factor(cyl), fill = as.factor(cyl)), 
+                 binaxis = "y", stackdir = "center") + 
+  stat_summary(fun.data="mean_sdl" )  
+```
+
+- errorbar
+```{r,echo=FALSE}
+# Calculate the mean and the SD in each group
+#+++++++++++++++++++++++++
+# data : a data frame
+# varname : the name of the variable to be summariezed
+# grps : column names to be used as grouping variables
+data_summary <- function(data, varname, grps){
+  require(plyr)
+  summary_func <- function(x, col){
+    c(mean = mean(x[[col]], na.rm=TRUE),
+      sd = sd(x[[col]], na.rm=TRUE))
+  }
+  data_sum<-ddply(data, grps, .fun=summary_func, varname)
+  data_sum <- rename(data_sum, c("mean" = varname))
+ return(data_sum)
+}
+
+```
+
+```{r}
+df3 <- data_summary(mpg, varname="hwy", grps= c("cyl" ))
+head(df3)
+```
+
+
+```{r}
+ggplot( df3, aes(as.factor(cyl) ,  (hwy), ymin = hwy-sd, ymax = hwy+sd)  ) +
+  geom_line(aes(group = 0 )) +
+  geom_errorbar(aes(color = as.factor(cyl) ),width = 0.2) 
+```
+```{r}
+ggplot( df3, aes(as.factor(cyl) ,  (hwy), ymin = hwy-sd, ymax = hwy+sd)  ) +
+  geom_bar(aes(fill = as.factor(cyl)), stat = "identity",
+             position = "dodge") +
+  geom_errorbar(aes(   ),width = 0.2) +
+  coord_flip()
+```
+
+*using original data* 
+```{r}
+ 
+  ggplot(mpg, aes(cyl, hwy)) +
+  stat_summary(geom = "bar") +
+  stat_summary(geom = "errorbar")
+```
+
+
+`flip`
+```{r}
+ggplot(mpg) + 
+  geom_bar(aes(x = class)) +
+  coord_flip()
+```
+
+
+`reverse`
+```{r}
+ggplot(mpg) + 
+  geom_bar(aes(x = class)) +
+  scale_y_reverse()
+```
+
+
+### Create stats
+
+*Every geom has a stat. The stat can be overwritten if we use any additional computations.*
+
+```{r}
+ggplot(mpg ) + 
+  geom_bar (aes(x = cyl ),position = 'identity' ) #using original data
+```
+
+- using transformed variables
+```{r,message=FALSE,warning=FALSE}
+library(dplyr)
+library(ggplot2)
+# mpg_counted <-    
+#   count(mpg,  cyl  )
+# head(mpg_counted)
+
+# ggplot(mpg_counted) + 
+#   geom_smooth(aes(x =  cyl , y = n)) +
+#   geom_bar (aes(x =  cyl , y = n), stat = 'identity') #using summary data 
+```
+
+- using the `after_stat()` function inside `aes()`.  
+
+```{r}
+require(scales)
+ggplot(mpg) + 
+  geom_bar(aes(x = class, y = after_stat(  count / sum(count))))+
+  scale_y_continuous(labels = percent) # labels decimals as percents
+  
+```
+
+- using `density` geometric in histogram 
+
+```{r}
+ggplot(mpg,aes(x = hwy)) + 
+  geom_histogram(aes(y=..density..))+
+  geom_density(  ) 
+
+```
+
+ 
+- Use `stat_summary()` to add the mean of `hwy` for each group
+
+`STAT vs. GEOM`
+```{r}
+p1 <- ggplot(mpg,aes(x = class, y = hwy) ) + 
+  stat_summary(
+    geom = "pointrange",
+    fun.data = mean_se
+  )
+
+p2 <- ggplot(mpg,aes(x = class, y = hwy) ) + 
+  stat_summary( 
+  )
+
+p3 <- ggplot(mpg,aes(x = class, y = hwy) ) + 
+  stat_summary( 
+  )+
+  stat_summary(
+    fun.data = ~mean_se(., mult = 1.96), # Increase `mult` value for bigger interval!
+    geom = "errorbar",
+  )
+
+library(patchwork)
+p1+p2+p3
+```
+
+
+```{r}
+ggplot(mpg) + 
+  geom_point(aes(x = class, y = hwy), width = 0.2)+
+  stat_summary(aes( x = class,y = hwy), geom="point",color="red",size=4)
+ 
+```
+
+`jitter points`
+```{r}
+ggplot(mpg) + 
+  geom_jitter(aes(x = class, y = hwy), width = 0.2)+
+  stat_summary(aes( x = class,y = hwy), geom="point",color="red",size=4)
+ 
+```
+
+
+### Facets
+`facet_wrap()` allows you to place facet side by side into a rectangular layout. `facet_grid()` allows you to specify different directions and works on two variables. 
+
+- share the axes between the different panels 
+```{r}
+ggplot(mpg) + 
+  geom_point(aes(x = displ, y = hwy)) + 
+  facet_wrap(~ class)
+```
+
+  
+```{r}
+ggplot(mpg) + 
+  geom_point(aes(x = displ, y = hwy)) + 
+  facet_grid(drv~ .  )
+```
+
+```{r}
+ggplot(mpg) + 
+  geom_point(aes(x = displ, y = hwy)) + 
+  facet_grid(~ drv  )
+```
+```{r}
+ggplot(mpg) + 
+  geom_point(aes(x = displ, y = hwy)) + 
+  facet_grid(year ~ drv)
+```
+
+- do not share the axes between the different panels 
+```{r}
+ggplot(mpg) + 
+  geom_point(aes(x = displ, y = hwy)) + 
+  facet_wrap(~ drv , scales = "free")
+```
+
+`only free y axes`
+```{r}
+ggplot(mpg) + 
+  geom_point(aes(x = displ, y = hwy)) + 
+  facet_wrap(~ drv , scales = "free_y")
+```
+ 
+- adjust y scale (space) between the panels 
+
+```{r}
+ggplot(mpg) + 
+  geom_bar(aes(y = manufacturer)) + 
+  facet_grid(class ~ .)
+```
+
+```{r}
+ggplot(mpg) + 
+  geom_bar(aes(y = manufacturer)) + 
+  facet_grid(class ~ ., space = "free_y", scales = "free_y")
+```
+
+- display by adding multiple variables together 
+
+```{r}
+ggplot(mpg) + 
+  geom_point(aes(x = displ, y = hwy)) + 
+  facet_wrap(year ~ drv)
+```
+
+### Theme
+ 
+`theme_minimal`
+```{r}
+ggplot(mpg) + 
+  geom_bar(aes(y = class)) + 
+  facet_wrap(~year) + 
+  theme_minimal()
+```
+
+`Further adjustments`  
+`theme_bw` 
+```{r,message=FALSE,warning=FALSE}
+ggplot(mpg) + 
+  geom_bar(aes(y = class)) + 
+  facet_wrap(~year) + 
+  
+  labs(title = "Number of car models per class",
+       caption = "source: http://fueleconomy.gov",
+       x = NULL,
+       y = NULL) +
+   
+  theme_bw() + 
+  theme(
+ 
+    strip.text = element_text(face = 'bold', hjust = 0),
+    
+    plot.caption = element_text(face = 'italic'),
+    
+    panel.grid.major = element_line('white', size = 0.5),
+    panel.grid.minor = element_blank(),
+    panel.grid.major.y = element_blank()
+    # ,
+    # panel.ontop = TRUE
+  )
+```
+
+`theme_classic`
+```{r}
+ggplot(mpg) + 
+  geom_bar(aes(y = class, fill = drv)  ,position = "dodge") + 
+  facet_wrap(~year) + 
+  labs(title = "Number of car models per class",
+       caption = "source: http://fueleconomy.gov",
+       x = 'Number of cars',
+       y = NULL)+
+  
+  scale_fill_manual(name = "Drive Models",values=c("black", "grey50",  "grey80"), labels = c("4w","Fw","Rw" )) +
+  
+  # scale_x_continuous(expand = c(0, NA)) + 
+  
+  theme_classic() + 
+  theme(
+    # text = element_text('Avenir Next Condensed'),
+    # strip.text = element_text(face = 'bold', hjust = 0),
+    
+    plot.caption = element_text(face = 'italic'),
+    
+    panel.grid.major = element_line('white', size = 0.5),
+    panel.grid.minor = element_blank(),
+    panel.grid.major.y = element_blank()
+    
+    # panel.ontop = TRUE)
+  )
+```
+
+- using ggthemes
+```{r}
+library(ggthemes)
+ggplot(mpg) + 
+  geom_bar(aes(y = class, fill = drv)  ,position = "dodge") + 
+  facet_wrap(~year) + 
+  labs(title = "Number of car models per class",
+       caption = "source: http://fueleconomy.gov",
+       x = 'Number of cars',
+       y = NULL)+
+  
+  ggthemes::theme_economist()
+```
+
+- customized theme
+```{r}
+ggplot(mpg) + 
+  geom_bar(aes(y = class, fill = drv)  ,position = "dodge") + 
+  facet_wrap(~year) + 
+  labs(title = "Number of car models per class",
+       caption = "source: http://fueleconomy.gov",
+       x = 'Number of cars',
+       y = NULL)+
+  
+theme(
+  
+    # 1 change legend
+    legend.background = element_rect(
+      fill = "#fff6c2",
+      color = "black",
+      linetype = "dashed"
+    ),
+    legend.key = element_rect(fill = "grey", color = "brown"),
+    legend.position = "bottom", 
+    
+    # 2 change panel (middle erea) background 
+    panel.background = element_rect(
+      fill = "#005F59",
+      color = "red", size = 3
+    ),
+    panel.border = element_rect(
+      color = "black",
+      fill = "transparent",
+      linetype = "dashed", size = 3
+    ),
+    
+    # 3 change plot background
+    plot.background = element_rect(
+      fill = "#a1dce9",
+      color = "black",
+      size = 1.3
+    ),
+    
+   
+    
+    # 4 change axis elements
+    axis.line = element_line(color = "orange", size = 2),
+    axis.title = element_text(color = "red", face = "italic"),
+    axis.ticks = element_line(color = "purple", size = 3),
+    axis.text = element_text(color = "blue"),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    
+    # 5 change facet panel
+    strip.background = element_rect(fill = "orange"),
+    strip.text = element_text(color = "red"),
+    panel.spacing = unit(0.3, "inch") 
+  )
+```
+
+
+### How to setup subscripts or superscripts
+
+[see here](https://rpubs.com/Daniel_He/1041883)
+
+## How to create advanced plots
+[see here](https://rpubs.com/Daniel_He/941386)

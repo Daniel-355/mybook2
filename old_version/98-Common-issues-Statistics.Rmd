@@ -1,0 +1,5 @@
+
+# Common issues in Statistics
+
+[see here](https://rpubs.com/Daniel_He/1145758)
+

@@ -1,14 +1,47 @@
-
 # SASmarkdown
 
-## How to install sasmarkdown 
-[sasmarkdown](https://www.ssc.wisc.edu/~hemken/SASworkshops/Markdown/SASmdpackage.html) 
+This section shows how to write **SAS code inside an R Markdown workflow** using the `SASmarkdown` package. The goal is to keep one reproducible document (HTML/PDF) while allowing SAS to do what SAS is good at: data steps, PROC routines, reporting, and macros.
 
- `Use an Engine`
+Two ideas drive the design:
+
+1) **knitr engines**: a code chunk can be executed by an external program (SAS) instead of R.  
+2) **chunk isolation**: in most SASmarkdown workflows, each SAS chunk runs as its own SAS “session script,” so objects created in one chunk may not automatically exist in another chunk (unless you explicitly write/read datasets).
+
+This is why SASmarkdown feels different from pure SAS Studio and also different from pure R Markdown.
+
+---
+
+## How to install SASmarkdown
+
+The SASmarkdown package and documentation are here:  
+[sasmarkdown](https://www.ssc.wisc.edu/~hemken/SASworkshops/Markdown/SASmdpackage.html)
+
+The typical setup steps are:
+
+- Install and load `SASmarkdown` in R.
+- Tell knitr where SAS is installed (the `sas.exe` path).
+- Set SAS options (log, line size, batch mode).
+- Set the chunk engine to a SAS engine such as `sas`, `saslog`, `sashtml`, etc.
+
+---
+
+### Use an engine
+
+The first chunk loads the package. You *can* also set global knitr options here, but the key is that **SASmarkdown must be available**.
+
 ```{r libload} 
 # knitr::opts_chunk$set(echo = TRUE)
 require(SASmarkdown)
 ```
+
+Next, we define the SAS executable path and options, then tell knitr to use `sashtml` as the default engine.  
+
+What this means operationally:
+
+- knitr writes your SAS code to a temporary `.sas` file,
+- calls `sas.exe` in batch mode,
+- captures the HTML output produced by SAS,
+- embeds that output into your knitted document.
 
 ```{r}
 saspath <- "C:/Program Files/SASHome/SASFoundation/9.4/sas.exe"
@@ -17,12 +50,36 @@ knitr::opts_chunk$set(engine='sashtml', engine.path=saspath,
                       engine.opts=sasopts, comment="")
 ```
 
-## Common statements 
-`Generally, can not use r syntax in these chunks ` 
+**Common troubleshooting notes (Windows):**
+- If the path contains spaces, it must still be a valid Windows path string.
+- If you have multiple SAS versions, confirm the correct `sas.exe`.
+- Some corporate environments block batch execution; SASmarkdown may fail unless permissions allow it.
 
-`Data can not be used in different chunks`
+---
 
-### read in (date) data using informat
+## Common statements
+
+Two practical rules matter most when writing SAS inside R Markdown:
+
+1) **Do not use R syntax inside SAS chunks**  
+   SAS chunks are sent to SAS verbatim. R objects like `mydata`, `paste()`, or `%>%` have no meaning there.
+
+2) **Data typically cannot be used across chunks unless you persist it**  
+   Many SASmarkdown setups run each SAS chunk independently. If you create `data test; ... run;` in one chunk, the next chunk may not “see” `work.test` unless the session is preserved or you write it out to a permanent library.
+
+A safe habit is:
+- treat each SAS chunk as self-contained, or
+- write datasets to a permanent location/library and read them back later.
+
+---
+
+### Read in data using informats (date data)
+
+#### Example 1: a minimal DATA step with inline data
+
+This example uses `cards; ... ;` to create a dataset directly.  
+It is the fastest way to create toy data for teaching, testing, or demonstrations.
+
 ```{r , engine="sas" , error=TRUE}
 /*import and export raw data using infile*/
 data test;
@@ -38,6 +95,18 @@ run;
 proc print;run;
 ```
 
+Key points:
+- `input name $ height weight;` declares `name` as character (`$`) and the others numeric.
+- `length height 4;` sets storage length (bytes) for numeric variables (mainly useful for character variables; numeric is typically 8 bytes by default in SAS).
+- `proc print;` confirms what was read.
+
+---
+
+#### Example 2: reading mixed date strings using `inputn()`
+
+Real-world data often stores dates as text in inconsistent formats.  
+Here we read two strings: one containing the date text and one containing the informat name. Then we convert dynamically using `inputn()`.
+
 ```{r , engine="sas" , error=TRUE}
 data have;
 input char_date : $20. fmt : $20.;
@@ -52,6 +121,21 @@ cards;
 run;
 proc print;run;
 ```
+
+What’s happening:
+- `char_date` is a character date string.
+- `fmt` is a character variable holding an informat name (like `DDMMYY12.`).
+- `inputn(char_date, fmt)` converts using the informat stored in `fmt`.
+- `format num_char date9.;` controls display (e.g., `25MAY2015`).
+
+This pattern is extremely useful in messy ingestion pipelines.
+
+---
+
+#### Example 3: date informat directly in INPUT
+
+If the date format is consistent, you can apply the informat in the `input` statement directly:
+
 ```{r , engine="sas" , error=TRUE}
 data have;
 input char_date MMDDYY10.  ;
@@ -66,6 +150,16 @@ run;
 proc print;run;
 ```
 
+Here:
+- SAS reads a date value using `MMDDYY10.` regardless of separator style.
+- The stored value is numeric (SAS date = days since 01JAN1960), but displayed via `date9.`.
+
+---
+
+#### Example 4: setting both input and output format consistently
+
+Sometimes you want to keep the same “look” as the input:
+
 ```{r , engine="sas" , error=TRUE}
 data have;
 /* set input and output format*/
@@ -78,9 +172,16 @@ cards;
 ;
 run;
 proc print;run;
-````
+```
 
-### compute mean and freqency 
+This helps when your deliverable expects a specific format (for example, when exporting to CSV to be read by another system).
+
+---
+
+### Compute mean and frequency
+
+A typical exploratory workflow in SAS uses `proc means`, `proc freq`, and `proc contents`.
+
 ```{r , engine="sas" , error=TRUE}
 proc means data=sashelp.class maxdec=5 ;
 run;
@@ -94,7 +195,19 @@ run;
 
 ```
 
-### sort a data set
+Interpretation:
+- `proc means` summarizes numeric variables (mean, std, min, max, etc.).
+- `proc freq` tabulates categorical variables.
+- `proc contents varnum` shows dataset metadata ordered by variable position.
+
+These are often the first three procs you run when you open a new dataset.
+
+---
+
+### Sort a dataset
+
+Sorting is required for many BY-group operations (including merges and BY processing).
+
 ```{r , engine="sas" , error=TRUE}
 proc sort data=sashelp.class Out= name ;
 by name;
@@ -104,9 +217,20 @@ proc print data= name (obs=10) ;
 run;
 ```
 
-### transpose or reshape
+Note:
+- The output dataset name `name` is legal but can be confusing because `name` is also a variable in `sashelp.class`.
+- A safer convention is `out=class_sorted`, but we keep your code unchanged.
 
-`wide format data to long format data`
+---
+
+### Transpose or reshape
+
+Reshaping appears frequently in reporting and longitudinal data workflows.
+
+#### Wide to long
+
+`proc transpose` converts columns into rows.  
+
 ```{r , engine="sas" , error=TRUE}
 proc transpose data= sashelp.class out= Field;
 by name;
@@ -116,7 +240,17 @@ proc print data= field (obs=10) ;
 run;
 ```
 
-`long format data to wide format data`
+A critical detail:
+- BY processing requires sorted data by `name` (or SAS will warn/error depending on settings).
+
+---
+
+#### Long to wide
+
+A second transpose can rebuild a wide layout, typically using:
+- `id` to name new columns,
+- `var` to specify the values to spread.
+
 ```{r , engine="sas" , error=TRUE}
 proc transpose data= sashelp.class out= Field;
 by name;
@@ -132,9 +266,19 @@ proc print data= field_wide (obs=10) ;
 run;
 ```
 
-### conditional statement
+Conceptually:
+- The first transpose creates a “longer” dataset with `_name_` and `col1`.
+- The second transpose pivots `_name_` levels into columns.
+
+---
+
+### Conditional statements
+
+Conditional logic is fundamental in data steps: creating flags, categories, derived variables, and messages.
+
+#### Simple IF/ELSE
+
 ```{r , engine="sas" , error=TRUE}
- 
 DATA ab;
 set sashelp.class;
 IF sex="F" then message='A is greater';
@@ -144,8 +288,17 @@ Run;
 proc print data=ab (obs=10);
 run;
 ```
+
+Even though the message text is arbitrary, the example demonstrates:
+- IF/ELSE structure,
+- character literals in quotes,
+- adding derived variables in a data step.
+
+---
+
+#### Multiple conditions (ELSE IF)
+
 ```{r , engine="sas" , error=TRUE}
-/*if else syntax*/
 Data class;
 set sashelp.class;
 if weight >=100 then weight_cat =3;
@@ -157,8 +310,17 @@ run;
 proc print data=class (obs=3);
 run;
 ```
+
+This is a standard pattern for category creation:
+- ordered thresholds,
+- mutually exclusive categories,
+- labeling for readable tables.
+
+---
+
+#### `index()` for pattern detection
+
 ```{r , engine="sas" , error=TRUE}
-/*if index*/
 data test;
 set sashelp.class;
 length gender $10 ;
@@ -170,9 +332,17 @@ proc print data=test (obs=5);
 run;
 ```
 
-### using like operation to select rows contaning a pattern
+Note:
+- `index()` returns the position of a substring (0 if not found).
+- Because you used two separate IF statements (not IF/ELSE), the logic is still fine here because `sex` can’t be both "M" and "F".
+
+---
+
+### LIKE operation to select rows containing a pattern
+
+SAS `where` supports SQL-like pattern matching using `like` with `%` wildcards.
+
 ```{r , engine="sas" , error=TRUE}
-/*using like operation to select rows contaning a pattern-matching text.*/
 proc print data =sashelp.class;
 where upcase(name) like '%A%';
 run;
@@ -182,7 +352,15 @@ where  (name) like '%A%';
 run;
 ```
 
-### change format of the variable 
+The first query is case-insensitive by forcing uppercase.  
+The second is case-sensitive, depending on your SAS session settings.
+
+---
+
+### Change format of a variable
+
+User-defined formats map raw values into labeled categories (often for tables).
+
 ```{r , engine="sas" , error=TRUE}
 proc format;
    value AGEnew
@@ -205,7 +383,25 @@ proc freq data=ab;
         run;
         
 ```
-### basic operations
+
+This workflow is typical:
+1) define format in `proc format`,  
+2) apply format in a data step,  
+3) display with `proc freq`.
+
+---
+
+
+
+
+
+
+
+
+### Basic operations
+
+SAS provides many numeric functions directly in the data step.
+
 ```{r  , engine="sas" , error=TRUE}
 Data Mathdata;
 A= 10.12345;
@@ -233,9 +429,17 @@ Run;
 proc print data=mathdata (obs=10);
 run;
 ```
-### rename variables  
 
-`a variable`
+Two common teaching points:
+- SAS functions like `mean()` handle missing values differently than plain arithmetic.
+- `sum(of ...)` is a very SAS-specific idiom and scales well when many variables are involved.
+
+---
+
+### Rename variables
+
+#### Rename one variable
+
 ```{r  , engine="sas" , error=TRUE}
  Data AB;
 set sashelp.class; Rename AGE= AGENEW;
@@ -245,7 +449,10 @@ proc print data=AB;
 run;
 ```
 
-`multiple variables`
+#### Rename multiple variables programmatically
+
+This advanced example shows how to build a rename list from `dictionary.columns` and apply it.
+
 ```{r  , engine="sas" , error=TRUE}
 /*rename*/
 data AAA;
@@ -280,7 +487,16 @@ run;
 /*#identify this exists  */
 ```
 
-### extract text from a character  value
+Why this matters:
+- In real clinical trial pipelines, you often receive datasets with inconsistent naming conventions.
+- Generating rename rules programmatically reduces manual error and improves reproducibility.
+
+---
+
+### Text manipulation
+
+#### Extract text from a character value
+
 ```{r  , engine="sas" , error=TRUE}
 Data Mathdata;
 Text = "Hello World";
@@ -290,7 +506,15 @@ Run;
 proc print data=mathdata  ;
 run;
 ```
-### convert the character value into a numeric value and reverse
+
+`substr()` is one of the most-used string functions in clinical reporting.
+
+---
+
+#### Convert character to numeric and reverse
+
+Character → numeric:
+
 ```{r , engine="sas" , error=TRUE}
 Data ABC;
 set sashelp.class;
@@ -302,6 +526,8 @@ run;
 
 ```
 
+Numeric → character:
+
 ```{r , engine="sas" , error=TRUE}
 Data ABC;
 set sashelp.class;
@@ -312,7 +538,14 @@ proc contents data=abc  ;
 run;
 ```
 
-### change the length of the variable
+In practice:
+- `input()` reads a character string into numeric.
+- `put()` formats numeric into character.
+
+---
+
+#### Change the length of a variable
+
 ```{r , engine="sas" , error=TRUE}
 Data ABC;
 set sashelp.class;
@@ -324,7 +557,15 @@ proc contents data=abc  ;
 run;
  
 ```
-### create a report
+
+A key habit: define `length` before assignment when creating new character variables to avoid truncation.
+
+---
+
+### Create a report
+
+`proc report` is a flexible reporting tool and can replace many `proc print` / `proc tabulate` workflows.
+
 ```{r , engine="sas" , error=TRUE}
 proc report data=sashelp.class;
 Column age;
@@ -332,7 +573,16 @@ Define age / display;
 Run;
 ```
 
-### create a random variable
+Even this minimal example shows the structure:
+- `column` defines the layout,
+- `define` controls how variables appear.
+
+---
+
+### Random variables
+
+SAS provides pseudo-random generators via `rand()`.
+
 ```{r , engine="sas" , error=TRUE}
 data ab;
 set sashelp.class;
@@ -342,7 +592,17 @@ run;
 proc print data=ab (obs=10); 
 run;
 ```
-### combine two texts
+
+This is useful for simulation, multiple imputation diagnostics, and resampling.
+
+---
+
+### Combine two texts, compress spaces, locate a substring, change case
+
+These are common in cleaning messy character fields.
+
+Combine:
+
 ```{r , engine="sas" , error=TRUE}
 Data Mathdata;
 Text = "Hello";
@@ -353,7 +613,9 @@ Run;
 proc print data=Mathdata  ; 
 run;
 ```
-### compress spaces
+
+Compress:
+
 ```{r , engine="sas" , error=TRUE}
 Data Mathdata;
 Text = "Hello  World  ";
@@ -365,7 +627,8 @@ proc print data=Mathdata  ;
 run;
 ```
 
-### identify the position of a specified text
+Index:
+
 ```{r , engine="sas" , error=TRUE}
 Data Mathdata;
 Text = "Hello World";
@@ -375,7 +638,9 @@ Run;
 proc print data=Mathdata  ; 
 run;
 ```
-### convert upcase, lower case and propcase
+
+Case functions:
+
 ```{r , engine="sas" , error=TRUE}
 Data Mathdata;
 Text = "Hello World";
@@ -387,9 +652,16 @@ Run;
 proc print data=Mathdata  ; 
 run;
 ```
-### deduplication
+
+---
+
+### Deduplication
+
+Deduplication is a frequent preprocessing step, especially when identifying unique subjects, visits, or records.
+
+#### Method 1: `nodupkeys`
+
 ```{r, engine="sas" , error=TRUE}
-/* Dedup, original data has 19 observations  */
 proc sort data = sashelp.class out =  dedup
 nodupkeys;
 by height; 
@@ -399,8 +671,11 @@ proc print data= dedup;
 run;
 
 ```
-   
-`The second way`
+
+This keeps the first record for each unique `height`.
+
+#### Method 2: BY-group with `first.` / `last.`
+
 ```{r, engine="sas" , error=TRUE}
 proc sort data=sashelp.class out=data_rank;  by height  ; run;
 
@@ -413,7 +688,13 @@ run;
 proc print data=dropdata;run; 
 ```
 
-### select sub data set
+This version keeps the last record per `height`.  
+Notice that the output depends on the current sort order.
+
+---
+
+### Select a subset of rows
+
 ```{r,engine="sas", error=TRUE}
 data where;
 set sashelp.class;
@@ -425,10 +706,22 @@ proc print data= where;
 run;
 ```
 
+The `where` statement filters rows during reading, which is typically more efficient than filtering after reading.
 
-### create macro using do loop statement 
+---
+
+### Create macros with DO loops
+
+Macros provide automation, especially when the same PROC is repeated across multiple variables.
+
+#### A macro to calculate descriptive stats across multiple variables
+
+This example uses:
+- `proc means` to compute summaries by `sex`,
+- ODS output to capture results,
+- a macro loop to run across variables.
+
 ```{r,engine="sas",error=TRUE}
-/*create a macro to calcualte descriptive stats */
 %macro means(var_avg) ;
 
 /*calculate means*/
@@ -471,15 +764,33 @@ proc print data= masterresult2;
 run;
 
 ```
-### output intermediate tables
+
+Practical interpretation:
+- `&vars` defines the batch of variables.
+- `%do` iterates through them.
+- Each iteration runs `proc means` and appends results into a single dataset.
+
+This is exactly the type of pattern used in clinical reporting pipelines when building shells.
+
+---
+
+### Output intermediate tables with ODS
+
+ODS is the bridge from SAS procedures to reusable datasets.
+
+#### Discover table names: `ods trace`
+
 ```{r,engine="sas",error=TRUE}
-/*extract tables using ods trace*/
 ods trace on;
 proc freq data=sashelp.class  ;
 table  sex;
 run;
 ods trace off;
 ```
+
+`ods trace` tells you which internal table objects SAS produces.
+
+#### Capture a specific output table
 
 ```{r,engine="sas",error=TRUE}
 ods   listing close;
@@ -496,12 +807,21 @@ run;
 
 ```
 
-### creat a sequence number
+This pattern is essential when you want to:
+- compute results in SAS,
+- feed them into later steps,
+- export them, or
+- compare them against R outputs.
 
-`creat a sequence number based on a variable by grouping`
+---
+
+### Create sequence numbers
+
+Sequence variables are common in SDTM/ADaM creation and tracking.
+
+#### Grouped sequence numbers
 
 ```{r,engine="sas",error=TRUE}
-
 /* grouped*/
 proc sort data=sashelp.class out=class ; by name; run; 
 data temp; set class; 
@@ -531,9 +851,20 @@ run;
 proc print data=new (obs=3);run; 
 ```
 
-### merge data sets
+Key idea:
+- `_n_` is the observation index within the data step.
+- `first.` and `last.` require sorted data and allow per-group logic.
 
-`right, left join`
+---
+
+### Merge datasets
+
+SAS has two main approaches:
+- SQL joins (`proc sql`) — flexible and readable,
+- DATA step `merge` — fast and common in production, but requires sorting and careful logic.
+
+#### Left and right join
+
 ```{r,engine="sas",error=TRUE}
 data class2;
 input name $   score;
@@ -567,7 +898,9 @@ proc print data=class_d;
 run;
 
 ```
-`full join`
+
+#### Full join
+
 ```{r,engine="sas",error=TRUE}
 data class2;
 input name $   score;
@@ -591,8 +924,8 @@ run;
 
 ```
 
+#### DATA step merge (append-style merge by key)
 
-`or using merge for appending`
 ```{r,engine="sas",error=TRUE}
 data class2;
 input name $   score;
@@ -614,7 +947,8 @@ run;
 
 ```
 
-`inner join`
+#### Inner join
+
 ```{r,engine="sas",error=TRUE}
 data class2;
 input name $   score;
@@ -638,7 +972,8 @@ run;
 
 ```
 
-`minus join`
+#### Minus join (anti-join)
+
 ```{r,engine="sas",error=TRUE}
 data class2;
 input name $   score;
@@ -660,18 +995,19 @@ quit;
 
 proc print data=class_e;
 run;
-
-/*proc sql ;*/
-/*create table  arm as*/
-/*select * from arm*/
-/*where subject_id not in (select subject_id from ustwin);*/
-/*quit;*/	    
 ```
 
+This is the SAS SQL equivalent of “keep rows in A that do not match B”.
 
+---
 
+### Create Table 1
 
-### create table 1
+In clinical reporting, “Table 1” typically summarizes baseline demographics and characteristics by treatment group.
+
+Your code calls external macro files via `%include`.  
+This is a realistic production pattern: statistical programming teams maintain shared macro libraries, and analyses import them.
+
 ```{r , engine="sas" , error=TRUE}
   *** Load utility macros;
 %include "C:\Users\hed2\Downloads\mybook2\mybook2\sasmacro\create_table1.sas";
@@ -700,42 +1036,23 @@ proc export data=Table1 replace label
 run;  
 
 ```
-### create table 1 without statistical test
+
+Interpretation:
+- Macro calls like `%ContinuousRowVar2(...)` likely append rows into the Table 1 dataset.
+- `proc export` creates a portable deliverable (CSV) for review, QA, or publication workflows.
+
+---
+
+## Using macros
+
+Macros are the “automation layer” of SAS. They help you:
+- avoid copy/paste,
+- standardize reports,
+- scale analyses to many endpoints/variables.
+
+#### Create a macro variable from a statistic
+
 ```{r , engine="sas" , error=TRUE}
- *** Load utility macros;
-%include "C:\Users\hed2\Downloads\mybook2\mybook2\sasmacro/Utility Macros_updated_NG.sas";
-
-/* 
-  By  counts 
-%let yourdata = sashelp.class;
-%let output_data= By_sex;
-%let formatsfolder= ; 
-%let yourfolder = ;
-%let varlist_cat =  ;
-%let varlist_cont = age heigt weight; 
-%let output_order = height weight age;
-%let decimal_max =3;
-%let group_by = sex;
-%let group_by_missing=0;
-
-%Table_summary;
-*/
-```
-
-
-### perform a regression 
-```{r , engine="sas" , error=TRUE}
-proc glm data= sashelp.class;
-model height=age;
-Run;
-```
-
-
-## Using macro
-### Create a macro variable
-```{r , engine="sas" , error=TRUE}
-
-/*print mean of a variable to log in SAS*/
 proc sql noprint; 
 select  std(age) format=best32.
    into :age_mean
@@ -746,9 +1063,18 @@ quit;
 %putlog Mean of age: &age_mean;
 ```
 
-### Select variables names
-```{r , engine="sas" , error=TRUE}
+This is a standard trick:
+- compute something with PROC SQL,
+- store into a macro variable,
+- reuse it later in titles, footnotes, conditions, or other macros.
 
+---
+
+#### Select variable names from metadata
+
+SAS metadata tables (`dictionary.columns`) are extremely powerful for programmatic workflows.
+
+```{r , engine="sas" , error=TRUE}
 proc sql;
      select name
            into :vars separated by ' '
@@ -760,7 +1086,17 @@ quit;
 %put &vars.;
 ```
 
-### Use iterative DO TO syntax to iterate a Specific Number  
+This pattern is the foundation of “dynamic programming” in SAS:
+- detect variables automatically,
+- loop over them,
+- generate consistent outputs.
+
+---
+
+#### Iterative DO loops
+
+DATA step loops are for row-by-row computations and simulation-like constructions.
+
 ```{r , engine="sas" , error=TRUE}
 data do_to;
    x=10;
@@ -774,9 +1110,9 @@ proc print data=do_to;
 run;
 ```
 
-`use while or until`
-```{r , engine="sas" , error=TRUE}
+`do while` loops are useful for process-like simulations:
 
+```{r , engine="sas" , error=TRUE}
 data loan;
    balance=1000;
    payment=0;
@@ -790,9 +1126,13 @@ proc print data=loan;
 run;
 ```
 
-`do loop within a macro`
-```{r , engine="sas" , error=TRUE}
+---
 
+#### DO loop inside a macro
+
+This example illustrates how macros generate SAS code and then run it.
+
+```{r , engine="sas" , error=TRUE}
 %macro run_calculation(amt, t, r);
     data customer_value;
         i=&r./10.;
@@ -811,15 +1151,24 @@ run;
 %run_calculation(amt=100, t=10, r=7);
 ```
 
-### PROC REPORT allows more flexibility in displaying the data 
-```{r , engine="sas" , error=TRUE}
+Even when the formula is toy-like, the structure mirrors production macro design:
+- macro parameters define the scenario,
+- data step creates a dataset,
+- output is printed or reported.
 
+---
+
+### PROC REPORT for flexible summaries
+
+Here we generate a summary dataset with `proc means`, then format it with `proc report`.
+
+```{r , engine="sas" , error=TRUE}
 proc means data=sashelp.class;
 var _NUMERIC_;  /*_CHARACTER_*/
 output out=want mean= sum= max= /autoname;
 run;
 
-proc report data= want; /*not use output but dataset*/
+proc report data= want;
 Column _FREQ_;
 Column Age_Mean;
 Column Age_Sum;
@@ -831,61 +1180,21 @@ Define Age_max  /"Max of age" display;
 Run;
 ```
 
-### Create a macro to calculate descriptive stats and summarize tabels 
+Teaching point:
+- `proc means` creates the statistics,
+- `proc report` controls presentation.
+
+This split is clean and scalable.
+
+---
+
+## Use SAS formats
+
+Formats provide consistent labeling, grouping, and display standards—especially important in regulated reporting.
+
+#### Creating labels for different values
+
 ```{r , engine="sas" , error=TRUE}
-
-%macro means(var_avg) ;
-
-/*calculate means*/
-proc means data=sashelp.class StackODSOutput n mean std  min p5 p95 max nmiss; 
-var  &var_avg;
-class sex;
-ods output summary=result2;
-run;
-
-/*append then output*/
-data masterresult2;                  * combine results;
-set masterresult2 result2;
-run;
-
-%mend means;
-
-/*use macro to merge all descriptive stats */
-data masterresult2 ;
-set _null_;
-run;
-
-%let vars= 
-age
-height
-weight
-;
-
-%macro model ;
-%do i=1 %to %sysfunc(countw(&vars));
-
-%let x=%scan(&vars,&i);
- %means( &x )
- 
-%end;
-%mend model;
-
-%model;
-
-proc print data= masterresult2;
-run;
-```
-
-<!--  /*Tableau */ -->
-<!-- /*https://sascrunch.com/members-area/*/ -->
-
-
-
-## Use SAS format
-
-### Creating labels for different values 
-```{r , engine="sas" , error=TRUE}
-
 PROC FORMAT;
     VALUE LIKERT7_A
 	  1,2,3   = "Disagree"
@@ -907,16 +1216,12 @@ PROC FORMAT;
        OTHER = "Other";
 RUN;
 
-/*CREATING LABELS FOR CHARACTER VARIABLES*/
-/*assigning labels to variable values*/
 PROC FORMAT;
     VALUE $GENDERLABEL
 	  "M"   = "Male"
 	  "F"   = "Female";
 RUN;
 
-
-/*Use defined format*/
 DATA sample;
     SET sashelp.class;
     FORMAT sex GENDERLABEL. ;
@@ -925,12 +1230,20 @@ RUN;
 proc freq data=sample;
 table sex;
 run;
-
 ```
 
-### Storing farmats to a library- way 1
-```{r , engine="sas" , error=TRUE}
+Formats are not only cosmetic—they also define category behavior in many procedures.
 
+---
+
+### Storing formats to a library
+
+When you create formats in `work`, they disappear after the session ends.  
+A permanent format library allows reuse across projects and reports.
+
+#### Way 1: store in a dedicated format library and use `FMTSEARCH`
+
+```{r , engine="sas" , error=TRUE}
 LIBNAME format  "C:\Users\hed2\Downloads\code-storage\code\format";
 
 PROC FORMAT LIBRARY=format ;
@@ -939,7 +1252,6 @@ PROC FORMAT LIBRARY=format ;
 	  "F"   = "Female_new";
 RUN;
  
-/*Use stored defined format way 1 */
 OPTIONS FMTSEARCH=(format);
 DATA sample;
     SET sashelp.class;
@@ -949,15 +1261,18 @@ RUN;
 proc freq data=sample;
 table sex;
 run;
-
-
 ```
 
-### Use stored defined format- way 2 
+Interpretation:
+- `LIBNAME format` points to a permanent folder.
+- `PROC FORMAT LIBRARY=format` stores formats there.
+- `FMTSEARCH` tells SAS where to look for formats.
+
+---
+
+#### Way 2: include a SAS file that defines formats
 
 ```{r , engine="sas" , error=TRUE}
- 
-
 %INCLUDE 'C:\Users\hed2\Downloads\code-storage\code\format\format_test.sas';
 DATA sample;
     SET sashelp.class;
@@ -967,12 +1282,16 @@ RUN;
 proc freq data=sample;
 table sex;
 run;
-
 ```
 
-### Use stored defined format- way 3
+This is common in shared programming environments:
+- formats are maintained in version-controlled `.sas` files,
+- projects include them as needed.
 
-`Add formats to existing formatlib; seperate creating labels, useing format and labeling variables.`
+---
+
+#### Way 3: add formats to an existing format library
+
 ```{r , engine="sas" , error=TRUE}
  LIBNAME format  "C:\Users\hed2\Downloads\code-storage\code\format";
 
@@ -982,15 +1301,12 @@ PROC FORMAT LIBRARY=format ;
 	  "F"   = "Female_new";
 RUN;
 
-	  
-/*add formats to existing formatlib*/
 PROC FORMAT LIBRARY=format ;
   VALUE $gendersextwo
 	  "M"   = "Male_new2_two"
 	  "F"   = "Female_new2_two";
 RUN;
 	  
-/*use stored defined format way 3 */
 OPTIONS FMTSEARCH=(format);
 DATA sample;
     SET sashelp.class;
@@ -1000,12 +1316,15 @@ DATA sample;
 proc freq data=sample;
 table sex;
 run;
-
 ```
 
-### Use stored defined format in batch- way 4 
-```{r , engine="sas" , error=TRUE}
+This demonstrates that format libraries are extendable: you can keep adding definitions over time.
 
+---
+
+#### Way 4: apply formats in batch via `%include`
+
+```{r , engine="sas" , error=TRUE}
 LIBNAME format  "C:\Users\hed2\Downloads\code-storage\code\format";
 
 PROC FORMAT LIBRARY=format ;
@@ -1014,8 +1333,6 @@ PROC FORMAT LIBRARY=format ;
 	  "F"   = "Female_new";
 RUN;
 
-
-/*use sas file to add format in batch*/
 OPTIONS FMTSEARCH=(format);
 DATA sample;
     SET sashelp.class;
@@ -1027,7 +1344,18 @@ table sex;
 run;
 ```
 
-### Modify format of the existing proc format 
+This pattern is helpful when:
+- many variables require formatting,
+- format assignment rules are long,
+- you want to keep the main analysis code clean.
+
+---
+
+### Modify formats
+
+User-defined formats cannot be edited “in place” like a database table; you typically redefine them.  
+Your example also shows using `other=` to handle all remaining values.
+
 ```{r, engine="sas" , error=TRUE}
 /*User-defined formats cannot be edited. to create a macro by myself ; or proc freq then use excel*/; 
 PROC FORMAT ;
@@ -1049,7 +1377,12 @@ table sex;
 run;
 ```
 
-### Transform missing to char then to numeric again
+---
+
+### Transform missing to character then to numeric again
+
+This technique appears in recoding tasks where you need numeric categories but start from character labels.
+
 ```{r, engine="sas" , error=TRUE}
 PROC FORMAT ;
     VALUE $num
@@ -1066,12 +1399,17 @@ table sex_2;
 run;
 ```
 
-### Output format of the existing format name by alphabet order 
+Mechanism:
+- `put(sex, num.)` maps "M"/"F" to "1"/"2" as character,
+- `input(..., best.)` converts that character into numeric.
+
+---
+
+### Output format definition details
+
+When you need to inspect what a format contains, you can output it.
+
 ```{r, engine="sas" , error=TRUE}
-
-/*but we dont know the format name*/
-
-/*PROC FORMAT FMTLIB;*/
 PROC FORMAT ;
     VALUE $GENDER
 	  "M"   = "Male_new"
@@ -1083,7 +1421,14 @@ select $GENDER;
 run;
 ```
 
-### A macro to copy the existing proc format
+This creates `cntlout`, which is a dataset representation of the format—useful for QA and documentation.
+
+---
+
+### A macro to copy an existing PROC FORMAT
+
+This longer macro demonstrates a common real need: reconstruct a format definition programmatically (for reuse, reporting, or migration).
+
 ```{r, engine="sas" , error=TRUE}
 %macro formatd(data, var);
 data temp;
@@ -1143,13 +1488,6 @@ proc print data=sample_bc noobs;
    var Original_format;
 run;
 
-/*data _null_;*/
-/*   set sample_bc ;*/
-/*   file print;*/
-/*   putlog Original_format @@;*/
-/*   put Original_format @@;*/
-/*run;*/
-
 %mend formatd;
 
 
@@ -1166,9 +1504,20 @@ DATA sample;
 %formatd(sample, sex   );
 ```
 
-### A macro to view the list of variables
-```{r,engine='sas',error=TRUE}
+Reading the intent:
+- `sample_b` captures formatted labels (via ODS output from PROC FREQ).
+- `sample_c` captures raw unformatted codes.
+- The macro merges them to reconstruct mapping rules like `"Male_new"='M'`.
 
+This is a clever QA/automation trick when you inherit legacy formats but need documentation.
+
+---
+
+### A macro to view the list of variables
+
+Finally, a compact utility macro to list variable names in a dataset.
+
+```{r,engine='sas',error=TRUE}
 %macro varnames (dat);
 proc contents
      data = &dat
@@ -1184,4 +1533,17 @@ run;
 %varnames (sashelp.class) 
 ```
 
+This is particularly helpful inside SASmarkdown documents because it provides quick visibility when you cannot “click around” like in SAS Studio.
 
+---
+
+### Practical workflow recommendations for SASmarkdown
+
+When you write SAS inside R Markdown, the biggest productivity gains come from being explicit:
+
+1) **Make each SAS chunk self-contained**, or write intermediate datasets to a permanent library.  
+2) **Use ODS OUTPUT** whenever you need a procedure result as a dataset for downstream steps.  
+3) **Prefer PROC SQL joins** for clarity unless you specifically need DATA step merge behavior.  
+4) **Store formats in a permanent library** if the report will be knitted repeatedly.
+
+With these habits, SASmarkdown becomes a reliable way to produce reproducible, publication-ready analysis documents that combine narrative, code, and output in one place.

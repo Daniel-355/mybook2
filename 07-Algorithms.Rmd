@@ -1,78 +1,187 @@
- 
 # Algorithms
- 
+
+In statistics and machine learning, **algorithms** provide the computational machinery that turns probability models into concrete numerical estimates.  
+This chapter focuses on three closely related ideas:
+
+1) **Maximum likelihood estimation (MLE)** as a unifying estimation principle,  
+2) **Gradient-based optimization** as a general-purpose numerical algorithm, and  
+3) The connection between likelihood, optimization, and uncertainty quantification.
+
+The emphasis here is not on deriving every formula from scratch, but on understanding how the mathematics, statistical interpretation, and R implementations fit together.
+
+---
+
 ## Maximum likelihood estimation
-### Likelihood estimation 
 
-`(without random effects)`
+### Likelihood estimation
 
-With the normal distribution of errors, likelihood can be expressed explicitly as the product of the densities of each of the $n$ independent **normal** observations.  
-$$\ell=-\log L$$
-<!-- $$ -->
-<!-- L\left(\left(y_{1}, \ldots, y_{n}\right), \mu, \sigma^{2}\right)=\prod_{i=1}^{n} \frac{1}{\sqrt{2 \pi \sigma^{2}}} \exp \left(-\frac{\left(y_{i}-\mu\right)^{2}}{2 \sigma^{2}}\right) -->
-<!-- $$ -->
+*(without random effects)*
 
-- the negative log-likelihood 
-$$
-\begin{aligned}
-\ell\left(\left(y_{1}, \ldots, y_{n}\right), \mu, \sigma^{2}\right) &=-\log \left[\prod_{i=1}^{n} \frac{1}{\sqrt{2 \pi \sigma^{2}}} \exp \left(-\frac{\left(y_{i}-\mu\right)^{2}}{2 \sigma^{2}}\right)\right] \\
-&=-\sum_{i=1}^{n}\left[\log \left(\frac{1}{\sqrt{2 \pi \sigma^{2}}}\right)+\left(-\frac{\left(y_{i}-\mu\right)^{2}}{2 \sigma^{2}}\right)\right]
-\end{aligned}
-$$
-then, 
+Suppose we observe $n$ independent observations $y_1,\ldots,y_n$, and we assume that the data are generated from a normal distribution with mean $\mu$ and variance $\sigma^2$.
 
-- for matrix format 
+The **likelihood function** is the joint density of the observed data, viewed as a function of the unknown parameters.  
+For independent normal observations:
 
 $$
-\begin{aligned}
-\ell(\mathbf{y}, \beta, \gamma) &=\frac{1}{2}\left\{n \log (2 \pi)+\log \left|\sigma^{2} \mathbf{I}\right|+(\mathbf{y}-\mathbf{X} \beta)^{\prime}\left(\sigma^{2} \mathbf{I}\right)^{-1}(\mathbf{y}-\mathbf{X} \beta)\right\} \\
-&=\frac{1}{2}\left\{n \log (2 \pi)+\log \left(\prod_{i=1}^{n} \sigma^{2}\right)+(\mathbf{y}-\mathbf{X} \beta)^{\prime}(\mathbf{y}-\mathbf{X} \beta) / \sigma^{2}\right\} \\
-&=\frac{1}{2}\left\{n \log (2 \pi)+n \log \left(\sigma^{2}\right)+(\mathbf{y}-\mu)^{\prime}(\mathbf{y}-\mu) / \sigma^{2}\right\} \\
-&=\frac{1}{2}\left\{n \log (2 \pi)+n \log \left(\sigma^{2}\right)+\sum_{i=1}^{n}\left(y_{i}-\mu\right)^{2} / \sigma^{2}\right\}
-\end{aligned}
-$$
-    *where $\gamma$ derived from $\sigma^{2} \mathbf{I}$.* 
-
-- minimize $\ell$ by taking the derivative
-$$
-argmin(\ell(\mathbf{y}, \beta, \gamma))
+L\left(\left(y_{1}, \ldots, y_{n}\right), \mu, \sigma^{2}\right)
+=\prod_{i=1}^{n} \frac{1}{\sqrt{2 \pi \sigma^{2}}}
+\exp\left(-\frac{(y_i-\mu)^2}{2\sigma^2}\right).
 $$
 
+Rather than maximizing $L$ directly, we almost always work with the **log-likelihood**, because:
 
-`taking the derivatives of the negative log-likelihood function. `
+- products become sums,
+- numerical stability improves,
+- derivatives are easier to compute.
+
+In practice, optimization routines typically **minimize the negative log-likelihood**:
+
+$$
+\ell = -\log L.
+$$
+
+---
+
+### Negative log-likelihood (scalar form)
+
+Taking the logarithm and multiplying by $-1$ gives:
 
 $$
 \begin{aligned}
-\frac{\partial \ell\left(\mu, \sigma^{2}\right)}{\partial \mu} &=\frac{1}{2}\left[\sum_{i=1}^{n}(-2)\left(y_{i}-\mu\right) / \sigma^{2}\right] \\
-&=\left(n \mu-\sum_{i=1}^{n} y_{i}\right) / \sigma^{2}=0
+\ell\left(\left(y_{1}, \ldots, y_{n}\right), \mu, \sigma^{2}\right)
+&= -\log\left[
+\prod_{i=1}^{n} \frac{1}{\sqrt{2 \pi \sigma^{2}}}
+\exp\left(-\frac{(y_i-\mu)^2}{2\sigma^2}\right)
+\right] \\
+&= -\sum_{i=1}^{n}
+\left[
+\log\left(\frac{1}{\sqrt{2 \pi \sigma^{2}}}\right)
+-\frac{(y_i-\mu)^2}{2\sigma^2}
+\right].
 \end{aligned}
 $$
 
-$$
-\frac{\partial \ell\left(\mu, \sigma^{2}\right)}{\partial \sigma^{2}}=\frac{1}{2}\left[\frac{n}{\sigma^{2}}-\frac{\sum_{i=1}^{n}\left(y_{i}-\mu\right)^{2}}{\left(\sigma^{2}\right)^{2}}\right]=0
-$$
+This expression makes two things explicit:
 
-`setting the derivatives equal to zero and solving for the parameters `
+- One part depends only on $\sigma^2$ (the normalization constant).
+- The other part depends on squared deviations $(y_i-\mu)^2$.
+
+---
+
+### Matrix formulation
+
+The same likelihood can be written compactly using linear algebra.  
+Let:
+
+- $\mathbf{y}$ be the $n\times 1$ response vector,  
+- $\mathbf{X}$ be the design matrix,  
+- $\beta$ be the vector of regression coefficients,  
+- $\mathbf{I}$ be the identity matrix.
+
+Assuming independent errors with variance $\sigma^2$, the covariance matrix is $\sigma^2\mathbf{I}$.  
+The negative log-likelihood becomes:
 
 $$
 \begin{aligned}
-\hat{\mu} &=\bar{y} \\
-\hat{\sigma}^{2} &=\frac{1}{n} \sum_{i=1}^{n}\left(y_{i}-\mu\right)^{2} \\
-&=\frac{1}{n} \sum_{i=1}^{n}\left(y_{i}-\bar{y}\right)^{2}
+\ell(\mathbf{y}, \beta, \gamma)
+&=\frac{1}{2}\left\{
+n \log (2 \pi)
++\log \left|\sigma^{2} \mathbf{I}\right|
++(\mathbf{y}-\mathbf{X} \beta)^{\prime}
+(\sigma^{2} \mathbf{I})^{-1}
+(\mathbf{y}-\mathbf{X} \beta)
+\right\} \\
+&=\frac{1}{2}\left\{
+n \log (2 \pi)
++n \log (\sigma^{2})
++(\mathbf{y}-\mathbf{X}\beta)^{\prime}
+(\mathbf{y}-\mathbf{X}\beta)/\sigma^{2}
+\right\}.
 \end{aligned}
 $$
 
-`but for REML`
+Here, $\gamma$ denotes variance-related parameters, derived from $\sigma^2\mathbf{I}$.
+
+This form highlights an important idea:
+
+> **Ordinary least squares is maximum likelihood estimation under normal errors.**
+
+---
+
+### Minimizing the negative log-likelihood
+
+MLE finds parameter values that minimize $\ell$:
+
+$$
+\arg\min \; \ell(\mathbf{y}, \beta, \gamma).
+$$
+
+For the simple normal model with parameters $(\mu,\sigma^2)$, we can solve this analytically by taking derivatives.
+
+---
+
+### Taking derivatives
+
+Derivative with respect to $\mu$:
+
 $$
 \begin{aligned}
-\hat{\sigma}^{2} &=\frac{1}{n-1} \sum_{i=1}^{n}\left(y_{i}-\mu\right)^{2} \\
-&=\frac{1}{n-1} \sum_{i=1}^{n}\left(y_{i}-\bar{y}\right)^{2}
+\frac{\partial \ell(\mu, \sigma^{2})}{\partial \mu}
+&=\frac{1}{2}\sum_{i=1}^{n}(-2)(y_i-\mu)/\sigma^2 \\
+&=(n\mu-\sum_{i=1}^{n}y_i)/\sigma^2.
 \end{aligned}
 $$
 
-### `R demonstration`
+Setting this equal to zero yields:
 
-- toy data
+$$
+\hat{\mu}=\bar{y}.
+$$
+
+Derivative with respect to $\sigma^2$:
+
+$$
+\frac{\partial \ell(\mu, \sigma^{2})}{\partial \sigma^{2}}
+=\frac{1}{2}\left[
+\frac{n}{\sigma^{2}}
+-\frac{\sum_{i=1}^{n}(y_i-\mu)^2}{(\sigma^{2})^2}
+\right].
+$$
+
+Solving gives:
+
+$$
+\hat{\sigma}^{2}
+=\frac{1}{n}\sum_{i=1}^{n}(y_i-\bar{y})^2.
+$$
+
+This is the **MLE of the variance**, which divides by $n$ rather than $n-1$.
+
+---
+
+### REML versus ML
+
+Under **restricted maximum likelihood (REML)**, the variance estimator adjusts for the estimation of the mean:
+
+$$
+\hat{\sigma}^{2}_{\text{REML}}
+=\frac{1}{n-1}\sum_{i=1}^{n}(y_i-\bar{y})^2.
+$$
+
+Conceptually:
+
+- ML treats $\mu$ as fixed but unknown.
+- REML accounts for the loss of one degree of freedom when estimating $\mu$.
+
+This distinction becomes crucial in linear mixed models, where REML is often preferred for variance components.
+
+---
+
+## R demonstration
+
+### Toy data
+
+We simulate data from a linear regression model with normal errors.
 
 ```{r}
 set.seed(123)
@@ -83,160 +192,195 @@ y <- 1.5+x*3+s
 mydata <- data.frame(y,x)
 ```
 
-- using linear regression
+---
+
+### Linear regression (closed-form MLE)
+
+For normal errors, the MLE of regression coefficients coincides with ordinary least squares.
+
 ```{r,warning=F}
 lmfit <- lm(y~., data=mydata)
-# logLik(lmfit)
 coefficients(lmfit)
 (summary(lmfit)$sigma**2)
 ```
-- using `-log max likelihood estimate` formula 
 
-**notice, using vector and matrix notation**
+Interpretation:
+
+- `coefficients(lmfit)` estimates $\beta$.
+- `(summary(lmfit)$sigma)^2` is the estimated variance of the errors.
+
+---
+
+### MLE via explicit negative log-likelihood
+
+We now code the negative log-likelihood directly using matrix notation.
+
 ```{r}
- ## Using the mathematical expression:
- minusloglik <- function(param){
-   beta <- param[-1] #Regression Coefficients
-   sigma <- param[1] #Variance
-   y <- as.vector(mydata$y) #DV
-   x <- cbind(1, mydata$x) #IV
-   mu <- x%*%beta #multiply matrices
-   0.5*(n*log(2*pi) + n*log(sigma) + sum((y-mu)^2)/sigma)
- }
+minusloglik <- function(param){
+  beta <- param[-1]     # regression coefficients
+  sigma <- param[1]     # variance
+  y <- as.vector(mydata$y)
+  x <- cbind(1, mydata$x)
+  mu <- x %*% beta
+  0.5 * (n*log(2*pi) + n*log(sigma) + sum((y-mu)^2)/sigma)
+}
 ```
- 
+
+This function implements exactly the mathematical expression derived earlier.
+
+Optimizing it numerically:
+
 ```{r,warning=F}
-MLoptimize <- optim(  c (1,  1, 1 ), minusloglik)
-## The results:
+MLoptimize <- optim(c(1,1,1), minusloglik)
 MLoptimize$par
 ```
 
-- using max likelihood estimate directly (normal distribution)
+The results agree with `lm()`, confirming that linear regression is an MLE problem.
+
+---
+
+### Maximum likelihood via `maxLik`
+
+The `maxLik` package directly maximizes the log-likelihood.
+
 ```{r,warning=F,message=F}
-# max 
 library(maxLik)
 ols.lf <- function(param) {
-  beta <- param[-1] #Regression Coefficients
-  sigma <- param[1] #Variance
-  y <- as.vector(mydata$y) #DV
-  x <- cbind(1, mydata$x) #IV
-  mu <- x%*%beta #multiply matrices
-  sum(dnorm(y, mu, sqrt(sigma), log = TRUE)) #normal distribution(vector of observations, mean, sd)
-}  
+  beta <- param[-1]
+  sigma <- param[1]
+  y <- as.vector(mydata$y)
+  x <- cbind(1, mydata$x)
+  mu <- x %*% beta
+  sum(dnorm(y, mu, sqrt(sigma), log = TRUE))
+}
 
-mle_ols <- maxLik(logLik = ols.lf, start = c(sigma = 1, beta1 = 1, beta2 = 1 ))
+mle_ols <- maxLik(logLik = ols.lf,
+                  start = c(sigma = 1, beta1 = 1, beta2 = 1))
 summary(mle_ols)
 ```
 
-- another example
+This approach generalizes easily to models where no closed-form solution exists.
+
+---
+
+### Another example (real data)
+
+We repeat the procedure for `mtcars`.
+
 ```{r,warning=F}
 ols.lf <- function(param) {
-  beta <- param[-1] #Regression Coefficients
-  sigma <- param[1] #Variance
-  y <- as.vector(mtcars$mpg) #DV
-  x <- cbind(1, mtcars$cyl, mtcars$disp) #IV
-  mu <- x%*%beta #multiply matrices
-  sum(dnorm(y, mu, sqrt(sigma), log = TRUE)) #normal distribution(vector of observations, mean, sd)
-}  
+  beta <- param[-1]
+  sigma <- param[1]
+  y <- as.vector(mtcars$mpg)
+  x <- cbind(1, mtcars$cyl, mtcars$disp)
+  mu <- x %*% beta
+  sum(dnorm(y, mu, sqrt(sigma), log = TRUE))
+}
 
-mle_ols <- maxLik(logLik = ols.lf, start = c(sigma = 1, beta1 = 1, beta2 = 1, beta3=1))
+mle_ols <- maxLik(logLik = ols.lf,
+                  start = c(sigma = 1, beta1 = 1, beta2 = 1, beta3 = 1))
 summary(mle_ols)
 
-#Checking against linear regression
-lmfit2 <- (lm(mpg~cyl+disp, data=mtcars))
+lmfit2 <- lm(mpg~cyl+disp, data=mtcars)
 lmfit2
 (summary(lmfit2)$sigma**2)
 ```
 
- 
-### Estimate confidence intervals using the likelihood 
+Again, MLE and OLS agree under normal error assumptions.
 
-Most classical confidence intervals for parameters are estimated using the likelihood approach, the Wald interval (or the asymptotic normality property).  
+---
 
-$$
-\hat{\theta}_{i} \pm z_{1-\alpha / 2} S E_{\hat{\theta}_{i}}
-$$
+## Confidence intervals from likelihood
 
-where the standard error is from the **second derivative of the log-likelihood function**. This is the **Hessian matrix/(observed) Information matrix** if there is more than one single model parameter.
-
-- take second derivative of the log-likelihood function
+Most classical confidence intervals rely on the **asymptotic normality** of MLEs:
 
 $$
-I(\theta)=\ell^{\prime \prime}(\theta)
+\hat{\theta}_i \pm z_{1-\alpha/2}\, SE(\hat{\theta}_i).
 $$
 
-*e.g. for one independent variable (with parameters: $\beta$ and $\sigma^2$ in the model).*
+The standard error is derived from the **Hessian matrix** (second derivative of the log-likelihood), also called the **observed Fisher information**.
 
-*Here, giving the four entries of the $2 \times 2$ Hessian matrix *
-$$
-\frac{\partial^{2} \ell\left(\mu, \sigma^{2}\right)}{\partial \mu^{2}}=\frac{n}{\sigma^{2}}
-$$
-$$
-\frac{\partial^{2} \ell\left(\mu, \sigma^{2}\right)}{ \partial\left(\sigma^{2}\right) }=\sqrt{\frac{2\left(\hat{\sigma}^{2}\right)^{2}}{n}}
-$$
+---
+
+### Fisher information and Hessian
+
+For a parameter vector $\theta$:
 
 $$
-\frac{\partial^{2} \ell\left(\mu, \sigma^{2}\right)}{\partial \mu \partial\left(\sigma^{2}\right)}=0\\
-\frac{\partial^{2} \ell\left(\mu, \sigma^{2}\right)}{ \partial\left(\sigma^{2}\right)\partial \mu}=0
+I(\theta)=\ell''(\theta).
 $$
 
-therefore
+The covariance matrix of $\hat{\theta}$ is approximated by:
+
 $$
-S E_{\hat{\theta}_{i}}=\sqrt{\left(I(\hat{\theta})^{-1}\right)_{i}}
+I(\hat{\theta})^{-1}.
 $$
 
-`the inverse of the Fisher information is just each diagonal element, so`
+For the normal model with parameters $(\mu,\sigma^2)$, the Hessian is diagonal:
 
-- For $\beta$
 $$
-S E_{\hat{\mu}}=\sqrt{\left(I\left(\hat{\mu}, \hat{\sigma}^{2}\right)^{-1}\right)_{11}}=\sqrt{\frac{\hat{\sigma}^{2}}{n}}
-$$
-`Thus, the Wald confidence interval for the mean would be`
-$$
-\hat{u}^{2} \pm z_{1-\alpha / 2} \sqrt{\frac{\hat{\sigma}^{2}}{n}}
-$$
-
-- For variance 
-$$
-S E_{\hat{\sigma}^{2}}=\sqrt{\left(I\left(\hat{\mu}, \hat{\sigma}^{2}\right)^{-1}\right)_{22}}=\sqrt{\frac{2\left(\hat{\sigma}^{2}\right)^{2}}{n}}
+\frac{\partial^2 \ell}{\partial \mu^2}=\frac{n}{\sigma^2},
+\quad
+\frac{\partial^2 \ell}{\partial (\sigma^2)^2}
+=\frac{n}{2(\sigma^2)^2},
+\quad
+\frac{\partial^2 \ell}{\partial \mu\,\partial\sigma^2}=0.
 $$
 
-`Thus, the Wald confidence interval for the variance would be` 
-$$
-\hat{\sigma}^{2} \pm z_{1-\alpha / 2} \hat{\sigma}^{2} \sqrt{\frac{2}{n}}
-$$
+Thus:
 
-**However, the following approach confidence interval will generally
-have much better small sample properties than the Wald interval.**
-
-$$\left\{\theta \mid \frac{L(\theta)}{L(\hat{\theta})}>\exp (-3.84 / 2)\right\}$$
-
-### The profile likelihood 
-
-It can be profiled by maximizing the likelihood function with respect to all the other parameters.
-
-In the following equation,  $\sigma^{2}$ expressed by $\mu$ 
- 
 $$
-\begin{aligned}
-L_{p}(\mu) &=L\left(\mu, \frac{1}{n} \sum_{i=1}^{n}\left(y_{i}-\mu\right)^{2}\right) \\
-&=\prod_{i=1}^{n} \frac{1}{\sqrt{2 \pi \frac{1}{n} \sum_{i=1}^{n}\left(y_{i}-\mu\right)^{2}}} \exp \left(-\frac{\left(y_{i}-\mu\right)^{2}}{2 \frac{1}{n} \sum_{i=1}^{n}\left(y_{i}-\mu\right)^{2}}\right)
-\end{aligned}
-$$
-  
-Similarly, the profile likelihood for the variance $\sigma^{2}$ can be expressed 
-$$
-\begin{aligned}
-L_{p}\left(\sigma^{2}\right) &=L\left(\hat{\mu}\left(\sigma^{2}\right), \sigma^{2}\right) \\
-&=L\left(\bar{y}, \sigma^{2}\right)
-\end{aligned}
+SE_{\hat{\mu}}=\sqrt{\frac{\hat{\sigma}^2}{n}},
+\quad
+SE_{\hat{\sigma}^2}=\hat{\sigma}^2\sqrt{\frac{2}{n}}.
 $$
 
-This becomes particularly simple, as the $u$-estimate does not depend on the $\sigma$.
+The corresponding Wald intervals follow immediately.
 
+---
 
-### Maximum likelihood estimate practice 
-`question: eatimate mean and variance` 
+### Likelihood ratio confidence intervals
+
+Wald intervals can perform poorly in small samples.  
+A likelihood-based alternative defines the confidence set as:
+
+$$
+\left\{
+\theta \;\middle|\;
+\frac{L(\theta)}{L(\hat{\theta})}>\exp(-3.84/2)
+\right\},
+$$
+
+where $3.84$ is the 95% cutoff from a $\chi^2_1$ distribution.
+
+This approach often has better finite-sample behavior.
+
+---
+
+### Profile likelihood
+
+The **profile likelihood** fixes one parameter and maximizes over the others.
+
+For example, profiling $\mu$:
+
+$$
+L_p(\mu)=L\left(\mu,\frac{1}{n}\sum_{i=1}^{n}(y_i-\mu)^2\right).
+$$
+
+Similarly, profiling $\sigma^2$:
+
+$$
+L_p(\sigma^2)=L(\bar{y},\sigma^2).
+$$
+
+Profile likelihoods are widely used for confidence intervals in mixed models and survival analysis.
+
+---
+
+## Maximum likelihood estimate practice
+
+The following example revisits MLE numerically, reinforcing the connection between theory and optimization.
+
 ```{r}
 sample<-c(1.38, 3.96, -0.16, 8.12, 6.30, 2.61, -1.35, 0.03, 3.94, 1.11)
 n<-length(sample)
@@ -246,88 +390,107 @@ muhat
 sigsqhat
 
 loglike<-function(theta){
-a<--n/2*log(2*pi)-n/2*log(theta[2])-sum((sample-theta[1])^2)/(2*theta[2])
+a<--n/2*log(2*pi)-n/2*log(theta[2])-
+    sum((sample-theta[1])^2)/(2*theta[2])
 return(-a)
 }
 optim(c(2,2),loglike,method="BFGS")$par
 ```
 
+---
+
 ## Gradient descent
-- linear regression 
+
+While MLE provides the objective function, **gradient descent** is a general optimization algorithm used to find minima numerically.
+
+### Linear regression example
+
 ```{r}
 library("ggplot2")
-# fit a linear model
-res <- lm( hwy ~ cty ,data=mpg)
+res <- lm(hwy ~ cty ,data=mpg)
 summary(res)
 ```
-- compute regression coefficients
-```{r}
-# squared error cost function
-cost <- function(X, y, theta) {
-  sum( (X %*% theta - y)^2 ) / (2*length(y))
-}
 
-# learning rate and iteration limit
+---
+
+### Cost function and gradient descent
+
+We define the squared-error cost:
+
+$$
+J(\theta)=\frac{1}{2n}\sum_{i=1}^n (X_i\theta-y_i)^2.
+$$
+
+```{r}
+cost <- function(X, y, theta) {
+  sum((X %*% theta - y)^2) / (2*length(y))
+}
+```
+
+Gradient descent iteratively updates parameters in the direction of the negative gradient.
+
+```{r}
 alpha <- 0.005
 num_iters <- 20000
 
-# keep history
-cost_history <- double(num_iters)
-theta_history <- list(num_iters)
-
-# initialize coefficients
 theta <- matrix(c(0,0), nrow=2)
-
-x=mpg$cty
-y=mpg$hwy
-
-# add a column of 1's for the intercept coefficient
+x <- mpg$cty
+y <- mpg$hwy
 X <- cbind(1, matrix(x))
 
-# gradient descent
+cost_history <- double(num_iters)
+
 for (i in 1:num_iters) {
   error <- (X %*% theta - y)
-  delta <- t(X) %*% error / length(y)   #derivation
-  
+  delta <- t(X) %*% error / length(y)
   theta <- theta - alpha * delta
-  
   cost_history[i] <- cost(X, y, theta)
-  theta_history[[i]] <- theta
 }
 
-print(theta)
-
+theta
 tail(cost_history)
 ```
-- plot the cost function
+
+---
+
+### Cost function convergence
+
 ```{r}
-plot(cost_history, type='line', col='red', lwd=2, main='Cost function', ylab='cost', xlab='Iterations')
+plot(cost_history, type='line', col='red',
+     lwd=2, main='Cost function',
+     ylab='cost', xlab='Iterations')
 ```
-- compare two ways (linear regresion vs. gradient descent)
+
+This plot illustrates:
+
+- monotone decrease of the objective,
+- convergence toward the OLS solution.
+
+---
+
+### Comparing gradient descent and linear regression
+
 ```{r}
-x=mpg$cty
-y=mpg$cty*theta[2]  +  theta[1]
-plot(x,y, main='Linear regression by gradient descent')
-# line(x,y ,col=3)
-abline(lm(mpg$hwy ~ mpg$cty),col="blue",lwd = 4)
+x <- mpg$cty
+yhat <- mpg$cty*theta[2] + theta[1]
+plot(x,yhat, main='Linear regression by gradient descent')
+abline(lm(mpg$hwy ~ mpg$cty), col="blue", lwd=4)
 abline(res, col='red')
 ```
 
-## Markov chain Monte Carlo
-[see here](https://rpubs.com/Daniel_He/1040697)
+The fitted line from gradient descent coincides with the closed-form OLS solution.
 
-## Expectation maximum
-[see here](https://rpubs.com/Daniel_He/1216822)
+---
 
-## Combine estimates by pooling rules
+Broader context
 
-[see here](https://rpubs.com/Daniel_He/1040979)
+- **MCMC** extends likelihood-based inference when direct optimization is infeasible.
+- **EM algorithms** handle latent variables by alternating expectation and maximization steps.
+- **Pooling rules** combine estimates across multiple datasets (e.g., multiple imputation).
+- **Bootstrapping** replaces analytic sampling distributions with resampling-based approximations.
 
+Together, these algorithms form the computational backbone of modern statistical practice.
 
-## Simulations and Bootstrapping
+The key takeaway is:
 
-[see here](https://rpubs.com/Daniel_He/1128098)
-
-
-
-
+> Probability defines the model, likelihood defines the objective, and algorithms deliver the estimates.

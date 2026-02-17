@@ -1,9 +1,27 @@
+
+
 # Data visualization
+
+Data visualization is not only about making plots look “pretty.” In real projects, visualization has three practical jobs:
+
+1. **Understand the data**: distributions, outliers, missingness, and relationships.  
+2. **Communicate findings**: help others quickly grasp patterns and results.  
+3. **Validate assumptions**: especially before modeling (linearity, normality, separation, influential points, etc.).
+
+This chapter focuses on **ggplot2** (in the tidyverse ecosystem) and a few practical companion tools. The goal is to build a workflow that is repeatable: summarize → reshape → visualize → refine → annotate → communicate.
 
 <!-- ================ -->
 ## Data visualization introduction
 
-### Summarization 
+Before plotting, it is often useful to **summarize**, **reshape**, and **clean** your data. Many plotting tasks become straightforward once the dataset is in a tidy (“long”) format. The section below shows common operations that prepare your data for visualization.
+
+### Summarization
+A typical first step is to compute group-level summaries. In practice, these summaries help you:
+- sanity-check units and ranges,
+- compare groups quickly,
+- decide which plots are appropriate (boxplots, line charts, etc.).
+
+The following example converts miles-per-gallon (mpg) into a rough metric unit and summarizes by cylinder group.  
 ```{r}
 library(tidyverse)
 library(dplyr)
@@ -13,28 +31,48 @@ mtcars %>%
    summarise(avg_US = mean(mpg), avg_metric = mean(kml))
 ```
 
+The next summary computes average city and highway mileage by manufacturer and year.  
+In reporting, this kind of grouped summary often becomes the basis for trend plots and comparisons.  
 ```{r}
 mpg %>% 
   group_by(manufacturer, year) %>% 
   summarise_at(vars(cty, hwy), mean)
 ```
-- change layout
+
+- change layout  
+Sometimes you want a table for quick comparison rather than a plot.  
+Here we count cars by class and year, then spread into a wide layout (years as rows, classes as columns).  
+This is helpful for producing “Table 1 style” counts or for feeding into heatmaps.  
 ```{r}
 mpg %>% count(class, year)%>% 
   spread(class, n) 
 ```
-- change all characters into factors
+
+- change all characters into factors  
+Many plotting functions treat characters as discrete categories anyway, but converting to `factor` can make your intent explicit and allows you to control ordering and labeling more deliberately.  
+This is especially useful for facets and legends.  
 ```{r}
 mpg <- mpg %>% 
   mutate_if(is.character, as.factor) #if a column is a character, change to a factor
 ```
-- wide to long data
+
+- wide to long data  
+A common visualization trick is to stack multiple measurement columns into a long format.  
+Here we convert `cty` and `hwy` into a single numeric column with a key indicating which metric it came from.  
+Long format is the natural input format for ggplot because it plays well with color, linetype, and facets.  
 ```{r}
 mpg1 <- mpg %>% 
   gather("key", "value", cty, hwy)
 ```
 
 - convert wide data to long data using `pivot_longer `
+`pivot_longer()` is the modern tidyverse replacement for `gather()`.  
+This example:
+1) pivots `cty` and `hwy` into long form,  
+2) recodes the indicator variable into friendly labels,  
+3) overlays points and smooth curves for each measurement type.  
+
+This is a classic real-world pattern: put the data in long format, then map the “type” to color.  
 ```{r}
 ## Your code here. Naming choices for 1 and 2 are yours
 dta <- mpg %>% 
@@ -48,6 +86,14 @@ ggplot(dta, aes(x = displ, y = value)) +
 ```
 
 - explore distribution  
+Exploratory distribution plots help you quickly identify:
+- skewed variables,
+- implausible values,
+- heavy tails,
+- and whether transformations (log, sqrt) might be helpful.  
+
+Packages like `DataExplorer` and `psych` provide rapid EDA utilities.  
+(Here, `riskfactors` is assumed to exist in your environment.)  
 ```{r}
 library(DataExplorer)
 library(psych)
@@ -55,13 +101,27 @@ library(naniar)
 plot_histogram(riskfactors)
 ```
 
-- explore relationship/correlation
+- explore relationship/correlation  
+Pairwise plots are very useful early in analysis because they reveal:
+- correlations,
+- nonlinear patterns,
+- clustering,
+- and outliers that may dominate a model.  
+
+These are especially valuable before regression or machine learning.  
 ```{r}
 library(psych)
 pairs.panels(riskfactors[,1:10])
 ```
 
-- create a individual theme
+- create a individual theme  
+In a book or internal training material, consistent formatting matters.  
+Creating your own theme function lets you apply the same style across all figures:
+- consistent font sizes,
+- consistent background,
+- consistent axis formatting.  
+
+This is a practical “quality of life” improvement when you generate many plots.  
 ```{r}
 my_theme <- function(){
   theme_bw() + 
@@ -71,7 +131,15 @@ my_theme <- function(){
   text = element_text(size = 14))
 }
 ```
+
 ### Explore missing values
+Missingness is not just a data cleaning issue—it can be informative.  
+Before you impute or drop data, you should understand:
+- which variables have missingness,
+- whether missingness co-occurs across variables,
+- and whether missingness is related to groups (e.g., sites, time periods).
+
+The following blocks use `naniar` and related tools to visualize missing patterns.  
 ```{r}
 # install.packages("naniar")
 library(naniar)
@@ -79,16 +147,23 @@ library(naniar)
 riskfactors <- riskfactors
 ```
 
+`gg_miss_upset()` is useful for seeing combinations of missing variables (like an Upset plot). This helps identify patterns such as “these three labs are often missing together.”  
 ```{r}
 gg_miss_upset(riskfactors,nsets=10)
 ```
 
+`plot_missing()` gives a quick overall missingness view, often used at the start of EDA.  
 ```{r}
 # install.packages("DataExplorer")
 
 plot_missing(riskfactors)
 ```
 
+`visdat::vis_dat()` is a fast way to inspect column types and missingness at once.  
+It’s particularly helpful to detect:
+- columns accidentally read as character,
+- columns with mixed types,
+- or unexpected missing patterns.  
 ```{r}
 # take a quick look at the data types of each column
 visdat::vis_dat(riskfactors)
@@ -96,8 +171,14 @@ visdat::vis_dat(riskfactors)
  
 
 
+### Add statistical test
+Plots often become more persuasive when paired with a simple statistical comparison—**but** you should add tests carefully:
+- avoid fishing/over-testing,
+- ensure assumptions are reasonable,
+- and interpret p-values in context.
 
-### Add statistical test 
+Here we build a faceted boxplot and add a comparison between years (1999 vs 2008) for each manufacturer.  
+This is a practical template for “small multiple” visual comparisons with annotated tests.  
 ```{r ,warning=F}
 library(ggpubr)
 plt <- ggplot(  data=mpg,
@@ -117,7 +198,10 @@ stat_compare_means(comparisons = my_comparisons)
 ```
 
 
-### Add texts to dots 
+### Add texts to dots
+When plotting many points, labels can clutter quickly.  
+But for small datasets (or when identifying key outliers), labels add interpretability.  
+This example labels each state for a scatter plot of urban population vs murder arrests.  
 ```{r}
 USArrests <- USArrests %>% rownames_to_column('State')
 
@@ -131,6 +215,13 @@ geom_point() +
 ```
 
 ### Set the legend
+Legends are often the difference between a confusing figure and a publishable one.  
+Here we demonstrate manual control of:
+- fill colors,
+- linetypes,
+- legend title and labels.
+
+In practice, manual scales are useful when you want consistent colors across plots in a report or book.  
 ```{r}
 ggplot(iris, aes(x=  Sepal.Length , fill= as.factor( Species)) ) +  #whole plot's option
   
@@ -146,8 +237,13 @@ ggplot(iris, aes(x=  Sepal.Length , fill= as.factor( Species)) ) +  #whole plot'
 ```
 
 ### Create a panel of plots
+A panel (multi-plot layout) is a very effective way to summarize multiple variables at once.  
+In exploratory analysis, it helps you quickly see:
+- distributions (histogram, bar),
+- group differences (boxplot),
+- and composition (stacked percent bars).
 
-- combine multiple plots into one
+Here we build four plots and arrange them into a 2×2 panel.  
 ```{r}
 p1=ggplot(data=riskfactors,aes(x=age))+
   geom_histogram(bins = 30 )
@@ -170,18 +266,29 @@ ggarrange(p1, p2, p3, p4, ncol = 2, nrow=2)
 
 
 ### Plots in regression
-- create linear regression model
+Visualization is a powerful companion to regression:
+- diagnostic plots check assumptions,
+- coefficient/OR plots communicate model results,
+- and fitted relationships can be compared across groups.
+
+- create linear regression model  
+We fit a linear regression on Boston housing as a demonstration.  
+In practice, you would check residuals, leverage, and outliers; this section mainly sets up the model for coefficient visualization.  
 ```{r}
 data("Boston", package = "MASS")
 linear_reg <- glm(medv ~ ., data=Boston , family = gaussian())
 summary(linear_reg)
 ```
-- summary
+
+- summary  
+`broom::tidy()` produces a clean summary table that is easy to include in reports.  
+Using `knitr::kable()` formats it neatly in HTML/PDF output.  
 ```{r}
 knitr::kable(broom::tidy(linear_reg))
 ```
 
-- create logistical regression 
+- create logistical regression  
+We fit logistic regression on the diabetes dataset. This is a classic example where coefficient plots and OR plots become very helpful for communication.  
 ```{r}
 # load the Pima Indians dataset from the mlbench dataset
 library(mlbench)
@@ -194,23 +301,34 @@ logistic_reg <- glm(diabetes ~ ., data=diabetes, family = binomial)
 summary(logistic_reg)
 
 ```
-- summary
 
+- summary  
+Again, `broom::tidy()` provides a clear coefficient table.  
 ```{r}
 knitr::kable(broom::tidy(logistic_reg))
 ```
 
 
 #### Create forest plots for `coefficients` or `OR`
+Forest plots are one of the most practical ways to present regression results:
+- For linear regression, coefficients are on the original outcome scale.
+- For logistic regression, coefficients are usually transformed to odds ratios (OR).
+
+`sjPlot::plot_model()` offers fast, clean coefficient plots.  
 ```{r}
 library(sjPlot)
 plot_model(linear_reg, show.values = TRUE, value.offset = 0.5)
 ```
 
+Here we plot logistic regression results similarly.  
+In practice, you may want to ensure the plot displays OR (exp(beta)) depending on the function defaults and your audience.  
 ```{r}
 plot_model(logistic_reg, show.values = TRUE, value.offset = .5, vline.color = "black")
 ```
-**another way**
+
+**another way**  
+`finalfit` provides publication-friendly coefficient/OR plots with tables.  
+This is especially useful for clinical or epidemiology style reporting.  
 ```{r}
 library(finalfit) 
 
@@ -226,6 +344,8 @@ Boston %>%
                                   theme(axis.title = element_text(size=12))))
 ```
 
+And the OR plot for logistic regression.  
+This is a practical template to create a clean “OR (95% CI)” figure plus table in one call.  
 ```{r}
  
 library(finalfit) 
@@ -242,44 +362,61 @@ diabetes %>%
  
 ```
 
-- qq plot
+- qq plot  
+A QQ plot is a quick check of distributional assumptions.  
+Here we show a QQ plot for the Boston target variable.  
+In practice, you might also check residuals from the fitted model, not only the raw outcome.  
 ```{r}
 ggqqplot( (Boston$medv))
 ```
 
 <!-- ======================== -->
 
-- Loading data set
+- Loading data set  
+We now shift into ggplot2 fundamentals using the classic `iris` dataset.  
+This section builds intuition: start from an empty canvas, add layers, add mappings, then customize.  
 ```{r}
 library(printr)
 library(tidyverse)
 head(iris)
 ```
+
 ## Scatter plot
+Scatter plots are ideal for exploring relationships between two continuous variables.  
+In practice, they are often your first step before fitting correlation/regression models.
+
 ### Create a empty canvas
 - then create `aesthetic mapping`  
-- tell the function which dataset and variables to use
+- tell the function which dataset and variables to use  
+This creates a ggplot “object” (canvas) but does not draw anything until a geom layer is added.  
 ```{r}
 ggplot(data = iris,        # which data set? canvas? 
        aes(x=Sepal.Length , y=Petal.Length   ))  # which variables as aesthetics? x and y are mapped to columns of the data; different geoms can have different aesthetics (different variables). 
 ```
 
- 
 ### Add a layer/geom of `points` to the canvas
+A plot becomes visible once we add `geom_point()`.  
+This is the standard pattern in ggplot: define the canvas + add one or more layers.  
 ```{r}
 ggplot(data = iris,
        mapping = aes(x=Sepal.Length , y=Petal.Length  )) + 
   geom_point()   # adding the geometrical representation 
 ```
- 
+
+This alternative style places the mapping in the geom.  
+It is useful when different layers use different mappings.  
 ```{r,eval=F}
 # same plot as above
 ggplot(data = iris) + 
   geom_point(  aes(x=Sepal.Length , y=Petal.Length  )) 
 ```
+
 ### Add another aesthetic
-- add a curve/straight line to fit these points
-- geom provides the aesthetic to ggplot
+- add a curve/straight line to fit these points  
+- geom provides the aesthetic to ggplot  
+
+A smooth curve helps reveal the trend.  
+By default, `geom_smooth()` uses a loess smoother for small/medium datasets.  
 ```{r}
 # Loess curve
 ggplot(data = iris, 
@@ -289,6 +426,7 @@ ggplot(data = iris,
 
 ```
 
+If you want an interpretable linear trend line, specify `method = "lm"`.  
 ```{r}
 # Linear regression line
 ggplot(data = iris, 
@@ -298,8 +436,13 @@ ggplot(data = iris,
 ```
 
 ### Add other aesthetic
-- set other aesthetics `colour, alpha (transparency), and size of points`
+- set other aesthetics `colour, alpha (transparency), and size of points`  
 
+Aesthetic mapping is powerful:
+- mapping inside `aes()` means “vary by data,”
+- setting outside `aes()` means “fixed constant.”
+
+Here we map point size to Sepal.Width and set a fixed color + alpha.  
 ```{r}
 ggplot(data = iris) + 
   geom_point(aes(x=Sepal.Length , y=Petal.Length, size = Sepal.Width     ), 
@@ -307,16 +450,16 @@ ggplot(data = iris) +
              colour = "red")
 ```
 
- 
-
+Here we map color to Species, producing a grouped scatter plot.  
 ```{r}
 ggplot(data = iris) + 
   geom_point(aes(x=Sepal.Length , y=Petal.Length, size = Sepal.Width , colour=Species), #white is a variable here 
              alpha=.9)
 ```
 
- 
-- categorize `Petal.Width` then map colour to this new variable
+- categorize `Petal.Width` then map colour to this new variable  
+Creating derived categorical variables is common in applied analysis (e.g., risk categories).  
+Then you can visualize patterns by category.  
 ```{r}
 iris <- iris %>% 
   mutate(growth = ifelse(Petal.Width   > 1.5, "Wide", "Normal"))
@@ -326,15 +469,19 @@ ggplot(data=iris) +
              alpha=.9)
 ```
 
- 
 ## Bar chart
+Bar charts summarize counts for categorical variables.  
+Here we count the number of observations in each growth category.  
 ```{r}
 ggplot(data = iris) + 
   geom_bar(aes(x = growth))
 ```
 
-- bar chart after `group_by` 
-- then use `stat='identity'` 
+- bar chart after `group_by`  
+- then use `stat='identity'`  
+
+If you want bars to represent **pre-computed values** (means, totals, proportions), you must provide y explicitly and set `stat = "identity"`.  
+Here we summarize mean Sepal.Length by Species and growth category.  
 ```{r}
 library(dplyr)
 results  <- iris %>% 
@@ -345,7 +492,9 @@ results  <- iris %>%
   filter(Species != "setosa_null"  )
  gop
 ```
-- though meaningless below until line chart (just use the mean as the sum for demonstration)
+
+- though meaningless below until line chart (just use the mean as the sum for demonstration)  
+This shows the mechanics of an identity bar chart.  
 ```{r}
 # We can also store parts of a plot in an object
 plot1 <- ggplot(gop) + 
@@ -354,14 +503,17 @@ plot1 <- ggplot(gop) +
            stat='identity')
 plot1
 ```
+
 ### Add some options for the whole ggplot rather than layers
-- `switch` the x and y axes 
+- `switch` the x and y axes  
+`coord_flip()` is frequently used when category labels are long.  
 ```{r}
 plot1 + 
   coord_flip()
 ```
 
-- `reorder` x categories (`-`means descending)
+- `reorder` x categories (`-`means descending)  
+Ordering categories by a statistic is one of the easiest ways to improve readability.  
 ```{r}
 ggplot( gop) + 
   geom_bar(aes(x=reorder(growth, -Sepal.Length.mean), y=Sepal.Length.mean, fill=growth), 
@@ -369,7 +521,8 @@ ggplot( gop) +
   coord_flip()
 ```
 
-- add x axis `label` and a `theme` 
+- add x axis `label` and a `theme`  
+This is a typical “publication polish” pattern: label axes, remove redundant legends, apply a clean theme.  
 ```{r}
 ggplot(gop) + 
   geom_bar(aes(x=reorder(growth, -Sepal.Length.mean), y=Sepal.Length.mean, fill=growth), 
@@ -380,7 +533,8 @@ ggplot(gop) +
   theme_minimal()
 ```
 
-- set theme
+- set theme  
+Themes can be standardized across reports. `ggthemes` offers a set of recognizable styles.  
 ```{r}
 library(ggthemes)
 ggplot(data = iris) + 
@@ -389,14 +543,16 @@ ggplot(data = iris) +
 ```
 
 ### Grouped bar chart 
--bar chart with different panels
+-bar chart with different panels  
+Faceting is a quick way to compare the same plot structure across groups.  
 ```{r}
 ggplot(mpg, aes(x = class)) + 
   geom_bar() + 
   facet_wrap( ~ year)
 ```
 
-- actual number (groups are stacked by default)
+- actual number (groups are stacked by default)  
+Stacked bars are useful for composition, but can be harder to compare across groups.  
 ```{r}
 ggplot(gop) + 
   geom_bar(aes(x=growth, y=Sepal.Length.mean, fill=Species)
@@ -404,12 +560,15 @@ ggplot(gop) +
            )
 ```
 
+This shows a stacked count plot by default.  
 ```{r}
 ggplot(mpg, aes(x = class )) + 
   geom_bar(aes(group = year, fill = year), position = "stack")
 ```
 
-- percentage
+- percentage  
+Position “fill” converts to proportions (each bar sums to 1).  
+This is ideal for comparing composition across categories.  
 ```{r}
 ggplot(gop) + 
   geom_bar(aes(x=growth, y=Sepal.Length.mean, fill=Species), 
@@ -417,7 +576,8 @@ ggplot(gop) +
            position='fill')
 ```
  
-- groups are dodge with `actual number `
+- groups are dodge with `actual number `  
+Dodged bars are easier for comparing group values directly.  
 ```{r}
 ggplot(gop) + 
   geom_bar(aes(x=growth, y=Sepal.Length.mean, fill=Species), 
@@ -425,7 +585,10 @@ ggplot(gop) +
            position='dodge')
 
 ```
-- groups are dodge with `percentage`
+
+- groups are dodge with `percentage`  
+Here we compute within-growth proportions manually, then plot as dodged bars.  
+This is a useful pattern when you want side-by-side proportions rather than stacked proportions.  
 ```{r}
 gop2 <- gop %>% 
   group_by(growth ) %>% 
@@ -438,22 +601,27 @@ ggplot(gop2) +
   ylab("Votes (%)")
 ```
 
- 
 ## Line charts
- 
+Line charts are best when x represents an ordered scale (time, dose, sequence).  
+If x is not truly ordered, lines can mislead, so use carefully.
+
+This simple line plot demonstrates the syntax, though in real applications you usually group lines by an ID or category.  
 ```{r}
 ggplot(iris) + 
   geom_line(aes(x=Sepal.Length , y=Petal.Length))
 ```
  
 ### Grouped by `colour variable`
+Mapping color to Species creates separate lines for each group.  
+This is a common pattern for showing group trends.  
 ```{r}
 ggplot(iris) + 
   geom_line(aes(x=Sepal.Length , y=Petal.Length, colour = Species))
 ```
 
- 
-- grouped by state then set how many rows or columns
+- grouped by state then set how many rows or columns  
+Faceting creates separate small panels for each group.  
+This can improve readability when multiple lines overlap in one plot.  
 ```{r}
 ggplot(iris) + 
   geom_line(aes(x=Sepal.Length , y=Petal.Length) ) + 
@@ -463,6 +631,13 @@ ggplot(iris) +
 ```
 
 ### Multiple aesthetics
+Here we show multiple mappings and transformations:
+- a thicker line,
+- log scaling on x,
+- point size and color mapped to variables,
+- and faceting by Species.  
+
+This is a realistic “final figure” style example—dense but informative.  
 ```{r}
 iris <- iris %>% 
   mutate(growth = ifelse(Petal.Width   > 1.5, "Wide", "Normal"))
@@ -478,10 +653,25 @@ ggplot(iris, aes(x = Sepal.Length, y = Petal.Length)) +
 
 
 ## ggplot2 parameters
+To go further, it helps to understand the “grammar of graphics” idea behind ggplot2:  
+- **data** provides the rows,  
+- **aes** maps variables to visual properties,  
+- **geoms** draw shapes,  
+- **scales** control transformations and legends,  
+- **guides** refine legends,  
+- **themes** control appearance.
+
 For detail, please read this [article](http://www.sthda.com/english/wiki/be-awesome-in-ggplot2-a-practical-guide-to-be-highly-effective-r-software-and-data-visualization#change-colors-automatically-and-manually) and this [one](https://ggplot2-book.org/). 
 
 <!-- https://bookdown.org/wangminjie/R4DS/tidyverse-ggplot2-scales.html -->
 
+The following chunk lists a large set of packages used for advanced visualization workflows.  
+In practice, you do not need all of them for basic plots, but it is useful to know what exists:
+- `ggrepel` for non-overlapping labels,
+- `patchwork` for combining plots,
+- `gganimate` for animation,
+- `sf` for spatial data,
+- `ggthemes` for themes, etc.  
 ```{r, echo=FALSE}
 packages <- c(
   'ggplot2',
@@ -507,6 +697,9 @@ library(ggplot2)
 ```
 
 
+This example is a classic demonstration that **summary statistics can be misleading**.  
+Different datasets can share the same mean, variance, and correlation—but look completely different when plotted.  
+Always plot your data.  
 ```{r}
 library(datasauRus)
   ggplot( )+
@@ -518,6 +711,8 @@ library(datasauRus)
 
 
 ### Components of plot
+A practical way to think about building plots:
+
 - Components of plot
   - Data: is a data frame
   - Aesthetics: is used to indicate x and y variables and to control the color, the size or the shape ...
@@ -542,7 +737,8 @@ library(datasauRus)
   - geom_histogram(): Histogram
 
 `example`  
-
+This example uses the Old Faithful geyser dataset and overlays a 2D density estimate.  
+This is a useful technique when points overlap heavily and you want to show concentration.  
 ```{r}
 data("faithful")
 # Basic scatterplot
@@ -558,8 +754,10 @@ ggplot(data = faithful,
 ```
 
 ### Create main title, axis labels, caption 
+Titles and captions turn plots into “report-ready” figures.  
+Axis labels should make units explicit, and captions should record the data source if applicable.  
 
-pay attention whether argument is factor or continuous.
+pay attention whether argument is factor or continuous.  
 ```{r}
 ggplot(data = faithful, 
        mapping = aes(x = eruptions, y = waiting)) + 
@@ -582,7 +780,8 @@ theme(plot.title = element_blank() )
 ```
 
 ### Create legend title, position  
-
+Legends should explain the mapping clearly (what does color mean? what does size mean?).  
+You can also move the legend depending on layout constraints (e.g., left for tall plots, bottom for wide panels).  
 ```{r}
 p <- ggplot(faithful) + 
   geom_point(aes(x = eruptions, y = waiting, colour = eruptions < 3))+
@@ -597,18 +796,19 @@ p <- ggplot(faithful) +
 print(p)
 ```
 
-- `customize legends using scale functions`
+- `customize legends using scale functions`  
+Scales can rename and reorder legend entries.  
+This is often necessary when boolean variables show up as “FALSE/TRUE” but you want more meaningful labels.  
 ```{r}
 # how to change order of legend?  
 # Set legend title and labels
 p+ scale_color_discrete(name = "Numbers of eruptions change", labels = c("F", "T" ))
 ```
  
-- customize legend
-
-`guide_colorbar(): continuous colors`
-
-`guide_legend(): discrete values (shapes, colors)`
+- customize legend  
+`guide_colorbar()` is typically used for continuous variables;  
+`guide_legend()` is used for discrete variables (colors, shapes, linetypes).  
+This block shows how to control legend title and label appearance in detail.  
 ```{r}
 ggplot(faithful) + 
   geom_point(aes(x = eruptions, y = waiting, size = eruptions < 3))+
@@ -636,10 +836,9 @@ ggplot(faithful) +
   )
 ```
 
- 
-
-
-- delete a legend
+- delete a legend  
+A common practical cleanup is to remove redundant legends when multiple aesthetics are shown.  
+Here we keep the color legend but remove size legend.  
 ```{r}
   ggplot(mpg, aes(x = displ, y = hwy, color = class, size = cyl)) +
   geom_point() +
@@ -649,7 +848,9 @@ ggplot(faithful) +
   )
 ```
 
-- combine two legends when they use the same variable (mapping)
+- combine two legends when they use the same variable (mapping)  
+Mapping both color and size to the same variable can create duplicate legends.  
+Here we unify them by explicitly setting guides.  
 ```{r}
   ggplot(mpg, aes(x = displ, y = hwy, color = cyl, size = cyl)) +
   geom_point() +
@@ -663,37 +864,41 @@ ggplot(faithful) +
 # guide = "legend"
 ```
 
-### Change plot colors 
-`set color into aes()` 
+### Change plot colors
+This section demonstrates the key concept:
 
+- `set color into aes()` means the color varies by a variable.  
+- `set color outside of aes()` means a constant color.
+
+`set color into aes()`  
 ```{r}
 ggplot(faithful) + 
   geom_point(aes(x = eruptions, y = waiting, colour = eruptions < 3))
 ```
 
-`set color outside of aes()`
-
+`set color outside of aes()`  
 ```{r}
 ggplot(faithful) + 
   geom_point(aes(x = eruptions, y = waiting),
              colour = 'steelblue')
 ```
 
-- Colour the histogram with `color` and `fill `
-
+- Colour the histogram with `color` and `fill `  
+This maps outline color and fill color to logical conditions.  
+In practice, you might map fill to a categorical group or a binned continuous variable.  
 ```{r}
 ggplot(faithful) + 
   geom_histogram(aes(x = eruptions,color=eruptions < 3, fill=eruptions < 4))
 ```
   
-
-- Colour the histogram by `waiting` and changing `position`
-
+- Colour the histogram by `waiting` and changing `position`  
+Position controls how groups are displayed (stacked, dodged, or overlaid).  
 ```{r}
 ggplot(faithful) + 
   geom_histogram(aes(x = eruptions,color=waiting>60), position = 'dodge')
 ```
 
+Overlaying histograms can be informative but can also become messy; using transparency or density curves can help.  
 ```{r}
 ggplot(faithful) + 
   geom_histogram(aes(x = eruptions,color=waiting>60), position = 'identity')
@@ -702,7 +907,9 @@ ggplot(faithful) +
 For fill and stack position, please see `position` section.  
 
 
-- `change colors manually using scale`
+- `change colors manually using scale`  
+Manual scales are helpful for consistency across plots in a report.  
+This example shows both fill and outline color manual control.  
 ```{r,message=FALSE}
 ggplot(faithful) + 
   geom_histogram(aes(x = eruptions,color=eruptions < 3, fill=eruptions < 4))+
@@ -712,7 +919,8 @@ ggplot(faithful) +
   scale_color_manual(values=c( "#E69F00", "#56B4E9"))
 ```
 
-- `using scale brewer automatically`   
+- `using scale brewer automatically`  
+Brewer palettes are widely used, especially for categorical palettes that are print-friendly.  
 ```{r}
 ggplot(faithful) + 
   geom_histogram(aes(x = eruptions,color=eruptions < 3, fill=eruptions < 4))+
@@ -724,7 +932,8 @@ ggplot(faithful) +
   
 ```
 
-- `using gray colors using scale`
+- `using gray colors using scale`  
+Grayscale is useful for black-and-white printing or when you want to avoid color emphasis.  
 ```{r}
 # 
 p + scale_fill_grey()  #no fill element
@@ -732,7 +941,9 @@ p + scale_fill_grey()  #no fill element
 p + scale_color_grey()  
 ```
 
-- `Gradient or continuous colors (can set the middle point as `white`)`
+- `Gradient or continuous colors (can set the middle point as `white`)`  
+Continuous gradients are typically used for continuous variables.  
+A diverging gradient is helpful when there is a meaningful midpoint.  
 ```{r}
 # Color by cty values
 sp2<-ggplot(mpg, aes(x = displ, y = hwy)) +
@@ -749,15 +960,17 @@ sp2+scale_color_gradient2(midpoint=mid, low="blue", mid="white",
 
 
 ### Change points shapes, transparent and size
+Transparency (`alpha`) helps when points overlap.  
+Shape and size can carry additional information, but too many aesthetics can overwhelm the reader, so use thoughtfully.  
 
-make the points larger and slightly transparent.
- 
+make the points larger and slightly transparent.  
 ```{r}
 ggplot(faithful) + 
   geom_point(aes(x = eruptions, y = waiting, shape= eruptions < 3, size=eruptions), color="steelblue", alpha=0.5)
 
 ```
  
+Reversing legend order can improve interpretability when sizes represent magnitude.  
 ```{r}
 # hwo to reverse order of legend size 
 ggplot(faithful) + 
@@ -770,6 +983,12 @@ ggplot(faithful) +
 
 
 ### Change bars position
+Position is one of the most practical controls for bar charts:
+- default is stacked,
+- dodge is side-by-side,
+- fill is normalized to proportions.
+
+This block shows all four layouts in a panel.  
 ```{r}
 p <- ggplot(mpg, aes(fl, fill = drv))
 
@@ -788,6 +1007,8 @@ grid.arrange(p1, p2, p3,p4, ncol=2)
 
 
 ### Add text annotations
+Text annotations can highlight key points or provide labels.  
+Be cautious with large datasets; consider `ggrepel` for label repulsion when needed.  
 ```{r}
 ggplot(data=mpg[(1:100), ], aes(x = displ, y = hwy)) +
   geom_point(aes(color = cty))+
@@ -796,8 +1017,13 @@ ggplot(data=mpg[(1:100), ], aes(x = displ, y = hwy)) +
                size = 2, vjust = -1)  #vjust is site not direction
 ```
 
-### Add a line that (separates points)   
+### Add a line that (separates points)
+Reference lines guide interpretation:
+- `geom_abline()` for a line defined by slope/intercept,
+- `geom_hline()` for a horizontal reference,
+- `geom_vline()` for a vertical reference.
 
+These are often used to mark thresholds or decision boundaries.  
 ```{r}
 ggplot(faithful) + 
   geom_point(aes(x = eruptions, y = waiting))+
@@ -810,7 +1036,9 @@ ggplot(faithful) +
 # Add regression line
 ```
 
-`add segment and arrow`
+`add segment and arrow`  
+Segments and arrows are useful for pointing out specific regions of the plot.  
+This is common in presentations and teaching.  
 ```{r}
 ggplot(mpg, aes(x = displ, y = hwy )) +
   geom_point() +
@@ -821,7 +1049,9 @@ ggplot(mpg, aes(x = displ, y = hwy )) +
 
 ```
 
-`fitted curve`
+`fitted curve`  
+A smooth curve shows the overall pattern.  
+You can also subset data to remove categories that behave differently, as shown here.  
 ```{r}
 ggplot(data=mpg[mpg$fl!="c",], aes(x = displ, y = hwy)) +
   geom_point( ) +
@@ -829,6 +1059,8 @@ ggplot(data=mpg[mpg$fl!="c",], aes(x = displ, y = hwy)) +
   
 ```
 
+Quantile regression (`geom_quantile()`) can show how relationships differ across conditional quantiles.  
+This is a useful exploratory tool when variance is not constant.  
 ```{r}
 ggplot(data=mpg[mpg$fl!="c",], aes(x = displ, y = hwy)) +
   geom_point( ) + 
@@ -838,7 +1070,9 @@ ggplot(data=mpg[mpg$fl!="c",], aes(x = displ, y = hwy)) +
   
 ```
 
-`customize line`
+`customize line`  
+This example shows how to control multiple aesthetics and manually customize scales.  
+It also demonstrates a very important rule: if the plot is too complicated, consider simplifying—readability matters more than showing every possible mapping.  
 ```{r}
 ggplot(mpg, aes(x = displ, y = hwy, color = fl, linetype = fl, size=fl)) +
   geom_point() +
@@ -855,35 +1089,33 @@ ggplot(mpg, aes(x = displ, y = hwy, color = fl, linetype = fl, size=fl)) +
 ```
 
 
- 
-
 ### Using scale_ function
-all mappings have associated scales even if not specified. 
+Every aesthetic mapping has an associated scale, even if you do not specify it.  
+Learning to use `scale_*()` functions is one of the fastest ways to level up plot quality.
 
-- uisng `scale_colour_brewer`. 
-
+- uisng `scale_colour_brewer`.  
 ```{r}
 ggplot(mpg) + 
   geom_point(aes(x = displ, y = hwy, colour = class)) + 
   scale_colour_brewer(type = 'qual')
 ```
 
-
-
-`RColorBrewer`
+`RColorBrewer`  
+This displays available palettes—useful when choosing a consistent palette for a report.  
 ```{r}
 RColorBrewer::display.brewer.all()
 ```
 
-- using different palettes 
-
+- using different palettes  
 ```{r}
 ggplot(mpg) + 
   geom_point(aes(x = displ, y = hwy, colour = class)) + 
   scale_colour_brewer (palette = 'Paired')
 ```
  
-- showing `cyl` with size 
+- showing `cyl` with size  
+Combining color and size is common, but be mindful of legend clutter.  
+Use breaks to simplify size legend.  
 ```{r}
 ggplot(mpg) + 
   geom_point(aes(x = displ, y = hwy, colour =  class, size=cyl)) + 
@@ -892,22 +1124,9 @@ ggplot(mpg) +
 
 ```
 
-<!-- - **Can use `breaks` to select the legend you want** -->
-<!-- ```{r} -->
-<!-- # how to remove a legend? -->
-<!-- ggplot(mpg) +  -->
-<!--   geom_point(aes(x = displ, y = hwy, colour =  class, size=cyl)) +  -->
-<!--   scale_colour_brewer(palette  = 'Set1') + -->
-<!--   scale_size (breaks = c(40,60))    -->
-
-<!-- ggplot(mpg) +  -->
-<!--   geom_point(aes(x = displ, y = hwy, colour =  class, size=cyl)) +  -->
-<!--   scale_colour_brewer(palette  = 'Set1', breaks = c(4,6)) + -->
-<!--   scale_size (breaks = c(4,6))    -->
-
-<!-- ``` -->
-
-- using `guides` to modify the `scale_` 
+- using `guides` to modify the `scale_`  
+Guides can override legend aesthetics.  
+This is useful when you want legend points to be clearly visible and consistent.  
 ```{r}
  ggplot(mpg) +
    geom_point(aes(x = displ, y = hwy, colour = cyl, size=cyl)) +
@@ -919,18 +1138,17 @@ ggplot(mpg) +
 ```
  
 
-- unite legends 
-
-when multiple aesthetics are mapped to the same variable.
-
-
+- unite legends  
+when multiple aesthetics are mapped to the same variable.  
+This can reduce legend duplication and improve readability.  
 ```{r}
 ggplot(mpg) + 
   geom_point(aes(x = displ, y = hwy, colour = cyl, size=cyl))   +
   guides(colour="legend")
 ```
 
-`category is also ok` 
+`category is also ok`  
+Discrete mapping works similarly, but some aesthetics (like size) may behave differently and can create awkward legends.  
 ```{r}
 ggplot(mpg) + 
   geom_point(aes(x = displ, y = hwy, colour = fl, size=fl))   +
@@ -938,8 +1156,9 @@ ggplot(mpg) +
 ```
  
  
- - x and y also have associated scales 
-
+- x and y also have associated scales  
+Scales can transform axes and control tick marks.  
+This example demonstrates manual x breaks and log2 transformation for y.  
 ```{r}
 ggplot(mpg) + 
   geom_point(aes(x = displ, y = hwy)) + 
@@ -951,17 +1170,20 @@ ggplot(mpg) +
 
 
 ### Change coordinates
+Coordinate transformations can change the story of a plot.  
+Use them intentionally—especially for polar charts, which can look impressive but may distort comparisons.
 
-Changing the coordinate system can have dramatic effects 
-
-- coord_polar
-
+- coord_polar  
+This converts bar charts into a circular layout.  
+Use with caution: it is harder to compare lengths in polar coordinates.  
 ```{r}
 ggplot(mpg) + 
   geom_bar(aes(x = class)) + 
   coord_polar()
 ```
 
+This version changes the polar mapping.  
+`expand_limits()` is used to create extra space.  
 ```{r}
 ggplot(mpg) + 
   geom_bar(aes(x = class)) + 
@@ -969,8 +1191,9 @@ ggplot(mpg) +
   expand_limits(y = 70)
 ```
 
-- specify the scale of coordinate 
-
+- specify the scale of coordinate  
+You can set y limits and breaks.  
+In practice, avoid truncating axes unless you have a strong reason and clearly indicate it.  
 ```{r}
 require(scales)
 ggplot(mpg) + 
@@ -982,8 +1205,9 @@ ggplot(mpg) +
   # scale_x_discrete(labels=c(1:7)  )
 ```
 
-- using coord_cartesian `zoom in` 
- 
+- using coord_cartesian `zoom in`  
+`coord_cartesian()` zooms without dropping data outside the viewing range.  
+This is usually preferable to setting scale limits, which can remove data.  
 ```{r}
 # have been deleted 
 ggplot(mpg) + 
@@ -992,6 +1216,7 @@ ggplot(mpg) +
   scale_x_discrete( limit=c("midsize","compact"))
 ```
 
+This version zooms into y limits while keeping the underlying data.  
 ```{r}
 ggplot(mpg) + 
   geom_bar(aes(x = class)) + 
@@ -1000,8 +1225,9 @@ ggplot(mpg) +
 ```
  
 
-- reverse direction of axes
-
+- reverse direction of axes  
+Axis reversal is useful for certain interpretive effects (e.g., ranking charts).  
+Be careful combining multiple transformations in one plot—clarity first.  
 ```{r}
 ggplot(mpg) + 
   geom_point(aes(x = hwy, y = displ))+
@@ -1015,7 +1241,10 @@ ggplot(mpg) +
  
 
 ### Customize axis ticks
-- change axis text font, color, size, angle using theme 
+Small axis choices (angle, size, color) can significantly improve readability.  
+This is especially important when plots are used in slides or printed reports.
+
+- change axis text font, color, size, angle using theme  
 ```{r}
 # when use theme, scale, guide? 
 ggplot(mpg) + 
@@ -1027,7 +1256,8 @@ ggplot(mpg) +
                            size=7, angle=90))
 ```
 
-- `remove aixs ticks and tick labels`
+- `remove aixs ticks and tick labels`  
+Sometimes minimal plots are more effective—especially when the audience already understands the scale or when the plot is purely illustrative.  
 ```{r}
 ggplot(mpg) + 
   geom_point(aes(x = hwy, y = displ))+
@@ -1037,10 +1267,12 @@ theme(
   axis.ticks = element_blank()) # Remove ticks
 ```
 
-### Flip and reverse plot 
+### Flip and reverse plot
+Flipping and reversing can help match how people naturally read categories (top-to-bottom ranking charts) or fit long labels.
 
-
-- boxplot and violin 
+- boxplot and violin  
+Violin plots show distributions; boxplots show summary statistics.  
+Overlaying both gives a compact distribution + summary view.  
 ```{r}
 ggplot(mpg ) + 
   geom_violin( aes(x = as.factor(cyl), y=hwy ,color=as.factor(cyl) ) ,trim = FALSE,width = 4 ) +
@@ -1048,8 +1280,9 @@ ggplot(mpg ) +
  
 ```
 
-- dotplot
-`using stat_ function` 
+- dotplot  
+Dotplots can show distributions with less emphasis on smooth density.  
+Adding a mean and SD summary helps anchor interpretation.  
 ```{r}
 ggplot(mpg ,aes(x = as.factor(cyl), y=hwy ) )+ 
   geom_dotplot(aes(color =as.factor(cyl), fill = as.factor(cyl)), 
@@ -1057,7 +1290,9 @@ ggplot(mpg ,aes(x = as.factor(cyl), y=hwy ) )+
   stat_summary(fun.data="mean_sdl" )  
 ```
 
-- errorbar
+- errorbar  
+This section builds a grouped summary dataset (`df3`) and then plots error bars.  
+Error bars are useful for showing variability around means, but always clarify whether it is SD, SE, or CI.  
 ```{r,echo=FALSE}
 # Calculate the mean and the SD in each group
 #+++++++++++++++++++++++++
@@ -1082,12 +1317,15 @@ df3 <- data_summary(mpg, varname="hwy", grps= c("cyl" ))
 head(df3)
 ```
 
-
+This plot uses line + error bars.  
+Grouping is set via `aes(group = 0)` as a simple way to connect points in one line.  
 ```{r}
 ggplot( df3, aes(as.factor(cyl) ,  (hwy), ymin = hwy-sd, ymax = hwy+sd)  ) +
   geom_line(aes(group = 0 )) +
   geom_errorbar(aes(color = as.factor(cyl) ),width = 0.2) 
 ```
+
+This version uses bars plus error bars, then flips coordinates for readability.  
 ```{r}
 ggplot( df3, aes(as.factor(cyl) ,  (hwy), ymin = hwy-sd, ymax = hwy+sd)  ) +
   geom_bar(aes(fill = as.factor(cyl)), stat = "identity",
@@ -1096,7 +1334,9 @@ ggplot( df3, aes(as.factor(cyl) ,  (hwy), ymin = hwy-sd, ymax = hwy+sd)  ) +
   coord_flip()
 ```
 
-*using original data* 
+*using original data*  
+Instead of precomputing summaries, you can also rely on `stat_summary()` directly on raw data.  
+This is convenient and reduces manual preprocessing.  
 ```{r}
  
   ggplot(mpg, aes(cyl, hwy)) +
@@ -1104,16 +1344,15 @@ ggplot( df3, aes(as.factor(cyl) ,  (hwy), ymin = hwy-sd, ymax = hwy+sd)  ) +
   stat_summary(geom = "errorbar")
 ```
 
-
-`flip`
+`flip`  
 ```{r}
 ggplot(mpg) + 
   geom_bar(aes(x = class)) +
   coord_flip()
 ```
 
-
-`reverse`
+`reverse`  
+Be cautious: reversing y for bar charts can confuse readers unless you have a strong reason.  
 ```{r}
 ggplot(mpg) + 
   geom_bar(aes(x = class)) +
@@ -1122,15 +1361,23 @@ ggplot(mpg) +
 
 
 ### Create stats
-
 *Every geom has a stat. The stat can be overwritten if we use any additional computations.*
 
+Understanding stats is a major ggplot skill:
+- bar charts default to counts (`stat_count`),
+- histograms default to bin counts,
+- smoothing defaults to fitting a curve,
+- and `stat_summary()` computes summary measures.
+
+Using original data (counts for `cyl`).  
 ```{r}
 ggplot(mpg ) + 
   geom_bar (aes(x = cyl ),position = 'identity' ) #using original data
 ```
 
-- using transformed variables
+- using transformed variables  
+This section sets up data transformation patterns (commented out).  
+The main idea: if you compute summary statistics yourself, you must use `stat='identity'` to plot them.  
 ```{r,message=FALSE,warning=FALSE}
 library(dplyr)
 library(ggplot2)
@@ -1144,7 +1391,8 @@ library(ggplot2)
 ```
 
 - using the `after_stat()` function inside `aes()`.  
-
+This computes proportions directly inside the plot call, which is very convenient.  
+Here we plot class proportions instead of raw counts.  
 ```{r}
 require(scales)
 ggplot(mpg) + 
@@ -1153,8 +1401,8 @@ ggplot(mpg) +
   
 ```
 
-- using `density` geometric in histogram 
-
+- using `density` geometric in histogram  
+Overlaying histogram density and a smoothed density curve is a classic approach to show distribution shape.  
 ```{r}
 ggplot(mpg,aes(x = hwy)) + 
   geom_histogram(aes(y=..density..))+
@@ -1162,10 +1410,12 @@ ggplot(mpg,aes(x = hwy)) +
 
 ```
 
- 
-- Use `stat_summary()` to add the mean of `hwy` for each group
+- Use `stat_summary()` to add the mean of `hwy` for each group  
+`STAT vs. GEOM` is a practical concept:
+- `geom_*` draws shapes,
+- `stat_*` computes something first (means, SE, CI, etc.) and then draws.
 
-`STAT vs. GEOM`
+This panel shows different summary layers and a 95% interval by setting `mult = 1.96`.  
 ```{r}
 p1 <- ggplot(mpg,aes(x = class, y = hwy) ) + 
   stat_summary(
@@ -1189,7 +1439,7 @@ library(patchwork)
 p1+p2+p3
 ```
 
-
+Overlaying the group mean on top of raw points is a great way to show both individual variability and group central tendency.  
 ```{r}
 ggplot(mpg) + 
   geom_point(aes(x = class, y = hwy), width = 0.2)+
@@ -1197,7 +1447,9 @@ ggplot(mpg) +
  
 ```
 
-`jitter points`
+`jitter points`  
+Jittering helps reduce overplotting when x is discrete.  
+This is one of the most common practical improvements for categorical scatter plots.  
 ```{r}
 ggplot(mpg) + 
   geom_jitter(aes(x = class, y = hwy), width = 0.2)+
@@ -1207,9 +1459,12 @@ ggplot(mpg) +
 
 
 ### Facets
+Facets are one of ggplot2’s strongest features. They let you compare the same relationship across groups.
+
 `facet_wrap()` allows you to place facet side by side into a rectangular layout. `facet_grid()` allows you to specify different directions and works on two variables. 
 
-- share the axes between the different panels 
+- share the axes between the different panels  
+Shared axes are helpful for direct comparison across panels.  
 ```{r}
 ggplot(mpg) + 
   geom_point(aes(x = displ, y = hwy)) + 
@@ -1217,53 +1472,63 @@ ggplot(mpg) +
 ```
 
   
+Facet grid with rows: `drv` by row.  
 ```{r}
 ggplot(mpg) + 
   geom_point(aes(x = displ, y = hwy)) + 
   facet_grid(drv~ .  )
 ```
 
+Facet grid with columns: `drv` by column.  
 ```{r}
 ggplot(mpg) + 
   geom_point(aes(x = displ, y = hwy)) + 
   facet_grid(~ drv  )
 ```
+
+Facet by two variables at once.  
+This is powerful but can create many small panels; use only when needed.  
 ```{r}
 ggplot(mpg) + 
   geom_point(aes(x = displ, y = hwy)) + 
   facet_grid(year ~ drv)
 ```
 
-- do not share the axes between the different panels 
+- do not share the axes between the different panels  
+Free scales can make each panel readable but can harm comparability across panels.  
+Use free scales when ranges differ drastically across groups.  
 ```{r}
 ggplot(mpg) + 
   geom_point(aes(x = displ, y = hwy)) + 
   facet_wrap(~ drv , scales = "free")
 ```
 
-`only free y axes`
+`only free y axes`  
+This is a compromise: preserve x comparability but allow y to adjust per group.  
 ```{r}
 ggplot(mpg) + 
   geom_point(aes(x = displ, y = hwy)) + 
   facet_wrap(~ drv , scales = "free_y")
 ```
  
-- adjust y scale (space) between the panels 
-
+- adjust y scale (space) between the panels  
+For bar charts with many categories, allowing free space can prevent labels from being squeezed.  
 ```{r}
 ggplot(mpg) + 
   geom_bar(aes(y = manufacturer)) + 
   facet_grid(class ~ .)
 ```
 
+This version frees y spacing and y scale to improve panel readability.  
 ```{r}
 ggplot(mpg) + 
   geom_bar(aes(y = manufacturer)) + 
   facet_grid(class ~ ., space = "free_y", scales = "free_y")
 ```
 
-- display by adding multiple variables together 
-
+- display by adding multiple variables together  
+Facetting by both year and drive type in one call.  
+This is useful when you want a grid of comparisons.  
 ```{r}
 ggplot(mpg) + 
   geom_point(aes(x = displ, y = hwy)) + 
@@ -1271,8 +1536,10 @@ ggplot(mpg) +
 ```
 
 ### Theme
- 
-`theme_minimal`
+Themes control the overall appearance: background, grid lines, fonts, and spacing.
+
+`theme_minimal`  
+Minimal themes are clean for slides and modern reports.  
 ```{r}
 ggplot(mpg) + 
   geom_bar(aes(y = class)) + 
@@ -1281,7 +1548,8 @@ ggplot(mpg) +
 ```
 
 `Further adjustments`  
-`theme_bw` 
+`theme_bw` is a common default for academic-style plots.  
+This block demonstrates how to customize facet strip text, captions, and grid lines.  
 ```{r,message=FALSE,warning=FALSE}
 ggplot(mpg) + 
   geom_bar(aes(y = class)) + 
@@ -1307,7 +1575,9 @@ ggplot(mpg) +
   )
 ```
 
-`theme_classic`
+`theme_classic`  
+Classic themes remove background grids and look clean for publication.  
+This example also shows manual fill scales with custom legend labels.  
 ```{r}
 ggplot(mpg) + 
   geom_bar(aes(y = class, fill = drv)  ,position = "dodge") + 
@@ -1336,7 +1606,9 @@ ggplot(mpg) +
   )
 ```
 
-- using ggthemes
+- using ggthemes  
+Themes from `ggthemes` provide recognizable styles.  
+Use them when consistent branding is desired.  
 ```{r}
 library(ggthemes)
 ggplot(mpg) + 
@@ -1350,7 +1622,16 @@ ggplot(mpg) +
   ggthemes::theme_economist()
 ```
 
-- customized theme
+- customized theme  
+This block demonstrates a wide range of theme elements you can control:
+- legend background, key, position,
+- panel background and border,
+- plot background,
+- axis line, ticks, and text rotation,
+- facet strip appearance,
+- panel spacing.
+
+In practice, you typically standardize a simpler theme, but it is valuable to see what is possible.  
 ```{r}
 ggplot(mpg) + 
   geom_bar(aes(y = class, fill = drv)  ,position = "dodge") + 
@@ -1407,8 +1688,13 @@ theme(
 
 
 ### How to setup subscripts or superscripts
+Scientific writing often needs subscripts/superscripts (e.g., CO\_2, R²).  
+This link provides a focused guide for that formatting in R Markdown and ggplot text elements.  
 
 [see here](https://rpubs.com/Daniel_He/1041883)
 
 ## How to create advanced plots
+Once you master the basics (data → aes → geoms → scales → themes), advanced plots become much easier.  
+This link collects more advanced patterns and examples.  
+
 [see here](https://rpubs.com/Daniel_He/941386)

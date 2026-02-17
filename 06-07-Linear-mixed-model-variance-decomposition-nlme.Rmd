@@ -1,25 +1,86 @@
- 
-## Linear mixed model covariance decomposition (nlme)
+## Linear Mixed Model Covariance Decomposition (nlme)
+
+
+This chapter is a practical, “under-the-hood” guide to linear mixed models (LMMs) using **nlme**, with a strong focus on **covariance decomposition** and how it connects to estimation, inference, and prediction. We will fit models in R, extract the key design matrices, and then reproduce (parts of) the computations by hand to make the machinery transparent.
+
+Throughout, we work with the **Orthodont** dataset, a classic longitudinal dataset with repeated measurements per subject. The key statistical idea is simple:
+
+- repeated observations within the same subject are **correlated**,
+- that correlation can be explained by **random effects**, **correlated residual errors**, or both,
+- and once we specify the covariance structure correctly, estimation becomes a generalized least squares (GLS) problem.
+
+
 
 ### Load data
+
 ```{r}
 data(Orthodont, package="nlme")
 Data <- Orthodont
 ```
 
+The Orthodont dataset contains repeated measurements of a distance outcome over time (age). Each subject is measured multiple times, so the data are clustered by `Subject`. This repeated-measures structure is exactly where mixed models become useful.
+
+A quick reminder of notation we will use in this chapter:
+
+- $i$ indexes subjects, $j$ indexes repeated observations within subject $i$.
+- $y_{ij}$ is the response (distance).
+- $\mathbf{X}$ is the fixed-effect design matrix.
+- $\mathbf{Z}$ is the random-effect design matrix.
+- $\boldsymbol\beta$ are fixed-effect parameters.
+- $\mathbf{u}$ are random effects.
+- $\boldsymbol\varepsilon$ are residual errors.
+
+
+
+### Exploratory visualization
+
+Before fitting a model, we want to visually confirm two things:
+
+1) the overall mean trend of distance over age, and  
+2) whether subjects appear to have systematic deviations from that trend.
+
+The first plot stratifies by sex and overlays a linear trend line.
 
 ```{r}
 library(ggplot2)
 ggplot(Data, aes(y = distance, x = age,  color = Sex)) +
     geom_smooth(method = "lm",se=F) + geom_point() + theme_classic()
 ```
+
+Interpretation:
+- If the slopes differ between sexes, that suggests an interaction (not modeled here).
+- If points form vertical “bands” by subject (hidden here), that suggests subject-to-subject heterogeneity.
+
+The second plot includes `Subject` in the aesthetics. Even if the visual is busy, it helps us see whether each subject follows a roughly parallel trajectory shifted up or down. That pattern is the classic signal for a **random intercept**.
+
 ```{r}
 library(ggplot2)
 ggplot(Data, aes(y = distance, x = age, fill = Subject, color = Sex)) +
     geom_smooth(method = "lm",se=F) + geom_point() + theme_classic()
 ```
 
+If subjects show consistent vertical separation across age, a random intercept is a natural first model. If subjects also differ in slope, we would consider random slopes (covered in a separate chapter / section).
+
+
+
 ### Using lme (nlme)
+
+We first fit a random intercept model using `nlme::lme`. The model is:
+
+$$
+y_{ij} = \beta_0 + \beta_1 \, \text{age}_{ij} + \beta_2 \, \text{Sex}_i + b_i + \varepsilon_{ij},
+$$
+
+with assumptions
+
+$$
+b_i \sim N(0,\sigma_b^2), \quad \varepsilon_{ij} \sim N(0,\sigma^2), \quad b_i \perp \varepsilon_{ij}.
+$$
+
+This implies a within-subject covariance of compound symmetry form (equal correlation between any two observations from the same subject), because the shared random intercept induces correlation.
+
+We fit the model in **nlme** and also fit the “equivalent” random-intercept model in **lme4** (we will use `lme4` later to extract $\mathbf{X}$, $\mathbf{Z}$, and $\mathbf{y}$).
+
 ```{r}
 library(nlme)
 fit.lmer2 <- lme(distance ~ age + Sex  , random = ~1   | Subject, data = Data) 
@@ -30,7 +91,26 @@ fit.lmer <- lmer(distance ~ age + Sex  +(1 | Subject), data = Data)
 # compound symmetry
 ```
 
-- t test
+Practical note:
+- In this simplest random-intercept setting, `lme` and `lmer` should agree closely on fixed-effect estimates and variance components (allowing for minor numerical differences).
+- The big advantage of `nlme` is the ability to specify **residual correlation structures** (AR(1), exponential, Gaussian, unstructured, etc.), which we explore later.
+
+
+
+### Inference for fixed effects
+
+After fitting the model, we usually want to test whether covariates such as `age` and `Sex` are associated with the outcome. Mixed models complicate testing because correlation changes both the standard errors and the effective degrees of freedom.
+
+#### t test (Wald-type test)
+
+Here we compute a t-statistic “by hand” from the fixed-effect estimates and their estimated covariance matrix:
+
+$$
+t_k = \frac{\hat\beta_k}{\sqrt{\widehat{\mathrm{Var}}(\hat\beta_k)}}.
+$$
+
+We then compute two-sided p-values using the degrees of freedom stored by `nlme`.
+
 ```{r}
 tstat <- fixef(fit.lmer2)/sqrt(diag(vcov(fit.lmer2)))
 pval <- 2*pt(-abs(tstat), df = fit.lmer2$fixDF$X)
@@ -38,23 +118,72 @@ Tresult <- data.frame(t = tstat, p = round(pval, 4))
 print(Tresult)
 ```
 
-- F test
+Why this matters:
+- `vcov(fit.lmer2)` is not the OLS covariance; it is the GLS-based covariance that accounts for $\mathbf{V}$, the marginal covariance of $\mathbf{y}$.
+- The degrees of freedom in `nlme` reflect an approximate finite-sample adjustment for mixed models, not a simple $n-p$.
+
+
+
+#### F test (ANOVA table)
+
+The `anova()` method provides an ANOVA-style summary of fixed effects.
+
 ```{r}
 anova(fit.lmer2 ) 
 ```
 
-- restricted model test
+Interpretation:
+- This is typically a Wald-type test presented as an F statistic.
+- It answers whether each term contributes after accounting for the covariance structure.
+
+
+
+#### Restricted model test (linear contrast)
+
+Sometimes we want to test a specific linear hypothesis about fixed effects:
+
+$$
+H_0: \mathbf{L}\boldsymbol\beta = 0.
+$$
+
+The `L` vector specifies a linear combination of coefficients. In this example, `L = c(0,1,0)` targets the second fixed-effect coefficient (often the age effect, depending on parameter ordering).
+
 ```{r}
 anova(fit.lmer2, L = c(0, 1, 0)) 
 ```
 
-- likelihood test
+This approach generalizes cleanly to:
+- testing multiple coefficients jointly,
+- testing contrasts among factor levels,
+- testing spline basis groups, etc.
+
+
+
+#### Likelihood ratio test (nested models)
+
+We compare:
+
+- full model: `distance ~ age + Sex`  
+- reduced model: `distance ~ Sex`
+
+Both have the same random intercept structure, so the models are nested in their fixed effects.
+
 ```{r}
 fit.lmer2.2 <- lme(distance ~   Sex  , random = ~1   | Subject, data = Data) 
 anova(fit.lmer2, fit.lmer2.2)
 
 ```
-`And now by hand` 
+
+A likelihood ratio test uses:
+
+$$
+\mathrm{LR} = 2(\ell_1 - \ell_0),
+$$
+
+and compares LR to a $\chi^2$ distribution with degrees of freedom equal to the difference in number of parameters (here, the difference in fixed effects).
+
+`And now by hand`
+
 ```{r}
 logLik  <- logLik(fit.lmer2)
 logLik0 <- logLik(fit.lmer2.2)
@@ -64,15 +193,41 @@ pval <- pchisq(LR, df = 2, lower.tail = FALSE)
 LRresult <- data.frame(LR = LR, p = round(pval, 4), row.names = "age")
 print(LRresult)
 ```
-<!-- https://www2.karlin.mff.cuni.cz/~komarek/vyuka/2020_21/nmst432/lmm_lme.html -->
 
-### Model diagnosing 
+Practical note:
+- For testing **variance components** (e.g., whether a random effect variance is zero), LR tests can be nonstandard due to boundary issues.
+- Here we are testing a **fixed effect**, so the usual large-sample chi-square reference is commonly used.
+
+
+
+### Model diagnosing
+
+Even if inference looks “significant,” model assumptions can be wrong. Diagnostic plots help assess:
+
+- residual patterns (nonlinearity, heteroscedasticity),
+- normality of residuals,
+- influential clusters,
+- random-effects distribution.
+
 ```{r}
 library(nlme)
 plot.lme(fit.lmer2)
 ```
 
-### Get x, y, z matrixs (using lme4)
+In longitudinal data, a frequent warning sign is residual correlation that remains after adding random effects. If residuals within each subject still show time dependence, we may need an explicit residual correlation structure (AR(1), exponential, etc.), which we will fit later in this chapter.
+
+
+
+### Get X, y, Z matrices (using lme4)
+
+To connect the model to matrix formulas, we extract the core objects:
+
+- $\mathbf{X}$: fixed-effect design matrix  
+- $\mathbf{Z}$: random-effect design matrix  
+- $\mathbf{y}$: response vector
+
+We use `lme4` because `getME()` provides these matrices directly in a standard form.
+
 ```{r}
 X=(getME(fit.lmer, "X"))
 y=getME(fit.lmer, "y")
@@ -82,31 +237,64 @@ Z2 <- model.matrix(~Subject-1,data=Data)
 
 ```
 
-`check z matrix`
+Interpretation:
+- For a random intercept model, $\mathbf{Z}$ is essentially a subject indicator matrix (one column per subject).
+- Each row has a single 1 indicating the subject membership.
+
+#### Check Z matrix
+
+We confirm that `Z` matches a manually created subject dummy matrix.
+
 ```{r}
 dummyz<- as.matrix (Z)==Z2
 table(dummyz)
 dim(Z)
 ```
-`check y and X matrixs`
+
+This is a useful sanity check: it ensures that when we later compute $\mathbf{Z}\mathbf{D}\mathbf{Z}^\top$, we are using the same $\mathbf{Z}$ that the model implies.
+
+#### Check y and X matrices
+
+We also check that columns in $\mathbf{X}$ match the original variables.
+
 ```{r}
 dummyx<- Data[,c(2)]==X[,2]
 table(dummyx)
 ```
 
+
+
 ### Fixed effect coefficient
+
+The fixed effects $\hat{\boldsymbol\beta}$ represent the population-average association between distance and the covariates, after accounting for within-subject correlation.
+
 ```{r}
 bhat <- fit.lmer2$coef$fixed
 bhat
 # fixef()
 ```
-- fixed effect coefficient confidence intervals 
+
+#### Fixed effect confidence intervals
+
+`nlme::intervals()` provides approximate confidence intervals for fixed effects.
+
 ```{r}
 intervals(fit.lmer2)
  
 ```
 
-#### Plot fixed effect coefficients and theri ci
+These intervals are typically Wald-type:
+
+$$
+\hat\beta_k \pm t_{0.975,\;df}\sqrt{\widehat{\mathrm{Var}}(\hat\beta_k)}.
+$$
+
+
+
+#### Plot fixed effect coefficients and their CI
+
+Visualizing coefficients often communicates results faster than tables, especially in teaching materials.
+
 ```{r}
 tab <- cbind(Est = intervals(fit.lmer2)[["fixed"]][,2], LL = intervals(fit.lmer2)[["fixed"]][,1], UL=
 intervals(fit.lmer2)[["fixed"]][,3])
@@ -126,8 +314,14 @@ theme(axis.title.y = element_blank(),axis.text = element_text(size=10),
 axis.title.x = element_text(size=12))+labs(x="Beta coefficients")
 ```
 
+Interpretation tips:
+- Intervals crossing 0 suggest the effect may be weak relative to uncertainty.
+- The vertical line at 0 is a convenient “no effect” reference.
 
-`And now by hand` 
+`And now by hand`
+
+We replicate the fixed-effect CI using the stored degrees of freedom and the covariance matrix.
+
 ```{r}
 print(tquants <- qt(0.975, df = fit.lmer2$fixDF$X))
 
@@ -137,25 +331,61 @@ EstInt <- data.frame(Lower = Low, Estimate = fixef(fit.lmer2), Upper = Upp)
 print(EstInt)
 ```
 
+This is an important conceptual checkpoint: it shows that once we know $\widehat{\mathrm{Var}}(\hat{\boldsymbol\beta})$, confidence intervals reduce to standard linear model logic—the “mixed model” complexity is contained in estimating $\mathbf{V}$ and thus the correct covariance of $\hat{\boldsymbol\beta}$.
+
+
 
 ### Random effect coefficient
+
+The random effects are subject-specific intercept deviations (BLUPs / empirical Bayes estimates). These quantify how each subject’s average distance differs from the population mean after adjusting for covariates.
+
 ```{r}
 fit.lmer2$coef$random
 ```
-### Fixed effect coefficients covariance 
+
+Interpretation:
+- Large positive random intercept: subject tends to have larger distance than average.
+- Large negative random intercept: subject tends to have smaller distance than average.
+- Shrinkage: subjects with fewer observations are pulled more strongly toward 0.
+
+
+
+### Fixed effect coefficients covariance
+
+The covariance matrix of fixed effect estimates is central for inference:
+
+$$
+\widehat{\mathrm{Cov}}(\hat{\boldsymbol\beta}) = (\mathbf{X}^\top \hat{\mathbf{V}}^{-1}\mathbf{X})^{-1}.
+$$
+
+We inspect both the matrix and the standard errors.
+
 ```{r}
 fit.lmer2$varFix
 # vcov(fit.lmer2)
 sqrt(diag(vcov(fit.lmer2)))
 ```
 
-`fixed effect coefficients correlation `
+#### Fixed effect coefficients correlation
+
+The next line manually computes a correlation between two fixed-effect estimates by dividing an off-diagonal covariance term by the product of standard deviations. (In practice, you would usually compute the full correlation matrix, but this single calculation emphasizes the concept.)
+
 ```{r}
 -0.04174818/prod(sqrt( diag(fit.lmer2$varFix)[-3] ))
 ```
 
+Why care about correlation among estimates?
+- Strong correlation can make interpretation unstable (e.g., intercept and slope correlation in centered vs uncentered age).
+- It affects joint inference and multicollinearity diagnostics.
 
-### Random effect covariance and correlation  
+
+
+### Random effect covariance and correlation
+
+For a random intercept model, the random-effect covariance $\mathbf{D}$ is a $1\times1$ matrix (a single variance). In more complex models (random slopes), $\mathbf{D}$ becomes a full covariance matrix.
+
+Here we extract the random-effect covariance from the internal structures.
+
 ```{r}
 pdMatrix(fit.lmer2$modelStruct$reStruct[[1]])*fit.lmer2$sigma**2
 
@@ -164,14 +394,38 @@ getVarCov(fit.lmer2, individual = "F01", type = "marginal")
 getVarCov(fit.lmer2, type = "conditional")
 ```
 
+Interpretation:
+- `type="marginal"` returns the covariance of $\mathbf{y}$ within a subject after integrating over random effects.
+- `type="conditional"` returns the covariance of $\mathbf{y}$ given the random effects (often closer to $\boldsymbol\Sigma$).
+
+We also look at variance components and compute the proportion of each component.
+
 ```{r}
 vc <- as.numeric(as.matrix(VarCorr(fit.lmer2))[,1])
 vc/sum(vc)
 VarCorr(fit.lmer2)
 ```
 
-### Get y covariance directly 
+This proportion is a useful descriptive measure:
+- If random intercept variance dominates, subject-to-subject differences explain most variability.
+- If residual variance dominates, within-subject noise is large relative to between-subject differences.
+
+
+
+### Get y covariance directly
+
+A core identity in LMMs is the marginal covariance decomposition:
+
+$$
+\mathbf{V} = \mathbf{Z}\mathbf{D}\mathbf{Z}^\top + \boldsymbol\Sigma.
+$$
+
+In the simplest random intercept model with independent residuals, $\boldsymbol\Sigma = \sigma^2 \mathbf{I}$, and $\mathbf{Z}\mathbf{D}\mathbf{Z}^\top$ creates equal covariance between any two observations in the same subject.
+
+We extract $\mathbf{V}$ directly.
+
 `= Z REcov Zt + sigma**2`
+
 ```{r}
 require(mgcv)
 library(nlme)
@@ -181,26 +435,71 @@ head(cov)
 dim(cov)
 ```
 
+Practical reason to do this:
+- Once we have $\mathbf{V}$, we can compute GLS estimates and prediction variances directly using matrix formulas.
+- This also makes it easy to compare alternative covariance models: only $\mathbf{V}$ changes.
+
+
+
 ### Residual variance
+
+For the baseline random intercept model, the residual variance is $\sigma^2$.
+
 ```{r}
 fit.lmer2$sigma**2
 ```
 
-### Compute fixed effect coefficients
+
+
+### Compute fixed effect coefficients (by GLS)
+
+The GLS estimator is:
+
+$$
+\hat{\boldsymbol\beta} = (\mathbf{X}^\top \mathbf{V}^{-1}\mathbf{X})^{-1}\mathbf{X}^\top \mathbf{V}^{-1}\mathbf{y}.
+$$
+
+We compute it directly using the extracted covariance matrix.
+
 ```{r}
 library(matlib)
 inv(t(as.matrix(X))%*%inv(as.matrix(cov))%*%as.matrix(X))%*%t(as.matrix(X))%*%inv(as.matrix(cov))%*%y
 ```
-### Compute covariance of fixed efffect coefficients
+
+This should match `fit.lmer2$coef$fixed` (up to numerical rounding). This is the central “bridge” between mixed models and GLS: mixed models reduce to GLS once $\mathbf{V}$ is known.
+
+
+
+### Compute covariance of fixed effect coefficients
+
+As noted earlier:
+
+$$
+\widehat{\mathrm{Cov}}(\hat{\boldsymbol\beta}) = (\mathbf{X}^\top \mathbf{V}^{-1}\mathbf{X})^{-1}.
+$$
+
 ```{r}
 inv(t(as.matrix(X))%*%inv(as.matrix(cov))%*%as.matrix(X))
 ```
-### Compute random effect coefficients
+
+
+
+### Compute random effect coefficients (BLUP)
+
+The BLUP / empirical Bayes estimate satisfies:
+
+$$
+\hat{\mathbf{u}} = \mathbf{D}\mathbf{Z}^\top \mathbf{V}^{-1}(\mathbf{y} - \mathbf{X}\hat{\boldsymbol\beta}).
+$$
+
+For a random intercept model, $\mathbf{D}$ is just the scalar $\sigma_b^2$. In code, `Lambda_new` constructs a diagonal matrix with that variance repeated for each subject (one random intercept per subject).
+
 ```{r}
 Lambda_new <-as.numeric(VarCorr(fit.lmer2)[1])*diag(length(levels(Data$Subject)))
 # head(Lambda_new)
 ```
 
+Now we compute $\hat{\mathbf{u}}$ and compare with the model’s own random-effect estimates.
 
 ```{r}
 uhat <- fit.lmer2$coef$random 
@@ -208,69 +507,85 @@ comput_uhat <- (as.matrix(Lambda_new))%*%t(Z)%*%inv(as.matrix(cov))%*%(y-as.matr
 cbind((comput_uhat@x),(uhat[["Subject"]]))
 ```
 
-### Compute predicted values 
+Why this is important:
+- It demonstrates that random effects are not “free parameters” estimated independently.
+- They are predictions, borrowing strength from the full dataset via $\mathbf{V}^{-1}$.
+- Shrinkage happens naturally through this formula.
 
 
-`usually computing mean and  prediction ci by using bootstrapping and simulated methods` 
 
-approximate at below:  
+### Compute predicted values
 
+In mixed models, the word “prediction” can mean different things:
 
-*This [webpage](<!-- https://stackoverflow.com/questions/14358811/extract-prediction-band-from-lme-fit -->) calculates the sd like above, but I think the following is also correct. *
+1) **conditional** (subject-specific) prediction: includes random effects  
+2) **marginal** (population-average) prediction: excludes random effects  
 
-#### the conditional distribution 
+Both are valid, but they answer different scientific questions.
 
-$$
-\mathbf{y}_{} \mid \mathbf{b}_{} \sim \mathbf{N}\left(\mathbf{X}_{} \boldsymbol{\beta}+\mathbf{Z}_{} \mathbf{b}_{}, \boldsymbol{\Sigma}_{}\right)
-$$
-therefore
+In most applied analyses:
+- “What is the expected trajectory for this subject?” → conditional
+- “What is the average trajectory in the population?” → marginal
 
-- `conditional mean prediction`
-$$
-\begin{align}
-E(\hat{Y}_0)&=E\mathbf{(X_0\hat{\beta} + Z_0\hat{u})}=\mathbf{X_0\beta + Z_0{u}}=E\mathbf{(Y_0)}\\
-var(\hat{Y}_0)&=E\mathbf{((X_0\hat{\beta}-X_0\beta)+ (Z_0\hat{u} - Z_0{u}))}^2\\&=E\mathbf{((X_0\hat{\beta}-X_0\beta)^2+ (Z_0\hat{u} - Z_0{u})^2+ 2 ((X_0\hat{\beta}-X_0\beta)* (Z_0\hat{u} - Z_0{u}))  )}
-\\
-              &=E\mathbf{\left(
-X_0(\hat{\beta}-\beta)(\hat{\beta}-\beta)'X_0' \right)}+
-E\mathbf{\left(
-Z_0(\hat{u}-u)(\hat{u}-u)'Z_0' \right)}+2E ((X_0(\hat{\beta}-\beta))* (Z_0(\hat{u} - {u}))) ?
-\\
-              &=\sigma^2\mathbf{X_0\left( X'X
-\right)^{-1}X_0'}+ \sigma^2\mathbf{Z_0\left( Z'Z
-\right)^{-1}Z_0'} + 2 *0*0 \quad \text {if independent}\\
-&= \mathbf{X_0 cov (X) X_0'}+  \mathbf{Z_0 cov (Z) Z_0'}  \\
-\end{align}
-$$
-
-    `generally`
-$$
-\begin{align}
-Var(X+Y) &= Cov(X+Y,X+Y)  \\
- &= E((X+Y)^2)-E(X+Y)E(X+Y)   \\
-&\text{by expanding,}  \\
- &= E(X^2) - (E(X))^2 + E(Y^2) - (E(Y))^2 + 2(E(XY) - E(X)E(Y))  \\
- &= Var(X) + Var(Y) + 2(E(XY)) - E(X)E(Y))  \\
-\end{align}
-$$
+We now formalize both views.
 
 
-- `conditional individual prediction`
-$$
-\begin{align}
-E(\hat{Y}_0)&= E\mathbf{(Y_0)}\\
-var(\hat{Y}_0) 
-&= \mathbf{X_0 cov (X) X_0'}+  \mathbf{Z_0 cov (Z) Z_0'} + \sigma^2 \\
-\end{align}
-$$
+
+#### The conditional distribution
+
+Conditioning on random effects:
 
 $$
-\begin{align}
-\hat{Y}_0& \sim N(\mu_{\hat{Y}_0},\sigma^2_{\hat{Y}_0})\\
-\end{align}
+\mathbf{y} \mid \mathbf{b} \sim \mathbf{N}\left(\mathbf{X}\boldsymbol{\beta}+\mathbf{Z}\mathbf{b}, \boldsymbol{\Sigma}\right).
 $$
 
-- `lower level (conditional prediction) in R` 
+This implies that the conditional mean depends on both fixed and random components.
+
+##### Conditional mean prediction
+
+For a new observation with design rows $\mathbf{X}_0$ and $\mathbf{Z}_0$:
+
+$$
+E(\hat{Y}_0) = \mathbf{X}_0\hat{\boldsymbol\beta} + \mathbf{Z}_0\hat{\mathbf{u}}.
+$$
+
+The uncertainty in the conditional mean prediction comes from uncertainty in estimating $\boldsymbol\beta$ and $\mathbf{u}$ (and possibly from uncertainty in variance components, which we typically ignore in simple plug-in formulas).
+
+Your derivation expands:
+
+$$
+\mathrm{Var}(X+Y)=\mathrm{Var}(X)+\mathrm{Var}(Y)+2\mathrm{Cov}(X,Y),
+$$
+
+so if we treat the fixed and random predictors as independent (a simplifying approximation), the covariance term is ignored and the prediction variance becomes “fixed-part variance + random-part variance.”
+
+That leads to the practical decomposition:
+
+$$
+\mathrm{Var}(\hat{Y}_0) \approx \mathbf{X}_0 \,\widehat{\mathrm{Cov}}(\hat{\boldsymbol\beta})\, \mathbf{X}_0^\top
++ \mathbf{Z}_0 \,\widehat{\mathrm{Cov}}(\hat{\mathbf{u}})\, \mathbf{Z}_0^\top.
+$$
+
+##### Conditional individual prediction
+
+If we want a prediction interval for an actual future $Y_0$ (not just its mean), we must add residual variance:
+
+$$
+\mathrm{Var}(Y_0 - \hat{Y}_0)\approx \mathrm{Var}(\hat{Y}_0) + \sigma^2.
+$$
+
+This is exactly the distinction in your code between `SE_rand` (mean) and `SE_rand2` (individual).
+
+
+
+#### Lower level (conditional prediction) in R
+
+Here we compute subject-specific fitted values explicitly:
+
+$$
+\hat{\mathbf{y}} = \mathbf{X}\hat{\boldsymbol\beta} + \mathbf{Z}\hat{\mathbf{u}}.
+$$
+
 ```{r}
 # how to calculate predicted values
 yhat <- X%*%(fit.lmer2$coef$fixed)+Z%*% as.numeric ( uhat[["Subject"]])
@@ -278,6 +593,13 @@ yhat <- X%*%(fit.lmer2$coef$fixed)+Z%*% as.numeric ( uhat[["Subject"]])
 head(cbind (yhat,predict(fit.lmer2),y))  #create individual trajectory curve   
 
 ```
+
+The comparison shows that:
+- your manual computation equals `predict(fit.lmer2)` at the default prediction level (subject-specific).
+
+Next we compute an approximate standard error of conditional predictions by adding two components:
+- fixed-effect contribution: $\mathbf{X}\,\widehat{\mathrm{Cov}}(\hat{\boldsymbol\beta})\,\mathbf{X}^\top$
+- random-effect contribution: $\mathbf{Z}\,\widehat{\mathrm{Cov}}(\hat{\mathbf{u}})\,\mathbf{Z}^\top$ (approximated here using the random intercept variance)
 
 ```{r}
 #compute standard error for marginal predictions
@@ -289,47 +611,56 @@ head(SE_rand,20)
 head(SE_rand2,20)
 ```
 
-`see below `
+A conceptual caution:
+- In full generality, $\widehat{\mathrm{Cov}}(\hat{\mathbf{u}})$ is not simply $\sigma_b^2 I$; it depends on $\mathbf{D}$ and $\mathbf{V}^{-1}$.
+- Your expression is a reasonable pedagogical approximation that highlights the idea of adding fixed and random contributions.
 
 
-#### The marginal distribution 
-$$
-\mathbf{y}_{} \sim \mathrm{N}\left(\mathbf{X}_{} \boldsymbol{\beta}, \mathbf{V}_{}\right)
-$$
 
-$$
-\operatorname{Cov}[\mathbf{y}]=\mathbf{V}=\mathbf{Z D Z}^{\prime}+\Sigma
-$$
+### The marginal distribution
 
-*$\mathbf{Z}_{} \mathbf{D Z}_{}^{\prime}$ represents the random-effects structure*
-
-therefore
-
-- `marginal mean prediction`
+Integrating out random effects yields:
 
 $$
-\begin{align}
-E(\hat{Y}_0)&=E\mathbf{(X_0\hat{\beta})}=\mathbf{X_0\beta}=E\mathbf{(Y_0)}\\
-var(\hat{Y}_0)&=E\mathbf{(X_0\hat{\beta}-X_0\beta)}^2\\
-              &=E\mathbf{\left(
-X_0(\hat{\beta}-\beta)(\hat{\beta}-\beta)'X_0' \right)}\\
-              &=E\mathbf{X_0\left(
-(\hat{\beta}-\beta)(\hat{\beta}-\beta)' \right)X_0'}\\
-              &=\mathbf{X_0Cov(X)X_0'}\\
-\end{align}
+\mathbf{y} \sim \mathrm{N}\left(\mathbf{X}\boldsymbol{\beta}, \mathbf{V}\right),
 $$
 
-- `marginal individual prediction`
+where
+
 $$
-\begin{align}
-E(\hat{Y}_0)&= E\mathbf{(Y_0)}\\
-var(\hat{Y}_0) 
-&= \mathbf{X_0 cov (X) X_0'}+    \sigma^2 \\
-\end{align}
+\mathrm{Cov}(\mathbf{y})=\mathbf{V}=\mathbf{Z}\mathbf{D}\mathbf{Z}^\top+\boldsymbol{\Sigma}.
 $$
 
-- `higher level (marginal)` in R
- 
+Here $\mathbf{Z}\mathbf{D}\mathbf{Z}^\top$ is the covariance induced by random effects, and $\boldsymbol{\Sigma}$ is the residual covariance (often $\sigma^2 I$ unless we specify a correlation structure).
+
+#### Marginal mean prediction
+
+The marginal mean depends only on fixed effects:
+
+$$
+E(\hat{Y}_0)=\mathbf{X}_0\hat{\boldsymbol\beta}.
+$$
+
+The variance of the marginal mean prediction uses only $\widehat{\mathrm{Cov}}(\hat{\boldsymbol\beta})$:
+
+$$
+\mathrm{Var}(\hat{Y}_0)=\mathbf{X}_0 \,\widehat{\mathrm{Cov}}(\hat{\boldsymbol\beta})\, \mathbf{X}_0^\top.
+$$
+
+#### Marginal individual prediction
+
+For predicting a new observation at the population level, we add residual variance:
+
+$$
+\mathrm{Var}(Y_0)\approx \mathrm{Var}(\hat{Y}_0)+\sigma^2.
+$$
+
+
+
+#### Higher level (marginal) in R
+
+Your code computes the marginal prediction SE using only the fixed-effect variance component:
+
 ```{r}
 #compute standard error for marginal predictions
 predvar <- diag(X %*% fit.lmer2$varFix %*% t(X))
@@ -340,6 +671,11 @@ head(SE,10)
 head(SE2,10)
 ```
 
+Then it forms approximate 95% bounds:
+
+- mean prediction band: $\hat{\mu} \pm 1.96\,SE$
+- individual prediction band: $\hat{\mu} \pm 1.96\,SE2$
+
 ```{r}
 up=predict(fit.lmer2, newdata=Data, level=0) +1.96 *SE  #mean prediction 
 up2=predict(fit.lmer2, newdata=Data, level=0) +1.96 *SE2  #individual prediction 
@@ -347,63 +683,66 @@ head(up)
 head(up2)
 ```
 
+Note the crucial use of `level=0`:
+- `level=0` gives marginal predictions (fixed effects only)
+- `level=1` (or default) typically includes random effects for subject-specific predictions
+
+Finally, `ggeffects::ggpredict()` provides a convenient interface for marginal effects plots (your code uses `%>%`, but we keep it unchanged as requested).
+
 ```{r,message=F}
 library(tidyverse)
 library(ggeffects)
 ggpredict(fit.lmer2,terms=c("age" ))
-ggpredict(fit.lmer2,terms=c("age" ))  %>% plot(rawdata = T, dot.alpha = 0.2)
+
+# ggpredict(fit.lmer2,terms=c("age" ))  %>% plot(rawdata = T, dot.alpha = 0.2)
 # ggpredict(fit.lmer2,"age",   type = "re" )  %>% plot(rawdata = T, dot.alpha = 0.2)
+
+library(sjPlot)
+plot_model(fit.lmer2, type = "pred", terms = "age", show.data = TRUE, dot.alpha = 0.2)
 ```
-
-**Compute SE by hand and compare with above SE: **
-
-0.520408163
-0.489795918
-0.489795918
-0.520408163
-
-```{r}
-head(SE,10)
-```
+ 
 
 
-```{r}
-# head(predict(fit.lmer2))
-# head (predict(fit.lmer2, newdata=Data, level=1)) #predicted value
-# head (predict(fit.lmer2, newdata=Data, level=0)) #mean and ci   
-```
-<!-- `fixed effect variance` -->
-<!-- ```{r} -->
-<!-- diag (X%*%(vcov(fit.lmer2))%*%t(X)) -->
-<!-- ``` -->
-
-<!-- `marginal y mean and variance directly` -->
-<!-- # ```{r} -->
-<!-- # ymean <- X%*%(fit.lmer2$coef$fixed)  # multiple comparisons (combine clusters) -->
-<!-- # ysd  <- sqrt (diag (cov)) -->
-<!-- # head(cbind (ymean,ysd )) -->
-<!-- # ``` -->
+Your “Compute SE by hand” numeric values are a useful checkpoint: they suggest that the analytic SE derived from $\mathbf{X}\widehat{\mathrm{Cov}}(\hat{\boldsymbol\beta})\mathbf{X}^\top$ matches a simpler calculation for specific design points.
 
 
-### Using lme with Gaussian
-`it means the correlation in a group but not correlation in variables (different covariances)`
+
+### Extending the covariance structure: correlated residual errors
+
+So far, our baseline model assumed independent residuals:
+
+$$
+\boldsymbol{\Sigma}=\sigma^2\mathbf{I}.
+$$
+
+But longitudinal data often have residual correlations over time even after accounting for random effects. `nlme` allows us to specify parametric correlation structures for residuals within subjects.
+
+A key conceptual point:
+
+- random effects model *between-subject* heterogeneity (e.g., different baseline levels),
+- residual correlation structures model *within-subject temporal dependence* beyond random effects.
+
+
+
+### Using lme with Gaussian correlation
+
+A Gaussian correlation structure implies residual correlation decays with distance in time (here, age). With a nugget effect, we allow a discontinuity at distance 0 (measurement error).
+
 ```{r}
 library(nlme)
 
 fit.lmer.gaus <- lme(distance ~ age + Sex  , random = ~1 | Subject, correlation=corGaus(form= ~ age|Subject, nugget=TRUE), data = Data) 
 summary(fit.lmer.gaus)
 ```
-- Plotting of the empirical covariation (of residuals) versus "age"
 
-`when describing the spatial pattern of a measured variable, a common way of visualizing the spatial autocorrelation of a variable is a variogram plot.`
-
-`checking the semi-variance change by the distance of spatial autocorrelation. `
+Variogram plots visualize how empirical semi-variance changes with time separation. In longitudinal settings, they act like a diagnostic for residual correlation: if semi-variance increases with lag, that indicates correlation decays as time separation grows.
 
 ```{r,warning=FALSE}
 print(plot(Variogram(fit.lmer.gaus, form =~as.numeric(age)|Subject,
 data = Data)))
 ```
 
+We can again extract $\mathbf{V}$ (now incorporating the Gaussian residual correlation) and verify that GLS formulas still apply. The only difference is that $\mathbf{V}$ is no longer compound symmetric.
 
 ```{r}
 require(mgcv)
@@ -413,25 +752,47 @@ cov.gaus <- extract.lme.cov(fit.lmer.gaus,Data)
 head(cov.gaus)
 dim(cov.gaus)
 ```
-- Compute fixed effect coefficients using Gaussian
+
+Compute fixed effects using the Gaussian covariance:
+
+$$
+\hat{\boldsymbol\beta}_{GLS} = (\mathbf{X}^\top \mathbf{V}^{-1}\mathbf{X})^{-1}\mathbf{X}^\top \mathbf{V}^{-1}\mathbf{y}.
+$$
+
 ```{r}
 library(matlib)
 inv(t(as.matrix(X))%*%inv(as.matrix(cov.gaus))%*%as.matrix(X))%*%t(as.matrix(X))%*%inv(as.matrix(cov.gaus))%*%y
 fit.lmer.gaus$coef$fixed
 ```
 
-*the same below*
+This equivalence is a powerful principle:
+> Mixed models are GLS with a structured covariance matrix.
 
-### Using lme with autoregressive  
+
+
+### Using lme with autoregressive (AR1)
+
+An AR(1) residual structure assumes correlation decays geometrically with time lag:
+
+$$
+\mathrm{Cor}(\varepsilon_{ij},\varepsilon_{ik})=\rho^{|t_{ij}-t_{ik}|},
+$$
+
+under equally spaced times; with irregular spacing, `nlme` uses an appropriate generalization based on the numeric time covariate.
+
 ```{r}
 fit.lmer.AR1 <- lme(distance ~ age + Sex  , random = ~1 | Subject, correlation=corAR1(form= ~ as.numeric(age)|Subject ), data = Data) 
 summary(fit.lmer.AR1)
 ```
-- Plotting of the empirical covariation (of residuals) versus "age" 
+
+Variogram diagnostic:
+
 ```{r,warning=FALSE}
 print(plot(Variogram(fit.lmer.AR1, form =~as.numeric(age)|Subject,
 data = Data)))
 ```
+
+Extract covariance:
 
 ```{r}
 require(mgcv)
@@ -442,16 +803,31 @@ head(cov.AR1)
 dim(cov.AR1)
 ```
 
-### Using lme with exponential  
+
+
+### Using lme with exponential correlation
+
+Exponential correlation decays continuously with lag:
+
+$$
+\mathrm{Cor}(\varepsilon_{ij},\varepsilon_{ik})=\exp(-\phi |t_{ij}-t_{ik}|).
+$$
+
+This is often used in spatial and longitudinal settings.
+
 ```{r}
 fit.lmer.Exp <- lme(distance ~ age + Sex  , random = ~1 | Subject, correlation=corExp(form= ~ as.numeric(age)|Subject ), data = Data) 
 summary(fit.lmer.Exp)
 ```
-- Plotting of the empirical covariation (of residuals) versus "age"
+
+Variogram:
+
 ```{r,warning=FALSE}
 print(plot(Variogram(fit.lmer.Exp, form =~as.numeric(age)|Subject,
 data = Data)))
 ```
+
+Extract covariance:
 
 ```{r}
 require(mgcv)
@@ -464,18 +840,29 @@ dim(cov.Exp)
 
 
 
-### Using lme with unstructured  
+### Using lme with unstructured residual correlation (corSymm)
+
+An unstructured residual correlation places minimal constraints on within-subject correlations, allowing each pairwise correlation to be estimated (subject to positive definiteness). Because this can be unstable, `nlme` often pairs it with heteroscedasticity modeling such as `varIdent`.
+
+Conceptually, this approach says:
+- “I do not want to impose a parametric decay pattern.”
+- “Let the data estimate the correlation pattern.”
+
 ```{r}
 fit.lmer.corSymm <- lme(distance ~ age + Sex  , random = ~1 |  (Subject), correlation=corSymm(form= ~ 1| (Subject) ),
                      weights = varIdent(form=~1|age),
                      data = Data)
 summary(fit.lmer.corSymm)
 ```
-- Plotting of the empirical covariation (of residuals) versus "age"
+
+Variogram:
+
 ```{r,warning=FALSE}
 print(plot(Variogram(fit.lmer.corSymm, form =~as.numeric(age)|Subject,
 data = Data)))
 ```
+
+Extract covariance:
 
 ```{r}
 require(mgcv)
@@ -486,25 +873,36 @@ head(cov.corSymm)
 dim(cov.corSymm)
 ```
 
-<!-- - Using gls with unstructured  -->
-<!-- ```{r} -->
-<!-- gls.corSymm <- gls(distance ~ age + Sex  ,    -->
-<!--                      correlation=corSymm(form= ~ 1| (Subject) ), -->
-<!--                      weights = varIdent(form=~1|age), -->
-<!--                      data = Data) -->
-<!-- summary(gls.corSymm) -->
-<!-- ``` -->
 
-### Using lme with compound symm 
+
+### Using lme with compound symmetry residual correlation (corCompSymm)
+
+Compound symmetry as a residual correlation structure assumes constant correlation within a subject:
+
+$$
+\mathrm{Cor}(\varepsilon_{ij},\varepsilon_{ik})=\rho \quad (j\neq k).
+$$
+
+This resembles what a random intercept induces, but note the difference:
+
+- Random intercept creates compound symmetry through $\mathbf{Z}\mathbf{D}\mathbf{Z}^\top$
+- corCompSymm creates compound symmetry through $\boldsymbol\Sigma$
+
+In practice, both can produce similar marginal covariance patterns, but they represent different modeling stories.
+
 ```{r}
 fit.lmer.Symm <- lme(distance ~ age + Sex  , random = ~1 |  (Subject), correlation=corCompSymm(form= ~ as.numeric(age)| (Subject) ), data = Data) 
 summary(fit.lmer.Symm)
 ```
-- Plotting of the empirical covariation (of residuals) versus "age"
+
+Variogram:
+
 ```{r,warning=FALSE}
 print(plot(Variogram(fit.lmer.Symm, form =~as.numeric(age)|Subject,
 data = Data)))
 ```
+
+Extract covariance:
 
 ```{r}
 require(mgcv)
@@ -515,7 +913,17 @@ head(cov.Symm)
 dim(cov.Symm)
 ```
 
-### Using gls with unstructured, corSymm 
+
+
+### GLS models: correlation in residuals without random effects
+
+The `gls()` function fits models where all correlation is placed in the residuals. This can be useful when:
+
+- you do not need subject-level random effects, or
+- you want a pure covariance-modeling approach.
+
+### GLS with unstructured correlation
+
 ```{r}
 gls.corsymm <- gls(distance ~ Sex +age, Orthodont,
                    correlation = corSymm(form = ~ 1 | Subject),
@@ -523,32 +931,40 @@ gls.corsymm <- gls(distance ~ Sex +age, Orthodont,
 summary(gls.corsymm)
 ```
 
+### GLS with compound symmetry
 
-
-### Using gls with compound symm, which = lmer model default = lme default = lme compound symm =lme auto reg in this example  
 ```{r}
 gls.comsys <- gls(distance ~ Sex +age, Orthodont,
                    correlation = corCompSymm(form = ~ 1 | Subject))
 summary(gls.comsys)
 ```
 
-**lme4 does not allow to specify it, and it can only fit LMMs with independent residual errors. However, the range of available variance-covariance matrices for the random effects are restricted to diagonal or general matrices. **
+Interpretation guidance:
+- `gls()` is often a good baseline when you want to emphasize covariance structure.
+- `lme()` is preferred when subject-specific effects are scientifically meaningful (e.g., patient-specific baselines).
 
-## Manual simulating data for linear mix model
+
+
+### Practical limitation of lme4
+
+**lme4** is extremely powerful for random effects, but it does not natively support rich residual correlation structures. In `lme4`, residuals are assumed independent conditional on random effects (i.e., $\boldsymbol\Sigma=\sigma^2\mathbf{I}$). You can fit complex random-effects covariance structures, but not AR(1)/Gaussian/exponential residual correlations in the same direct way as `nlme`.
+
+This is why, in longitudinal data analysis, a common workflow is:
+
+- use `lme4` for flexible random-effects modeling and efficient fitting,
+- use `nlme` when you need explicit residual correlation structures.
+
+
+
+ 
+## Manual simulating data for linear mix model 
 [see here](https://rpubs.com/Daniel_He/1041001)
 
 ## How to calculate the prediction interval for LMM
 [see here](https://rpubs.com/Daniel_He/1041063)
-
 
 ## Least-squares means with interaction effect
 [see here](https://rpubs.com/Daniel_He/1041369)
 
 ## Spline regression
 [see here](https://rpubs.com/Daniel_He/1041069)
-
-
-
-
-
-

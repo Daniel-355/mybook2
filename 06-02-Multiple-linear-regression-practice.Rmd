@@ -1,13 +1,44 @@
-
 ## Multiple linear regression practice
-    
+
+This section is a hands-on workflow for multiple linear regression using the classic **Boston housing** dataset. The goal is not only to fit a model, but to practice the full sequence that a statistician typically follows in real projects:
+
+1) understand the dataset and variable types,  
+2) check missingness and data quality,  
+3) explore distributions and correlations,  
+4) consider transformations for modeling stability,  
+5) build training/test splits for honest evaluation,  
+6) fit models (baseline, stepwise, polynomial, interaction, robust),  
+7) check assumptions and diagnostics,  
+8) compare models using information criteria and cross-validation,  
+9) interpret coefficients and relative importance,  
+10) perform prediction and validate performance.
+
+Even though this example is not a clinical dataset, the workflow is transferable to many applied settings.
+
+---
+
+### Load required packages
+
+We start by loading packages that support regression modeling, data exploration, and diagnostics:
+
+- `MASS`: contains the Boston dataset and robust regression (`rlm`)
+- `psych`: descriptive summaries and EDA panels
+- `car`: regression utilities like VIF
+
 ```{r, message=FALSE}
 library(car)
 library(MASS)
 library(psych)
 ```
- 
+
+---
+
 ### Loading and describing data
+
+We load the dataset and create a working copy. In a real analysis, it is good practice to keep a pristine “original” object and perform transformations on copies.
+
+`describe()` provides a compact summary: N, mean, SD, min/max, and distribution hints for each variable. This is often more informative than simply printing the first few rows.
+
 ```{r}
 
 data(Boston)
@@ -15,42 +46,95 @@ data_ori <- Boston
 describe(data_ori)
 
 ```
+
+`summary()` is a base R quick scan: it gives min/median/mean/max for numeric variables and counts for factors. This is a standard first step to detect strange ranges or unrealistic values.
+
 ```{r}
 summary(data_ori)
 ```
 
+---
+
 ### Create table 1
+
+A “Table 1” is a standard descriptive table for reporting baseline characteristics (clinical trials, observational studies, epidemiology, etc.). Here we create a Table 1 across all variables without grouping, mainly to practice the tool and check distributions.
+
 ```{r, message=FALSE}
 library(boot) 
 library(table1)
 table1(~ . , data=data_ori)
 ```
 
+Practical note: in real reporting, Table 1 is usually stratified by a group (e.g., treatment arm), but the unstratified version is still useful as a data audit.
+
+---
+
 ### Missingness checking
+
+Before modeling, verify whether any variables have missing values and whether patterns exist. The Boston dataset is typically complete, but this step is included because real datasets almost never are.
+
+`md.pattern()` (from `mice`) shows missingness patterns and counts by variable.
+
 ```{r,message=FALSE}
 
 library(mice)
 md.pattern(data_ori)
 ```
-### Exploratory data analysis    
 
--correlation matrix 
+If missingness exists, you should decide whether it is:
+- MCAR (completely at random),
+- MAR (at random conditional on observed data),
+- MNAR (not at random).
+
+That decision influences the imputation strategy and the validity of downstream inference.
+
+---
+
+### Exploratory data analysis
+
+Exploratory data analysis (EDA) is where you learn the “shape” of the data: correlations, nonlinear relationships, skewness, and potential outliers.
+
+#### Correlation matrix and bivariate panels
+
+`pairs.panels()` is a powerful all-in-one diagnostic:
+- scatterplots for each pair,
+- correlations,
+- histograms (or density plots) on the diagonal.
+
+This often reveals multicollinearity and potential transformations needed.
+
 ```{r}
 library(psych)
 pairs.panels(data_ori)
 
 ```
 
-- histogram
+#### Histograms
+
+Histograms quickly show skewness, long tails, spikes, and potential coding problems (e.g., a continuous variable with only a few discrete values).
+
 ```{r}
 library(DataExplorer)
 plot_histogram(data_ori)
 ```
 
+---
 
+### Transformations
 
-### Transformations 
-- transformation (based on the following rule) then histogram
+Many predictors in real-world socioeconomic and biomedical data are skewed. Transformations can:
+- improve linearity,
+- stabilize variance,
+- reduce influence of extreme values,
+- make residuals closer to normal.
+
+Here you apply a set of transformations guided by a common heuristic:
+- log transforms for strictly positive skewed variables,
+- square root for moderately skewed,
+- reflections when needed to “flip” direction (as shown with `age` and `black`).
+
+The goal is not “making everything normal,” but making linear modeling assumptions more reasonable.
+
 ```{r,message=FALSE}
 library(tidyverse)
 data_trans = data_ori %>%  mutate(age= sqrt(max(age)+1-age),
@@ -63,8 +147,17 @@ plot_histogram(data_trans)
 
 ! [How to transform data for normality.](https://www.statisticssolutions.com/wp-content/uploads/2018/12/b2.png)
 
+A practical note: transformations should be applied thoughtfully and documented clearly, especially if you need interpretability. For example, a log-transformed predictor means coefficients represent changes per multiplicative change in the original scale.
 
-- check linearity between `y and x`
+---
+
+### Check linearity between \(y\) and \(x\)
+
+Before fitting a multivariable model, it helps to check whether key predictors have roughly linear relationships with the outcome. Scatterplots can immediately show:
+- curvature (suggesting polynomial terms),
+- clusters (suggesting interactions or stratification),
+- heteroscedasticity (spread changes with \(X\)).
+
 ```{r}
 attach(data_trans)
 plot(medv, rm)
@@ -75,10 +168,19 @@ plot(medv, black)
 plot(medv,crim)
  
 ```
- 
-### Data imputation  and normalization
-#### For original"data"
-- compiling knnimpute model (see machine learning section)
+
+In practice, the Boston housing dataset is known for strong relationships between `medv` and both `lstat` and `rm`, and these often show nonlinearity—motivating quadratic terms and interactions later.
+
+---
+
+### Data imputation and normalization
+
+This workflow demonstrates **KNN imputation** using `caret::preProcess(method = "knnImpute")`. Even if the dataset has no missing values, this section is included because missingness is common in applied work.
+
+#### For original "data"
+
+We store `medv` separately before preprocessing, then restore it afterward. This preserves the target variable while applying preprocessing to predictors.
+
 ```{r,message=F}
 library(caret)
 # Create the knn imputation model on the training data
@@ -86,7 +188,9 @@ y=data_ori$medv
 preProcess_missingdata_model <- preProcess(data_ori , method='knnImpute')
 preProcess_missingdata_model
 ```
-- check missingness
+
+Then we apply the model and verify missingness is resolved. `anyNA()` is a quick binary check; in larger projects you may also compute missing rates by column.
+
 ```{r}
 # Use the imputation model to predict the values of missing data points
 library(RANN)  # required for knnInpute
@@ -96,7 +200,9 @@ data_ori$medv <- y
 ```
 
 #### For transformed "data2"
-- compiling knnimpute model (see machine learning section)
+
+We repeat the same workflow for the transformed dataset. This creates a fair comparison between “original scale” and “transformed scale” modeling pipelines.
+
 ```{r,message=F}
 library(caret)
 y2=data_trans$medv
@@ -104,7 +210,7 @@ y2=data_trans$medv
 preProcess_missingdata_model2 <- preProcess(data_trans , method='knnImpute')
 preProcess_missingdata_model2
 ```
-- check missingness
+
 ```{r}
 # Use the imputation model to predict the values of missing data points
 library(RANN)  # required for knnInpute
@@ -113,11 +219,30 @@ anyNA(data_trans )
 data_trans$medv <- y2
 ```
 
+---
+
 ### Generate dummy variables
+
+Categorical predictors must be encoded properly before modeling. In many workflows, converting variables to `factor` is enough because `lm()` automatically handles factors using dummy coding (with a reference level).
+
 - also can do using `as.factor` function for predictors `x`
 
-### Spliting data into trainning data and test data 
-- by using `caret` package (test data for external validation)
+In real projects, pay attention to:
+- reference group selection,
+- whether categories are sparse,
+- and whether encoding must be consistent across train/test.
+
+---
+
+### Splitting data into training and test data
+
+A training/test split provides external-style evaluation: the model is fit on training data and assessed on held-out test data.
+
+This helps detect overfitting, especially when you:
+- try many model variants,
+- add polynomial terms,
+- include interactions,
+- or apply variable selection procedures.
 
 ```{r}
 # Create the training and test datasets
@@ -142,91 +267,200 @@ data2 <- data_trans[trainRowNumbers2,]
 # Step 3: Create the test dataset
 testdata2 <- data_trans[-trainRowNumbers2,]
 ``` 
- 
+
+Practical note: `createDataPartition()` creates balanced partitions with respect to the outcome distribution, which can be helpful when the outcome is skewed.
+
+---
+
 ### Step regression
+
+Stepwise regression is a common teaching tool and sometimes used in quick exploratory modeling. It iteratively adds/removes variables to optimize a criterion (typically AIC by default).
+
+However, in serious applied work, stepwise selection can be unstable and can inflate type I error if you treat the final p-values as if selection never happened. Treat it as a **screening tool**, and validate with cross-validation.
+
 ```{r}
 model_o = lm(  medv ~.  , data=data2)
 step(model_o,direction = "both")
 
 # summary(step(model_o,direction = "both"))
 ```
+
+---
+
 ### Create a model after selecting variables
+
+After variable selection (or based on domain knowledge), we fit a parsimonious model and inspect its statistical summary.
+
+The `summary()` output gives:
+- coefficient estimates,
+- standard errors and t-tests,
+- residual standard error,
+- \(R^2\) and adjusted \(R^2\),
+- overall F-statistic.
+
 ```{r}
 model_trasf <- lm(formula = medv ~ zn + chas + nox + rm + dis + rad + tax + 
     ptratio + lstat, data = data2)
 summary(model_trasf)
 ```
+
+At this stage, interpretability matters: each coefficient reflects the effect of that predictor **holding others constant**, assuming linearity and correct specification.
+
+---
+
 ### Multicollinearity checking
+
+Multicollinearity inflates standard errors and makes coefficient estimates unstable. Variance inflation factor (VIF) is a standard diagnostic:
+- VIF ≈ 1: no collinearity
+- VIF moderately large: correlation among predictors
+- Very large VIF: serious instability
+
 ```{r}
 vif(model_trasf)
 ```
+
+In practice, multicollinearity is common in socioeconomic variables and in biomedical lab panels. If VIF is high, consider:
+- removing redundant variables,
+- combining variables (indexes),
+- penalized regression methods (ridge/lasso).
+
+---
+
 ### Plot model to check assumptions
+
+The default `plot(lm_object)` produces key diagnostic plots:
+- residuals vs fitted (linearity, heteroscedasticity),
+- normal Q-Q (normality of residuals),
+- scale-location (variance stability),
+- residuals vs leverage (influential points).
+
 ```{r}
 plot(model_trasf)
 ```
 
-- histogram of residuals
+#### Histogram of residuals
+
+A quick distribution check; it complements the Q-Q plot.
+
 ```{r}
 resid<- model_trasf$residuals
 hist(resid)
 ```
 
-- F test of model
+#### F test of model
+
+ANOVA for the fitted model provides model-level significance and decomposition of sums of squares.
+
 ```{r}
 anova(model_trasf)
 ```
 
-- coefficients 
+#### Coefficients table
+
+This is the standard regression table with estimates, SEs, t-statistics, and p-values.
+
 ```{r}
 coef(summary(model_trasf))
 ```
-- confidence interval
+
+#### Confidence intervals
+
+Confidence intervals help quantify uncertainty around effect sizes and are generally more informative than p-values alone.
+
 ```{r}
 confint(model_trasf)
 ```
 
-### Add polynomial of quadratic term
-- `rm and lstat` 
+---
+
+### Add polynomial (quadratic) terms
+
+When scatterplots suggest curvature, a quadratic term can capture nonlinearity without fully abandoning linear regression.
+
+Here we add \(rm^2\) and \(lstat^2\). This often improves fit when relationships are curved.
+
 ```{r}
 model_trasf_poly <- lm(formula = medv ~ zn + chas + nox +  I(rm^2) + dis + rad + tax + 
     ptratio +   I(lstat^2), data = data2)
 summary(model_trasf_poly)
 ```
+
+Practical note: polynomial terms can improve fit but may complicate interpretation. Always validate that the improvement generalizes (e.g., CV).
+
+---
+
 ### Add interaction terms
-- `rm and lstat` 
+
+Interactions allow the effect of one predictor to depend on another. Conceptually, they represent effect modification.
+
+Here we model the interaction \(rm \times lstat\). This is a meaningful interaction in Boston housing: the benefit of more rooms may differ across neighborhood socioeconomic status proxies.
+
+- `rm and lstat`  
 - R2 >0.7 indicates a good fit of the model 
+
 ```{r}
 model_trasf_term <- lm(formula = medv ~ zn + chas + nox +  (rm*  lstat) + dis + rad + tax + 
     ptratio  , data = data2)
 summary(model_trasf_term)
 ```
 
+Diagnostic plots remain essential because adding interactions can create leverage points and change residual structure.
+
 ```{r}
 plot(model_trasf_term)
 ```
 
+---
+
 ### Robust regression
+
+Outliers and influential points can dominate OLS. Robust regression (`rlm`) downweights extreme residuals and can produce more stable estimates.
+
+This is especially relevant when:
+- the dataset contains measurement errors,
+- there are heavy tails,
+- influential observations distort inference.
+
 ```{r}
 robust_model_term <- rlm(medv ~ zn + chas + nox +  (rm*  lstat) + dis + rad + tax + 
     ptratio  , data = data2)
 summary(robust_model_term)
 ```
 
+Practical note: robust regression changes the objective function and standard inference is different. It’s often used for sensitivity analysis rather than as the sole primary model.
+
+---
+
 ### Create a model before transforming data
+
+To understand the impact of transformation, we fit the analogous model on the original (non-transformed) training dataset. This helps assess whether transformation improves:
+- fit,
+- residual behavior,
+- predictive performance.
+
 ```{r}
 model_trasf_orig <- lm(formula = medv ~ zn + chas + nox + rm + dis + rad + tax + 
     ptratio + lstat, data = data)
 summary(model_trasf_orig)
 ```
 
-- non nest models comparisons 
+#### Non-nested model comparisons (AIC)
+
+AIC compares models by balancing fit and complexity. Lower AIC indicates better tradeoff (within the candidate set).
+
 ```{r}
 AIC(model_trasf,model_trasf_orig)
 
 ```
 
+---
+
 ### K-fold cross validation
-- to make sure which model is better
+
+Cross-validation provides a more direct estimate of predictive performance. It is especially important after model selection or when comparing multiple model families.
+
+Here we use 10-fold CV via `DAAG::cv.glm()`.
+
 ```{r,message=FALSE}
 # install.packages("DAAG")
 library(DAAG)
@@ -238,21 +472,38 @@ cv.err  <- cv.glm(data2, model_trasf_term_cv, K = 10)$delta
 cv.err 
 ```
 
+Interpretation:
+- The `delta` output typically includes raw and adjusted CV error estimates.
+- Compare CV errors across competing models; smaller values indicate better predictive performance.
+
+---
 
 ### Nonnest models comparisons
+
+Once you have multiple candidate models (original scale, transformed, polynomial, interaction), compare them side-by-side.
+
+AIC is one way; CV error is another. In applied practice, you often consider both:
+- AIC for model parsimony,
+- CV for predictive robustness.
+
 ```{r}
 AIC(model_trasf_term,model_trasf,model_trasf_orig,model_trasf_poly)
 # interaction, transformation, original, polynomial by order (`data` has been normalized but not `data2`)
 ```
 
-- plot the final model and check the model assumption  
+---
 
-`posterior predictive check, 
-linearity, 
-homogeneity of variance, 
-influential points, 
-colinearity, and 
-normality of residuals` 
+### Posterior predictive / diagnostic checks
+
+Even after selecting a “best” model, the most important step is to verify assumptions and identify influential observations.
+
+`performance::check_model()` provides a comprehensive set of diagnostics in one call:
+- linearity,
+- homoscedasticity,
+- influential points,
+- collinearity,
+- normality of residuals.
+
 ```{r}
 # install.packages("performance")
 library(performance)
@@ -260,17 +511,31 @@ check_model(model_trasf_term)
  
 ```
 
-### Create forest plot for coefficients 
- 
+In practice, if diagnostics are poor, consider:
+- transformations,
+- adding nonlinear terms,
+- robust SEs,
+- or moving to a more appropriate model class.
+
+---
+
+### Forest plot for coefficients
+
+Coefficient plots help communicate results clearly. They emphasize effect size and uncertainty, not only p-values.
+
 ```{r}
 library(sjPlot) 
 plot_model(model_trasf_term, show.values = TRUE, value.offset = 0.4) 
 ```
 
+---
 
 ### Relative Importance
 
-- provides measures of relative importance
+When predictors are correlated, raw coefficients are not always a good measure of “importance.” Relative importance methods attempt to quantify each predictor’s contribution to explained variance.
+
+Here, `relaimpo` is used with bootstrap resampling to assess stability.
+
 ```{r, message=FALSE}
 library(relaimpo)
 # calc.relimp(fit,type=c("lmg","last","first","pratt"),
@@ -283,11 +548,18 @@ booteval.relimp(boot) # print result
 plot(booteval.relimp(boot,sort=TRUE)) # plot result
 ```
 
+Practical note: bootstrap sample size `b` should be much larger (e.g., 500–2000) for stable inference; here it is small for demonstration.
 
+---
 
+### Model prediction
 
-### Model prediction 
-- prediction `ci` and mean `ci`
+Prediction is where the model becomes operational. We generate:
+- prediction intervals (`interval="predict"`) for individual outcomes,
+- confidence intervals (`interval="confidence"`) for mean responses.
+
+First, create a predictor dataset.
+
 ```{r}
 library(dplyr)
 data_pred <-   dplyr::select(data2 , zn , chas , nox , rm , dis , rad , tax , 
@@ -295,30 +567,54 @@ data_pred <-   dplyr::select(data2 , zn , chas , nox , rm , dis , rad , tax ,
 data_pred[1:10,]
 ```
 
+#### Prediction interval (individual prediction)
+
+Prediction intervals are wider because they include residual variability.
+
 ```{r}
 predy <- predict(model_trasf_term, data_pred[1:10,], interval="predict")
 predy
 ```
+
+#### Confidence interval (mean prediction)
+
+Confidence intervals for the mean response are narrower than prediction intervals.
+
 ```{r}
 confy <- predict(model_trasf_term, data_pred[1:10,], interval="confidence")
 confy
 
 ```
 
-- `ci` width (the lower and upper bonds)
+#### CI width
+
+A quick way to compute interval width is upper minus lower bound.
+
 ```{r}
 confy %*% c(0, -1, 1)
 predy %*% c(0, -1, 1)
 ```
 
-- plot the differences of predictions and actual values
+---
+
+### Compare predictions vs actual values
+
+A scatterplot of observed vs predicted values provides a quick sense of calibration. If the model is well-calibrated, points tend to align along the diagonal; the fitted line provides a rough check.
+
 ```{r}
 plot(data2$medv,predict(model_trasf_term) )
 fit <- lm(predict(model_trasf_term)~data2$medv)
 abline(fit)
 ```
 
-- compute y hat and confidence interval 
+---
+
+### Manual computation: \(\hat{y}\) and confidence interval
+
+This section demonstrates how the regression prediction and CI formulas relate to matrix algebra. It is useful for understanding what `predict()` does internally.
+
+We fit a smaller model and compute \(\hat{y}\) using \(X\hat{\beta}\).
+
 ```{r}
 data_ci <-  dplyr::select(data2, zn ,chas ,tax , medv)
 model_ci <- lm(formula = medv ~ zn + chas +tax , data = data_ci)
@@ -326,6 +622,7 @@ summary(model_ci)
 ```
 
 `compute y hat and compare with y predict and actual y`
+
 ```{r}
 XCI <- data.frame(intercept=1, data_ci[,1:3])
 comp_y <- as.matrix(XCI)%*%as.numeric(model_ci$coefficients)
@@ -334,6 +631,7 @@ head(cbind(comp_y,predict(model_ci, XCI), data_ci[,4]))
 ```
 
 `compute ci`
+
 ```{r}
 library(matlib)
 var.yhat <- sigma(model_ci)**2* as.matrix(XCI[1 ,]) %*% inv(t(as.matrix(XCI)) %*% as.matrix (XCI))%*%t(as.matrix(XCI[1 ,]))
@@ -347,14 +645,23 @@ cbind(
 predict(model_ci, XCI[1 ,], interval="confidence")
 ```
 
-
 $$
 E(\hat{Y}_0)=\sigma^2\mathbf{X_0\left( X'X\right)^{-1}X_0'}
 $$
 
-### External data validation 
-- this is not ture external validation (just for demonstration)
-- Split the data randomly into a training set and a test set by using `caret` package.
+This matrix form highlights the concept of **leverage**: when \(X_0\) is far from the center of the predictor space, uncertainty increases.
+
+---
+
+### External data validation
+
+This is a simple demonstration of external-style validation: evaluate performance on the held-out test set created earlier.
+
+We compute common predictive metrics:
+- \(R^2\) (proportion of variance explained),
+- RMSE (penalizes larger errors),
+- MAE (more robust to outliers).
+
 ```{r}
 library(caret)
 testdata2_pred <-   dplyr::select(testdata2, zn , chas , nox , rm , dis , rad , tax , 
@@ -366,15 +673,31 @@ MAE <- MAE(testdata2$medv,predict(model_trasf_term,testdata2_pred))
 print(c(R_sq, RMSE, MAE))
 ```
 
+In applied practice, the held-out evaluation is often the most trusted summary of model usefulness, especially when many model variants were tried.
+
+---
+
 ## Variable selection  
+
+Variable selection is a large topic. In practice, you should align the selection method with your goal:
+- inference (interpretability, prespecified covariates, stability),
+- prediction (regularization, cross-validation, performance focus).
 
 [see here](https://rpubs.com/Daniel_He/1044963)
 
- 
+---
 
+### Chapter takeaways
 
+This multiple regression practice section demonstrates a complete applied modeling workflow:
+- **data understanding** (describe/summary/Table 1),
+- **quality checks** (missingness),
+- **EDA** (histograms, correlations, scatterplots),
+- **transformations** (stabilize modeling assumptions),
+- **model building** (baseline, stepwise, polynomial, interaction, robust),
+- **diagnostics** (assumption checks),
+- **comparison** (AIC, CV),
+- **interpretation** (coefficients, CI, relative importance),
+- **prediction and validation** (intervals, test-set metrics).
 
-
-
-
- 
+The same structure generalizes naturally to clinical and biomedical regression problems—only the outcome type and modeling family may change.

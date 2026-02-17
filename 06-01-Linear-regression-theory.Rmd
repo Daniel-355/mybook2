@@ -1,49 +1,85 @@
-
- 
 ## Simple linear regression
 
+Simple linear regression is the most common “first model” in applied statistics. It answers a basic question:
+
+> How does the expected value of an outcome \(Y\) change as a function of a single predictor \(X\)?
+
+Even if your final analysis uses more sophisticated methods (mixed models, GLMs, survival models), simple linear regression remains a key building block. It teaches you how estimation works, why assumptions matter, and how uncertainty is quantified through standard errors, confidence intervals, and hypothesis tests.
+
+In practice, regression has two equally important goals:
+1) **Explanation** (estimating association or effect size), and  
+2) **Prediction** (forecasting outcomes at new values of \(X\)).
+
+---
+
 ### Linear regeression assumptions
+
+A regression model is only as reliable as its assumptions. In real-world analysis, the assumptions are rarely perfect, but they guide diagnostics and help you understand when inference may break down.
+
 There are four principal assumptions:
 
-- linearity of the relationship between dependent and independent variables.
+- **Linearity** of the relationship between dependent and independent variables.  
+  This means the conditional mean \(E(Y|X)\) is well-approximated by a straight line. If the true relationship is curved, the linear model may still be useful as a local approximation, but interpretation can become misleading.
 
-- statistical independence of the errors with y variable.
+- **Statistical independence** of the errors with \(y\) variable.  
+  Independence is often violated in longitudinal data, clustered data (e.g., patients within sites), or time series. When independence fails, standard errors are typically wrong—often **too small**, leading to overly optimistic p-values and confidence intervals that are too narrow.
 
-- homoscedasticity (constant variance) of the errors for all x.
+- **Homoscedasticity** (constant variance) of the errors for all \(x\).  
+  If variability increases with \(X\) (a “fanning out” pattern), the model may still estimate the mean trend reasonably, but standard errors and tests can be distorted unless you use robust methods or transform variables.
 
-- normality of the error distribution.
+- **Normality** of the error distribution.  
+  Normality matters mainly for *small-sample inference*. Large samples rely less on strict normality due to asymptotic approximations. Also note: normality is assumed for the **errors**, not necessarily for \(X\) or \(Y\) marginally.
 
 `if independent assumption violated, the estimated standard errors tend to underestimate the true standard error. P value associated thus is lower.`
 
 `only the prediction errors need to be normally distributed. but with extremely asymmetric or long-tailed, it may be hard to fit them (x and y) into a linear model whose errors will be normally distributed.`
 
+---
+
 ### Population regression function
+
+The **population regression function** is the ideal target we would like to know: the true conditional mean of \(Y\) given \(X\). Regression is fundamentally about modeling and estimating this conditional expectation.
+
 Regression is to estimate and/or predict the population mean (expectation) of dependent variable (yi) by a known or a set value of explanatory variables (xi). Population regression line (PRL) is the trajectory of the conditional expectation value given Xi.
- 
+
 $$
 E(Y|X_i)=f(X_i)=\beta_1+\beta_2X_i
 $$
+
 `This is an unknown but fixed value (can be estimated). `
 
-<!-- - SRF, Sample regression function -->
-<!-- $$ -->
-<!-- \hat{Y_i}=f(X_i)=\hat{\beta}_1+\hat{\beta}_2X_i -->
-<!-- $$ -->
+A key interpretation:
+- \(\beta_1\) is the expected value of \(Y\) when \(X=0\) (sometimes meaningful, sometimes not).
+- \(\beta_2\) is the expected change in \(Y\) for a one-unit increase in \(X\).
 
-###  Population regression model  
-the errors $u_i=y_i-\hat{y}_i$ have equal variance 
+---
+
+### Population regression model  
+
+In the population, actual observations deviate from the regression function due to randomness and unmeasured factors. We represent this deviation as an error term \(u_i\).
+
 $$
 Y_i=\beta_1+\beta_2X_i+u_i
 $$
 
-###  Sample regression model 
+the errors \(u_i=y_i-\hat{y}_i\) have equal variance
+
+In applied interpretation, \(u_i\) captures everything not explained by \(X\): measurement noise, omitted variables, and inherent randomness.
+
+---
+
+### Sample regression model 
+
+In practice we observe data and estimate coefficients. The **sample regression model** replaces unknown population parameters with estimates (hats), and uses residuals \(e_i\) as estimated errors.
 
 (using hat to indicate sample)
+
 $$
 Y_i=\hat{\beta}_1+\hat{\beta}_2X_i+e_i
 $$
 
 since  
+
 $$
 u_i  \sim N(0,\sigma^2)
 $$
@@ -51,6 +87,7 @@ or
 $$
 e_i  \sim N(0,\hat{\sigma} ^2)
 $$ 
+
 and
 
 `i.i.d., independent identically distribution, 
@@ -70,7 +107,15 @@ Y_i- \beta_1+\beta_2X_i (\hat{Y_i}) &\sim i.i.d \ N(0,\sigma^2)\\
 \end{align}
 $$
 
-thence, to minimize Q $\sum{(Y_i-\hat{Y}_i)^2}$ to solve b0 and b1. 
+This i.i.d. assumption is what allows us to derive standard errors and perform t-tests and F-tests in the classical linear regression framework.
+
+---
+
+### Least squares: minimize \(Q=\sum (Y_i-\hat{Y}_i)^2\)
+
+The ordinary least squares (OLS) estimator chooses coefficients that minimize the total squared residual error. Squaring penalizes large deviations and gives a unique and mathematically convenient solution.
+
+thence, to minimize Q \(\sum{(Y_i-\hat{Y}_i)^2}\) to solve b0 and b1. 
 
 $$
 \begin{align}
@@ -80,7 +125,13 @@ Min(Q) &=\sum{(Y_i-\hat{Y}_i)^2}\\
 \end{align}
 $$
 
-### Solve $\hat{\beta_1},\hat{\beta_2}$ and variance 
+---
+
+### Solve \(\hat{\beta}_1,\hat{\beta}_2\) and variance 
+
+Once the least squares problem is solved, you get closed-form estimators for the slope and intercept. The sampling variability of these estimators depends on:
+- the error variance \(\sigma^2\),
+- the spread of \(X\) values (more spread → more information → smaller variance).
 
 $$
 \begin{align}
@@ -93,7 +144,13 @@ var(\hat{\beta}_1) =\sigma_{\hat{\beta}_1}^2 &=\frac{\sum{X_i^2}}{n\sum{x_i^2}}\
 \end{align}
 $$
 
-### Calculate the variance $\hat{\sigma}^2$ of error $e_i$ 
+A practical takeaway: if your \(X\) values are tightly clustered, \(\sum x_i^2\) is small and the slope becomes hard to estimate precisely.
+
+---
+
+### Calculate the variance \(\hat{\sigma}^2\) of error \(e_i\) 
+
+The residual variance is estimated from the residual sum of squares. Conceptually, it measures how much unexplained variability remains after fitting the regression line.
 
 (for sample)
 
@@ -105,7 +162,14 @@ $$
 \end{align}
 $$
 
+(Practical note: in classical regression, the unbiased estimator typically uses \(n-2\) in the denominator for simple linear regression because two parameters were estimated. Your expression shows the core idea—estimating variance from squared residuals.)
+
+---
+
 ### Sum of squares decomposition 
+
+A central identity in regression is that total variability can be decomposed into explained and unexplained components. This is the basis of \(R^2\) and the ANOVA-style F test.
+
 $$
 \begin{align}
 (Y_i-\bar{Y_i})  &= (\hat{Y_i}-\bar{Y_i}) +(Y_i-\hat{Y_i})  \\
@@ -114,26 +178,32 @@ TSS&=ESS+RSS
 \end{align}
 $$
 
-### Coefficient of determination $R^2$ and goodness of fit
+Interpretation:
+- **TSS**: total sum of squares (overall variability around the mean)
+- **ESS**: explained sum of squares (variability explained by the regression)
+- **RSS**: residual sum of squares (unexplained variability)
+
+---
+
+### Coefficient of determination \(R^2\) and goodness of fit
+
+\(R^2\) is the proportion of variability explained by the model. It is descriptive: a higher \(R^2\) means the fitted line tracks the data more closely, but it does not guarantee causality or correctness of assumptions.
+
 $$
 \begin{align}
 r^2 &=\frac{ESS}{TSS}=\frac{\sum{(\hat{Y_i}-\bar{Y})^2}}{\sum{(Y_i-\bar{Y})^2}}\\
     &=1-\frac{RSS}{TSS}=1-\frac{\sum{(Y_i-\hat{Y_i})^2}}{\sum{(Y_i-\bar{Y})^2}}
 \end{align}
 $$
- 
 
-<!-- $$ -->
-<!-- \begin{align} -->
+In practice, always interpret \(R^2\) alongside residual diagnostics. A model can have a decent \(R^2\) but still violate key assumptions (e.g., heteroscedasticity).
 
-<!-- r_{X_i,Y_i}&=\frac{Cov(X_i,Y_i)}{S_{X_i}\cdot S_{Y_i}} -->
-<!-- = \frac{\sum{(X_i-\bar{X})(Y_i-\bar{Y})}}{\sqrt{\sum{(X_i-\bar{X}})^2\sum{(Y_i-\bar{Y})^2}}} -->
-<!--  \\ -->
-<!-- (r_{X_i,Y_i})^2 &\simeq r^2   -->
-<!-- \end{align} -->
-<!-- $$ -->
+---
 
 ### Test of regression coefficients
+
+Hypothesis testing in regression typically focuses on whether coefficients differ from zero (or another clinically meaningful value). Under classical assumptions, coefficients are normally distributed around their true values.
+
 since  
 $$
 \begin{align}
@@ -166,13 +236,21 @@ t_{\hat{\beta_1}}^{\ast}&=\frac{\hat{\beta_1}-\beta_1}{S_{\hat{\beta_1}}}
 \end{align}
 $$
 
+In applied reporting, the slope test is often the primary focus, because it corresponds to whether \(X\) is associated with \(Y\) in a linear trend.
+
+---
+
 ### Statistical test of model 
+
+Beyond individual coefficients, we may want to test whether the model as a whole explains a statistically significant amount of variability compared with a null model.
+
 since
 $$
 \begin{align}
 Y_i&\sim i.i.d \ N(\beta_1+\beta_2X_i,\sigma^2)\\
 \end{align}
 $$
+
 and   
 $$
 \begin{align}
@@ -180,14 +258,6 @@ ESS&=\sum{(\hat{Y_i}-\bar{Y})^2} \sim \chi^2(df_{ESS})  \\
 RSS&=\sum{(Y_i-\hat{Y_i})^2} \sim \chi^2(df_{RSS})  
 \end{align}
 $$
-
-<!-- $$ -->
-<!-- \begin{align} -->
-<!-- F^{\ast}&=\frac{ESS/df_{ESS}}{RSS/df_{RSS}}=\frac{MSS_{ESS}}{MSS_{RSS}}  \\ -->
-<!--         &=\frac{\sum{(\hat{Y_i}-\bar{Y})^2}/df_{ESS}}{\sum{(Y_i-\hat{Y_i})^2}/df_{RSS}} \\ -->
-<!--         &\sim F(df_{ESS},df_{RSS}) -->
-<!-- \end{align} -->
-<!-- $$ -->
 
 therefore 
 $$
@@ -199,7 +269,18 @@ F^{\ast}&=\frac{ESS/df_{ESS}}{RSS/df_{RSS}}=\frac{MSS_{ESS}}{MSS_{RSS}}\\
 \end{align}
 $$
 
+The F test evaluates whether the explained variation (ESS) is large relative to residual variation (RSS), after accounting for degrees of freedom.
+
+---
+
 ### Mean prediction
+
+Prediction in regression has two common targets:
+
+1) **Mean prediction**: the expected outcome for individuals with a given \(X_0\).  
+2) **Individual prediction**: the outcome for a *new single individual* with \(X_0\).
+
+Mean prediction is more precise because it estimates an average, not a single future value.
 
 since 
 
@@ -211,6 +292,7 @@ $$
 &=E(Y|X_0)
 \end{align}
 $$
+
 and 
 $$
 \begin{align}
@@ -219,6 +301,7 @@ var(\hat{Y}_0)&=\sigma^2_{\hat{Y}_0}\\
 &=\sigma^2 \left( \frac{1}{n}+ \frac{(X_0-\bar{X})^2}{\sum{x_i^2}} \right)
 \end{align}
 $$
+
 therefore
 $$
 \begin{align}
@@ -240,7 +323,18 @@ $$
 \end{align}
 $$
 
+Interpretation: the CI here is for the *mean response* at \(X_0\). It is narrow when:
+- \(n\) is large, and
+- \(X_0\) is close to \(\bar{X}\) (more information near the center of the data).
+
+---
+
 ### Individual prediction
+
+Individual prediction intervals are wider because they must account for:
+- uncertainty in estimating the mean trend, and
+- the irreducible random error for a new observation.
+
 since  
 
 $$
@@ -263,6 +357,7 @@ $$
 S_{\hat{Y}_0}& = \sqrt{\hat{\sigma}^2 \left( \frac{1}{n}+ \frac{(X_0-\bar{X})^2}{\sum{x_i^2}} \right)}
 \end{align}
 $$
+
 therefore 
 
 $$
@@ -270,18 +365,19 @@ $$
 \hat{Y}_0-t_{1-\alpha/2}(n-2) \cdot S_{\hat{Y}_0} \leq E(Y|X_0) \leq \hat{Y}_0+t_{1-\alpha/2}(n-2) \cdot S_{\hat{Y}_0}
 \end{align}
 $$
- 
+
 `it is harder to predict your weight based on your age than to predict the mean weight of people who are your age. so, the interval of individual prediction is wider than those of mean prediction.`
 
+A practical mental model:
+- **Mean CI** answers: “What is the expected mean outcome at \(X_0\)?”
+- **Prediction interval** answers: “Where might a new individual outcome fall at \(X_0\)?”
 
-
-
-
-
-
-
+---
 
 ## Multiple linear regression
+
+Multiple linear regression generalizes the simple model by allowing multiple predictors. The key shift is that each coefficient is interpreted as an effect **holding other variables constant**.
+
 ### Matrix format
 
 $$
@@ -319,34 +415,13 @@ $$
 \end{alignat}
 $$
 
+The matrix form is not just notation—it simplifies derivations and makes the estimator compact and general.
+
+---
+
 ### Variance covariance matrix of random errors
 
-<!-- $$ -->
-<!-- \begin{align} -->
-<!-- var-cov(\mathbf{u})&=E(\mathbf{uu'})\\ -->
-<!-- &=E -->
-<!--   \begin{bmatrix} -->
-<!--   u_1\\  u_2\\ \vdots \\ u_n -->
-<!--   \end{bmatrix} -->
-<!--   \begin{bmatrix} -->
-<!--   u_1 &  u_2& \cdots & u_n -->
-<!--   \end{bmatrix}\\ -->
-<!-- &=E -->
-<!--   \begin{bmatrix} -->
-<!--   u_1^2 & u_1u_2  &\cdots &u_1u_n\\ -->
-<!--   u_2u_1 & u_2^2  &\cdots &u_2u_n\\ -->
-<!--   \vdots & \vdots &\vdots &\vdots \\ -->
-<!--   u_nu_1 & u_nu_2  &\cdots &u_n^2\\ -->
-<!--   \end{bmatrix}\\ -->
-<!-- &= -->
-<!--   \begin{bmatrix} -->
-<!--   E(u_1^2) & E(u_1u_2)  &\cdots &E(u_1u_n)\\ -->
-<!--   E(u_2u_1) & E(u_2^2)  &\cdots &E(u_2u_n)\\ -->
-<!--   \vdots & \vdots &\vdots &\vdots \\ -->
-<!--   E(u_nu_1) &E(u_nu_2)  &\cdots &E(u_n^2)\\ -->
-<!--   \end{bmatrix}\\ -->
-<!-- \end{align} -->
-<!-- $$ -->
+The classical assumption is that errors are independent, have equal variance, and have zero covariance. This leads to a diagonal variance-covariance structure proportional to the identity matrix.
 
 because 
 $$
@@ -393,7 +468,14 @@ var-cov(\mathbf{u})&=E(\mathbf{uu'})\\
 \end{align}
 $$
 
-### Minimize Q, $\sum{(y-\hat{y})^2}$
+In applied work, this assumption is often challenged by clustering and repeated measures. When violated, analysts may move to robust standard errors, GLS, or mixed effects models.
+
+---
+
+### Minimize \(Q=\sum (y-\hat{y})^2\)
+
+In matrix form, OLS still minimizes the squared residuals, but the algebra becomes compact and scalable.
+
 $$
 \begin{align}
 Q&=\sum{e_i^2}\\
@@ -403,7 +485,12 @@ Q&=\sum{e_i^2}\\
 \end{align}
 $$
 
-### Solve $\hat{\beta}$ by derivation
+---
+
+### Solve \(\hat{\beta}\) by derivation
+
+Setting the derivative with respect to \(\hat{\beta}\) equal to zero yields the normal equations. Solving them gives the closed-form OLS estimator.
+
 (population=sample)
 
 $$
@@ -415,13 +502,22 @@ $$
 \mathbf{X'X\hat{\beta}} &=\mathbf{X'y}
 \end{align}
 $$
+
 $$
 \begin{align}
 \mathbf{\hat{\beta}} &=\mathbf{(X'X)^{-1}X'y} 
 \end{align}
 $$
 
-### Solve $\hat{\sigma_\beta}^2$  
+Interpretation: \((X'X)^{-1}\) reflects the information in the design matrix. When predictors are highly correlated (multicollinearity), \(X'X\) becomes nearly singular and coefficient estimates become unstable.
+
+---
+
+### Solve \(var\text{-}cov(\mathbf{\hat{\beta}})\)
+
+The variance-covariance matrix of \(\hat{\beta}\) is the core object for inference in multiple regression. It contains:
+- variances of each coefficient (diagonal),
+- covariances between coefficients (off-diagonal).
 
 $$
 \begin{align}
@@ -437,9 +533,11 @@ var-cov(\mathbf{\hat{\beta}})
 \end{align}
 $$
 
-### Solve $S^2(\mathbf{\hat{\beta}})$ 
+---
 
-(for sample)
+### Solve \(S^2(\mathbf{\hat{\beta}})\) (sample)
+
+In practice, \(\sigma^2\) is unknown. We estimate it from residuals and then plug it into the variance-covariance formula.
 
 where 
 $$
@@ -457,9 +555,14 @@ S^2_{ij}(\mathbf{\hat{\beta}})
 &= \frac{\mathbf{e'e}}{n-k}\mathbf{(X'X)^{-1}}   \\
 \end{align}
 $$
+
 `which is variance-covariance of coefficients`
 
+---
+
 ### Sum of squares decomposition (matrix format)
+
+The same TSS/ESS/RSS decomposition generalizes to multiple regression, forming the basis of \(R^2\) and the overall F test.
 
 $$
 \begin{align}
@@ -469,7 +572,10 @@ ESS&=\mathbf{\hat{\beta}'X'y}-n\bar{Y}^2
 \end{align}
 $$
 
-### Determination coefficient $R^2$ and goodness of fit
+---
+
+### Determination coefficient \(R^2\) and goodness of fit
+
 $$
 \begin{align}
 R^2&=\frac{ESS}{TSS}\\
@@ -477,7 +583,15 @@ R^2&=\frac{ESS}{TSS}\\
 \end{align}
 $$
 
+Interpretation remains the same: \(R^2\) is descriptive goodness-of-fit. In multiple regression it almost always increases as you add predictors, which is why adjusted \(R^2\) or out-of-sample validation is often preferred for model selection.
+
+---
+
 ### Test of regression coefficients 
+
+Multiple regression inference typically includes:
+- **individual coefficient tests** (is \(\beta_j=0\)?),
+- **joint tests** (are multiple coefficients simultaneously zero?).
 
 because 
 $$
@@ -486,9 +600,10 @@ $$
 \mathbf{\hat{\beta}} &\sim N\left(\mathbf{\beta},\sigma^2\mathbf{X'X}^{-1} \right)   \\
 \end{align}
 $$
+
 therefore 
 
-`(for all coefficients test, vector, see above` $S_{\hat{\beta}}^2$ `)`
+`(for all coefficients test, vector, see above` \(S_{\hat{\beta}}^2\) `)`
 $$
 \begin{align}
 \mathbf{t_{\hat{\beta}}}&=\mathbf{\frac{\hat{\beta}-\beta}{S_{\hat{\beta}}}} 
@@ -502,14 +617,22 @@ $$
 \mathbf{t_{\hat{\beta}}^{\ast}}&=\frac{\mathbf{\hat{\beta}}}{\mathbf{\sqrt{S^2_{ij}(\hat{\beta}_{kk})}}} 
 \end{align}
 $$
+
 where 
 $$
 S^2_{ij}(\hat{\beta}_{kk})=[s^2_{\hat{\beta}_1},s^2_{\hat{\beta}_2},\cdots,s^2_{\hat{\beta}_k}]'
 $$
 
-`they are on diagonal line of the matrix of` $S^2(\mathbf{\hat{\beta}})$ 
+`they are on diagonal line of the matrix of` \(S^2(\mathbf{\hat{\beta}})\) 
+
+---
 
 ### Test of model
+
+The overall model test compares:
+- an **unrestricted** model with predictors, versus
+- a **restricted** model (often intercept-only).
+
 unrestricted model
 $$
 \begin{align}
@@ -518,6 +641,7 @@ Y_i&\sim i.i.d \ N(\beta_1+\beta_2X_i+\cdots+\beta_kX_i,\sigma^2)\\
 RSS_U&=\sum{(Y_i-\hat{Y_i})^2} \sim \chi^2(n-k) \\
 \end{align}
 $$
+
 restricted model
 $$
 \begin{align}
@@ -526,6 +650,7 @@ Y_i&\sim i.i.d \ N(\beta_1,\sigma^2)\\
 RSS_R&=\sum{(Y_i-\hat{Y_i})^2} \sim \chi^2(n-1) \\
 \end{align}
 $$
+
 F test
 $$
 \begin{align}
@@ -542,8 +667,12 @@ F^{\ast}&=\frac{ESS_U/df_{ESS_U}}{RSS_U/df_{RSS_U}}
 \end{align}
 $$
 
+---
 
-### Mean prediction
+### Mean prediction (multiple regression)
+
+The mean prediction generalizes naturally: you plug in a covariate vector \(X_0\). The uncertainty depends on the leverage of \(X_0\) through \(X_0(X'X)^{-1}X_0'\).
+
 since 
 $$
 \begin{align}
@@ -554,6 +683,7 @@ var(\hat{Y}_0)&=E\mathbf{(X_0\hat{\beta}-X_0\beta)}^2\\
               &=\sigma^2\mathbf{X_0\left( X'X \right)^{-1}X_0'}\\
 \end{align}
 $$
+
 and 
 $$
 \begin{align}
@@ -561,6 +691,7 @@ $$
 \hat{Y}_0& \sim N\left(E(Y_0|X_0), \sigma^2\mathbf{X_0(X'X)^{-1}X_0'}\right)
 \end{align}
 $$
+
 `construct t statistic`
 $$
 \begin{align}
@@ -585,7 +716,12 @@ $$
 \end{align}
 $$
 
-### Individual prediction
+---
+
+### Individual prediction (multiple regression)
+
+Individual prediction adds the irreducible error term for a new observation, making the interval wider than the mean-response interval.
+
 since 
 $$
 \begin{align}
@@ -604,7 +740,6 @@ E(e_0)&=E(Y_0-\hat{Y}_0)\\
 \end{align}
 $$
 
-  
 $$
 \begin{align}
 var(e_0)&=E(Y_0-\hat{Y}_0)^2\\
@@ -630,7 +765,6 @@ t_{e_0}& =\frac{\hat{Y}_0-Y_0}{S_{e_0}}
 \end{align}
 $$
 
-
 therefore 
 $$
 \begin{align}
@@ -646,3 +780,7 @@ S_{Y_0-\hat{Y}_0}=S_{e_0}
 \hat{\sigma}^2&=\frac{\mathbf{ee'}}{(n-k)} 
 \end{align}
 $$
+
+A final practical takeaway:
+- If your goal is decision-making about the *average* response at a covariate profile, use mean-response inference.
+- If your goal is forecasting an *individual* outcome, expect much wider uncertainty bands, even with a well-fitted model.

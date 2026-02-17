@@ -1,0 +1,234 @@
+
+
+## Linear mixed model covariance decomposition with random intercept- lme4
+
+### Load data
+```{r}
+data(Orthodont, package="nlme")
+Data <- Orthodont
+```
+
+plot means and variances by higher level variable (grouping)
+```{r}
+barplot(with(Data, tapply(distance, list(subject = Subject), mean)))
+barplot(with(Data, tapply(distance, list(subject = Subject), var)))
+```
+
+### Using glm
+```{r}
+fit.lm <- lm(distance ~ age+ Sex + Subject, data = Data) 
+anova(fit.lm)
+```
+
+### Using glm with random slopes
+```{r}
+fit.aov <- aov(distance ~ age+ Sex + Error(Subject), data = Data) 
+summary(fit.aov)
+```
+*how can we compute $σ^2$ a from this output? note that $σ^2$= MSE  , and E(MSA) = $(σ_a)^2$ +n·$σ^2$ ,therefore$(σ_a)^2$ = (MSA−MSE)/n*
+
+### Using lmm
+```{r}
+library(lme4) 
+fit.lmer <- lmer(distance ~ age + Sex  +(1 | Subject), data = Data) 
+summary(fit.lmer)
+```
+
+**default is compound symmetry**
+
+### Get x,y,z 
+```{r}
+X=(getME(fit.lmer, "X"))
+head(X)
+y=getME(fit.lmer, "y")
+head(y)
+
+Z <- getME(fit.lmer, "Z")
+head(Z)
+```
+
+### Get fixed effect and random effect coefficients
+```{r}
+bhat <- getME(fit.lmer, "fixef") #getME(fit.lmer, "beta")  # fixef(fit.lmer)
+bhat 
+uhat <- ranef(fit.lmer) 
+uhat
+
+coef(fit.lmer)
+```
+
+### Get random effect covariance structure (covariance matrix expandation)      
+```{r}
+# theta <- getME(fit.lmer, "theta") # $r$
+# theta**2+ getME(fit.lmer, "sigma")**2 
+# 
+# theta**2
+# lwr <- getME(fit.lmer, "lower")
+# lwr
+
+# Lambda <- getME(fit.lmer, "Lambda") #  matrix
+# # head(Lambda)
+# # dim(Lambda)
+# Lambda%*%t(Lambda)
+```
+
+`the relationship $\Sigma = TSST'$`
+ <!-- https://stats.stackexchange.com/questions/242759/calculate-random-effect-predictions-manually-for-a-linear-mixed-model -->
+ 
+<!-- # ```{r} -->
+<!-- # # getME(fit.lmer, "ST") -->
+<!-- # ``` -->
+
+`the relationship of theta and covariance` 
+$$
+\Sigma = \left(
+\begin{array}{cc}
+\theta_1 & 0 \\
+\theta_2 & \theta_3 
+\end{array}
+\right)
+\left(
+\begin{array}{cc}
+\theta_1 & \theta_2 \\
+0 & \theta_3 
+\end{array}
+\right) =
+\left(
+\begin{array}{cc}
+\theta_1^2 & \theta_1 \theta_2 \\
+\theta_1 \theta_2 & \theta_2^2 + \theta_3^2 
+\end{array}
+\right) = 
+\left(
+\begin{array}{cc}
+\sigma_1^2 & \sigma_{12} \\
+\sigma_{12} & \sigma_2^2 
+\end{array}
+\right)
+
+$$
+
+`we can equate θ1 with σ1 (the standard deviation of the intercept), θ2 with σ12/σ1 (the covariance scaled by the SD) ... θ3 is a little more complicated. in particular, in a model with only random-intercept terms, the θ vector is just the vector of RE standard deviations.`
+
+`The way lme4 works is that, given a value of θ, we can determine Σ`  
+ 
+```{r}
+vc <- VarCorr(fit.lmer) 
+Lambda_new <-vc[["Subject"]][1]*diag(length(levels(Data$Subject)))
+head(Lambda_new)
+dim(Lambda_new)
+```
+
+- **"theta": random-effects parameter estimates: these are parameterized as the relative Cholesky factors of each random effect term**
+
+- **use other cov structure by nlme**
+
+- **lme4 does not allow to specify it, and it can only fit LMMs with independent residual errors. However, the range of available variance-covariance matrices for the random effects are restricted to diagonal or general matrices. **
+
+<!--   Get  ST    -->
+<!-- ```{r} -->
+<!-- ST <- getME(fit.lmer, "ST") # $r$  -->
+
+<!-- ``` -->
+<!-- https://rdrr.io/cran/lme4/man/getME.html -->
+<!-- https://en.wikipedia.org/wiki/Cholesky_decomposition -->
+
+<!--   Get lower   -->
+<!-- ```{r} -->
+<!-- lower <- getME(fit.lmer, "lower") # $r$  -->
+<!-- lower -->
+<!-- ``` -->
+
+### Get residual variance and its identity matrix
+```{r}
+sigma <- getME(fit.lmer, "sigma")**2 
+sigma
+head(sigma*diag(nrow(Data)))
+ 
+```
+
+### Get y covariance matrix  
+
+```{r}
+VM <- Z%*%Lambda_new%*%t(Z)+sigma*diag(nrow(Data)) 
+head(VM)
+dim(VM)
+```
+
+### Get fixed effect coefficients covariance matrix
+```{r}
+vcov <- vcov(fit.lmer) #fixed cov
+vcov
+# computer correlation coefficients 
+vcov@x[2]/prod(sqrt( diag(vcov(fit.lmer))[-3] ))
+```
+
+### Get random effect coefficients covariance matrix (standard deviation)
+```{r}
+vc <- VarCorr(fit.lmer) 
+vc ## default print method: standard dev and corr
+as.matrix(Matrix::bdiag(vc)) #random effect covariance matrix
+ 
+# https://stackoverflow.com/questions/47307340/extracting-the-i-estimated-variance-covariance-matrix-of-random-effects-and-or
+# https://support.sas.com/documentation/cdl/en/statug/63033/HTML/default/viewer.htm#statug_mixed_sect022.htm
+```
+
+`approximate above sd`  
+```{r}
+uintercept <- (uhat[["Subject"]])
+sd(uintercept[,1])
+
+```
+
+
+### Computer fixed effect coefficients
+
+```{r}
+library(matlib)
+inv(t(as.matrix(X))%*%inv(as.matrix(VM))%*%as.matrix(X))%*%t(as.matrix(X))%*%inv(as.matrix(VM))%*%y
+bhat
+```
+
+### Computer covariance of fixed efffect coefficients
+```{r}
+inv(t(as.matrix(X))%*%inv(as.matrix(VM))%*%as.matrix(X))
+# standard error
+sqrt(inv(t(as.matrix(X))%*%inv(as.matrix(VM))%*%as.matrix(X)))
+
+# the following equals lmm summary
+vcov(fit.lmer) 
+sqrt(vcov(fit.lmer))
+```
+**default is compound symmetry**
+
+### Computer random effect coefficients 
+```{r}
+comput_uhat <- (as.matrix(Lambda_new))%*%t(Z)%*%inv(as.matrix(VM))%*%(y-as.matrix(X)%*%(bhat))
+cbind((comput_uhat@x),(uhat[["Subject"]]))
+
+```
+
+- covariance matrix of random effect coefficients
+```{r}
+head(Lambda_new)
+```
+ 
+
+### Computer predicted values
+```{r}
+yhat <- X%*%(bhat)+Z%*%(uhat[["Subject"]][["(Intercept)"]])
+head(yhat)
+head(fitted(fit.lmer))
+```
+
+
+
+
+
+
+
+
+
+
+
+
