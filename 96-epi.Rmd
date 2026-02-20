@@ -3,8 +3,12 @@
 
 ## Introduction
 
+Epidemiology is the study of the distribution and determinants of health-related states in populations and the application of this knowledge to control health problems. It integrates measures of disease frequency (prevalence, incidence, mortality, survival, DALYs), measures of association (RR, OR, attributable risk), and study designs (cross-sectional, case-control, cohort, and experimental trials) to answer PECO-framed research questions. Landmark studies such as the Framingham Heart Study identified major cardiovascular risk factors, illustrating how observational research informs prevention. Epidemiology also emphasizes valid inference through appropriate statistical testing, confidence intervals, power and sample size planning, and careful interpretation of regression models. Core methodological concerns include bias (selection and information), confounding, and random error, with strategies such as matching, restriction, randomization, stratification, and multivariable adjustment to improve validity. In clinical trials, principles such as random assignment, masking, intention-to-treat analysis, and phased drug development ensure internal validity, while diagnostic testing relies on sensitivity, specificity, predictive values, and Bayes’ theorem, recognizing that disease prevalence strongly influences post-test probabilities.
+
 [see here](https://rpubs.com/Daniel_He/1137221)
 
-## Bias analysis and control IN R
+## Bias analysis and control in R
+
+This chapter reviews three major sources of bias and their analytical correction: selection bias (when the study population does not represent the target population due to nonresponse, loss to follow-up, or improper control selection), information bias/misclassification (measurement error in exposure, outcome, or covariates), and confounding bias (distortion from extraneous variables). Using the episensr package, it demonstrates how to quantify and correct selection bias via selection probabilities or bias factors, assess nondifferential and differential misclassification for exposures and covariates, and adjust for confounding through stratification, regression, or external bias parameters; it also summarizes common mechanisms (e.g., control selection bias, recall bias, healthy worker effect) and emphasizes sensitivity analysis as a structured approach to evaluating robustness of effect estimates.
 
 [see here](https://rpubs.com/Daniel_He/1141615)

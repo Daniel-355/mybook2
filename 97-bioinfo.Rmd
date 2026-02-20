@@ -1,6 +1,8 @@
 
 # Bioinformation
 
+This section shows a compact R workflow for sequence analysis: perform multiple sequence alignment, run RNA-seq differential expression with DESeq2 (normalization, testing, volcano/PCA plots), build and optimize phylogenetic trees from aligned sequences (and compare trees with Robinson–Foulds distance plus bootstrap support), and finish with simple pathway/enrichment checks using Fisher’s exact test or rank-based tests like Wilcoxon.
+
 ## Sequence Analysis
 
 [see here](https://rpubs.com/Daniel_He/1127907)

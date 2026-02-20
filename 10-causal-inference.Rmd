@@ -1,6 +1,8 @@
 
 # Causal inference
 
+Chapter 10 provides a comprehensive overview of causal inference methods, beginning with foundational concepts and directed acyclic graphs (DAGs) for identifying confounding structures, followed by core estimation strategies including inverse probability weighting, matching, and the g-formula. It advances to double robust approaches—leveraging SuperLearner, TMLE, and longitudinal TMLE—for machine-learning–enhanced effect estimation, and further covers instrumental variable regression, mediation analysis, confounding and effect measure modification, and the integration of causal frameworks with regression modeling to support valid treatment effect estimation in observational and longitudinal data settings.
+
 ## Causal inference introduction
  
 ### Definitions and directed acyclic graph (DAG) 

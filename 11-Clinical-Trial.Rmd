@@ -1,6 +1,8 @@
 
 # Clinical Trial 
 
+This chapter provides a comprehensive overview of statistics in clinical trials, outlining the clinical statistician’s role in protocol development, sample size determination, randomization, interim monitoring, and regulatory reporting; it details hypothesis testing for continuous and Poisson endpoints, derivation of sample size formulas under type I/II error constraints, classical group sequential methods and Bayesian sequential procedures for interim analyses, and emphasizes proper randomization, allocation concealment, and safety monitoring to ensure methodological rigor and regulatory compliance. 
+
 ## Statistics in clinical trial
  
 ### Sample size, interim data reports and randomization of assignment

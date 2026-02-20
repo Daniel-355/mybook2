@@ -1,5 +1,7 @@
 
 # Common issues in Statistics
 
+This chapter reviews common statistical pitfalls and best practices, emphasizing the importance of plotting data before analysis, checking model assumptions (especially independence and equal variance), and distinguishing statistical from practical significance. It highlights issues such as biased or unrepresentative samples, underpowered or overpowered studies, misinterpretation of p-values, multiple comparisons without adjustment (FWER/FDR), data snooping, inappropriate categorization of continuous variables, misuse of stepwise selection, overinterpreting high R², pseudoreplication, and confusing confidence with prediction intervals. The chapter stresses careful study design—proper randomization, control of confounding, power analysis, handling missing data, and planning for multiple inference—as well as transparent reporting, consideration of bias, and involvement of statisticians early to ensure valid, interpretable, and ethically sound research.
+
 [see here](https://rpubs.com/Daniel_He/1145758)
 

@@ -177,9 +177,9 @@ This distinction becomes crucial in linear mixed models, where REML is often pre
 
 ---
 
-## R demonstration
+### R demonstration
 
-### Toy data
+#### Toy data
 
 We simulate data from a linear regression model with normal errors.
 
@@ -194,7 +194,7 @@ mydata <- data.frame(y,x)
 
 ---
 
-### Linear regression (closed-form MLE)
+#### Linear regression (closed-form MLE)
 
 For normal errors, the MLE of regression coefficients coincides with ordinary least squares.
 
@@ -211,7 +211,7 @@ Interpretation:
 
 ---
 
-### MLE via explicit negative log-likelihood
+#### MLE via explicit negative log-likelihood
 
 We now code the negative log-likelihood directly using matrix notation.
 
@@ -239,7 +239,7 @@ The results agree with `lm()`, confirming that linear regression is an MLE probl
 
 ---
 
-### Maximum likelihood via `maxLik`
+#### Maximum likelihood via `maxLik`
 
 The `maxLik` package directly maximizes the log-likelihood.
 
@@ -263,7 +263,7 @@ This approach generalizes easily to models where no closed-form solution exists.
 
 ---
 
-### Another example (real data)
+#### Another example (real data)
 
 We repeat the procedure for `mtcars`.
 
@@ -290,7 +290,7 @@ Again, MLE and OLS agree under normal error assumptions.
 
 ---
 
-## Confidence intervals from likelihood
+### Confidence intervals from likelihood
 
 Most classical confidence intervals rely on the **asymptotic normality** of MLEs:
 
@@ -302,7 +302,7 @@ The standard error is derived from the **Hessian matrix** (second derivative of 
 
 ---
 
-### Fisher information and Hessian
+#### Fisher information and Hessian
 
 For a parameter vector $\theta$:
 
@@ -339,7 +339,7 @@ The corresponding Wald intervals follow immediately.
 
 ---
 
-### Likelihood ratio confidence intervals
+#### Likelihood ratio confidence intervals
 
 Wald intervals can perform poorly in small samples.  
 A likelihood-based alternative defines the confidence set as:
@@ -357,7 +357,7 @@ This approach often has better finite-sample behavior.
 
 ---
 
-### Profile likelihood
+#### Profile likelihood
 
 The **profile likelihood** fixes one parameter and maximizes over the others.
 
@@ -377,7 +377,7 @@ Profile likelihoods are widely used for confidence intervals in mixed models and
 
 ---
 
-## Maximum likelihood estimate practice
+### Maximum likelihood estimate practice
 
 The following example revisits MLE numerically, reinforcing the connection between theory and optimization.
 
@@ -484,10 +484,26 @@ The fitted line from gradient descent coincides with the closed-form OLS solutio
 
 Broader context
 
+## Markov chain Monte Carlo
+
 - **MCMC** extends likelihood-based inference when direct optimization is infeasible.
+[see here](https://rpubs.com/Daniel_He/1040697)
+
+This [report](https://rpubs.com/Daniel_He/1217175) compares linear models, mixed-effects models (random intercept and random slope), a two-stage approach, and a Bayesian joint model (JAGS + MCMC) to predict the outcome NDSBWGT_fm024 using longitudinal EFW trajectories and covariates.
+
+Performance results indicate the two-stage model performs substantially better (median RMSE ≈ 252, median R² ≈ 0.612) whereas the implemented joint model shows near-zero explanatory power in the shown output (R² ≈ 0.003 with extremely large RMSE), suggesting the joint model specification/scale and outcome distribution need to be revisited.
+
+## Expectation maximum
 - **EM algorithms** handle latent variables by alternating expectation and maximization steps.
+[see here](https://rpubs.com/Daniel_He/1216822)
+
+## Combine estimates by pooling rules
 - **Pooling rules** combine estimates across multiple datasets (e.g., multiple imputation).
+[see here](https://rpubs.com/Daniel_He/1040979)
+
+## Simulations and Bootstrapping
 - **Bootstrapping** replaces analytic sampling distributions with resampling-based approximations.
+[see here](https://rpubs.com/Daniel_He/1128098)
 
 Together, these algorithms form the computational backbone of modern statistical practice.
 

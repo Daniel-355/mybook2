@@ -1,6 +1,8 @@
 
 # Bayesian statistics
 
+This chapter introduces Bayesian inference in R by deriving posterior distributions as proportional to likelihood × prior, demonstrating grid-based estimation for continuous (normal) and binomial models with one or two parameters, computing joint and marginal posteriors, and illustrating practical applications such as diagnostic test updating via Bayes’ theorem; it also highlights computational scaling challenges and motivates the use of MCMC for higher-dimensional problems.
+
 ## Bayesian Inference in R 
 
 [see here](https://rpubs.com/Daniel_He/1142539)

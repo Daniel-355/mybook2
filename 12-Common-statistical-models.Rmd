@@ -1,9 +1,25 @@
 
 # Common statistical models
 
+This chapter reviews widely used statistical modeling approaches, including survival analysis for time-to-event data, logistic and Poisson regression for binary and count outcomes, quantile regression for distributional effects, and principal components analysis for dimensionality reduction; it also discusses practical modeling considerations such as covariate adjustment strategies, variable selection methods, and handling heteroscedastic or fan-shaped relationships in regression to ensure valid inference and robust model performance.
+
 ## Survival analysis
 
-[see here](https://rpubs.com/Daniel_He/1135804)
+#### Survival analysis  
+
+This [section](https://rpubs.com/Daniel_He/1313702) introduces the core survival analysis framework—survival, hazard, and cumulative hazard functions under random censoring—and shows how to estimate and compare survival curves nonparametrically using the Kaplan–Meier estimator and the log-rank test. It then presents parametric models (exponential/Weibull) and the Cox proportional hazards model, covering likelihood/partial-likelihood estimation, interpretation of coefficients (time ratios or hazard ratios), and key diagnostics such as the proportional hazards assumption and influential observations.  
+ 
+
+#### Time-Dependent Cox Regression Model 
+[see here](https://rpubs.com/Daniel_He/1314081) 
+
+#### Competing Risk Cox Model
+[see here](https://rpubs.com/Daniel_He/1314144) 
+
+#### Joint model with longitudinal and survival data
+
+This [report](https://rpubs.com/Daniel_He/1315576) demonstrates how to fit and evaluate joint models linking longitudinal biomarker trajectories (log serum bilirubin via LME) with time-to-event outcomes (Cox/competing risks), including PH diagnostics, dynamic survival prediction (AUC/ROC, survfitJM), and interpretation of biomarker–risk association parameters using the JM package.
+
 
 ## Logistical regression
 
@@ -34,4 +50,11 @@
 
 ## Fit regression model with a fan-shaped relation
 [see here](https://rpubs.com/Daniel_He/1106265)
+
+
+
+<!-- last verse -->
+## Save And Finalize Your trained Model
+This [report](https://rpubs.com/Daniel_He/1289468) demonstrates how to train, save, reload, and deploy both a linear regression model and a random forest model in R using saveRDS() and readRDS(), enabling model persistence and reproducible prediction workflows.
+
 

@@ -400,6 +400,10 @@ linear-regression-example
 cost-function-and-gradient-descent
 cost-function-convergence
 comparing-gradient-descent-and-linear-regression
+markov-chain-monte-carlo
+expectation-maximum
+combine-estimates-by-pooling-rules
+simulations-and-bootstrapping
 sasmarkdown
 how-to-install-sasmarkdown
 use-an-engine
@@ -489,6 +493,10 @@ statistics-in-clinical-trial
 sample-size-interim-data-reports-and-randomization-of-assignment
 common-statistical-models
 survival-analysis
+survival-analysis-1
+time-dependent-cox-regression-model
+competing-risk-cox-model
+joint-model-with-longitudinal-and-survival-data
 logistical-regression
 poisson-regression
 quantile-regression
@@ -496,6 +504,7 @@ principle-components-analysis
 which-covariates-should-be-adjusted
 variable-selection-1
 fit-regression-model-with-a-fan-shaped-relation
+save-and-finalize-your-trained-model
 bayesian-statistics
 bayesian-inference-in-r
 epidemiolgy
